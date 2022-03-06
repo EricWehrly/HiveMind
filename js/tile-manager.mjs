@@ -7,3 +7,7 @@ const gridSize = 32;
 // fill the grid?
 
 // on window resize, redraw grid ...
+
+addCustomStyle(`:root {
+    --gridSize: ${gridSize};
+}`);
