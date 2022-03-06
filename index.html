@@ -1,0 +1,19 @@
+<head>
+    <link rel="stylesheet" href="css/main.css">
+
+    <script type="text/javascript">
+        const gameJs = document.createElement('script');
+        gameJs.type = "module";
+        gameJs.src = `./js/game.js?v=${performance.now}`;
+        document.head.appendChild(gameJs);
+    </script>
+    <!--
+    <script src="./js/game.js" type="module"></script>
+
+    <script type="text/javascript" src="js/module-hack.js"></script>
+
+    <script type="text/javascript">
+        requestModule("js/game.js");
+    </script>
+    -->
+</head>
