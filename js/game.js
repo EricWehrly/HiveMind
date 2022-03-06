@@ -1,4 +1,4 @@
-import managedImport from './managed-import.js';
+import managedImport from './util/managed-import.js';
 
 // const tileFile = `./tile.mjs?ver=${performance.now()}`;
 // const Tile = await import(tileFile);

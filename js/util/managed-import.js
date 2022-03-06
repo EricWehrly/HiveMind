@@ -8,8 +8,8 @@
 export default async function managedImport(filePath, cacheBust = true) {
 
     // TODO: Try/catch
-    const moduleFile = cacheBust ? `${filePath}?v=${performance.now()}`
-        : filePath;
+    const moduleFile = cacheBust ? `../${filePath}?v=${performance.now()}`
+        : `../${filePath}`;
     const theModule = await import(moduleFile);
     const key = Object.keys(theModule)[0];
 
