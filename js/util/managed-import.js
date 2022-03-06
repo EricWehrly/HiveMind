@@ -2,16 +2,26 @@
 /**
  * Usage: `const someModule = await managedImport('modulePath')`
  * @param {string} filePath Path to the module to import.
- * @param {boolean} cacheBust Whether or not to append a cache busting parameter
+ * @param {boolean} cacheBust Append a cache busting parameter to the script
+ * @param {boolean} addToWindow Rather than returning a module, assign all functions to the window object
  * @returns the first exported part of the module
  */
-export default async function managedImport(filePath, cacheBust = true) {
+export default async function managedImport(filePath, cacheBust = true, addToWindow = false) {
 
     // TODO: Try/catch
     const moduleFile = cacheBust ? `../${filePath}?v=${performance.now()}`
         : `../${filePath}`;
     const theModule = await import(moduleFile);
-    const key = Object.keys(theModule)[0];
 
-    return theModule[key];
+    if(addToWindow) {
+        for(var key of Object.keys(theModule)) {
+            console.log(`Adding ${key} to window.`);
+            window[key] = theModule[key];
+        }
+    } else {
+        // TODO: We should probably only be doing this if key 0 is "default"
+        const key = Object.keys(theModule)[0];
+    
+        return theModule[key];
+    }
 }

@@ -1,5 +1,7 @@
 import managedImport from './util/managed-import.js';
 
+await managedImport('./util/javascript-extensions.js', true, true);
+
 // const tileFile = `./tile.mjs?ver=${performance.now()}`;
 // const Tile = await import(tileFile);
 // import Tile from './tile.mjs';
