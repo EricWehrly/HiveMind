@@ -9,9 +9,11 @@ await managedImport('./util/custom-style.js');
 const Tile = await managedImport('./tile.mjs');
 const TileManager = await managedImport('./tile-manager.mjs');
 const Player = await managedImport('./player.mjs');
+const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
 
 let someTile = new Tile();
 
-let localPlayer = new Player();
+const localPlayer = new Player();
+new KeyboardController({ character: localPlayer });
 
 console.log('Starting game.');
