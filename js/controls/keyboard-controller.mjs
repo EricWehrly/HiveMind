@@ -6,13 +6,25 @@
 
 // TODO: Saved user keybindings and stuff
 
+// I think instead of this, we should check in loop if key is down, and assign velocity accordingly
+// Key down/up events should change a state that is transmitted to the server ...
+
 export default class KeyboardController {
 
     // TODO: Private?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
     Bindings = {
         'w': () => {
-            this.character.velocity.y += 1;
+            this.character.velocity.y = 1;
+        },
+        'a': () => {
+            this.character.velocity.x = 1;
+        },
+        's': () => {
+            this.character.velocity.y = 1;
+        },
+        'd': () => {
+            this.character.velocity.x = 1;
         }
     }
 
@@ -25,11 +37,21 @@ export default class KeyboardController {
         // document.addEventListener('keydown', this.handleKeyDown);
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
+        document.addEventListener('keyup', this.handleKeyUp.bind(this));
     }
 
     handleKeyDown(event) {
 
         const key = event.key;
         if(this.Bindings[key]) this.Bindings[key]();
+    }
+
+    handleKeyUp(event) {
+        
+        const key = event.key;
+        if(this.Bindings[key]) this.character.velocity = {
+            x: 0,
+            y: 0
+        }
     }
 }

@@ -46,8 +46,8 @@ export default class Character {
             options.x = split[0];
             options.y = split[1];
         }
-        if(options.x) this._velocity.x = options.x;
-        if(options.y) this._velocity.y = options.y;
+        if(options.x != null) this._velocity.x = options.x;
+        if(options.y != null) this._velocity.y = options.y;
     }
 
     move(amount) {
