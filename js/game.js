@@ -8,9 +8,9 @@ await managedImport('./util/custom-style.js');
 // import Tile from './tile.mjs';
 // eventually if we keep building this out, we should create a dividing line between the 'game' and the 'game engine'
 // and import the latter from a separate repository
-const Tile = await managedImport('./tile.mjs');
-const TileManager = await managedImport('./tile-manager.mjs');
-const Character = await managedImport('./character.mjs');
+const Tile = await managedImport('./mapping/tile.mjs');
+const TileManager = await managedImport('./mapping/tile-manager.mjs');
+const Character = await managedImport('./entities/character.mjs');
 const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
 
 let someTile = new Tile();

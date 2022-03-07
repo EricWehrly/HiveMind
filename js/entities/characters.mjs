@@ -1,4 +1,4 @@
-import { RegisterLoopMethod } from './loop.mjs';
+import { RegisterLoopMethod } from './../loop.mjs';
 
 const CHARACTER_LIST = [];
 
