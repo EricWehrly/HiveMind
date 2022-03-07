@@ -10,12 +10,12 @@ await managedImport('./util/custom-style.js');
 // and import the latter from a separate repository
 const Tile = await managedImport('./tile.mjs');
 const TileManager = await managedImport('./tile-manager.mjs');
-const Player = await managedImport('./player.mjs');
+const Character = await managedImport('./character.mjs');
 const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
 
 let someTile = new Tile();
 
-const localPlayer = new Player();
+const localPlayer = new Character();
 new KeyboardController({ character: localPlayer });
 
 console.log('Starting game.');
