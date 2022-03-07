@@ -1,7 +1,10 @@
-// TODO: Extends character
-export default class Player {
+import Character from './character.mjs';
+
+export default class Player extends Character {
 
     constructor(options = {}) {
+
+        super();
 
         // options.id
         // options.image
