@@ -1,4 +1,4 @@
-const gridSize = 32;
+const GRID_SIZE = 32;
 
 // draw a grid
 
@@ -9,5 +9,5 @@ const gridSize = 32;
 // on window resize, redraw grid ...
 
 addCustomStyle(`:root {
-    --gridSize: ${gridSize};
+    --gridSize: ${GRID_SIZE};
 }`);
