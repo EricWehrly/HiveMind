@@ -6,7 +6,7 @@
  * @param {boolean} addToWindow Rather than returning a module, assign all functions to the window object
  * @returns the first exported part of the module
  */
-export default async function managedImport(filePath, cacheBust = true, addToWindow = false) {
+export default async function managedImport(filePath, cacheBust = false, addToWindow = false) {
 
     // TODO: Try/catch
     const moduleFile = cacheBust ? `../${filePath}?v=${performance.now()}`
