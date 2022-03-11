@@ -1,6 +1,9 @@
 import { AddCharacterToList } from './characters.mjs';
 
+// extends entity?
 export default class Character {
+
+    _health = 1;
 
     _position = {
         x: 0,
@@ -12,13 +15,20 @@ export default class Character {
         y: 0
     }
 
+    // TODO: use speed
     _speed = 1;
 
     constructor(options = {}) {
 
+        Object.assign(this, options);
         this.id = options.id || crypto.randomUUID();
         this.color = options.color || 'red';
         // options.image
+
+        if(options.position) {
+            this._position.x = options.position.x;
+            this._position.y = options.position.y;
+        }
 
         this.createGraphic();
 
@@ -71,5 +81,10 @@ export default class Character {
         if(this.color) this.graphic.style.backgroundColor = this.color;
 
         document.body.appendChild(this.graphic);
+    }
+
+    getDistance(entity) {
+        return Math.abs(this._position.x - entity._position.x)
+            + Math.abs(this._position.y - entity._position.y);
     }
 }
