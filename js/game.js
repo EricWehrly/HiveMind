@@ -40,9 +40,9 @@ for(var i = 0; i < 3; i++) {
 
 function checkPlayerInteraction() {
 
-    const closest = GetClosestEntity(localPlayer);
-    if(closest.technologies) {
-        // console.log(closest.technologies);
+    const closest = GetClosestEntity(localPlayer, 5);
+    if(closest && closest.technologies) {
+        console.log(closest.technologies);
     }
 }
 

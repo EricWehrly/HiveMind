@@ -7,16 +7,16 @@ export function AddCharacterToList(character) {
     CHARACTER_LIST.push(character);
 }
 
-export function GetClosestEntity(targetCharacter) {
+export function GetClosestEntity(targetCharacter, limit = 100) {
 
     let closest = {
         entity: null,
-        distance: -1
+        distance: limit
     };
     for(var character of CHARACTER_LIST) {
         if(character != targetCharacter) {
             const distance = character.getDistance(targetCharacter);
-            if(distance > closest.distance) {
+            if(distance < closest.distance) {
                 closest.distance = distance;
                 closest.entity = character;
             }
