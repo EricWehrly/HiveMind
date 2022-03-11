@@ -30,6 +30,8 @@ export default class Character {
             this._position.y = options.position.y;
         }
 
+        if(options.speed) this._speed = options.speed;
+
         this.createGraphic();
 
         AddCharacterToList(this);
@@ -62,8 +64,8 @@ export default class Character {
 
     move(amount) {
 
-        this._position.x += this._velocity.x * amount;
-        this._position.y += this._velocity.y * amount;
+        this._position.x += this._velocity.x * this._speed * amount;
+        this._position.y += this._velocity.y * this._speed * amount;
     }
 
     redraw() {

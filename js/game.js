@@ -20,7 +20,7 @@ let someTile = new Tile();
 
 const localPlayer = new Character({
     color: 'blue',
-    speed: 10
+    speed: 5
 });
 new KeyboardController({ character: localPlayer });
 
