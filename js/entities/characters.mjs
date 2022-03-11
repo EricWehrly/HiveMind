@@ -16,4 +16,4 @@ function characterLoop(elapsed) {
     }
 }
 
-RegisterLoopMethod(characterLoop);
+RegisterLoopMethod(characterLoop, true);

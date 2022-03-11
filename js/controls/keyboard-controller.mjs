@@ -1,3 +1,5 @@
+import { RegisterLoopMethod } from './../loop.mjs';
+
 // we can use extends and a base class to share common methods
 // import ControllerInterface from "./controller-interface.mjs";
 
@@ -11,22 +13,24 @@
 
 export default class KeyboardController {
 
+    // TODO: Should actions be managed externally to this?
+    static Actions = {
+        move_up: (character) => character.velocity.y = -1,
+        move_down: (character) => character.velocity.y = 1,
+        move_left: (character) => character.velocity.x = -1,
+        move_right: (character) => character.velocity.x = 1
+    }
+
     // TODO: Private?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
     Bindings = {
-        'w': () => {
-            this.character.velocity.y = 1;
-        },
-        'a': () => {
-            this.character.velocity.x = 1;
-        },
-        's': () => {
-            this.character.velocity.y = 1;
-        },
-        'd': () => {
-            this.character.velocity.x = 1;
-        }
+        "move_up": ['w'],
+        "move_down": ['s'],
+        "move_left": ['a'],
+        "move_right": ['d']
     }
+
+    _keys_down = {};
 
     constructor(options = {}) {
 
@@ -38,20 +42,36 @@ export default class KeyboardController {
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.handleKeyUp.bind(this));
+        
+        RegisterLoopMethod(this.loopMethod.bind(this), true);
+    }
+
+    isKeyDown(binding) {
+
+        return this._keys_down[binding] === true;
     }
 
     handleKeyDown(event) {
 
-        const key = event.key;
-        if(this.Bindings[key]) this.Bindings[key]();
+        this._keys_down[event.key] = true;
     }
 
     handleKeyUp(event) {
         
-        const key = event.key;
-        if(this.Bindings[key]) this.character.velocity = {
-            x: 0,
-            y: 0
+        this._keys_down[event.key] = false;
+    }
+
+    loopMethod() {
+
+        this.character.velocity.x = 0;
+        this.character.velocity.y = 0;
+
+        for(var action of Object.keys(KeyboardController.Actions)) {
+            for(var binding of this.Bindings[action]) {
+                if(this.isKeyDown(binding)) {
+                    KeyboardController.Actions[action](this.character);
+                }
+            }
         }
     }
 }
