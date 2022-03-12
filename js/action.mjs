@@ -40,6 +40,15 @@ class Action {
                 }
             }
         })
+
+        new Action({
+            name: 'study',
+            enabled: false,
+            callback: function(options) {
+                console.log("Break off a piece to study the thing!");
+                console.log("consume the thing");
+            }
+        })
     }
 
     constructor(options) {

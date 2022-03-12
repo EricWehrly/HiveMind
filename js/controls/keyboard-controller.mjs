@@ -21,7 +21,8 @@ export default class KeyboardController {
         "move_up": ['w'],
         "move_down": ['s'],
         "move_left": ['a'],
-        "move_right": ['d']
+        "move_right": ['d'],
+        "study": ['f']
 
         // press q to break off a piece
         // hold q to change focus of broken off pieces (radial menu)
@@ -65,11 +66,13 @@ export default class KeyboardController {
         this.character.velocity.y = 0;
 
         for(var action of Object.keys(Actions)) {
-            for(var binding of this.Bindings[action]) {
-                if(this.isKeyDown(binding)) {
-                    Actions[action].callback({
-                        character: this.character
-                    });
+            if(Actions[action].enabled !== false && this.Bindings[action]) {
+                for(var binding of this.Bindings[action]) {
+                    if(this.isKeyDown(binding)) {
+                        Actions[action].callback({
+                            character: this.character
+                        });
+                    }
                 }
             }
         }

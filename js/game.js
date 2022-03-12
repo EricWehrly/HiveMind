@@ -15,6 +15,7 @@ const KeyboardController = await managedImport('./controls/keyboard-controller.m
 import { RegisterLoopMethod } from './loop.mjs';
 import { GetClosestEntity } from './entities/characters.mjs';
 import ToolTip from './ui/tooltip.mjs';
+import Actions from './action.mjs';
 
 let someTile = new Tile();
 
@@ -38,15 +39,15 @@ for(var i = 0; i < 3; i++) {
     // spawn food
 }
 
-ToolTip.test("something");
-
 function checkPlayerInteraction() {
 
     const closest = GetClosestEntity(localPlayer, 5);
     if(closest && closest.technologies) {
         new ToolTip(closest.technologies[0]);
         // console.log(closest.technologies);
+        Actions["study"].enabled = true;
     }
+    else Actions["study"].enabled = false;
 }
 
 RegisterLoopMethod(checkPlayerInteraction, false);
