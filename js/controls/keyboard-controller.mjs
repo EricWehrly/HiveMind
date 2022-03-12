@@ -1,5 +1,7 @@
 import { RegisterLoopMethod } from './../loop.mjs';
 
+import Actions from '../action.mjs';
+
 // we can use extends and a base class to share common methods
 // import ControllerInterface from "./controller-interface.mjs";
 
@@ -13,14 +15,6 @@ import { RegisterLoopMethod } from './../loop.mjs';
 
 export default class KeyboardController {
 
-    // TODO: Should actions be managed externally to this?
-    static Actions = {
-        move_up: (character) => character.velocity.y = -1,
-        move_down: (character) => character.velocity.y = 1,
-        move_left: (character) => character.velocity.x = -1,
-        move_right: (character) => character.velocity.x = 1
-    }
-
     // TODO: Private?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
     Bindings = {
@@ -28,6 +22,10 @@ export default class KeyboardController {
         "move_down": ['s'],
         "move_left": ['a'],
         "move_right": ['d']
+
+        // press q to break off a piece
+        // hold q to change focus of broken off pieces (radial menu)
+        // press F to break off a piece to study something (in front of the player)
     }
 
     _keys_down = {};
@@ -66,10 +64,12 @@ export default class KeyboardController {
         this.character.velocity.x = 0;
         this.character.velocity.y = 0;
 
-        for(var action of Object.keys(KeyboardController.Actions)) {
+        for(var action of Object.keys(Actions)) {
             for(var binding of this.Bindings[action]) {
                 if(this.isKeyDown(binding)) {
-                    KeyboardController.Actions[action](this.character);
+                    Actions[action].callback({
+                        character: this.character
+                    });
                 }
             }
         }
