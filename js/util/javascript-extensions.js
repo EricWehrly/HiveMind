@@ -26,6 +26,7 @@ export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
   }
   
+  // TODO: Max depth
   /**
    * Deep merge two objects.
    * @param target

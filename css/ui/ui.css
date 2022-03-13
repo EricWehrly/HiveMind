@@ -1,0 +1,6 @@
+@import url('./tooltip.css');
+
+.ui {
+    /* ui layer: 1000-9999 */
+    z-index: 1000;
+}
