@@ -9,19 +9,16 @@ await managedImport('../engine/js/util/custom-style.js');
 // and import the latter from a separate repository
 // const Tile = await managedImport('../engine/js/mapping/tile.mjs');
 const TileManager = await managedImport('../engine/js/mapping/tile-manager.mjs');
-const Character = await managedImport('../engine/js/entities/character.mjs');
 const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
+import Character from './entities/character-extensions.mjs';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import { GetClosestEntity } from '../engine/js/entities/characters.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Actions from '../engine/js/action.mjs';
 
 // let someTile = new Tile();
-
-// TODO: set character current subdivision task/purpose
-Character.prototype.subdivide = function(amount, purpose) {
-    console.log("amount, purpose");
-}
+KeyboardController.AddDefaultBinding("subdivide", "q");
+KeyboardController.AddDefaultBinding("study", "f");
 
 const localPlayer = new Character({
     name: "Local Player",
