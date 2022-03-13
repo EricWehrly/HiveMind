@@ -20,19 +20,18 @@ export default class Character {
 
     constructor(options = {}) {
 
-        console.log(`Creating character ${options.name}`);
+        for(var key of Object.keys(options)) {
+
+            if(this["_" + key]) {
+                this["_" + key] = options[key];
+                delete options[key];
+            }
+        }
 
         Object.assign(this, options);
         this.id = options.id || crypto.randomUUID();
         this.color = options.color || 'red';
         // options.image
-
-        if(options.position) {
-            this._position.x = options.position.x;
-            this._position.y = options.position.y;
-        }
-
-        if(options.speed) this._speed = options.speed;
 
         this.createGraphic();
 
