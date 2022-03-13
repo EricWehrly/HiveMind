@@ -33,6 +33,8 @@ export default class Character {
 
         this.id = options.id || crypto.randomUUID();
         this.color = options.color || 'red';
+        // TODO: Find a better way to have a cancellable default?
+        if(options.color === null) delete this.color;
         // options.image
 
         this.createGraphic();
@@ -95,8 +97,10 @@ export default class Character {
     createGraphic() {
         
         this.graphic = document.createElement('div');
-        this.graphic.className = 'player character';
+        this.graphic.className = 'character';
         if(this.color) this.graphic.style.backgroundColor = this.color;
+
+        if(this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
 
         document.body.appendChild(this.graphic);
     }

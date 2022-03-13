@@ -22,9 +22,10 @@ KeyboardController.AddDefaultBinding("study", "f");
 
 const localPlayer = new Character({
     name: "Local Player",
-    color: 'blue',
+    color: null,
     speed: 5,
-    health: 100
+    health: 100,
+    additionalClasses: "player"
 });
 new KeyboardController({ character: localPlayer });
 
