@@ -1,4 +1,5 @@
 import Character from '../../engine/js/entities/character.mjs';
+import { GetColorAsRGBA } from '../../engine/js/util/javascript-extensions.js';
 
 // list of subdivsion purposes ...
 Character.Purposes = [
@@ -53,13 +54,15 @@ Character.prototype.Subdivide = function(options = {}) {
 
     this.health -= amount;
 
-    // loop method for purpose
+    let spawnedColor = GetColorAsRGBA(this.color);
+    spawnedColor[1] = 25;   // for now ...
     const spawnedCharacter = new Character({
-        parent: this,
-        color: this.color,
+        color: `rgba(${spawnedColor.join(",")})`,
         health: amount,
+        position: this.position,
         _currentPurposeIndex: Character.Purposes.indexOf(purpose)
     });
+    spawnedCharacter.parent = this;
     if(options.target) spawnedCharacter.target = options.target;
     spawnedCharacter.graphic.innerHTML = spawnedCharacter.purpose.name;
 }
