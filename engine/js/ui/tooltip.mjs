@@ -1,22 +1,20 @@
-// draw the tooltip wherever the player is (by default)
-
+// TODO: timeout
 export default class Tooltip {
 
-    static Element;
+    constructor(options = {}) {
 
-    static {
+        // TODO: reject if not given required parameters
+        const message = options.message || "";
+        // screen position, NOT grid position!
+        const position = options.position || {x: 0, y: 0};
 
         this.Element = document.createElement('div');
-        this.Element.className = 'tooltip';
+        this.Element.className = 'ui tooltip';
+        this.Element.style.left = position.x + "px";
+        this.Element.style.top = position.y + "px";
 
         document.body.appendChild(this.Element);
-    }
 
-    constructor(message) {
-        Tooltip.Element.innerHTML = message;
-    }
-
-    static test = function(message) {
-        console.log(`Test: ${message}`);
+        this.Element.innerHTML = message;
     }
 }

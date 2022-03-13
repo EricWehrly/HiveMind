@@ -29,7 +29,7 @@ const localPlayer = new Character({
 });
 new KeyboardController({ character: localPlayer });
 
-// spawn an animal corpse to be studied (from which player can learn claws
+// spawn an animal corpse to be studied (from which player can learn claws)
 new Character({
     color: 'gray',
     position: {
@@ -40,14 +40,27 @@ new Character({
 });
 
 for(var i = 0; i < 3; i++) {
+    // random x and y within some range, on positive axis
+    let x = Math.random() * 100;
+    let y = Math.random() * 100;
     // spawn food
+    new Character({
+        color: 'green',
+        position: {
+            x: x,
+            y: y
+        }
+    });
 }
 
 function checkPlayerInteraction() {
 
     const closest = GetClosestEntity(localPlayer, 5);
     if(closest && closest.technologies) {
-        new ToolTip(closest.technologies[0]);
+        new ToolTip({
+            position: closest.getScreenPosition(),
+            message: closest.technologies[0]
+        });
         // console.log(closest.technologies);
         Actions["study"].enabled = true;
     }

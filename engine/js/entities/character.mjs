@@ -110,4 +110,14 @@ export default class Character {
         return Math.abs(this._position.x - entity._position.x)
             + Math.abs(this._position.y - entity._position.y);
     }
+
+    getScreenPosition() {
+
+        // TODO: get grid size constant from css
+        const gridSize = 32;
+        return {
+            x: this.position.x * gridSize,
+            y: this.position.y * gridSize
+        };
+    }
 }
