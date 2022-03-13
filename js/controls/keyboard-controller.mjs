@@ -80,6 +80,7 @@ export default class KeyboardController {
             if(Actions[action].enabled !== false && this.Bindings[action]) {
                 for(var binding of this.Bindings[action]) {
                     if(this.isKeyDown(binding)) {
+                        if(Actions[action].oncePerPress) this._keys_down[binding] = false;
                         Actions[action].callback({
                             character: this.character
                         });

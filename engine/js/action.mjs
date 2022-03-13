@@ -43,6 +43,8 @@ class Action {
 
         new Action({
             name: 'subdivide',
+            // TODO: Maybe we should just have "on press" vs "on held" ...
+            oncePerPress: true,
             callback: function(options) {
                 options.character.Subdivide();
             }
@@ -60,7 +62,7 @@ class Action {
 
     constructor(options) {
 
-        this.callback = options.callback;
+        Object.assign(this, options);
 
         Actions[options.name] = this;
     }
