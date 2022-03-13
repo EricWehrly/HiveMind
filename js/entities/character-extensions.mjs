@@ -32,6 +32,9 @@ Character.prototype.SetCurrentPurpose = function(newPurpose) {
     if(typeof newPurpose == "integer") this._currentPurposeIndex = newPurpose;
     // else warn
 }
+Object.defineProperty(Character.prototype, 'purpose', {
+    get: function() { return Character.Purposes[this._currentPurposeIndex]; }
+});
 
 // TODO: set character current subdivision task/purpose
 Character.prototype.Subdivide = function(options = {}) {
@@ -53,10 +56,12 @@ Character.prototype.Subdivide = function(options = {}) {
     // loop method for purpose
     const spawnedCharacter = new Character({
         parent: this,
+        color: this.color,
         health: amount,
         _currentPurposeIndex: Character.Purposes.indexOf(purpose)
     });
     if(options.target) spawnedCharacter.target = options.target;
+    spawnedCharacter.graphic.innerHTML = spawnedCharacter.purpose.name;
 }
 
 export default Character;
