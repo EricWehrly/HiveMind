@@ -3,8 +3,5 @@
     left: 0px;
     top: 0px;
 
-    width: var(--gridSize);
-    height: var(--gridSize);
-
     z-index: 100;
 }

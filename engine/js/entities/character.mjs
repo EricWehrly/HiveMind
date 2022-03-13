@@ -1,9 +1,18 @@
 import { AddCharacterToList } from './characters.mjs';
+import { AssignWithUnderscores } from '../util/javascript-extensions.js'
 
 // extends entity?
 export default class Character {
 
     _health = 1;
+
+    get health() {
+        return this._health;
+    }
+    
+    set health(newValue) {
+        this._health = newValue;
+    }
 
     _position = {
         x: 0,
@@ -20,15 +29,8 @@ export default class Character {
 
     constructor(options = {}) {
 
-        for(var key of Object.keys(options)) {
+        AssignWithUnderscores(this, options);
 
-            if(this["_" + key]) {
-                this["_" + key] = options[key];
-                delete options[key];
-            }
-        }
-
-        Object.assign(this, options);
         this.id = options.id || crypto.randomUUID();
         this.color = options.color || 'red';
         // options.image
@@ -63,6 +65,8 @@ export default class Character {
         if(options.y != null) this._velocity.y = options.y;
     }
 
+    think() { }
+
     move(amount) {
 
         this._position.x += this._velocity.x * this._speed * amount;
@@ -73,8 +77,19 @@ export default class Character {
 
         // TODO: get grid size constant
         const gridSize = 32;
+
+        // TODO: Not this
+        const MINIMUM_SIZE = gridSize / 2;
+
         this.graphic.style.left = (gridSize * this._position.x) + "px";
         this.graphic.style.top = (gridSize * this._position.y) + "px";
+
+        // TODO: Only change on resize ...
+        
+        let targetSize = (this.health / 100) * gridSize;
+        if(targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
+        this.graphic.style.width = targetSize + "px";
+        this.graphic.style.height = targetSize + "px";
     }
 
     createGraphic() {
@@ -87,6 +102,7 @@ export default class Character {
     }
 
     getDistance(entity) {
+        // TODO: Bounding boxes rather than coordinates
         return Math.abs(this._position.x - entity._position.x)
             + Math.abs(this._position.y - entity._position.y);
     }

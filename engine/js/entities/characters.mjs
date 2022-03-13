@@ -1,6 +1,7 @@
 import { RegisterLoopMethod } from './../loop.mjs';
 
 const CHARACTER_LIST = [];
+if(window) window.CHARACTER_LIST = CHARACTER_LIST;
 
 export function AddCharacterToList(character) {
 
@@ -29,6 +30,8 @@ export function GetClosestEntity(targetCharacter, limit = 100) {
 function characterLoop(elapsed) {
 
     for(var character of CHARACTER_LIST) {
+        character.think();
+
         character.move(elapsed / 1000);
 
         character.redraw();
