@@ -19,9 +19,15 @@ import Actions from './action.mjs';
 
 let someTile = new Tile();
 
+// TODO: set character current subdivision task/purpose
+Character.prototype.subdivide = function(amount, purpose) {
+    console.log("amount, purpose");
+}
+
 const localPlayer = new Character({
     color: 'blue',
-    speed: 5
+    speed: 5,
+    health: 100
 });
 new KeyboardController({ character: localPlayer });
 

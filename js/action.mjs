@@ -21,7 +21,7 @@ class Action {
                     options.character.velocity.y = 1;
                 }
             }
-        })
+        });
 
         new Action({
             name: 'move_left',
@@ -30,7 +30,7 @@ class Action {
                     options.character.velocity.x = -1;
                 }
             }
-        })
+        });
 
         new Action({
             name: 'move_right',
@@ -38,6 +38,13 @@ class Action {
                 if(options?.character?.velocity?.x != null) {
                     options.character.velocity.x = 1;
                 }
+            }
+        });
+
+        new Action({
+            name: 'subdivide',
+            callback: function(options) {
+                options.character.subdivide();
             }
         })
 
@@ -48,7 +55,7 @@ class Action {
                 console.log("Break off a piece to study the thing!");
                 console.log("consume the thing");
             }
-        })
+        });
     }
 
     constructor(options) {

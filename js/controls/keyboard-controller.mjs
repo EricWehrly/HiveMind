@@ -22,6 +22,7 @@ export default class KeyboardController {
         "move_down": ['s'],
         "move_left": ['a'],
         "move_right": ['d'],
+        "subdivide": ['q'],
         "study": ['f']
 
         // press q to break off a piece
