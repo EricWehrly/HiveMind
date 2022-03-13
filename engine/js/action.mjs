@@ -44,7 +44,7 @@ class Action {
         new Action({
             name: 'subdivide',
             callback: function(options) {
-                options.character.subdivide();
+                options.character.Subdivide();
             }
         })
 
