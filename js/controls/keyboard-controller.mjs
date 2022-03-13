@@ -1,6 +1,6 @@
-import { RegisterLoopMethod } from './../loop.mjs';
+import { RegisterLoopMethod } from '../../engine/js/loop.mjs';
 
-import Actions from '../action.mjs';
+import Actions from '../../engine/js/action.mjs';
 
 // we can use extends and a base class to share common methods
 // import ControllerInterface from "./controller-interface.mjs";

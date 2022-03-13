@@ -1,23 +1,22 @@
 import managedImport from './util/managed-import.js';
 
-await managedImport('./util/javascript-extensions.js');
-await managedImport('./util/custom-style.js');
+await managedImport('../engine/js/util/custom-style.js');
 
 // const tileFile = `./tile.mjs?ver=${performance.now()}`;
 // const Tile = await import(tileFile);
 // import Tile from './tile.mjs';
 // eventually if we keep building this out, we should create a dividing line between the 'game' and the 'game engine'
 // and import the latter from a separate repository
-const Tile = await managedImport('./mapping/tile.mjs');
-const TileManager = await managedImport('./mapping/tile-manager.mjs');
-const Character = await managedImport('./entities/character.mjs');
+// const Tile = await managedImport('../engine/js/mapping/tile.mjs');
+const TileManager = await managedImport('../engine/js/mapping/tile-manager.mjs');
+const Character = await managedImport('../engine/js/entities/character.mjs');
 const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
-import { RegisterLoopMethod } from './loop.mjs';
-import { GetClosestEntity } from './entities/characters.mjs';
-import ToolTip from './ui/tooltip.mjs';
-import Actions from './action.mjs';
+import { RegisterLoopMethod } from '../engine/js/loop.mjs';
+import { GetClosestEntity } from '../engine/js/entities/characters.mjs';
+import ToolTip from '../engine/js/ui/tooltip.mjs';
+import Actions from '../engine/js/action.mjs';
 
-let someTile = new Tile();
+// let someTile = new Tile();
 
 // TODO: set character current subdivision task/purpose
 Character.prototype.subdivide = function(amount, purpose) {
@@ -25,6 +24,7 @@ Character.prototype.subdivide = function(amount, purpose) {
 }
 
 const localPlayer = new Character({
+    name: "Local Player",
     color: 'blue',
     speed: 5,
     health: 100

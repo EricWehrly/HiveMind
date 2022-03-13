@@ -20,6 +20,8 @@ export default class Character {
 
     constructor(options = {}) {
 
+        console.log(`Creating character ${options.name}`);
+
         Object.assign(this, options);
         this.id = options.id || crypto.randomUUID();
         this.color = options.color || 'red';
