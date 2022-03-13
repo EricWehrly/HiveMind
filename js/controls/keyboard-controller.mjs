@@ -17,22 +17,32 @@ export default class KeyboardController {
 
     // TODO: Private?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
-    Bindings = {
+    static Default_Bindings = {
         "move_up": ['w'],
         "move_down": ['s'],
         "move_left": ['a'],
-        "move_right": ['d'],
-        "subdivide": ['q'],
-        "study": ['f']
+        "move_right": ['d']
 
         // press q to break off a piece
         // hold q to change focus of broken off pieces (radial menu)
         // press F to break off a piece to study something (in front of the player)
     }
 
+    static AddDefaultBinding(name, button) {
+        // TODO: Warn if already bound?
+        KeyboardController.Default_Bindings[name] = button;
+    }
+
+    Bindings = {
+    }
+
     _keys_down = {};
 
     constructor(options = {}) {
+
+        Object.assign(this.Bindings, KeyboardController.Default_Bindings);
+        // TODO: Take bindings from options?
+        // Load bindings from persistence layer?
 
         // TODO: if character variable is not of class type character, throw a bad!
         this.character = options.character;
