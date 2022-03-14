@@ -1,5 +1,7 @@
 import managedImport from './util/managed-import.js';
 
+import Game from '../engine/js/engine.mjs';
+
 await managedImport('../engine/js/util/custom-style.js');
 
 // const tileFile = `./tile.mjs?ver=${performance.now()}`;

@@ -83,6 +83,7 @@ export default class Character {
         // TODO: Not this
         const MINIMUM_SIZE = gridSize / 2;
 
+        // maybe the playfield should move and the player should stay centered ...
         this.graphic.style.left = (gridSize * this._position.x) + "px";
         this.graphic.style.top = (gridSize * this._position.y) + "px";
 
@@ -102,7 +103,8 @@ export default class Character {
 
         if(this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
 
-        document.body.appendChild(this.graphic);
+        // TODO: This playfield reference should probably be stored somewhere more globally referencable
+        document.getElementById("playfield").appendChild(this.graphic);
     }
 
     getDistance(entity) {

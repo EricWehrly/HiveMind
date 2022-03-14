@@ -13,7 +13,7 @@ export default class Tooltip {
         this.Element.style.left = position.x + "px";
         this.Element.style.top = position.y + "px";
 
-        document.body.appendChild(this.Element);
+        document.getElementById("playfield").appendChild(this.Element);
 
         this.Element.innerHTML = message;
     }
