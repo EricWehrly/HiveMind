@@ -34,9 +34,10 @@ new KeyboardController({ character: localPlayer });
 // spawn an animal corpse to be studied (from which player can learn claws)
 new Character({
     color: 'gray',
+    health: 40,
     position: {
-        x: 10,
-        y: 10
+        x: 5,
+        y: 5
     },
     technologies: [ 'claws' ]
 });
@@ -65,6 +66,8 @@ function checkPlayerInteraction() {
         });
         // console.log(closest.technologies);
         Actions["study"].enabled = true;
+        // this only works with 1 local player cause actions will be local to this system ...
+        Actions["study"].target = closest;
     }
     else Actions["study"].enabled = false;
 }
