@@ -1,3 +1,6 @@
+// these actions should really be in the game, not the engine
+import Character from '../../js/entities/character-extensions.mjs';
+
 const Actions = {};
 export default Actions;
 
@@ -41,6 +44,7 @@ class Action {
             }
         });
 
+        // maybe not allowed to do this yet
         new Action({
             name: 'subdivide',
             // TODO: Maybe we should just have "on press" vs "on held" ...
@@ -54,8 +58,12 @@ class Action {
             name: 'study',
             enabled: false,
             callback: function(options) {
-                console.log("Break off a piece to study the thing!");
-                console.log("consume the thing");
+
+                const piece = options.character.Subdivide({
+                    // this?
+                    purpose: Character.Purposes["study"],
+                    target: Actions["study"].target
+                });
             }
         });
     }

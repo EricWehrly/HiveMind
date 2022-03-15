@@ -69,6 +69,19 @@ export default class Character {
 
     think() { }
 
+    moveToTarget() {
+
+        if(this.target) {            
+            if(this.position.x != this.target.position.x
+                || this.position.y != this.target.position.y) {
+                    if(this.position.x < this.target.position.x) this._velocity.x = 1;
+                    else if(this.position.x > this.target.position.x) this._velocity.x = -1;
+                    if(this.position.y < this.target.position.y) this._velocity.y = 1;
+                    else if(this.position.y > this.target.position.y) this._velocity.y = -1;
+                }
+        }
+    }
+
     move(amount) {
 
         this._position.x += this._velocity.x * this._speed * amount;
