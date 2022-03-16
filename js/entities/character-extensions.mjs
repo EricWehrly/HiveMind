@@ -54,6 +54,7 @@ Character.prototype.Subdivide = function (options = {}) {
     spawnedCharacter.parent = this;
     if (options.target) spawnedCharacter.target = options.target;
     spawnedCharacter.graphic.innerHTML = spawnedCharacter.purpose.name;
+    console.log(`Subdivided new character for ${spawnedCharacter.purpose.name}`);
 }
 
 export default Character;

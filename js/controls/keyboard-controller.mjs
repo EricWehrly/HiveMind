@@ -51,7 +51,7 @@ export default class KeyboardController {
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this
         window.addEventListener('keydown', this.handleKeyDown.bind(this));
         window.addEventListener('keyup', this.handleKeyUp.bind(this));
-        
+
         RegisterLoopMethod(this.loopMethod.bind(this), true);
     }
 
@@ -63,13 +63,14 @@ export default class KeyboardController {
     handleKeyDown(event) {
 
         // TODO: fire any actions immediately that don't require it to be held
+        this.performActions(event.key);
         // TODO: Check if actions are currently bound to this key that require us to track if its down
         // (otherwise don't track it)
         this._keys_down[event.key] = true;
     }
 
     handleKeyUp(event) {
-        
+
         this._keys_down[event.key] = false;
     }
 
@@ -78,16 +79,31 @@ export default class KeyboardController {
         this.character.velocity.x = 0;
         this.character.velocity.y = 0;
 
-        for(var action of Object.keys(Actions)) {
-            if(Actions[action].enabled !== false && this.Bindings[action]) {
-                for(var binding of this.Bindings[action]) {
-                    if(this.isKeyDown(binding)) {
-                        if(Actions[action].oncePerPress) this._keys_down[binding] = false;
+        for (var action of Object.keys(Actions)) {
+            if (Actions[action].enabled !== false
+                && this.Bindings[action]
+                && Actions[action].oncePerPress !== true) {
+                for (var binding of this.Bindings[action]) {
+                    if (this.isKeyDown(binding)) {
                         Actions[action].callback({
                             character: this.character
                         });
                     }
                 }
+            }
+        }
+    }
+
+    // TODO: Private
+    performActions(key) {
+
+        for (var action of Object.keys(Actions)) {
+            if (Actions[action].enabled !== false
+                && this.Bindings[action]
+                && this.Bindings[action].includes(key)) {
+                Actions[action].callback({
+                    character: this.character
+                });
             }
         }
     }
