@@ -57,7 +57,13 @@ class Action {
         new Action({
             name: 'study',
             enabled: false,
+            oncePerPress: true,
+            delay: 1000,
             callback: function(options) {
+
+                if(this.delay && this.lastFired && 
+                    performance.now() - this.lastFired < this.delay) return;
+                else if(this.delay) this.lastFired = performance.now();
 
                 const piece = options.character.Subdivide({
                     // this?
