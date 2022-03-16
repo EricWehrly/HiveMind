@@ -1,53 +1,8 @@
 import Character from '../../engine/js/entities/character.mjs';
 import { GetColorAsRGBA } from '../../engine/js/util/javascript-extensions.js';
+import Purposes from './character-purposes.mjs';
 
-// list of subdivsion purposes ...
-Character.Purposes =
-{
-    "study": {
-        name: "Study",
-        think: function (character) {
-            if (character.target) {
-                character.moveToTarget();
-
-                // if at target ...
-                if (character.position.equals(character.target.position)) {
-                    console.log("I've arrived!");
-                    character.target = null;
-                }
-                // break down the target
-                // contemplate
-                // award technology
-            }
-            // else return
-        }
-    }
-},
-{
-    "consume": {
-        name: "consume",
-        think: function () {
-
-        }
-    }
-},
-{
-    "hunt": {
-        name: "hunt",
-        think: function () {
-
-        }
-    }
-},
-{
-    "return": {
-        // do not show this one in menus!
-        name: "return",
-        think: function () {
-            // return to player & be reabsorbed
-        }
-    }
-};
+Character.Purposes = Purposes;
 
 const ogThink = Character.prototype.think;
 Character.prototype.think = function () {
