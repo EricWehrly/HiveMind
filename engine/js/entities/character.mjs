@@ -87,6 +87,7 @@ export default class Character {
         else if(this.target
             && Math.abs(this._position.x - this.target.position.x) < this._speed) {
                 this._position.x = this.target.position.x;
+                this._velocity.x = 0;
             }
         else this._position.x += this._velocity.x * this._speed * amount;
 
@@ -95,6 +96,7 @@ export default class Character {
         else if(this.target
             && Math.abs(this._position.y - this.target.position.y) < this._speed) {
                 this._position.y = this.target.position.y;
+                this._velocity.y = 0;
             }
         else this._position.y += this._velocity.y * this._speed * amount;
     }
