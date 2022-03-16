@@ -1,5 +1,6 @@
 import { AddCharacterToList } from './characters.mjs';
 import { AssignWithUnderscores } from '../util/javascript-extensions.js'
+import Point from '../baseTypes/point.mjs';
 
 // extends entity?
 export default class Character {
@@ -14,10 +15,7 @@ export default class Character {
         this._health = newValue;
     }
 
-    _position = {
-        x: 0,
-        y: 0
-    }
+    _position = new Point(0, 0);
 
     _velocity = {
         x: 0,
@@ -84,8 +82,21 @@ export default class Character {
 
     move(amount) {
 
-        this._position.x += this._velocity.x * this._speed * amount;
-        this._position.y += this._velocity.y * this._speed * amount;
+        if(this.target && this.target.position.x == this._position.x) { }
+
+        else if(this.target
+            && Math.abs(this._position.x - this.target.position.x) < this._speed) {
+                this._position.x = this.target.position.x;
+            }
+        else this._position.x += this._velocity.x * this._speed * amount;
+
+        if(this.target && this.target.position.y == this._position.y) { }
+
+        else if(this.target
+            && Math.abs(this._position.y - this.target.position.y) < this._speed) {
+                this._position.y = this.target.position.y;
+            }
+        else this._position.y += this._velocity.y * this._speed * amount;
     }
 
     redraw() {

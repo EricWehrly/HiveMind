@@ -11,7 +11,7 @@ Character.Purposes =
                 character.moveToTarget();
 
                 // if at target ...
-                if (character.position == character.target.position) {
+                if (character.position.equals(character.target.position)) {
                     console.log("I've arrived!");
                     character.target = null;
                 }

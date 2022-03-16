@@ -48,10 +48,9 @@ export default class KeyboardController {
         this.character = options.character;
 
         // https://stackoverflow.com/a/36489599/5450892
-        // document.addEventListener('keydown', this.handleKeyDown);
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this
-        document.addEventListener('keydown', this.handleKeyDown.bind(this));
-        document.addEventListener('keyup', this.handleKeyUp.bind(this));
+        window.addEventListener('keydown', this.handleKeyDown.bind(this));
+        window.addEventListener('keyup', this.handleKeyUp.bind(this));
         
         RegisterLoopMethod(this.loopMethod.bind(this), true);
     }
@@ -63,6 +62,9 @@ export default class KeyboardController {
 
     handleKeyDown(event) {
 
+        // TODO: fire any actions immediately that don't require it to be held
+        // TODO: Check if actions are currently bound to this key that require us to track if its down
+        // (otherwise don't track it)
         this._keys_down[event.key] = true;
     }
 
