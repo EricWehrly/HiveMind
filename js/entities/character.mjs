@@ -1,4 +1,4 @@
-import { AddCharacterToList } from './characters.mjs';
+import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
 import { AssignWithUnderscores } from '../util/javascript-extensions.js'
 import Point from '../baseTypes/point.mjs';
 
@@ -13,6 +13,7 @@ export default class Character {
     
     set health(newValue) {
         this._health = newValue;
+        if(this._health < 0) this.die();
     }
 
     _position = new Point(0, 0);
@@ -147,5 +148,12 @@ export default class Character {
             x: this.position.x * gridSize,
             y: this.position.y * gridSize
         };
+    }
+
+    // private?
+    die() {
+        this.dead = true;
+        document.getElementById("playfield").removeChild(this.graphic);
+        RemoveCharacterFromList(this);
     }
 }
