@@ -8,6 +8,11 @@ export function AddCharacterToList(character) {
     CHARACTER_LIST.push(character);
 }
 
+export function RemoveCharacterFromList(character) {
+
+    CHARACTER_LIST.splice(CHARACTER_LIST.indexOf(character), 1);
+}
+
 export function GetClosestEntity(targetCharacter, limit = 100) {
 
     let closest = {
@@ -30,7 +35,7 @@ export function GetClosestEntity(targetCharacter, limit = 100) {
 function characterLoop(elapsed) {
 
     for(var character of CHARACTER_LIST) {
-        character.think();
+        character.think(elapsed);
 
         character.move(elapsed / 1000);
 

@@ -34,7 +34,7 @@ new KeyboardController({ character: localPlayer });
 // spawn an animal corpse to be studied (from which player can learn claws)
 new Character({
     color: 'gray',
-    health: 40,
+    health: 5,
     position: {
         x: 5,
         y: 5

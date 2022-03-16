@@ -2,18 +2,18 @@ const Purposes =
 {
     "study": {
         name: "Study",
-        think: function (character) {
+        think: function (character, elapsed) {
             if (character.target) {
                 character.moveToTarget();
 
-                // if at target ...
                 if (character.position.equals(character.target.position)) {
-                    console.log("I've arrived!");
-                    character.target = null;
+                    if(character.target.dead == true) {
+                        console.log(`Studied it to death?`);
+                        character.target = null;
+                        // contemplate
+                        // award technology
+                    } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
                 }
-                // break down the target
-                // contemplate
-                // award technology
             }
             // else return
         }

@@ -5,13 +5,13 @@ import Purposes from './character-purposes.mjs';
 Character.Purposes = Purposes;
 
 const ogThink = Character.prototype.think;
-Character.prototype.think = function () {
+Character.prototype.think = function (elapsed) {
     // need to check if this properly maps character to 'this'
-    ogThink();
+    ogThink(elapsed);
 
     if (this._currentPurposeKey) {
         // Character.Purposes[this._currentPurposeKey].think.bind(this);
-        Character.Purposes[this._currentPurposeKey].think(this);
+        Character.Purposes[this._currentPurposeKey].think(this, elapsed);
     }
 }
 
