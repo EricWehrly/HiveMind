@@ -1,6 +1,7 @@
 import { RegisterLoopMethod } from '../../engine/js/loop.mjs';
 
-import Actions from '../../engine/js/action.mjs';
+import Action from '../../engine/js/action.mjs';
+const Actions = Action.List;
 
 // we can use extends and a base class to share common methods
 // import ControllerInterface from "./controller-interface.mjs";
@@ -14,6 +15,8 @@ import Actions from '../../engine/js/action.mjs';
 // Key down/up events should change a state that is transmitted to the server ...
 
 export default class KeyboardController {
+
+    static #List = [];
 
     // TODO: Private?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
@@ -31,6 +34,10 @@ export default class KeyboardController {
     static AddDefaultBinding(name, button) {
         // TODO: Warn if already bound?
         KeyboardController.Default_Bindings[name] = button;
+        for(var controller of KeyboardController.#List) {
+            // TODO: If button already bound?
+            controller.Bindings[name] = button;
+        }
     }
 
     Bindings = {
@@ -53,6 +60,8 @@ export default class KeyboardController {
         window.addEventListener('keyup', this.handleKeyUp.bind(this));
 
         RegisterLoopMethod(this.loopMethod.bind(this), true);
+
+        KeyboardController.#List.push(this);
     }
 
     isKeyDown(binding) {
