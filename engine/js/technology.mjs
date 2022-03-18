@@ -1,19 +1,10 @@
-export default class Technology {
+import Listed from "./baseTypes/listed.mjs";
 
-    static List = {};
-
-    static {
-        window.Technology = {
-            List: Technology.List
-        }
-    }
+export default class Technology extends Listed {
 
     constructor(options = {}) {
 
         // TODO: reject if missing required options
-        if(!options.name) throw Exception("No.");
-        Object.assign(this, options);
-
-        Technology.List[this.name] = this;
+        super(options);
     }
 }

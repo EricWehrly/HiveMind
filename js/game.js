@@ -16,7 +16,7 @@ import Character from './entities/character-extensions.mjs';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import { GetClosestEntity } from '../engine/js/entities/characters.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
-import Actions from '../engine/js/action.mjs';
+import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 
 // let someTile = new Tile();
@@ -75,11 +75,11 @@ function checkPlayerInteraction() {
             message: closest.technologies[0]
         });
         // console.log(closest.technologies);
-        Actions["study"].enabled = true;
+        Action.List["study"].enabled = true;
         // this only works with 1 local player cause actions will be local to this system ...
-        Actions["study"].target = closest;
+        Action.List["study"].target = closest;
     }
-    else Actions["study"].enabled = false;
+    else Action.List["study"].enabled = false;
 }
 
 RegisterLoopMethod(checkPlayerInteraction, false);
