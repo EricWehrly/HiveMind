@@ -1,6 +1,7 @@
 // these actions should really be in the game, not the engine
 import Character from '../../js/entities/character-extensions.mjs';
 import Listed from './baseTypes/listed.mjs';
+import Requirements from './requirements.mjs';
 
 export default class Action extends Listed {
 
@@ -78,6 +79,8 @@ export default class Action extends Listed {
             const baseCallback = this.callback;
 
             this.callback = function(options) {
+
+                if(!Requirements.met(this)) return;
 
                 if(this.delay && this.lastFired && 
                     performance.now() - this.lastFired < this.delay) return;
