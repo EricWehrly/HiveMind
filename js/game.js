@@ -17,6 +17,7 @@ import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import { GetClosestEntity } from '../engine/js/entities/characters.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Actions from '../engine/js/action.mjs';
+import Technology from '../engine/js/technology.mjs';
 
 // let someTile = new Tile();
 KeyboardController.AddDefaultBinding("subdivide", "q");
@@ -30,6 +31,15 @@ const localPlayer = new Character({
     additionalClasses: "player"
 });
 new KeyboardController({ character: localPlayer });
+
+new Technology({
+    name: "Claws",
+    actions: [
+        {
+            // new Action({
+        }
+    ]
+});
 
 // spawn an animal corpse to be studied (from which player can learn claws)
 new Character({
