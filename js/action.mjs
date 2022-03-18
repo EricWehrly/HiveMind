@@ -1,10 +1,8 @@
 // these actions should really be in the game, not the engine
 import Character from '../../js/entities/character-extensions.mjs';
+import Listed from './baseTypes/listed.mjs';
 
-const Actions = {};
-export default Actions;
-
-class Action {
+export default class Action extends Listed {
 
     // TODO: Read from config json?
     static {
@@ -72,15 +70,12 @@ class Action {
                 });
             }
         });
+
+        // new action for claws if player has the technology
     }
 
-    constructor(options) {
+    constructor(options = {}) {
 
-        Object.assign(this, options);
-
-        Actions[options.name] = this;
+        super(options);
     }
 }
-
-
-// module.exports = Actions;
