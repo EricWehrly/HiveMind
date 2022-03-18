@@ -59,14 +59,10 @@ export default class Action extends Listed {
             delay: 1000,
             callback: function(options) {
 
-                if(this.delay && this.lastFired && 
-                    performance.now() - this.lastFired < this.delay) return;
-                else if(this.delay) this.lastFired = performance.now();
-
                 const piece = options.character.Subdivide({
                     // this?
                     purpose: Character.Purposes["study"],
-                    target: Actions["study"].target
+                    target: Action.List["study"].target
                 });
             }
         });
@@ -77,5 +73,18 @@ export default class Action extends Listed {
     constructor(options = {}) {
 
         super(options);
+
+        if(this.callback) {
+            const baseCallback = this.callback;
+
+            this.callback = function(options) {
+
+                if(this.delay && this.lastFired && 
+                    performance.now() - this.lastFired < this.delay) return;
+                else if(this.delay) this.lastFired = performance.now();
+
+                baseCallback(options);
+            }
+        }
     }
 }
