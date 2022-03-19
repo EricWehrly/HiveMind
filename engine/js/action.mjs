@@ -43,6 +43,16 @@ export default class Action extends Listed {
             }
         });
 
+        new Action({
+            name: 'attack',
+            callback: function(options) {
+                if(options?.character?.equipment?.attack == null) {
+                    console.log("Character has no attack skill equipped!");
+                    return;
+                }
+            }
+        });
+
         // maybe not allowed to do this yet
         new Action({
             name: 'subdivide',

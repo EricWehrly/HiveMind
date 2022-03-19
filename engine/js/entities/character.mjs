@@ -2,6 +2,7 @@ import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
 import { AssignWithUnderscores } from '../util/javascript-extensions.js'
 import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';
+import Equipment from './equipment.mjs';
 
 // extends entity?
 export default class Character {
@@ -28,6 +29,8 @@ export default class Character {
     _speed = 1;
 
     _technologies = [];
+
+    _equipment = new Equipment();
 
     constructor(options = {}) {
 
@@ -73,6 +76,10 @@ export default class Character {
         return this._technologies;
     }
 
+    get equipment() {
+        return this._equipment;
+    }
+
     hasTechnology(technology) {
 
         if(typeof technology == "string") {
@@ -81,10 +88,28 @@ export default class Character {
         return this._technologies.includes(technology);
     }
 
+    getEquipped(techType) {
+        return this._equipment[techType];
+    }
+
+    hasEquipped(techType) {
+        return this.getEquipped(techType) != null;
+    }
+
+    equip(technology) {
+        this._equipment.equip(technology);
+    }
+
     AddTechnology(technology) {
         technology = Technology.Get(technology);
         console.log(`Adding technology ${technology.name} to character ${this.name}`);
         this._technologies.push(technology);
+
+        if(!this.hasEquipped(technology.type)) {
+            this.equip(technology);
+        }
+
+        console.log(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
     }
 
     think() { }

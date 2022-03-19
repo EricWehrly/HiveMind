@@ -32,6 +32,16 @@ const localPlayer = new Character({
 });
 new KeyboardController({ character: localPlayer });
 
+const slap = new Technology({
+    name: "slap",
+    type: Technology.Types.ATTACK,
+    range: 2,
+    damage: 1,
+    delay: 3000
+});
+
+localPlayer.AddTechnology(slap);
+
 const claws = new Technology({
     name: "claws",
     actions: [

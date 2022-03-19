@@ -24,7 +24,8 @@ export default class KeyboardController {
         "move_up": ['w'],
         "move_down": ['s'],
         "move_left": ['a'],
-        "move_right": ['d']
+        "move_right": ['d'],
+        "attack": [' ']
 
         // press q to break off a piece
         // hold q to change focus of broken off pieces (radial menu)
