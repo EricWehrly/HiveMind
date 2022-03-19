@@ -30,7 +30,7 @@ export default class Character {
 
     _technologies = [];
 
-    _equipment = new Equipment();
+    _equipment = new Equipment(this);
 
     constructor(options = {}) {
 
@@ -86,18 +86,6 @@ export default class Character {
             technology = Technology.Get(technology);
         } // else warn?
         return this._technologies.includes(technology);
-    }
-
-    getEquipped(techType) {
-        return this._equipment[techType];
-    }
-
-    hasEquipped(techType) {
-        return this.getEquipped(techType) != null;
-    }
-
-    equip(technology) {
-        this._equipment.equip(technology);
     }
 
     AddTechnology(technology) {
