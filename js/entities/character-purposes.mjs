@@ -9,9 +9,10 @@ const Purposes =
                 if (character.position.equals(character.target.position)) {
                     if(character.target.dead == true) {
                         console.log(`Studied it to death?`);
+                        // TODO: contemplate
+                        character.parent.AddTechnology(character.target.technologies[0]);
                         character.target = null;
-                        // contemplate
-                        // award technology
+                        character.SetCurrentPurpose("return");
                     } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
                 }
             }
@@ -34,6 +35,7 @@ const Purposes =
         // do not show this one in menus!
         name: "return",
         think: function () {
+            console.log("Gotta go back")
             // return to player & be reabsorbed
         }
     }

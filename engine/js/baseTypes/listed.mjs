@@ -1,7 +1,12 @@
 export default class Listed {
 
-    static Get(name) {
-        return this.List[name];
+    static Get(item) {
+        if(typeof item == "string") return this.List[item];
+        else if(item.name) return this.List[item.name];
+        else {
+            console.warn(`Don't know how to get ${item}`);
+            return null;
+        }
     }
 
     constructor(options = {}) {

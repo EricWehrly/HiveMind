@@ -19,8 +19,8 @@ Character.prototype.think = function (elapsed) {
 Character.prototype._currentPurposeKey = null;
 Character.prototype.SetCurrentPurpose = function (newPurpose) {
 
-    if (typeof newPurpose == "integer") this._currentPurposeKey = newPurpose;
-    // else warn
+    if(typeof newPurpose == "string") this._currentPurposeKey = newPurpose;
+    else console.warn("What do I do with this");
 }
 Object.defineProperty(Character.prototype, 'purpose', {
     get: function () { return Character.Purposes[this._currentPurposeKey]; }

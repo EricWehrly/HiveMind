@@ -32,14 +32,22 @@ const localPlayer = new Character({
 });
 new KeyboardController({ character: localPlayer });
 
-new Technology({
-    name: "Claws",
+const claws = new Technology({
+    name: "claws",
     actions: [
-        {
-            // new Action({
-        }
+        new Action({
+            name: "claws",
+            delay: 3000,
+            requires: {
+                technology: "claws"
+            },
+            callback: function(options) {
+                console.log("CLAWS!");
+            }
+        })
     ]
 });
+KeyboardController.AddDefaultBinding("claws", " ");
 
 // spawn an animal corpse to be studied (from which player can learn claws)
 new Character({
@@ -49,10 +57,10 @@ new Character({
         x: 5,
         y: 5
     },
-    technologies: [ 'claws' ]
+    technologies: [claws]
 });
 
-for(var i = 0; i < 3; i++) {
+for (var i = 0; i < 3; i++) {
     // random x and y within some range, on positive axis
     let x = Math.random() * 100;
     let y = Math.random() * 100;
@@ -68,11 +76,11 @@ for(var i = 0; i < 3; i++) {
 
 function checkPlayerInteraction() {
 
-    const closest = GetClosestEntity(localPlayer, 5);
-    if(closest && closest.technologies) {
+    const closest = GetClosestEntity(localPlayer, { limit: 5, filterChildren: true });
+    if (closest && closest.technologies && closest.technologies.length > 0) {
         new ToolTip({
             position: closest.getScreenPosition(),
-            message: closest.technologies[0]
+            message: closest.technologies[0].name
         });
         // console.log(closest.technologies);
         Action.List["study"].enabled = true;
