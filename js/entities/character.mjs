@@ -73,8 +73,18 @@ export default class Character {
         return this._technologies;
     }
 
+    hasTechnology(technology) {
+
+        if(typeof technology == "string") {
+            technology = Technology.Get(technology);
+        } // else warn?
+        return this._technologies.includes(technology);
+    }
+
     AddTechnology(technology) {
-        this._technologies.push(Technology.Get(technology));
+        technology = Technology.Get(technology);
+        console.log(`Adding technology ${technology.name} to character ${this.name}`);
+        this._technologies.push(technology);
     }
 
     think() { }
