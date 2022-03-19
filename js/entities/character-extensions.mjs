@@ -57,4 +57,12 @@ Character.prototype.Subdivide = function (options = {}) {
     console.log(`Subdivided new character for ${spawnedCharacter.purpose.name}`);
 }
 
+// to be called on the child to be reabsorbed into the parent
+Character.prototype.Reabsorb = function(options = {}) {
+
+    this.parent.health += this.health;
+    this.parent.AddTechnology(this.technologies[0]);
+    this.health = 0;
+}
+
 export default Character;

@@ -10,7 +10,7 @@ const Purposes =
                     if(character.target.dead == true) {
                         console.log(`Studied it to death?`);
                         // TODO: contemplate
-                        character.parent.AddTechnology(character.target.technologies[0]);
+                        character.AddTechnology(character.target.technologies[0]);
                         character.target = null;
                         character.SetCurrentPurpose("return");
                     } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
@@ -34,9 +34,14 @@ const Purposes =
     "return": {
         // do not show this one in menus!
         name: "return",
-        think: function () {
-            console.log("Gotta go back")
-            // return to player & be reabsorbed
+        think: function (character, elapsed) {
+
+            if (!character.target) character.target = character.parent;
+            character.moveToTarget();
+            
+            if (character.position.equals(character.target.position)) {
+                character.Reabsorb();
+            }
         }
     }
 };
