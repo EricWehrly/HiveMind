@@ -1,6 +1,7 @@
 import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
 import { AssignWithUnderscores } from '../util/javascript-extensions.js'
 import Point from '../baseTypes/point.mjs';
+import Technology from '../technology.mjs';
 
 // extends entity?
 export default class Character {
@@ -25,6 +26,8 @@ export default class Character {
 
     // TODO: use speed
     _speed = 1;
+
+    _technologies = [];
 
     constructor(options = {}) {
 
@@ -64,6 +67,14 @@ export default class Character {
         }
         if(options.x != null) this._velocity.x = options.x;
         if(options.y != null) this._velocity.y = options.y;
+    }
+
+    get technologies() {
+        return this._technologies;
+    }
+
+    AddTechnology(technology) {
+        this._technologies.push(Technology.Get(technology));
     }
 
     think() { }

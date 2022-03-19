@@ -13,14 +13,20 @@ export function RemoveCharacterFromList(character) {
     CHARACTER_LIST.splice(CHARACTER_LIST.indexOf(character), 1);
 }
 
-export function GetClosestEntity(targetCharacter, limit = 100) {
+export function GetClosestEntity(targetCharacter, options = {
+        limit: 100,
+        filterChildren: true
+    }) {
 
     let closest = {
         entity: null,
-        distance: limit
+        distance: options.limit
     };
     for(var character of CHARACTER_LIST) {
         if(character != targetCharacter) {
+            if(options.filterChildren && character.parent == targetCharacter) {
+                continue;
+            }
             const distance = character.getDistance(targetCharacter);
             if(distance < closest.distance) {
                 closest.distance = distance;
