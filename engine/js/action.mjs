@@ -78,9 +78,9 @@ export default class Action extends Listed {
         if(this.callback) {
             const baseCallback = this.callback;
 
-            this.callback = function(options) {
+            this.callback = function(options = {}) {
 
-                if(!Requirements.met(this)) return;
+                if(!Requirements.met(this, options.character)) return;
 
                 if(this.delay && this.lastFired && 
                     performance.now() - this.lastFired < this.delay) return;
