@@ -3,6 +3,7 @@ import { AssignWithUnderscores } from '../util/javascript-extensions.js'
 import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';
 import Equipment from './equipment.mjs';
+import BasicAI from '../ai/basic.mjs';
 
 // extends entity?
 export default class Character {
@@ -41,6 +42,8 @@ export default class Character {
         // TODO: Find a better way to have a cancellable default?
         if(options.color === null) delete this.color;
         // options.image
+
+        this.setupAI();
 
         this.createGraphic();
 
@@ -100,7 +103,9 @@ export default class Character {
         console.log(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
     }
 
-    think() { }
+    think() {
+        if(this.ai) this.ai.think();
+    }
 
     moveToTarget() {
 
@@ -166,6 +171,11 @@ export default class Character {
 
         // TODO: This playfield reference should probably be stored somewhere more globally referencable
         document.getElementById("playfield").appendChild(this.graphic);
+    }
+
+    setupAI() {
+        // TODO: Allow config from options
+        if(this.ai === undefined) this.ai = new BasicAI(this);
     }
 
     getDistance(entity) {
