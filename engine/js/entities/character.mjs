@@ -33,6 +33,8 @@ export default class Character {
 
     _equipment = new Equipment(this);
 
+    _target = null;
+
     constructor(options = {}) {
 
         AssignWithUnderscores(this, options);
@@ -84,6 +86,25 @@ export default class Character {
         return this._equipment;
     }
 
+    get target() {
+        return this._target;
+    }
+
+    set target(newValue) {
+        if(newValue == null || newValue == undefined) return;
+        console.log(`New target for ${this.name}!`);
+        this._target = newValue;
+    }
+
+    get isAlive() {
+        return !this.dead && (this.isPlayer || this.ai != null);
+    }
+
+    get isHostile() {
+
+        return this.isPlayer || this.hasEquipped(Technology.Types.ATTACK);
+    }
+
     hasTechnology(technology) {
 
         if(typeof technology == "string") {
@@ -105,6 +126,9 @@ export default class Character {
     }
 
     think() {
+        // TODO: Use range of equipped attack?
+        if(!this.target || !this.target.isAlive) this.target = this.getClosestEntity({ distance: 10 });
+
         if(this.ai) this.ai.think();
     }
 
@@ -126,7 +150,7 @@ export default class Character {
         if(this.target && this.target.position.x == this._position.x) { }
 
         else if(this.target
-            && Math.abs(this._position.x - this.target.position.x) < this._speed) {
+            && Math.abs(this._position.x - this.target.position.x) < this._speed * amount) {
                 this._position.x = this.target.position.x;
                 this._velocity.x = 0;
             }
@@ -135,7 +159,7 @@ export default class Character {
         if(this.target && this.target.position.y == this._position.y) { }
 
         else if(this.target
-            && Math.abs(this._position.y - this.target.position.y) < this._speed) {
+            && Math.abs(this._position.y - this.target.position.y) < this._speed * amount) {
                 this._position.y = this.target.position.y;
                 this._velocity.y = 0;
             }
@@ -168,7 +192,7 @@ export default class Character {
         this.graphic.className = 'character';
         // if(this.color) this.graphic.style.backgroundColor = this.color;
         if(this.color) this.graphic.className += ` ${this.color}`;
-        if(this.isPlayer || this.ai != null) this.graphic.className += ' alive';
+        if(this.isAlive) this.graphic.className += ' alive';
 
         if(this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
 
@@ -197,7 +221,38 @@ export default class Character {
         };
     }
 
+    // TODO: Need to prioritize close hostile entities over closer non-hostile
+    getClosestEntity(options = {
+            distance: 100,
+            filterChildren: true,
+            hostile: null
+        }) {
+    
+        let closest = {
+            entity: null,
+            distance: options.distance
+        };
+        for(var character of CHARACTER_LIST) {
+            if(character != this) {
+                if(options.filterChildren && character.parent == this) {
+                    continue;
+                }
+                if(options.hostile != null && character.isHostile != options.hostile) {
+                    continue;
+                }
+                const distance = character.getDistance(this);
+                if(distance < closest.distance) {
+                    closest.distance = distance;
+                    closest.entity = character;
+                }
+            }
+        }
+    
+        return closest.entity;
+    }
+
     // private?
+    // TODO: Should we just flag not alive and defer 'fading out' corpse?
     die() {
         this.dead = true;
         document.getElementById("playfield").removeChild(this.graphic);
