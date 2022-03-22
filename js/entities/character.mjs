@@ -43,6 +43,7 @@ export default class Character {
         if(options.color === null) delete this.color;
         // options.image
 
+        // TODO: let's default to no AI at all unless prescribed ...
         this.setupAI();
 
         this.createGraphic();
