@@ -13,10 +13,10 @@ export default class Character {
     get health() {
         return this._health;
     }
-    
+
     set health(newValue) {
         this._health = newValue;
-        if(this._health <= 0) this.die();
+        if (this._health <= 0) this.die();
     }
 
     _position = new Point(0, 0);
@@ -42,7 +42,7 @@ export default class Character {
         this.id = options.id || crypto.randomUUID();
         this.color = options.color || 'red';
         // TODO: Find a better way to have a cancellable default?
-        if(options.color === null) delete this.color;
+        if (options.color === null) delete this.color;
         // options.image
 
         // TODO: let's default to no AI at all unless prescribed ...
@@ -58,8 +58,8 @@ export default class Character {
     }
 
     set position(options) {
-        if(options.x) this._position.x = options.x;
-        if(options.y) this._position.y = options.y;
+        if (options.x) this._position.x = options.x;
+        if (options.y) this._position.y = options.y;
     }
 
     get velocity() {
@@ -68,14 +68,14 @@ export default class Character {
 
     set velocity(options) {
 
-        if(typeof options === "string" && options.indexOf(",") > 0) {
+        if (typeof options === "string" && options.indexOf(",") > 0) {
             console.log("yes string");
             const split = options.split(",");
             options.x = split[0];
             options.y = split[1];
         }
-        if(options.x != null) this._velocity.x = options.x;
-        if(options.y != null) this._velocity.y = options.y;
+        if (options.x != null) this._velocity.x = options.x;
+        if (options.y != null) this._velocity.y = options.y;
     }
 
     get technologies() {
@@ -91,7 +91,7 @@ export default class Character {
     }
 
     set target(newValue) {
-        if(newValue == null || newValue == undefined) return;
+        if (newValue == null || newValue == undefined) return;
         console.log(`New target for ${this.name}!`);
         this._target = newValue;
     }
@@ -107,7 +107,7 @@ export default class Character {
 
     hasTechnology(technology) {
 
-        if(typeof technology == "string") {
+        if (typeof technology == "string") {
             technology = Technology.Get(technology);
         } // else warn?
         return this._technologies.includes(technology);
@@ -118,7 +118,7 @@ export default class Character {
         console.log(`Adding technology ${technology.name} to character ${this.name}`);
         this._technologies.push(technology);
 
-        if(!this.hasEquipped(technology.type)) {
+        if (!this.hasEquipped(technology.type)) {
             this.equip(technology);
         }
 
@@ -127,43 +127,54 @@ export default class Character {
 
     think() {
         // TODO: Use range of equipped attack?
-        if(!this.target || !this.target.isAlive) this.target = this.getClosestEntity({ distance: 10 });
+        if (!this.target || !this.target.isAlive) this.target = this.getClosestEntity({ distance: 10 });
 
-        if(this.ai) this.ai.think();
+        if (this.ai) this.ai.think();
     }
 
+    // player character is moving to target and shouldn't be
     moveToTarget() {
 
-        if(this.target) {            
-            if(this.position.x != this.target.position.x
+        if (this.target) {
+            if (this.position.x != this.target.position.x
                 || this.position.y != this.target.position.y) {
-                    if(this.position.x < this.target.position.x) this._velocity.x = 1;
-                    else if(this.position.x > this.target.position.x) this._velocity.x = -1;
-                    if(this.position.y < this.target.position.y) this._velocity.y = 1;
-                    else if(this.position.y > this.target.position.y) this._velocity.y = -1;
-                }
+                if (this.position.x < this.target.position.x) this._velocity.x = 1;
+                else if (this.position.x > this.target.position.x) this._velocity.x = -1;
+                if (this.position.y < this.target.position.y) this._velocity.y = 1;
+                else if (this.position.y > this.target.position.y) this._velocity.y = -1;
+            }
         }
+    }
+
+    shouldMoveToTarget() {
+        return this.ai != null && this.target != null;
+    }
+
+    shouldStopOnAxis(axis, amount) {
+        return Math.abs(this._position[axis] - this.target.position[axis]) < this._speed * amount;
+    }
+
+    atTarget(axis) {
+        return this.target && this.target.position[axis] == this._position[axis];
     }
 
     move(amount) {
 
-        if(this.target && this.target.position.x == this._position.x) { }
-
-        else if(this.target
-            && Math.abs(this._position.x - this.target.position.x) < this._speed * amount) {
-                this._position.x = this.target.position.x;
-                this._velocity.x = 0;
+        if (this.shouldMoveToTarget()) {
+            for (var axis of ['x', 'y']) {
+                if (!this.atTarget(axis)) {
+                    if (this.shouldStopOnAxis(axis, amount)) {
+                        this._position[axis] = this.target.position[axis];
+                        this._velocity[axis] = 0;
+                    } else {
+                        this._position[axis] += this._velocity[axis] * this._speed * amount;
+                    }
+                }
             }
-        else this._position.x += this._velocity.x * this._speed * amount;
-
-        if(this.target && this.target.position.y == this._position.y) { }
-
-        else if(this.target
-            && Math.abs(this._position.y - this.target.position.y) < this._speed * amount) {
-                this._position.y = this.target.position.y;
-                this._velocity.y = 0;
-            }
-        else this._position.y += this._velocity.y * this._speed * amount;
+        } else {
+            this._position.x += this._velocity.x * this._speed * amount;
+            this._position.y += this._velocity.y * this._speed * amount;
+        }
     }
 
     redraw() {
@@ -179,22 +190,22 @@ export default class Character {
         this.graphic.style.top = (gridSize * this._position.y) + "px";
 
         // TODO: Only change on resize ...
-        
+
         let targetSize = (this.health / 100) * gridSize;
-        if(targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
+        if (targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
         this.graphic.style.width = targetSize + "px";
         this.graphic.style.height = targetSize + "px";
     }
 
     createGraphic() {
-        
+
         this.graphic = document.createElement('div');
         this.graphic.className = 'character';
         // if(this.color) this.graphic.style.backgroundColor = this.color;
-        if(this.color) this.graphic.className += ` ${this.color}`;
-        if(this.isAlive) this.graphic.className += ' alive';
+        if (this.color) this.graphic.className += ` ${this.color}`;
+        if (this.isAlive) this.graphic.className += ' alive';
 
-        if(this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
+        if (this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
 
         // TODO: This playfield reference should probably be stored somewhere more globally referencable
         document.getElementById("playfield").appendChild(this.graphic);
@@ -202,7 +213,7 @@ export default class Character {
 
     setupAI() {
         // TODO: Allow config from options
-        if(this.ai === undefined) this.ai = new BasicAI(this);
+        if (this.ai === undefined) this.ai = new BasicAI(this);
     }
 
     getDistance(entity) {
@@ -223,31 +234,31 @@ export default class Character {
 
     // TODO: Need to prioritize close hostile entities over closer non-hostile
     getClosestEntity(options = {
-            distance: 100,
-            filterChildren: true,
-            hostile: null
-        }) {
-    
+        distance: 100,
+        filterChildren: true,
+        hostile: null
+    }) {
+
         let closest = {
             entity: null,
             distance: options.distance
         };
-        for(var character of CHARACTER_LIST) {
-            if(character != this) {
-                if(options.filterChildren && character.parent == this) {
+        for (var character of CHARACTER_LIST) {
+            if (character != this) {
+                if (options.filterChildren && character.parent == this) {
                     continue;
                 }
-                if(options.hostile != null && character.isHostile != options.hostile) {
+                if (options.hostile != null && character.isHostile != options.hostile) {
                     continue;
                 }
                 const distance = character.getDistance(this);
-                if(distance < closest.distance) {
+                if (distance < closest.distance) {
                     closest.distance = distance;
                     closest.entity = character;
                 }
             }
         }
-    
+
         return closest.entity;
     }
 
