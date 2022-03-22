@@ -27,11 +27,12 @@ KeyboardController.AddDefaultBinding("study", "f");
 
 const localPlayer = new Character({
     name: "Local Player",
-    color: null,
+    color: "blue",
     speed: 5,
     health: 100,
     additionalClasses: "player",
-    ai: null
+    ai: null,
+    isPlayer: true
 });
 new KeyboardController({ character: localPlayer });
 
@@ -93,6 +94,6 @@ function checkPlayerInteraction() {
     else Action.List["study"].enabled = false;
 }
 
-RegisterLoopMethod(checkPlayerInteraction, false);
+// RegisterLoopMethod(checkPlayerInteraction, false);
 
 console.log('Starting game.');

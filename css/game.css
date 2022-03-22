@@ -13,9 +13,23 @@ body {
     overflow: auto;
 }
 
-.player {
-    background-color: rgba(0, 0, 200, 0.3);
-    border: 3px solid blue;
+.character.alive {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+}
+
+.character.red {
+    background-color:rgba(200, 0, 0, 0.3);
+}
+
+.character.red.alive {
+    border: 3px solid red;
+}
+
+.character.blue {
+    background-color: rgba(0, 0, 200, 0.3);
+}
+
+.character.blue.alive {
+    border: 3px solid blue;
 }
