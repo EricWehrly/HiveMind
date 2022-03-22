@@ -166,7 +166,9 @@ export default class Character {
         
         this.graphic = document.createElement('div');
         this.graphic.className = 'character';
-        if(this.color) this.graphic.style.backgroundColor = this.color;
+        // if(this.color) this.graphic.style.backgroundColor = this.color;
+        if(this.color) this.graphic.className += ` ${this.color}`;
+        if(this.isPlayer || this.ai != null) this.graphic.className += ' alive';
 
         if(this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
 
