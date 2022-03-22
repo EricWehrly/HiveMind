@@ -19,6 +19,8 @@ import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 
+import './entities/enemies.mjs';
+
 // let someTile = new Tile();
 KeyboardController.AddDefaultBinding("subdivide", "q");
 KeyboardController.AddDefaultBinding("study", "f");
@@ -28,7 +30,8 @@ const localPlayer = new Character({
     color: null,
     speed: 5,
     health: 100,
-    additionalClasses: "player"
+    additionalClasses: "player",
+    ai: null
 });
 new KeyboardController({ character: localPlayer });
 
@@ -59,17 +62,6 @@ const claws = new Technology({
 });
 KeyboardController.AddDefaultBinding("claws", " ");
 
-// spawn an animal corpse to be studied (from which player can learn claws)
-new Character({
-    color: 'gray',
-    health: 5,
-    position: {
-        x: 5,
-        y: 5
-    },
-    technologies: [claws]
-});
-
 for (var i = 0; i < 3; i++) {
     // random x and y within some range, on positive axis
     let x = Math.random() * 100;
@@ -80,7 +72,8 @@ for (var i = 0; i < 3; i++) {
         position: {
             x: x,
             y: y
-        }
+        },
+        ai: null
     });
 }
 
