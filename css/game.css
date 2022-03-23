@@ -33,3 +33,10 @@ body {
 .character.blue.alive {
     border: 3px solid blue;
 }
+
+.targeted:after {
+    content: 'x';
+    position: absolute;
+    left: 30%;
+    top: 0;
+}
