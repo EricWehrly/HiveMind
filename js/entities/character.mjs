@@ -91,9 +91,18 @@ export default class Character {
     }
 
     set target(newValue) {
-        if (newValue == null || newValue == undefined) return;
-        console.log(`New target for ${this.name}!`);
+        if (newValue == null || newValue == undefined || newValue == this._target) return;
+
+        if(this._target) {
+            this._target.removeClass("targeted");
+        }
+        
         this._target = newValue;
+
+        if(this.isPlayer && this._target != null) {
+            this._target.addClass("targeted");
+        }
+        console.log(`New target for ${this.name}!`);
     }
 
     get isAlive() {
@@ -209,6 +218,14 @@ export default class Character {
 
         // TODO: This playfield reference should probably be stored somewhere more globally referencable
         document.getElementById("playfield").appendChild(this.graphic);
+    }
+
+    addClass(className) {
+        this.graphic.className += ` ${className}`;
+    }
+
+    removeClass(className) {
+        this.graphic.className = this.graphic.className.replace(className, "").trim();
     }
 
     setupAI() {
