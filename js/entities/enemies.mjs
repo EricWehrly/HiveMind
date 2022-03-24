@@ -6,7 +6,6 @@ setTimeout(function() {
     
     const claws = Technology.Get("claws");
 
-    // TODO: Give this guy an AI
     new Character({
         color: 'red',
         health: 5,

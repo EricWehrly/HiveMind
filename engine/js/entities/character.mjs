@@ -33,7 +33,11 @@ export default class Character {
 
     _equipment = new Equipment(this);
 
+    #spawnPosition = {};
+
     _target = null;
+
+    #maxWanderDistance = 10
 
     constructor(options = {}) {
 
@@ -44,6 +48,7 @@ export default class Character {
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
         // options.image
+        this.#spawnPosition = this.position;
 
         // TODO: let's default to no AI at all unless prescribed ...
         this.setupAI();
@@ -91,15 +96,15 @@ export default class Character {
     }
 
     set target(newValue) {
-        if (newValue == null || newValue == undefined || newValue == this._target) return;
+        if (newValue === undefined || newValue == this._target) return;
 
-        if(this._target) {
+        if(this._target instanceof Character) {
             this._target.removeClass("targeted");
         }
         
         this._target = newValue;
 
-        if(this.isPlayer && this._target != null) {
+        if(this.isPlayer && this._target instanceof Character) {
             this._target.addClass("targeted");
         }
         console.log(`New target for ${this.name}!`);
@@ -134,9 +139,22 @@ export default class Character {
         console.log(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
     }
 
+    shouldStopTargeting(distance = 6) {
+
+        return this.target
+            && (this.target.isAlive == false || 
+                this.target.getDistance(this) > distance);
+    }
+
     think() {
         // TODO: Use range of equipped attack?
-        if (!this.target || !this.target.isAlive) this.target = this.getClosestEntity({ distance: 10 });
+        if (!this.target || !this.target.isAlive) {
+            this.target = this.getClosestEntity({ distance: 5 });
+        }
+
+        if(this.shouldStopTargeting()) {
+            this.target = null;
+        }
 
         if (this.ai) this.ai.think();
     }

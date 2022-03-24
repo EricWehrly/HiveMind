@@ -1,5 +1,6 @@
 // Most basic / default AI
 // TODO: Predator and prey supertypes above this
+import Character from "../entities/character.mjs";
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
 
@@ -30,7 +31,8 @@ export default class AI {
     }
 
     wander() {
-        // instead of doing this, occasionally pick a new nearby target to walk to
+        if(this.#character.target instanceof Character) return;
+
         if(performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
             if(this?.#character?.target?.position) {
                 console.log(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
@@ -39,6 +41,8 @@ export default class AI {
             this.#character.target = {
                 position: {}
             }
+
+            // TODO: Make sure target is within #character.#maxWanderDistance from spawn
 
             var randX = Math.random();
             if(randX > 0.5) this.#character.target.position.x = (10 * randX);
