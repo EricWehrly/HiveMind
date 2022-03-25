@@ -19,6 +19,7 @@ import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 
+import './entities/food.mjs';
 import './entities/enemies.mjs';
 
 // let someTile = new Tile();
@@ -62,21 +63,6 @@ const claws = new Technology({
     ]
 });
 KeyboardController.AddDefaultBinding("claws", " ");
-
-for (var i = 0; i < 3; i++) {
-    // random x and y within some range, on positive axis
-    let x = Math.random() * 100;
-    let y = Math.random() * 100;
-    // spawn food
-    new Character({
-        color: 'green',
-        position: {
-            x: x,
-            y: y
-        },
-        ai: null
-    });
-}
 
 function checkPlayerInteraction() {
 

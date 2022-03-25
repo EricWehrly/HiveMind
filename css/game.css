@@ -34,6 +34,22 @@ body {
     border: 3px solid blue;
 }
 
+.character.green {
+    background-color: rgba(0, 200, 0, 0.3);
+}
+
+.character.green.alive {
+    border: 3px solid green;
+}
+
+.character.beige {
+    background-color: rgba(200, 200, 180, 0.3);
+}
+
+.character.beige.alive {
+    border: 3px solid beige;
+}
+
 .targeted:after {
     content: 'x';
     position: absolute;
