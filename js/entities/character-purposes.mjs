@@ -4,7 +4,7 @@ const Purposes =
         name: "Study",
         think: function (character, elapsed) {
             if (character.target) {
-                character.moveToTarget();
+                character.pointAtTarget();
 
                 if (character.position.equals(character.target.position)) {
                     if(character.target.dead == true) {
@@ -37,7 +37,7 @@ const Purposes =
         think: function (character, elapsed) {
 
             if (!character.target) character.target = character.parent;
-            character.moveToTarget();
+            character.pointAtTarget();
             
             if (character.position.equals(character.target.position)) {
                 character.Reabsorb();

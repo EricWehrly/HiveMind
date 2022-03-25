@@ -48,7 +48,7 @@ export default class Character {
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
         // options.image
-        this.#spawnPosition = this.position;
+        this.#spawnPosition = new Point(this.position.x, this.position.y);
 
         // TODO: let's default to no AI at all unless prescribed ...
         this.setupAI();
@@ -101,8 +101,12 @@ export default class Character {
         if(this._target instanceof Character) {
             this._target.removeClass("targeted");
         }
-        
-        this._target = newValue;
+
+        if(newValue instanceof Point) {
+            this._target = {
+                position: newValue
+            }
+        } else this._target = newValue;
 
         if(this.isPlayer && this._target instanceof Character) {
             this._target.addClass("targeted");
@@ -117,6 +121,14 @@ export default class Character {
     get isHostile() {
 
         return this.isPlayer || this.hasEquipped(Technology.Types.ATTACK);
+    }
+
+    get spawnPosition() {
+        return this.#spawnPosition;
+    }
+
+    get maxWanderDistance() {
+        return this.#maxWanderDistance;
     }
 
     hasTechnology(technology) {
@@ -147,20 +159,20 @@ export default class Character {
     }
 
     think() {
-        // TODO: Use range of equipped attack?
-        if (!this.target || !this.target.isAlive) {
-            this.target = this.getClosestEntity({ distance: 5 });
-        }
-
-        if(this.shouldStopTargeting()) {
-            this.target = null;
-        }
-
         if (this.ai) this.ai.think();
+        else if(this.isPlayer) {
+            if(this.shouldStopTargeting()) {
+                this.target = null;
+            }
+            // TODO: Use range of equipped attack?
+            if (!this.target || !this.target.isAlive) {
+                this.target = this.getClosestEntity({ distance: 5 });
+            }
+        }
     }
 
     // player character is moving to target and shouldn't be
-    moveToTarget() {
+    pointAtTarget() {
 
         if (this.target) {
             if (this.position.x != this.target.position.x

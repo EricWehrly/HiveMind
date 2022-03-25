@@ -11,5 +11,8 @@ export default class Point {
         return this.x == point.x && this.y == point.y;
     }
 
-    // distance, etc ...
+    distance(point) {
+        return Math.abs(this.x - point.x)
+            + Math.abs(this.y - point.y);
+    }
 }
