@@ -8,10 +8,18 @@ export default class AI {
 
     #character = null;
 
-    #lastDestinationPickedTime = performance.now();
+    #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
     constructor(character) {
         this.#character = character;
+    }
+
+    get target() {
+        return this.#character.target;
+    }
+
+    set target(newVal) {
+        this.#character.target = newVal;
     }
     
     // TODO: faction
@@ -27,7 +35,9 @@ export default class AI {
         // if i don't have a target
         this.wander();
 
-        this.#character.moveToTarget();
+        this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
+
+        this.#character.pointAtTarget();
     }
 
     wander() {
@@ -42,8 +52,6 @@ export default class AI {
                 position: {}
             }
 
-            // TODO: Make sure target is within #character.#maxWanderDistance from spawn
-
             var randX = Math.random();
             if(randX > 0.5) this.#character.target.position.x = (10 * randX);
             else this.#character.target.position.x = (-10 * randX);
@@ -53,6 +61,13 @@ export default class AI {
             else this.#character.target.position.y = (-10 * randY);
 
             console.log(`New target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
+        }
+    }
+
+    leash(point, distance) {
+        var dist = this.#character.position.distance(point);
+        if(dist > distance) {
+            this.target = point;
         }
     }
 }
