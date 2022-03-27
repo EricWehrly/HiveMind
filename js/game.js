@@ -14,7 +14,6 @@ const TileManager = await managedImport('../engine/js/mapping/tile-manager.mjs')
 const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
 import Character from './entities/character-extensions.mjs';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
-import { GetClosestEntity } from '../engine/js/entities/characters.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
@@ -64,9 +63,18 @@ const claws = new Technology({
 });
 KeyboardController.AddDefaultBinding("claws", " ");
 
+localPlayer.toolTip = new ToolTip({
+    entity: localPlayer
+});
+
 function checkPlayerInteraction() {
 
-    const closest = GetClosestEntity(localPlayer, { limit: 5, filterChildren: true });
+    const closest = localPlayer.target;
+
+    // have the tooltip follow the player if there's an active messqage
+    // this check can set the message
+
+    /*
     if (closest && closest.technologies && closest.technologies.length > 0) {
         new ToolTip({
             position: closest.getScreenPosition(),
@@ -78,8 +86,9 @@ function checkPlayerInteraction() {
         Action.List["study"].target = closest;
     }
     else Action.List["study"].enabled = false;
+    */
 }
 
-// RegisterLoopMethod(checkPlayerInteraction, false);
+RegisterLoopMethod(checkPlayerInteraction, false);
 
 console.log('Starting game.');

@@ -1,12 +1,16 @@
-// TODO: timeout
+import { RegisterLoopMethod } from "../loop.mjs";
+
+// TODO: timeout / hide
 export default class Tooltip {
+
+    #message;
 
     constructor(options = {}) {
 
         // TODO: reject if not given required parameters
-        const message = options.message || "";
         // screen position, NOT grid position!
         const position = options.position || {x: 0, y: 0};
+        this.entity = options.entity || null;
 
         this.Element = document.createElement('div');
         this.Element.className = 'ui tooltip';
@@ -14,7 +18,26 @@ export default class Tooltip {
         this.Element.style.top = position.y + "px";
 
         document.getElementById("playfield").appendChild(this.Element);
+        this.message = options.message || "";
 
-        this.Element.innerHTML = message;
+        if(this.entity) RegisterLoopMethod(this.followEntity.bind(this), false);
+    }
+
+    get message() {
+        return this.#message;
+    }
+
+    set message(newValue) {
+        this.#message = newValue;
+        this.Element.innerHTML = this.message;
+    }
+
+    followEntity() {
+        if(this.message != null && this.message != "") {
+            let position = this.entity.getScreenPosition();
+            // TODO: Add entity height to y
+            this.Element.style.left = position.x + "px";
+            this.Element.style.top = position.y + "px";
+        }
     }
 }
