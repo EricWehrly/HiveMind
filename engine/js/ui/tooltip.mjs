@@ -28,8 +28,13 @@ export default class Tooltip {
     }
 
     set message(newValue) {
+        if(newValue == this.#message) return;
+
         this.#message = newValue;
         this.Element.innerHTML = this.message;
+        // TODO: show/hide methods?
+        if(this.#message == null || this.#message == "") this.Element.style.display = "none";
+        else this.Element.style.display = "inline-block";
     }
 
     followEntity() {

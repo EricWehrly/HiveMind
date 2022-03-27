@@ -1,6 +1,7 @@
 import Character from '../../engine/js/entities/character.mjs';
 import { GetColorAsRGBA } from '../../engine/js/util/javascript-extensions.js';
 import Purposes from './character-purposes.mjs';
+import CharacterType from './characterType.mjs';
 
 export default class HiveMindCharacter extends Character {
 
@@ -9,6 +10,14 @@ export default class HiveMindCharacter extends Character {
     _currentPurposeKey = null;
 
     get purpose () { return Character.Purposes[this._currentPurposeKey]; }
+
+    get canBeStudied() {
+        if(this.isPlayer) return false;
+        if(this.ai != null && this.dead == false) return false;
+        if(this.characterType && CharacterType[this.characterType].isStudied == true) return false;
+
+        return true;
+    }
 
     think(elapsed) {
         super.think(elapsed);

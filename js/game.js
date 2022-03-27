@@ -71,6 +71,10 @@ function checkPlayerInteraction() {
 
     const closest = localPlayer.target;
 
+    if(closest != null && closest.canBeStudied) {
+        localPlayer.toolTip.message = "'F' - Study";
+    } else localPlayer.toolTip.message = "";
+
     // have the tooltip follow the player if there's an active messqage
     // this check can set the message
 
