@@ -161,6 +161,11 @@ export default class Character {
     think() {
         if (this.ai) this.ai.think();
         else if(this.isPlayer) {
+
+            // for now just target the closest thing. get more complicated later
+            this.target = this.getClosestEntity({ distance: 5 });
+
+            /*
             if(this.shouldStopTargeting()) {
                 this.target = null;
             }
@@ -168,6 +173,7 @@ export default class Character {
             if (!this.target || !this.target.isAlive) {
                 this.target = this.getClosestEntity({ distance: 5 });
             }
+            */
         }
     }
 
