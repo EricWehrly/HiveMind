@@ -12,7 +12,7 @@ export default class HiveMindCharacter extends Character {
     constructor(options) {
         const key = options._currentPurposeKey || options.currentPurposeKey;
         super(options);
-        
+
         this._currentPurposeKey = key;
     }
 
@@ -27,9 +27,15 @@ export default class HiveMindCharacter extends Character {
     }
 
     think(elapsed) {
+
+        // stupid hack
+        let origTarget = null;
+        if(this._currentPurposeKey) origTarget = this.target;
+
         super.think(elapsed);
 
         if (this._currentPurposeKey) {
+            if(origTarget) this.target = origTarget;
             // maybe the purposes should be specific AI implementations ...
             HiveMindCharacter.Purposes[this._currentPurposeKey].think(this, elapsed);
         }
@@ -76,7 +82,9 @@ export default class HiveMindCharacter extends Character {
     Reabsorb = function(options = {}) {
 
         this.parent.health += this.health;
-        this.parent.AddTechnology(this.technologies[0]);
+        if(this.technologies && this.technologies.length > 0) {
+            this.parent.AddTechnology(this.technologies[0]);
+        }
         this.health = 0;
     }
 }

@@ -72,29 +72,14 @@ function checkPlayerInteraction() {
     const closest = localPlayer.target;
 
     if(closest != null && closest.canBeStudied) {
+        // this only works with 1 local player cause actions will be local to this system ...
+        Action.List["study"].target = closest;
         Action.List["study"].enabled = true;
         localPlayer.toolTip.message = "'F' - Study";
     } else {
         Action.List["study"].enabled = false;
         localPlayer.toolTip.message = "";
     }
-
-    // have the tooltip follow the player if there's an active messqage
-    // this check can set the message
-
-    /*
-    if (closest && closest.technologies && closest.technologies.length > 0) {
-        new ToolTip({
-            position: closest.getScreenPosition(),
-            message: closest.technologies[0].name
-        });
-        // console.log(closest.technologies);
-        Action.List["study"].enabled = true;
-        // this only works with 1 local player cause actions will be local to this system ...
-        Action.List["study"].target = closest;
-    }
-    else Action.List["study"].enabled = false;
-    */
 }
 
 RegisterLoopMethod(checkPlayerInteraction, false);

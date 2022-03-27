@@ -1,3 +1,5 @@
+import CharacterType from "./characterType.mjs";
+
 const Purposes =
 {
     "study": {
@@ -10,13 +12,18 @@ const Purposes =
                     if(character.target.dead == true) {
                         console.log(`Studied it to death?`);
                         // TODO: contemplate
-                        character.AddTechnology(character.target.technologies[0]);
+                        // TODO: support > 1 technology
+                        if(character.target.technologies && character.target.technologies.length > 0) {
+                            character.AddTechnology(character.target.technologies[0]);
+                        }
+                        if(character.target.characterType) {
+                            CharacterType[character.target.characterType].isStudied = true;
+                        }
                         character.target = null;
                         character.SetCurrentPurpose("return");
                     } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
                 }
             }
-            // else return
         }
     },
     "consume": {
