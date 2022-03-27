@@ -46,10 +46,19 @@ export default class Action extends Listed {
         new Action({
             name: 'attack',
             callback: function(options) {
+                // TODO: Pull in enum from technology class
                 if(options?.character?.equipment?.attack == null) {
                     console.log("Character has no attack skill equipped!");
                     return;
                 }
+
+                const eqipped = options?.character?.equipment?.attack;
+                // TODO: This isn't going to track a per-character last action time. We need that.
+                if(!this.checkDelay(eqipped)) return;
+
+                if(!this.inRange(eqipped, options.character)) return;
+
+                console.log("Rawr");
             }
         });
 
@@ -77,8 +86,6 @@ export default class Action extends Listed {
                 });
             }
         });
-
-        // new action for claws if player has the technology
     }
 
     constructor(options = {}) {
@@ -92,12 +99,30 @@ export default class Action extends Listed {
 
                 if(!Requirements.met(this, options.character)) return;
 
-                if(this.delay && this.lastFired && 
-                    performance.now() - this.lastFired < this.delay) return;
-                else if(this.delay) this.lastFired = performance.now();
+                if(!this.checkDelay(this)) return;
 
                 baseCallback(options);
             }
         }
+    }
+
+    checkDelay(thing) {
+
+        if(thing.delay && this.lastFired && 
+            performance.now() - this.lastFired < thing.delay) return false;
+        else if(thing.delay) this.lastFired = performance.now();
+
+        return true;
+    }
+
+    inRange(thing, character) {
+
+        if(thing.range) {
+            if(!character?.target) return false;
+
+            if(character.getDistance(character.target) < thing.range) return false;
+        }
+
+        return true;
     }
 }
