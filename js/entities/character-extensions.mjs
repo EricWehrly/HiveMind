@@ -5,11 +5,18 @@ import CharacterType from './characterType.mjs';
 
 export default class HiveMindCharacter extends Character {
 
-    Purposes = Purposes;
+    static Purposes = Purposes;
 
     _currentPurposeKey = null;
 
-    get purpose () { return Character.Purposes[this._currentPurposeKey]; }
+    constructor(options) {
+        const key = options._currentPurposeKey || options.currentPurposeKey;
+        super(options);
+        
+        this._currentPurposeKey = key;
+    }
+
+    get purpose () { return HiveMindCharacter.Purposes[this._currentPurposeKey]; }
 
     get canBeStudied() {
         if(this.isPlayer) return false;
@@ -24,7 +31,7 @@ export default class HiveMindCharacter extends Character {
 
         if (this._currentPurposeKey) {
             // maybe the purposes should be specific AI implementations ...
-            Character.Purposes[this._currentPurposeKey].think(this, elapsed);
+            HiveMindCharacter.Purposes[this._currentPurposeKey].think(this, elapsed);
         }
     }
 
@@ -39,10 +46,10 @@ export default class HiveMindCharacter extends Character {
 
         const amount = options.amount || 10;
         let purpose;
-        if (options.purposeKey) purpose = Character.Purposes[options.purposeKey];
+        if (options.purposeKey) purpose = HiveMindCharacter.Purposes[options.purposeKey];
         else if (options.purpose) purpose = options.purpose;
         // else if not in that array ...
-        else purpose = Character.Purposes[this._currentPurposeKey];
+        else purpose = HiveMindCharacter.Purposes[this._currentPurposeKey];
     
         if (this.health < amount * 2) {
             console.log("Tell the player they can't subdivbide");
@@ -53,7 +60,7 @@ export default class HiveMindCharacter extends Character {
     
         let spawnedColor = GetColorAsRGBA(this.color);
         spawnedColor[1] = 25;   // for now ...
-        const spawnedCharacter = new Character({
+        const spawnedCharacter = new HiveMindCharacter({
             color: `rgba(${spawnedColor.join(",")})`,
             health: amount,
             position: this.position,
