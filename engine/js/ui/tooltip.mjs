@@ -34,7 +34,10 @@ export default class Tooltip {
         this.Element.innerHTML = this.message;
         // TODO: show/hide methods?
         if(this.#message == null || this.#message == "") this.Element.style.display = "none";
-        else this.Element.style.display = "inline-block";
+        else {
+            this.followEntity();
+            this.Element.style.display = "inline-block";
+        }
     }
 
     followEntity() {

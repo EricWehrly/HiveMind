@@ -163,7 +163,7 @@ export default class Character {
         else if(this.isPlayer) {
 
             // for now just target the closest thing. get more complicated later
-            this.target = this.getClosestEntity({ distance: 5 });
+            this.target = this.getClosestEntity({ distance: 5, filterChildren: true });
 
             /*
             if(this.shouldStopTargeting()) {

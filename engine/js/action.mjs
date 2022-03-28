@@ -72,6 +72,7 @@ export default class Action extends Listed {
             }
         })
 
+        // TODO: unavailable if a subdivided piece is already studying
         new Action({
             name: 'study',
             enabled: false,
@@ -80,9 +81,23 @@ export default class Action extends Listed {
             callback: function(options) {
 
                 const piece = options.character.Subdivide({
-                    // this?
                     purpose: Character.Purposes["study"],
                     target: Action.List["study"].target
+                });
+            }
+        });
+
+        // TODO: unavailable if a subdivided piece is already nomming
+        new Action({
+            name: 'consume',
+            enabled: false,
+            oncePerPress: true,
+            delay: 1000,
+            callback: function(options) {
+
+                const piece = options.character.Subdivide({
+                    purpose: Character.Purposes["consume"],
+                    target: Action.List["consume"].target
                 });
             }
         });

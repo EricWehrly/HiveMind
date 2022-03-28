@@ -17,13 +17,16 @@ import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
+import CharacterType from './entities/characterType.mjs';
 
 import './entities/food.mjs';
 import './entities/enemies.mjs';
 
 // let someTile = new Tile();
 KeyboardController.AddDefaultBinding("subdivide", "q");
+// TODO: this needs to be a more generic 'interact' with specific functions, maybe like how attack works
 KeyboardController.AddDefaultBinding("study", "f");
+KeyboardController.AddDefaultBinding("consume", "f");
 
 const localPlayer = new Character({
     name: "Local Player",
@@ -70,6 +73,7 @@ localPlayer.toolTip = new ToolTip({
 function checkPlayerInteraction() {
 
     const closest = localPlayer.target;
+    const characterType = closest != null ?  closest.characterType : null;
 
     if(closest != null && closest.canBeStudied) {
         // this only works with 1 local player cause actions will be local to this system ...
@@ -79,6 +83,12 @@ function checkPlayerInteraction() {
     } else {
         Action.List["study"].enabled = false;
         localPlayer.toolTip.message = "";
+                
+        if(characterType && CharacterType[characterType].isStudied) {
+            Action.List["consume"].target = closest;
+            Action.List["consume"].enabled = true;
+            localPlayer.toolTip.message = "'F' - Nom";            
+        }
     }
 }
 
