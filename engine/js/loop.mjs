@@ -28,11 +28,21 @@ function _slowLoop() {
 
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
 
-        LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+        try {
+            LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+        } catch (ex) {
+            console.error("Problem in loop method");
+            debugger;
+        }
     }
 
     for(var requestedMethod of LOOP_METHODS_REQUESTED) {
-        requestedMethod();
+        try {
+            requestedMethod();
+        } catch (ex) {
+            console.error("Problem in requested method");
+            debugger;
+        }
     }
     LOOP_METHODS_REQUESTED = [];
 
@@ -45,7 +55,12 @@ function _fastLoop() {
     LAST_FAST_LOOP = performance.now();
 
     for(var index = 0; index < LOOP_METHODS_FAST.length; index++) {
-        LOOP_METHODS_FAST[index](elapsed, LAST_FAST_LOOP);
+        try {
+            LOOP_METHODS_FAST[index](elapsed, LAST_FAST_LOOP);
+        } catch (ex) {
+            console.error("Problem in loop method");
+            debugger;
+        }
     }
 
     setTimeout(_fastLoop, 30);
