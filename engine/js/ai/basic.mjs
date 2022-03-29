@@ -45,7 +45,7 @@ export default class AI {
 
         if(performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
             if(this?.#character?.target?.position) {
-                console.log(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
+                console.debug(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
             }
             this.#lastDestinationPickedTime = performance.now();
             this.#character.target = {
@@ -60,13 +60,14 @@ export default class AI {
             if(randY > 0.5) this.#character.target.position.y = (10 * randY);
             else this.#character.target.position.y = (-10 * randY);
 
-            console.log(`New target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
+            console.debug(`New target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
         }
     }
 
     leash(point, distance) {
         var dist = this.#character.position.distance(point);
         if(dist > distance) {
+            console.log(`Wandered too far (${dist}), leashing to ${point.x}, ${point.y}`);
             this.target = point;
         }
     }

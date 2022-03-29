@@ -115,7 +115,7 @@ export default class Character {
         if(this.isPlayer && this._target instanceof Character) {
             this._target.addClass("targeted");
         }
-        console.log(`New target for ${this.name}!`);
+        console.log(`New target for ${this.name}: ${this?.target?.position?.x}, ${this?.target?.position?.y}`);
     }
 
     get isAlive() {
@@ -324,6 +324,7 @@ export default class Character {
     // private?
     // TODO: Should we just flag not alive and defer 'fading out' corpse?
     die() {
+        console.log(`${this.name} is dead now.`);
         document.getElementById("playfield").removeChild(this.graphic);
         RemoveCharacterFromList(this);
     }

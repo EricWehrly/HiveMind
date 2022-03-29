@@ -116,7 +116,7 @@ export default class Action extends Listed {
 
                 if(!this.checkDelay(this)) return;
 
-                baseCallback(options);
+                baseCallback.bind(this)(options);
             }
         }
     }
@@ -135,7 +135,7 @@ export default class Action extends Listed {
         if(thing.range) {
             if(!character?.target) return false;
 
-            if(character.getDistance(character.target) < thing.range) return false;
+            if(character.getDistance(character.target) > thing.range) return false;
         }
 
         return true;
