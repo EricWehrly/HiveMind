@@ -83,6 +83,10 @@ export default class Character {
         if (options.y != null) this._velocity.y = options.y;
     }
 
+    get dead() {
+        return this._health < 1;
+    }
+
     get technologies() {
         return this._technologies;
     }
@@ -144,11 +148,13 @@ export default class Character {
         console.log(`Adding technology ${technology.name} to character ${this.name}`);
         this._technologies.push(technology);
 
-        if (!this.hasEquipped(technology.type)) {
-            this.equip(technology);
-        }
+        if(technology.type) {
+            if (!this.hasEquipped(technology.type)) {
+                this.equip(technology);
+            }
 
-        console.log(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
+            console.log(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
+        }
     }
 
     shouldStopTargeting(distance = 6) {
@@ -318,7 +324,6 @@ export default class Character {
     // private?
     // TODO: Should we just flag not alive and defer 'fading out' corpse?
     die() {
-        this.dead = true;
         document.getElementById("playfield").removeChild(this.graphic);
         RemoveCharacterFromList(this);
     }
