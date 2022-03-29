@@ -51,6 +51,10 @@ localPlayer.AddTechnology(slap);
 
 const claws = new Technology({
     name: "claws",
+    type: Technology.Types.ATTACK,
+    range: 3,
+    damage: 3,
+    delay: 4200,
     actions: [
         new Action({
             name: "claws",
@@ -84,6 +88,7 @@ function checkPlayerInteraction() {
         Action.List["study"].enabled = false;
         localPlayer.toolTip.message = "";
                 
+        // for some reason we can fire off a consume and a study at the same time?
         if(characterType && CharacterType[characterType].isStudied) {
             Action.List["consume"].target = closest;
             Action.List["consume"].enabled = true;

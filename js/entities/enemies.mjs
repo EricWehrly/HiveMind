@@ -10,8 +10,8 @@ setTimeout(function() {
         color: 'red',
         health: 5,
         position: {
-            x: 5,
-            y: 5
+            x: 11,
+            y: 11
         },
         technologies: [claws]
     });
