@@ -44,7 +44,8 @@ const slap = new Technology({
     type: Technology.Types.ATTACK,
     range: 2,
     damage: 1,
-    delay: 3000
+    delay: 3000,
+    sound: 'audio/slap.mp3'
 });
 
 localPlayer.AddTechnology(slap);
@@ -54,7 +55,8 @@ const claws = new Technology({
     type: Technology.Types.ATTACK,
     range: 3,
     damage: 3,
-    delay: 4200,
+    delay: 4200
+    /*,
     actions: [
         new Action({
             name: "claws",
@@ -67,6 +69,7 @@ const claws = new Technology({
             }
         })
     ]
+    */
 });
 KeyboardController.AddDefaultBinding("claws", " ");
 
