@@ -47,18 +47,21 @@ export default class Action extends Listed {
             name: 'attack',
             callback: function(options) {
                 // TODO: Pull in enum from technology class
-                if(options?.character?.equipment?.attack == null) {
+                const eqipped = options?.character?.equipment?.attack;
+                if(eqipped == null) {
                     console.log("Character has no attack skill equipped!");
                     return;
                 }
 
-                const eqipped = options?.character?.equipment?.attack;
                 // TODO: This isn't going to track a per-character last action time. We need that.
                 if(!this.checkDelay(eqipped)) return;
 
                 if(!this.inRange(eqipped, options.character)) return;
 
-                console.log("Rawr");
+                // TODO: visual and audio cues
+                if(options?.character?.target) {
+                    options.character.target.health -= eqipped.damage;
+                }
             }
         });
 
