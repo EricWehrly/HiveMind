@@ -8,7 +8,7 @@ setTimeout(function() {
 
     new Character({
         color: 'red',
-        health: 5,
+        health: 40,
         position: {
             x: 11,
             y: 11

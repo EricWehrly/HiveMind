@@ -32,7 +32,7 @@ const localPlayer = new Character({
     name: "Local Player",
     color: "blue",
     speed: 5,
-    health: 100,
+    health: 40,
     additionalClasses: "player",
     ai: null,
     isPlayer: true
@@ -43,7 +43,7 @@ const slap = new Technology({
     name: "slap",
     type: Technology.Types.ATTACK,
     range: 2,
-    damage: 1,
+    damage: 10,
     delay: 3000,
     sound: 'audio/slap.mp3'
 });
@@ -56,20 +56,6 @@ const claws = new Technology({
     range: 3,
     damage: 3,
     delay: 4200
-    /*,
-    actions: [
-        new Action({
-            name: "claws",
-            delay: 3000,
-            requires: {
-                technology: "claws"
-            },
-            callback: function(options) {
-                console.log("CLAWS!");
-            }
-        })
-    ]
-    */
 });
 KeyboardController.AddDefaultBinding("claws", " ");
 

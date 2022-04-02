@@ -17,6 +17,8 @@ export default class Character {
     set health(newValue) {
         this._health = newValue;
         if (this._health <= 0) this.die();
+
+        this.redraw();
     }
 
     _position = new Point(0, 0);
@@ -231,6 +233,7 @@ export default class Character {
         }
     }
 
+    // TODO: We can use event emitters to separate drawing from logical
     redraw() {
 
         // TODO: get grid size constant
@@ -245,7 +248,8 @@ export default class Character {
 
         // TODO: Only change on resize ...
 
-        let targetSize = (this.health / 100) * gridSize;
+        // Find a different way to determine sizes ... or health proportions
+        let targetSize = (this.health / 40) * gridSize;
         if (targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
         this.graphic.style.width = targetSize + "px";
         this.graphic.style.height = targetSize + "px";
