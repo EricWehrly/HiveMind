@@ -2,6 +2,9 @@
 import Character from '../../js/entities/character-extensions.mjs';
 import Listed from './baseTypes/listed.mjs';
 import Requirements from './requirements.mjs';
+import Events from './events.mjs';
+
+Events.List.ActionFired = "ActionFired";
 
 export default class Action extends Listed {
 
@@ -121,6 +124,15 @@ export default class Action extends Listed {
                 if(!this.checkDelay(this)) return;
 
                 baseCallback.bind(this)(options);
+
+                /*
+                const details = {}
+                Object.assign(details, options);
+                details.name = this.name;
+                Events.RaiseEvent(Events.List.ActionFired, details);
+                */
+               
+                Events.RaiseEvent(`${Events.List.ActionFired}-${this.name}`, options);
             }
         }
     }

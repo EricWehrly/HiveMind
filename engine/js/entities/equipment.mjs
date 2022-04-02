@@ -1,3 +1,7 @@
+import Events from "../events.mjs";
+
+Events.List.EquipmentChanged = "EquipmentChanged"
+
 export default class Equipment {
 
     _attack = null;
@@ -30,6 +34,14 @@ export default class Equipment {
             console.warn(`Cannot equip type ${technology.type}`);
             return;
         }
+
+        const details = {
+            type: technology.type,
+            from: this[technology.type],
+            to: technology
+        };
+
+        Events.RaiseEvent(Events.List.EquipmentChanged, details);
 
         this[technology.type] = technology;
     }
