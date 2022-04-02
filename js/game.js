@@ -1,6 +1,7 @@
 import managedImport from './util/managed-import.js';
 
 import Game from '../engine/js/engine.mjs';
+import Events from '../engine/js/events.mjs';
 
 await managedImport('../engine/js/util/custom-style.js');
 
@@ -87,5 +88,11 @@ function checkPlayerInteraction() {
 }
 
 RegisterLoopMethod(checkPlayerInteraction, false);
+
+// TODO: Maybe in 'player' file, or 'ui' file, draw equipment screen
+// listen for equipped events to change equipment
+// listen for attack events to show cooldown on attack
+
+Events.RaiseEvent(Events.List.GameStart);
 
 console.log('Starting game.');

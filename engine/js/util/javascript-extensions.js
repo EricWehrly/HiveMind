@@ -61,3 +61,9 @@ export function GetColorAsRGBA(color) {
     context.fillRect(0,0,1,1);
     return context.getImageData(0,0,1,1).data;
 }
+
+export function generateId(len) {
+  var arr = new Uint8Array((len || 40) / 2)
+  window.crypto.getRandomValues(arr)
+  return Array.from(arr, dec2hex).join('')
+}
