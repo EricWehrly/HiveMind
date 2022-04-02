@@ -67,3 +67,7 @@ export function generateId(len) {
   window.crypto.getRandomValues(arr)
   return Array.from(arr, dec2hex).join('')
 }
+
+export function dec2hex (dec) {
+    return ('0' + dec.toString(16)).substr(-2)
+}
