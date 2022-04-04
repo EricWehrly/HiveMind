@@ -28,8 +28,23 @@ const Purposes =
     },
     "consume": {
         name: "consume",
-        think: function () {
+        think: function (character, elapsed) {
+            if (character.target) {
+                character.pointAtTarget();
 
+                if (character.position.equals(character.target.position)) {
+                    if(character.target.dead == true) {
+                        console.log(`Nommed it to death?`);
+                        character.target = null;
+                        character.SetCurrentPurpose("return");
+                    } else {
+                        const damageToDo = (character.damage || 1) * (elapsed / 1000);
+                        character.target.health -= damageToDo;
+                        // TODO: If more than remaining health, add that instead
+                        character.health += damageToDo;
+                    }
+                }
+            }
         }
     },
     "hunt": {
