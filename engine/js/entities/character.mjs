@@ -16,9 +16,8 @@ export default class Character {
 
     set health(newValue) {
         this._health = newValue;
-        if (this._health <= 0) this.die();
-
         this.redraw();
+        if (this._health <= 0) this.die();
     }
 
     _position = new Point(0, 0);
@@ -86,7 +85,7 @@ export default class Character {
     }
 
     get dead() {
-        return this._health < 1;
+        return this._health <= 0;
     }
 
     get technologies() {
