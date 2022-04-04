@@ -71,3 +71,9 @@ export function generateId(len) {
 export function dec2hex (dec) {
     return ('0' + dec.toString(16)).substr(-2)
 }
+
+function randomBetween(first, second) {
+
+    return Math.floor(Math.random() * second) + first;
+}
+Math.randomBetween = randomBetween;
