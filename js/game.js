@@ -1,7 +1,6 @@
 import managedImport from './util/managed-import.js';
 
 import Game from '../engine/js/engine.mjs';
-import('./ui/ui.mjs');
 import Events from '../engine/js/events.mjs';
 
 await managedImport('../engine/js/util/custom-style.js');
@@ -20,6 +19,7 @@ import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 import CharacterType from './entities/characterType.mjs';
+import UI from './ui/ui.mjs';
 
 import './entities/food.mjs';
 import './entities/enemies.mjs';
@@ -29,6 +29,25 @@ KeyboardController.AddDefaultBinding("subdivide", "q");
 // TODO: this needs to be a more generic 'interact' with specific functions, maybe like how attack works
 KeyboardController.AddDefaultBinding("study", "f");
 KeyboardController.AddDefaultBinding("consume", "f");
+
+const slap = new Technology({
+    name: "slap",
+    type: Technology.Types.ATTACK,
+    range: 2,
+    damage: 10,
+    delay: 3000,
+    sound: 'audio/slap.mp3'
+});
+
+const claws = new Technology({
+    name: "claws",
+    type: Technology.Types.ATTACK,
+    range: 3,
+    damage: 3,
+    delay: 4200
+});
+KeyboardController.AddDefaultBinding("claws", " ");
+
 
 const localPlayer = new Character({
     name: "Local Player",
@@ -40,26 +59,6 @@ const localPlayer = new Character({
     isPlayer: true
 });
 new KeyboardController({ character: localPlayer });
-
-const slap = new Technology({
-    name: "slap",
-    type: Technology.Types.ATTACK,
-    range: 2,
-    damage: 10,
-    delay: 3000,
-    sound: 'audio/slap.mp3'
-});
-
-localPlayer.AddTechnology(slap);
-
-const claws = new Technology({
-    name: "claws",
-    type: Technology.Types.ATTACK,
-    range: 3,
-    damage: 3,
-    delay: 4200
-});
-KeyboardController.AddDefaultBinding("claws", " ");
 
 localPlayer.toolTip = new ToolTip({
     entity: localPlayer
@@ -89,6 +88,8 @@ function checkPlayerInteraction() {
 }
 
 RegisterLoopMethod(checkPlayerInteraction, false);
+
+localPlayer.AddTechnology(slap);
 
 Events.RaiseEvent(Events.List.GameStart);
 
