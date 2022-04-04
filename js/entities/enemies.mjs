@@ -1,8 +1,8 @@
 import Character from './character-extensions.mjs';
 import Technology from '../../engine/js/technology.mjs';
+import Events from '../../engine/js/events.mjs';
 
-// TODO: Now we need an "on game start" event
-setTimeout(function() {
+Events.Subscribe(Events.List.GameStart, function() {
     
     const claws = Technology.Get("claws");
 
@@ -15,5 +15,4 @@ setTimeout(function() {
         },
         technologies: [claws]
     });
-
-}, 2000);
+});
