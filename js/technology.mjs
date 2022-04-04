@@ -14,14 +14,7 @@ export default class Technology extends Listed {
         super(options);
 
         if(options.sound) {
-            /*
-            this.sound = document.createElement('audio');
-            this.sound.preload = true;
-            this.sound.src = options.sound;
-            document.body.appendChild(this.sound);
-            */
            this.sound = new Audio(options.sound);
-           console.log(this.sound);
         }
     }
 }
