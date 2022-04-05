@@ -29,7 +29,7 @@ Events.Subscribe(`${Events.List.ActionFired}-attack`, function(details) {
 
 Events.Subscribe(Events.List.EquipmentChanged, function(details) {
 
-    console.log("Got it");
+    // console.log("Got it");
 
     // console.log(details);
     // equippedDisplay.innerHtml = details;
