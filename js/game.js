@@ -46,8 +46,6 @@ const claws = new Technology({
     damage: 3,
     delay: 4200
 });
-KeyboardController.AddDefaultBinding("claws", " ");
-
 
 const localPlayer = new Character({
     name: "Local Player",

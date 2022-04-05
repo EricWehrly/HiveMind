@@ -10,7 +10,6 @@ const Purposes =
 
                 if (character.position.equals(character.target.position)) {
                     if(character.target.dead == true) {
-                        console.log(`Studied it to death?`);
                         // TODO: contemplate
                         // TODO: support > 1 technology
                         if(character.target.technologies && character.target.technologies.length > 0) {
@@ -34,7 +33,6 @@ const Purposes =
 
                 if (character.position.equals(character.target.position)) {
                     if(character.target.dead == true) {
-                        console.log(`Nommed it to death?`);
                         character.target = null;
                         character.SetCurrentPurpose("return");
                     } else {
