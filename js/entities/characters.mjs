@@ -44,8 +44,6 @@ function characterLoop(elapsed) {
         character.think(elapsed);
 
         character.move(elapsed / 1000);
-
-        character.redraw();
     }
 }
 

@@ -4,8 +4,13 @@ import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';
 import Equipment from './equipment.mjs';
 import BasicAI from '../ai/basic.mjs';
+import Events from '../events.mjs';
+import './character-graphics.mjs';
 
-// extends entity?
+Events.List.CharacterCreated = "CharacterCreated";
+Events.List.CharacterDied = "CharacterDied";
+Events.List.CharacterTargetChanged = "CharacterTargetChanged";
+
 export default class Character {
 
     _health = 1;
@@ -16,7 +21,6 @@ export default class Character {
 
     set health(newValue) {
         this._health = newValue;
-        this.redraw();
         if (this._health <= 0) this.die();
     }
 
@@ -35,6 +39,7 @@ export default class Character {
     _equipment = new Equipment(this);
 
     #spawnPosition = {};
+    #initialHealth;
 
     _target = null;
 
@@ -50,13 +55,14 @@ export default class Character {
         if (options.color === null) delete this.color;
         // options.image
         this.#spawnPosition = new Point(this.position.x, this.position.y);
+        this.#initialHealth = JSON.parse(JSON.stringify(this.health));
 
         // TODO: let's default to no AI at all unless prescribed ...
         this.setupAI();
 
-        this.createGraphic();
-
         AddCharacterToList(this);
+
+        Events.RaiseEvent(Events.List.CharacterCreated, this);
     }
 
     get position() {
@@ -103,9 +109,8 @@ export default class Character {
     set target(newValue) {
         if (newValue === undefined || newValue == this._target) return;
 
-        if(this._target instanceof Character) {
-            this._target.removeClass("targeted");
-        }
+        if(newValue == this._target) return;
+        var oldValue = this._target;
 
         if(newValue instanceof Point) {
             this._target = {
@@ -113,9 +118,11 @@ export default class Character {
             }
         } else this._target = newValue;
 
-        if(this.isPlayer && this._target instanceof Character) {
-            this._target.addClass("targeted");
-        }
+        Events.RaiseEvent(Events.List.CharacterTargetChanged, {
+            character: this,
+            from: oldValue,
+            to: this._target
+        });
         console.log(`New target for ${this.name}: ${this?.target?.position?.x}, ${this?.target?.position?.y}`);
     }
 
@@ -230,50 +237,6 @@ export default class Character {
             this._position.x += this._velocity.x * this._speed * amount;
             this._position.y += this._velocity.y * this._speed * amount;
         }
-    }
-
-    // TODO: We can use event emitters to separate drawing from logical
-    redraw() {
-
-        // TODO: get grid size constant
-        const gridSize = 32;
-
-        // TODO: Not this
-        const MINIMUM_SIZE = gridSize / 2;
-
-        // maybe the playfield should move and the player should stay centered ...
-        this.graphic.style.left = (gridSize * this._position.x) + "px";
-        this.graphic.style.top = (gridSize * this._position.y) + "px";
-
-        // TODO: Only change on resize ...
-
-        // Find a different way to determine sizes ... or health proportions
-        let targetSize = (this.health / 40) * gridSize;
-        if (targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
-        this.graphic.style.width = targetSize + "px";
-        this.graphic.style.height = targetSize + "px";
-    }
-
-    createGraphic() {
-
-        this.graphic = document.createElement('div');
-        this.graphic.className = 'character';
-        // if(this.color) this.graphic.style.backgroundColor = this.color;
-        if (this.color) this.graphic.className += ` ${this.color}`;
-        if (this.isAlive) this.graphic.className += ' alive';
-
-        if (this.additionalClasses) this.graphic.className += " " + this.additionalClasses;
-
-        // TODO: This playfield reference should probably be stored somewhere more globally referencable
-        document.getElementById("playfield").appendChild(this.graphic);
-    }
-
-    addClass(className) {
-        this.graphic.className += ` ${className}`;
-    }
-
-    removeClass(className) {
-        this.graphic.className = this.graphic.className.replace(className, "").trim();
     }
 
     setupAI() {
