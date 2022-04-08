@@ -85,6 +85,8 @@ function checkPlayerInteraction() {
     }
 }
 
+Game.Camera.setTarget(localPlayer);
+
 RegisterLoopMethod(checkPlayerInteraction, false);
 
 localPlayer.AddTechnology(slap);
