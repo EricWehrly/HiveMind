@@ -1,4 +1,8 @@
-const Game = {};
+import Camera from './camera.mjs';
+
+const Game = {
+    Camera: new Camera()
+};
 
 export default Game;
 
