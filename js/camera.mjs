@@ -21,7 +21,7 @@ export default class Camera {
     constructor() {
         Camera.#instance = this;
         
-        RegisterLoopMethod(this.#renderloop.bind(this), true);
+        this.#renderloop();
     }
 
     getScreenRedt() {
@@ -37,8 +37,10 @@ export default class Camera {
         Camera.#target = target;
     }
 
-    #renderloop(elapsed) {
+    #renderloop() {
         // we can expand this to encapsulate all renderers, later
         Renderer.Render(this.getScreenRedt());
+
+        window.requestAnimationFrame(this.#renderloop.bind(this));
     }
 }
