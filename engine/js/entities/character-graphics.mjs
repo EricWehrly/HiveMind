@@ -1,6 +1,7 @@
 import Character from './character.mjs';
 import Events from '../events.mjs';
 import { RegisterLoopMethod } from './../loop.mjs';
+import Renderer from '../rendering/renderer.mjs';
 
 function createGraphic(character) {
 
@@ -37,7 +38,7 @@ function removeClass(character, className) {
     character.graphic.className = character.graphic.className.replace(className, "").trim();
 }
 
-function redraw(character) {
+function redraw(character, screenRect) {
 
     if(!character.graphic) createGraphic(character);
 
@@ -60,10 +61,11 @@ function redraw(character) {
     character.graphic.style.height = targetSize + "px";
 }
 
-function redraw_loop() {
+function redraw_loop(screenRect) {
 
     for(var character of CHARACTER_LIST) {
-        redraw(character);
+        // if character in screenRect
+        redraw(character, screenRect);
     }
 }
 
@@ -73,4 +75,6 @@ Events.Subscribe(Events.List.GameStart, function() {
     Events.Subscribe(Events.List.CharacterTargetChanged, updateTargetingClasses);
 });
 
-RegisterLoopMethod(redraw_loop, true);
+Renderer.RegisterRenderMethod(10, redraw_loop);
+
+// RegisterLoopMethod(redraw_loop, true);

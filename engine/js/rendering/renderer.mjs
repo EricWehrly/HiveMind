@@ -1,3 +1,5 @@
+import { generateId } from "../util/javascript-extensions.js";
+
 export default class Renderer {
 
     static _renderMethods = [];
@@ -33,7 +35,7 @@ export default class Renderer {
 
     static #reprioritizeRendering = function() {
     
-        Renderer_renderMethods = [];
+        Renderer._renderMethods = [];
         for(var priorityIndex in Renderer.#renderMethodPriorities) {
             Renderer._renderMethods.push(Renderer.#renderMethodPriorities[priorityIndex]);
         }
