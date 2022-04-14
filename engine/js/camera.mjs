@@ -1,6 +1,10 @@
 import Renderer from "./rendering/renderer-dom.mjs";
 import { RegisterLoopMethod } from "./loop.mjs";
 
+// TODO: Global reference somewhere somehow
+const GRID_SIZE = 32;
+const SCREEN_BORDER_PADDING = 4;
+
 /*
     follow player
 
@@ -20,16 +24,34 @@ export default class Camera {
 
     constructor() {
         Camera.#instance = this;
+        if(window) window.Camera = this;
         
         this.#renderloop();
     }
 
-    getScreenRedt() {
+    // pixels
+    getViewPortSize() {
         return {
-            x: 2,
-            y: 3,
-            width: 200,
-            height: 100
+            width: 800,
+            height: 600
+        }
+    }
+
+    // game units
+    getScreenRect() {
+
+        if(Camera.#target == null) return {};
+
+        const viewport = this.getViewPortSize();
+        const gridHalfWidth = (viewport.width / 2) / GRID_SIZE;
+        const gridHalfHeight = (viewport.height / 2) / GRID_SIZE;
+
+        // TODO: cache
+        return {
+            x: Camera.#target.position.x - gridHalfWidth,
+            y: Camera.#target.position.y - gridHalfHeight,
+            width: gridHalfWidth * 2,
+            height: gridHalfHeight * 2
         }
     }
 
@@ -39,7 +61,7 @@ export default class Camera {
 
     #renderloop() {
         // we can expand this to encapsulate all renderers, later
-        Renderer.Render(this.getScreenRedt());
+        Renderer.Render(this.getScreenRect());
 
         window.requestAnimationFrame(this.#renderloop.bind(this));
     }

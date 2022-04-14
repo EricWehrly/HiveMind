@@ -38,6 +38,7 @@ function removeClass(character, className) {
     character.graphic.className = character.graphic.className.replace(className, "").trim();
 }
 
+// TODO: needs redraw
 function redraw(character, screenRect) {
 
     if(!character.graphic) createGraphic(character);
@@ -48,11 +49,13 @@ function redraw(character, screenRect) {
     // TODO: Not this
     const MINIMUM_SIZE = gridSize / 2;
 
-    // maybe the playfield should move and the player should stay centered ...
-    character.graphic.style.left = (gridSize * character.position.x) + "px";
-    character.graphic.style.top = (gridSize * character.position.y) + "px";
+    const offsetPosition = {
+        x: character.position.x - screenRect.x,
+        y: character.position.y - screenRect.y
+    };
 
-    // TODO: Only change on resize ...
+    character.graphic.style.left = (gridSize * offsetPosition.x) + "px";
+    character.graphic.style.top = (gridSize * offsetPosition.y) + "px";
 
     // Find a different way to determine sizes ... or health proportions
     let targetSize = (character.health / 40) * gridSize;

@@ -21,8 +21,8 @@ Events.Subscribe(Events.List.GameStart, function() {
     for (var i = 0; i < number_of_food_spawn_points; i++) {
 
         const spawnerPosition = {
-            x: Math.randomBetween(4, 40),
-            y: Math.randomBetween(4, 20),
+            x: Math.randomBetween(1, 30),
+            y: Math.randomBetween(1, 16),
         }
         const amountToSpawn = Math.randomBetween(food_per_spawn_min, food_per_spawn_max);
         for(var i2 = 0; i2 < amountToSpawn; i2++) {
