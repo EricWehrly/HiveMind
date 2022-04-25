@@ -123,7 +123,7 @@ export default class Character {
             from: oldValue,
             to: this._target
         });
-        console.log(`New target for ${this.name}: ${this?.target?.position?.x}, ${this?.target?.position?.y}`);
+        console.debug(`New target for ${this.name}: ${this?.target?.position?.x}, ${this?.target?.position?.y}`);
     }
 
     get isAlive() {
