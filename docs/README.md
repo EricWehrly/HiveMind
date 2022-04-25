@@ -6,6 +6,10 @@ Forager but you're a hive mind. So far.
 
 ## Development
 
+`docker build . -t hivemind && docker run --init -it -p 5000:5000 hivemind`
+
+---
+
 Extra scripts were added to do cache busting manually but boy it was late and I wasn't thinking.
 
 Caching can be disabled in Chrome (when dev tools is open) by:

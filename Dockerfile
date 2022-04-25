@@ -2,6 +2,9 @@ FROM node:lts-alpine
 
 EXPOSE 5000
 
-ADD index.js .
+WORKDIR /hivemind
 
-CMD node index.js
+ADD . .
+
+# CMD node index.js
+CMD ["node", "server/index.js"]

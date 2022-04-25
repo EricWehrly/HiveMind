@@ -1,7 +1,3 @@
-`docker build . -t hivemind && docker run -p 5000:5000 hivemind`
-
-## Notes / follow-ups:
-
 Implemented:
 
 https://www.section.io/engineering-education/a-raw-nodejs-rest-api-without-frameworks-such-as-express/
