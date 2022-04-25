@@ -1,3 +1,5 @@
+import makeOffer from "./wrtc.mjs";
+
 // call the server and let it know we 'joined'
 const SERVER = "http://localhost:5000";
 const ENDPOINT = "/api/player";
@@ -7,7 +9,12 @@ const ENDPOINT = "/api/player";
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 export default class Client {
 
+    static peerConnection;
+
     static {
+
+        makeOffer();
+
         const url = `${SERVER}${ENDPOINT}`;
 
         const options = {
