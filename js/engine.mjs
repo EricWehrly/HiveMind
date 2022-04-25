@@ -1,4 +1,5 @@
 import Camera from './camera.mjs';
+import Client from './network/client.mjs';
 
 const Game = {
     Camera: new Camera()
