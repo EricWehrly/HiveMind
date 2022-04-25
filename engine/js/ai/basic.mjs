@@ -67,7 +67,7 @@ export default class AI {
     leash(point, distance) {
         var dist = this.#character.position.distance(point);
         if(dist > distance) {
-            console.log(`Wandered too far (${dist}), leashing to ${point.x}, ${point.y}`);
+            console.debug(`Wandered too far (${dist}), leashing to ${point.x}, ${point.y}`);
             this.target = point;
         }
     }
