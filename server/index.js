@@ -1,6 +1,7 @@
 const http = require("http");
 const PORT = process.env.PORT;
 const { serveFile } = require('./serve-file.js');
+const { playerJoined } = require('./player.js');
 
 const server = http.createServer(async (req, res) => {
 
@@ -22,18 +23,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     else if(req.url === "/api/player" && req.method === "POST") {
-        console.log("Player joined");
-
-        res.writeHead(200, { "Content-Type": "application/json" });
-        req.on('end', () => {
-            if(!body) {
-                console.log("No body");
-                // console.log(req);
-            }
-            console.log(body);
-            res.end('ok');
-        });
-        // log the player and send back the current player list
+        playerJoined(req, res, body);
     }
 
     else if(serveFile(req, res)) {
