@@ -1,17 +1,22 @@
 const http = require("http");
-const PORT = process.env.PORT || 5000;
-// import serveFile from "./serve-file";
+const PORT = process.env.PORT;
 const { serveFile } = require('./serve-file.js');
 
 const server = http.createServer(async (req, res) => {
-    //set the request route
+    
     if (req.url === "/api" && req.method === "GET") {
-        //response headers
+        
         res.writeHead(200, { "Content-Type": "application/json" });
-        //set the response
+        
         res.write("Hi there, This is a Vanilla Node.js API");
-        //end the response
+        
         res.end();
+    }
+
+    else if(req.url === "/api/player" && req.method === "POST") {
+        console.log("Player joined");
+        console.log(req.body);
+        // log the player and send back the current player list
     }
 
     else if(serveFile(req, res)) {
