@@ -1,10 +1,10 @@
 FROM node:lts-alpine
 
 EXPOSE 5000
+ENV PORT 5000
 
 WORKDIR /hivemind
 
-ADD . .
+# ADD . .
 
-# CMD node index.js
 CMD ["node", "server/index.js"]

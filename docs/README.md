@@ -6,7 +6,7 @@ Forager but you're a hive mind. So far.
 
 ## Development
 
-`docker build . -t hivemind && docker run --init -it -p 5000:5000 hivemind`
+`docker build . -t hivemind && docker run --init -it -v /$(pwd):/hivemind -p 5000:5000 hivemind`
 
 ---
 
