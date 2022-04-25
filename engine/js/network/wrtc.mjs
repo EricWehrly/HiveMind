@@ -1,26 +1,16 @@
 // static?
 let peerConnection;
 
-export default function makeOffer(promise) {
+export default async function makeOffer(promise) {
     peerConnection = createPeerConnection(lasticecandidate);
     const dataChannel = peerConnection.createDataChannel('chat');
     // TODO:
     // dataChannel.onopen = datachannelopen;
     // dataChannel.onmessage = datachannelmessage;
-    const createOfferPromise = peerConnection.createOffer();
-    createOfferPromise.then(createOfferDone, createOfferFailed)
-        .then(promise);
-}
 
-function createOfferDone(offer) {
-  console.log('createOfferDone');
-  const setLocalPromise = peerConnection.setLocalDescription(offer);
-  // setLocalPromise.then(setLocalDone, setLocalFailed);
-}
-
-function createOfferFailed(reason) {
-  console.log('createOfferFailed');
-  console.log(reason);
+    const offer = await peerConnection.createOffer();
+    peerConnection.setLocalDescription(offer)
+    return offer;
 }
 
 // ------------------------------------------------- \\

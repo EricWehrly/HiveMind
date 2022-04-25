@@ -9,17 +9,21 @@ const ENDPOINT = "/api/player";
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 export default class Client {
 
-    static peerConnection;
-
     static {
 
-        makeOffer();
+        makeOffer()
+            .then((offer) => {
+                this.notifyServer(offer);
+            });
+    }
+
+    static notifyServer(offer) {
 
         const url = `${SERVER}${ENDPOINT}`;
 
         const options = {
             method: 'POST',
-            body: JSON.stringify("hello")
+            body: JSON.stringify(offer)
         };
 
         fetch(url, options)
