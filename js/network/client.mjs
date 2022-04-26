@@ -4,7 +4,8 @@ import makeAnswer from "./webrtc/answer.mjs";
 // call the server and let it know we 'joined'
 const SERVER = window.location.href;
 const ENDPOINTS = {
-    JOIN: "api/player",
+    JOIN: "api/join",
+    OFFER: "api/offer",
     ANSWER: "api/answer",
     HEARTBEAT: "api/heartbeat"
 }
@@ -14,22 +15,19 @@ export default class Client {
 
     static LOCAL_PLAYER_ID = null;
     static HEARTBEAT_INTERVAL = null;
+    static PEER_CONNECTION = null;
 
     static {
 
-        makeOffer()
-            .then((offer) => {
-                this.notifyServer(offer);
-            });
+        this.join();
     }
 
-    static notifyServer(offer) {
+    static join() {
 
         const url = `${SERVER}${ENDPOINTS.JOIN}`;
 
         const options = {
-            method: 'POST',
-            body: JSON.stringify(offer)
+            method: 'POST'
         };
 
         fetch(url, options)
@@ -37,15 +35,16 @@ export default class Client {
                 response.json()
                     .then(body => {
                         Client.LOCAL_PLAYER_ID = body.playerId;
-                        // console.log(playerId)
+                        console.log(`Got player id ${Client.LOCAL_PLAYER_ID}`);
                         if(body.offer) {
+                            // TODO innit?
                             const offer = JSON.parse(body.offer);
                             makeAnswer(offer)
                                 .then(answer => {
                                     this.giveAnswer(offer, answer);
                                 });
                         } else {
-                            Client.HEARTBEAT_INTERVAL = setInterval(this.heartbeat, 5000);
+                            this.giveOffer();
                         }
                     });
             })
@@ -53,6 +52,31 @@ export default class Client {
         // TODO: on error
         // if host not reachable
         // etc
+    }
+
+    static giveOffer() {
+
+        makeOffer().then(
+            (peerConnection) => {
+
+                Client.PEER_CONNECTION = peerConnection;
+
+                const url = `${SERVER}${ENDPOINTS.OFFER}`;
+
+                const offer = peerConnection.localDescription;
+
+        const options = {
+            method: 'POST',
+            headers: {
+                "playerid": Client.LOCAL_PLAYER_ID
+            },
+            body: JSON.stringify(offer)
+        };
+
+        console.log("Sending offer to server.");
+        fetch(url, options);
+        Client.HEARTBEAT_INTERVAL = setInterval(this.heartbeat, 5000);
+        });
     }
 
     static heartbeat() {
@@ -66,14 +90,19 @@ export default class Client {
             }
         };
 
-        fetch(url, options)
-        .then(response => {
-            if(response.status == 200) {
-                response.json().then(console.log);
-                // TODO: accept the answer into the rtc connection
-                clearInterval(HEARTBEAT_INTERVAL);
-            }
-        });
+        try {
+            fetch(url, options)
+            .then(response => {
+                if(response.status == 200) {
+                    response.json().then(console.log);
+                    // TODO: accept the answer into the rtc connection
+                    clearInterval(Client.HEARTBEAT_INTERVAL);
+                }
+            });
+        } catch(ex) {
+            console.error(ex);
+            clearInterval(Client.HEARTBEAT_INTERVAL);
+        }
     }
 
     static giveAnswer(offer, answer) {
@@ -99,3 +128,5 @@ export default class Client {
             });
     }
 }
+
+window.Client = Client;
