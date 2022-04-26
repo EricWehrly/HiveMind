@@ -2,16 +2,16 @@ import createPeerConnection from './common.mjs';
 
 export default async function makeAnswer(offer) {
 
-    const peerConnection = createPeerConnection();
-    peerConnection.ondatachannel = handledatachannel;
-    await peerConnection.setRemoteDescription(offer);
-    const answer = await peerConnection.createAnswer();
+  const peerConnection = createPeerConnection();
+  peerConnection.ondatachannel = handledatachannel;
+  await peerConnection.setRemoteDescription(offer);
+  const answer = await peerConnection.createAnswer();
 
-    return answer;
+  return answer;
 }
 
 function handledatachannel(event) {
-  
+
   console.debug('handledatachannel');
   dataChannel = event.channel;
   dataChannel.onopen = () => {
@@ -19,7 +19,7 @@ function handledatachannel(event) {
     dataChannel.send("Greetings!");
   }
   dataChannel.onmessage = (message) => {
-      console.log("New message:");
-      console.log(message);
+    console.log("New message:");
+    console.log(message);
   }
 }
