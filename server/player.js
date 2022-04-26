@@ -51,7 +51,13 @@ function offerAnswered(request, response) {
         } else {
 
             const requestPayload = JSON.parse(body);
-            console.log(requestPayload);
+            if(requestPayload.offerPlayerId 
+                && requestPayload.answer
+                && requestPayload.offerPlayerId in PLAYER_LIST) {
+                    PLAYER_LIST[requestPayload.offerPlayerId].answer = requestPayload.answer;
+                } else {
+                    console.error("!!!");
+                }
         }
         response.end('ok');
     });
@@ -75,16 +81,14 @@ function getOpenoffer(playerId) {
 
 function heartbeat(request, response) {
 
-    console.log(request.headers);
-    /*
-    if(waitingToken) {
+    const playerId = request?.headers?.playerid;
+    if(playerId && playerId in PLAYER_LIST && PLAYER_LIST[playerId].answer != null) {
         response.writeHead(200, { "Content-Type": "application/json" });
-        response.end(waitingToken);
-        waitingToken = null;
+        response.end(JSON.stringify(PLAYER_LIST[playerId].answer));
+    } else {        
+        response.writeHead(201);
+        response.end("ok");
     }
-    else response.end();
-    */
-    response.end();
 }
 
 exports.playerJoined = playerJoined;
