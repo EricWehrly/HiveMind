@@ -36,7 +36,7 @@ export default class Client {
                     .then(body => {
                         Client.LOCAL_PLAYER_ID = body.playerId;
                         console.log(`Got player id ${Client.LOCAL_PLAYER_ID}`);
-                        if(body.offer) {
+                        if (body.offer) {
                             // TODO innit?
                             const offer = JSON.parse(body.offer);
                             makeAnswer(offer)
@@ -65,18 +65,18 @@ export default class Client {
 
                 const offer = peerConnection.localDescription;
 
-        const options = {
-            method: 'POST',
-            headers: {
-                "playerid": Client.LOCAL_PLAYER_ID
-            },
-            body: JSON.stringify(offer)
-        };
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        "playerid": Client.LOCAL_PLAYER_ID
+                    },
+                    body: JSON.stringify(offer)
+                };
 
-        console.log("Sending offer to server.");
-        fetch(url, options);
-        Client.HEARTBEAT_INTERVAL = setInterval(this.heartbeat, 5000);
-        });
+                console.log("Sending offer to server.");
+                fetch(url, options);
+                Client.HEARTBEAT_INTERVAL = setInterval(this.heartbeat, 5000);
+            });
     }
 
     static heartbeat() {
@@ -92,14 +92,14 @@ export default class Client {
 
         try {
             fetch(url, options)
-            .then(response => {
-                if(response.status == 200) {
-                    response.json().then(console.log);
-                    // TODO: accept the answer into the rtc connection
-                    clearInterval(Client.HEARTBEAT_INTERVAL);
-                }
-            });
-        } catch(ex) {
+                .then(response => {
+                    if (response.status == 200) {
+                        response.json().then(console.log);
+                        // TODO: accept the answer into the rtc connection
+                        clearInterval(Client.HEARTBEAT_INTERVAL);
+                    }
+                });
+        } catch (ex) {
             console.error(ex);
             clearInterval(Client.HEARTBEAT_INTERVAL);
         }
