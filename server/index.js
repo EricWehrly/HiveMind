@@ -1,7 +1,7 @@
 const http = require("http");
 const PORT = process.env.PORT;
 const { serveFile } = require('./serve-file.js');
-const { playerJoined, offerAnswered, heartbeat } = require('./player.js');
+const { playerJoined, offerMade, offerAnswered, heartbeat } = require('./player.js');
 
 const server = http.createServer(async (req, res) => {
     
@@ -15,8 +15,12 @@ const server = http.createServer(async (req, res) => {
         res.end();
     }
 
-    else if(req.url === "/api/player" && req.method === "POST") {
+    else if(req.url === "/api/join" && req.method === "POST") {
         playerJoined(req, res);
+    }
+
+    else if(req.url === "/api/offer" && req.method === "POST") {
+        offerMade(req, res);
     }
 
     else if(req.url === "/api/answer" && req.method === "POST") {

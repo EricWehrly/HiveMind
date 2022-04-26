@@ -10,29 +10,40 @@ function playerJoined(request, response) {
         playerId
     };
 
-    let body = '';
-    request.on('data', chunk => {
-        body += chunk.toString(); // convert Buffer to string
-    });
-
     response.writeHead(200, { "Content-Type": "application/json" });
-    request.on('end', () => {
-        if(!body) {
-            console.error("No body");
-            // console.log(req);
-        } else {
-            console.log(`Adding player ${playerId} to list`);
-            // TODO: validate token
 
-            PLAYER_LIST[playerId] = {
-                offer: body
+    console.log(`Adding player ${playerId} to list`);
+    // TODO: validate token
+
+    PLAYER_LIST[playerId] = {}
+
+    responseObject.offer = getOpenoffer(playerId);
+    response.end(JSON.stringify(responseObject));  
+}
+
+function offerMade(request, response) {
+
+    const playerId = request?.headers?.playerid;
+    console.log(`Received offer from player ${playerId}`);
+    if(playerId && playerId in PLAYER_LIST) {
+
+        let body = '';
+        request.on('data', chunk => {
+            body += chunk.toString(); // convert Buffer to string
+        });
+
+        request.on('end', () => {
+            if(!body) {
+                console.error("No body");
+                // console.log(req);
+            } else {
+                // TODO: validate token
+                PLAYER_LIST[playerId].offer = body;
             }
-
-            responseObject.offer = getOpenoffer(playerId);
-        }
-        response.end(JSON.stringify(responseObject));
-    });
-    // log the player and send back the current player list    
+            response.writeHead(201);
+            response.end("ok");
+        });
+    }
 }
 
 function offerAnswered(request, response) {
@@ -67,7 +78,7 @@ function getOpenoffer(playerId) {
     for(var key in PLAYER_LIST) {
         if(key == playerId) continue;
         var player = PLAYER_LIST[key];
-        if(!player.answer) {
+        if(player.offer && !player.answer) {
             console.log(`Found an open offer from ${key}, sending to ${playerId}`);
             // this hack got bad, probably need to do differently
             const offer = JSON.parse(player.offer);
@@ -82,7 +93,7 @@ function getOpenoffer(playerId) {
 function heartbeat(request, response) {
 
     const playerId = request?.headers?.playerid;
-    if(playerId && playerId in PLAYER_LIST && PLAYER_LIST[playerId].answer != null) {
+    if(playerHasAnswer(playerId)) {
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end(JSON.stringify(PLAYER_LIST[playerId].answer));
     } else {        
@@ -91,6 +102,13 @@ function heartbeat(request, response) {
     }
 }
 
+function playerHasAnswer(playerId) {
+    return playerId 
+        && playerId in PLAYER_LIST
+        && PLAYER_LIST[playerId].answer != null;
+}
+
 exports.playerJoined = playerJoined;
+exports.offerMade = offerMade;
 exports.offerAnswered = offerAnswered;
 exports.heartbeat = heartbeat;
