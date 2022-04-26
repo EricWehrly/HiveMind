@@ -1,5 +1,5 @@
 import makeOffer from "./webrtc/offer.mjs";
-import makeAnswer from "./webrtc/answer-await.mjs";
+import makeAnswer from "./webrtc/answer.mjs";
 
 // call the server and let it know we 'joined'
 const SERVER = window.location.href;
