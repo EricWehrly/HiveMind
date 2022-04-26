@@ -6,8 +6,11 @@ function playerJoined(request, response) {
 
     console.log("Player joined");
     const playerId = randomUUID();
+    const responseObject = {
+        playerId
+    };
 
-    let body;
+    let body = '';
     request.on('data', chunk => {
         body += chunk.toString(); // convert Buffer to string
     });
@@ -18,16 +21,31 @@ function playerJoined(request, response) {
             console.error("No body");
             // console.log(req);
         } else {
-            console.log("Adding player to list");
+            console.log(`Adding player ${playerId} to list`);
             // TODO: validate token
 
             PLAYER_LIST[playerId] = {
-                token: body
+                offer: body
             }
+
+            responseObject.offer = getOpenoffer(playerId);
         }
-        response.end(JSON.stringify(playerId));
+        response.end(JSON.stringify(responseObject));
     });
     // log the player and send back the current player list    
+}
+
+function getOpenoffer(playerId) {
+    for(var key in PLAYER_LIST) {
+        if(key == playerId) continue;
+        var player = PLAYER_LIST[key];
+        if(!player.answer) {
+            console.log(`Found an open offer from ${key}, sending to ${playerId}`);
+            return player.offer;
+        }
+    }
+
+    return undefined;
 }
 
 function heartbeat(request, response) {

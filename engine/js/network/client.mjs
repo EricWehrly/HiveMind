@@ -1,8 +1,8 @@
 import makeOffer from "./wrtc.mjs";
 
 // call the server and let it know we 'joined'
-const SERVER = "http://localhost:5000";
-const ENDPOINT = "/api/player";
+const SERVER = window.location.href;
+const ENDPOINT = "api/player";
 
 // need to generate a join code ...
 
@@ -27,8 +27,11 @@ export default class Client {
         };
 
         fetch(url, options)
-            .then(response => console.log(response))
-            .then(data => console.log(data));
+            .then(response => {
+                response.json()
+                    .then(playerId => console.log(playerId));
+            })
+            // .then(data => console.log(data));
 
         // TODO: on error
         // if host not reachable
