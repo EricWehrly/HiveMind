@@ -4,15 +4,8 @@ const { serveFile } = require('./serve-file.js');
 const { playerJoined } = require('./player.js');
 
 const server = http.createServer(async (req, res) => {
-
-    let body = '';
-    if(req.method === "POST") {
-        
-        req.on('data', chunk => {
-            body += chunk.toString(); // convert Buffer to string
-        });
-    }
     
+    // we should probably write a simple router class
     if (req.url === "/api" && req.method === "GET") {
         
         res.writeHead(200, { "Content-Type": "application/json" });
@@ -23,7 +16,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     else if(req.url === "/api/player" && req.method === "POST") {
-        playerJoined(req, res, body);
+        playerJoined(req, res);
     }
 
     else if(serveFile(req, res)) {
