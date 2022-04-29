@@ -6,6 +6,7 @@ export default async function makeAnswer(offer) {
   peerConnection.ondatachannel = handledatachannel;
   await peerConnection.setRemoteDescription(offer);
   const answer = await peerConnection.createAnswer();
+  await peerConnection.setLocalDescription(answer);
 
   return answer;
 }
@@ -13,7 +14,7 @@ export default async function makeAnswer(offer) {
 function handledatachannel(event) {
 
   console.debug('handledatachannel');
-  dataChannel = event.channel;
+  const dataChannel = event.channel;
   dataChannel.onopen = () => {
     console.log("Data channel open.");
     dataChannel.send("Greetings!");
