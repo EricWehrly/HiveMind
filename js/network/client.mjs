@@ -94,9 +94,19 @@ export default class Client {
             fetch(url, options)
                 .then(response => {
                     if (response.status == 200) {
-                        response.json().then(console.log);
-                        // TODO: accept the answer into the rtc connection
-                        clearInterval(Client.HEARTBEAT_INTERVAL);
+                        response.json().then((answer) => {
+                            console.log(`Received answer from server.`);
+                            Client.PEER_CONNECTION.setRemoteDescription(answer)
+                                .then((something) => {
+                                    console.log(something);
+                                    /*
+                                    console.log("Sending a message?");
+                                    const dataChannel = Client.PEER_CONNECTION.channels.chat;
+                                    dataChannel.send("test message");
+                                    */
+                                })
+                            clearInterval(Client.HEARTBEAT_INTERVAL);
+                        });
                     }
                 });
         } catch (ex) {
