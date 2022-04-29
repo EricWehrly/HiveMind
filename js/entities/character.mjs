@@ -1,5 +1,5 @@
 import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
-import { AssignWithUnderscores } from '../util/javascript-extensions.js'
+import { AssignWithUnderscores, generateId } from '../util/javascript-extensions.js'
 import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';
 import Equipment from './equipment.mjs';
@@ -49,7 +49,7 @@ export default class Character {
 
         AssignWithUnderscores(this, options);
 
-        this.id = options.id || crypto.randomUUID();
+        this.id = options.id || generateId();
         this.color = options.color || 'red';
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
