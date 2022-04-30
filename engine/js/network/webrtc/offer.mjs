@@ -18,7 +18,6 @@ export default async function makeOffer(lasticecandidate) {
 
   const offer = await peerConnection.createOffer();
   await peerConnection.setLocalDescription(offer);
-  console.log(offer);
 
   return peerConnection;
 }

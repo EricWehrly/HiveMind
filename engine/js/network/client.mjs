@@ -13,16 +13,24 @@ const ENDPOINTS = {
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 export default class Client {
 
-    static LOCAL_PLAYER_ID = null;
-    static HEARTBEAT_INTERVAL = null;
-    static PEER_CONNECTION = null;
+    static _instance;
+
+    _LOCAL_PLAYER_ID = null;
+    _HEARTBEAT_INTERVAL = null;
+    _PEER_CONNECTION = null;
 
     static {
+
+        Client._instance = new Client();
+        window.Client = Client._instance;
+    }
+
+    constructor() {
 
         this.join();
     }
 
-    static join() {
+    join() {
 
         const url = `${SERVER}${ENDPOINTS.JOIN}`;
 
@@ -34,11 +42,10 @@ export default class Client {
             .then(response => {
                 response.json()
                     .then(body => {
-                        Client.LOCAL_PLAYER_ID = body.playerId;
-                        console.log(`Got player id ${Client.LOCAL_PLAYER_ID}`);
+                        this._LOCAL_PLAYER_ID = body.playerId;
+                        console.debug(`Got player id ${this._LOCAL_PLAYER_ID}`);
 
                         if (body.offer) {
-                            // TODO innit?
                             const offer = JSON.parse(body.offer);
                             makeAnswer(offer)
                                 .then(answer => {
@@ -46,10 +53,9 @@ export default class Client {
                                 });
                         } else {
 
-                            makeOffer(Client.sendOffer).then(
-                                (peerConnection) => {
-                    
-                                    Client.PEER_CONNECTION = peerConnection;
+                            makeOffer(this.sendOffer.bind(this)).then(
+                                (peerConnection) => {                    
+                                    this._PEER_CONNECTION = peerConnection;
                                 });
                         }
                     });
@@ -60,33 +66,33 @@ export default class Client {
         // etc
     }
 
-    static sendOffer() {
+    sendOffer() {
 
         const url = `${SERVER}${ENDPOINTS.OFFER}`;
 
-        const offer = Client.PEER_CONNECTION.localDescription;
+        const offer = this._PEER_CONNECTION.localDescription;
 
         const options = {
             method: 'POST',
             headers: {
-                "playerid": Client.LOCAL_PLAYER_ID
+                "playerid": this._LOCAL_PLAYER_ID
             },
             body: JSON.stringify(offer)
         };
 
         console.debug("Sending offer to server.");
         fetch(url, options);
-        Client.HEARTBEAT_INTERVAL = setInterval(Client.heartbeat, 5000);
+        this._HEARTBEAT_INTERVAL = setInterval(this.heartbeat.bind(this), 5000);
     }
 
-    static heartbeat() {
+    heartbeat() {
 
         const url = `${SERVER}${ENDPOINTS.HEARTBEAT}`;
 
         const options = {
             method: 'GET',
             headers: {
-                "playerid": Client.LOCAL_PLAYER_ID
+                "playerid": this._LOCAL_PLAYER_ID
             }
         };
 
@@ -96,18 +102,18 @@ export default class Client {
                     if (response.status == 200) {
                         response.json().then((answer) => {
                             console.debug(`Received answer from server.`);
-                            Client.PEER_CONNECTION.setRemoteDescription(answer);
-                            clearInterval(Client.HEARTBEAT_INTERVAL);
+                            this._PEER_CONNECTION.setRemoteDescription(answer);
+                            clearInterval(this._HEARTBEAT_INTERVAL);
                         });
                     }
                 });
         } catch (ex) {
             console.error(ex);
-            clearInterval(Client.HEARTBEAT_INTERVAL);
+            clearInterval(this._HEARTBEAT_INTERVAL);
         }
     }
 
-    static giveAnswer(offer, answer) {
+    giveAnswer(offer, answer) {
 
         const offerPlayerId = offer.playerId;
 
@@ -121,12 +127,6 @@ export default class Client {
             })
         };
 
-        fetch(url, options)
-            .then(response => {
-                console.debug("Complete answer send.");
-                response.text().then(console.log);
-            });
+        fetch(url, options);
     }
 }
-
-window.Client = Client;
