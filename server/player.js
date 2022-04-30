@@ -78,7 +78,7 @@ function getOpenoffer(playerId) {
     for (var key in PLAYER_LIST) {
         if (key == playerId) continue;
         var player = PLAYER_LIST[key];
-        if (player.offer && !player.answer) {
+        if (player.offer != null && !player.answer) {
             console.log(`Found an open offer from ${key}, sending to ${playerId}`);
             // this hack got bad, probably need to do differently
             const offer = JSON.parse(player.offer);
