@@ -1,10 +1,7 @@
 import createPeerConnection from './common.mjs';
 
-// static?
-// let peerConnection;
-
-export default async function makeOffer() {
-  const peerConnection = createPeerConnection();
+export default async function makeOffer(lasticecandidate) {
+  const peerConnection = createPeerConnection(lasticecandidate);
   peerConnection.ondatachannel = handledatachannel;
   const dataChannel = peerConnection.createDataChannel('chat');
   peerConnection.channels = {
@@ -13,7 +10,6 @@ export default async function makeOffer() {
   // TODO:
   // dataChannel.onopen = datachannelopen;
   // dataChannel.onmessage = datachannelmessage;
-  /*
   dataChannel.onopen = () => {
     console.log("Data channel open.");
     dataChannel.send("Greetings!");
@@ -22,19 +18,12 @@ export default async function makeOffer() {
     console.log("New message:");
     console.log(message);
   }
-  */
-
+  
   const offer = await peerConnection.createOffer();
   await peerConnection.setLocalDescription(offer);
-  console.log(JSON.stringify(offer))
-  return peerConnection;
-}
-
-function lasticecandidate() {
-  console.log('lasticecandidate');
-  const offer = peerConnection.localDescription;
-  // textelement.value = JSON.stringify(offer);
   console.log(offer);
+
+  return peerConnection;
 }
 
 function handledatachannel(event) {

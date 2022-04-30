@@ -36,6 +36,7 @@ export default class Client {
                     .then(body => {
                         Client.LOCAL_PLAYER_ID = body.playerId;
                         console.log(`Got player id ${Client.LOCAL_PLAYER_ID}`);
+
                         if (body.offer) {
                             // TODO innit?
                             const offer = JSON.parse(body.offer);
@@ -44,7 +45,14 @@ export default class Client {
                                     this.giveAnswer(offer, answer);
                                 });
                         } else {
-                            this.giveOffer();
+
+                            makeOffer(Client.sendOffer).then(
+                                (peerConnection) => {
+                    
+                                    Client.PEER_CONNECTION = peerConnection;
+                    
+                                    // wait for peerConnection.iceGatheringState == "complete"
+                                });
                         }
                     });
             })
@@ -54,29 +62,23 @@ export default class Client {
         // etc
     }
 
-    static giveOffer() {
+    static sendOffer() {
 
-        makeOffer().then(
-            (peerConnection) => {
+        const url = `${SERVER}${ENDPOINTS.OFFER}`;
 
-                Client.PEER_CONNECTION = peerConnection;
+        const offer = Client.PEER_CONNECTION.localDescription;
 
-                const url = `${SERVER}${ENDPOINTS.OFFER}`;
+        const options = {
+            method: 'POST',
+            headers: {
+                "playerid": Client.LOCAL_PLAYER_ID
+            },
+            body: JSON.stringify(offer)
+        };
 
-                const offer = peerConnection.localDescription;
-
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        "playerid": Client.LOCAL_PLAYER_ID
-                    },
-                    body: JSON.stringify(offer)
-                };
-
-                console.log("Sending offer to server.");
-                fetch(url, options);
-                Client.HEARTBEAT_INTERVAL = setInterval(this.heartbeat, 5000);
-            });
+        console.log("Sending offer to server.");
+        fetch(url, options);
+        Client.HEARTBEAT_INTERVAL = setInterval(Client.heartbeat, 5000);
     }
 
     static heartbeat() {
@@ -96,15 +98,7 @@ export default class Client {
                     if (response.status == 200) {
                         response.json().then((answer) => {
                             console.log(`Received answer from server.`);
-                            Client.PEER_CONNECTION.setRemoteDescription(answer)
-                                .then((something) => {
-                                    console.log(something);
-                                    /*
-                                    console.log("Sending a message?");
-                                    const dataChannel = Client.PEER_CONNECTION.channels.chat;
-                                    dataChannel.send("test message");
-                                    */
-                                })
+                            Client.PEER_CONNECTION.setRemoteDescription(answer);
                             clearInterval(Client.HEARTBEAT_INTERVAL);
                         });
                     }
