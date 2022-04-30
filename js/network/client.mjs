@@ -50,8 +50,6 @@ export default class Client {
                                 (peerConnection) => {
                     
                                     Client.PEER_CONNECTION = peerConnection;
-                    
-                                    // wait for peerConnection.iceGatheringState == "complete"
                                 });
                         }
                     });
@@ -76,7 +74,7 @@ export default class Client {
             body: JSON.stringify(offer)
         };
 
-        console.log("Sending offer to server.");
+        console.debug("Sending offer to server.");
         fetch(url, options);
         Client.HEARTBEAT_INTERVAL = setInterval(Client.heartbeat, 5000);
     }
@@ -97,7 +95,7 @@ export default class Client {
                 .then(response => {
                     if (response.status == 200) {
                         response.json().then((answer) => {
-                            console.log(`Received answer from server.`);
+                            console.debug(`Received answer from server.`);
                             Client.PEER_CONNECTION.setRemoteDescription(answer);
                             clearInterval(Client.HEARTBEAT_INTERVAL);
                         });
@@ -110,10 +108,8 @@ export default class Client {
     }
 
     static giveAnswer(offer, answer) {
-        console.log("Sending answer to server");
 
         const offerPlayerId = offer.playerId;
-        console.log(`Player id ${offerPlayerId}`);
 
         const url = `${SERVER}${ENDPOINTS.ANSWER}`;
 
@@ -127,7 +123,7 @@ export default class Client {
 
         fetch(url, options)
             .then(response => {
-                console.log("Complete answer send.");
+                console.debug("Complete answer send.");
                 response.text().then(console.log);
             });
     }

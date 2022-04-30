@@ -13,7 +13,6 @@ export default async function makeAnswer(offer) {
 
 function handledatachannel(event) {
 
-  console.debug('handledatachannel');
   const dataChannel = event.channel;
   dataChannel.onopen = () => {
     console.log("Data channel open.");
