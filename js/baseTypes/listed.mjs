@@ -11,7 +11,7 @@ export default class Listed {
 
     constructor(options = {}) {
 
-        if(!options.name) throw Exception("No.");
+        if(!options.name) throw `Cannot create ${this.constructor.name} without 'name' property.`;
 
         if (!this.constructor.List) {
             this.constructor.List = {};
