@@ -1,4 +1,5 @@
 import { generateId } from "./util/javascript-extensions.js";
+import NetworkMessenger from './network/network-messenger.mjs';
 
 const Events = {
     List: {
@@ -21,7 +22,11 @@ Events.Subscribe = function(eventNames, callback, options) {
     }
 }
 
-Events.RaiseEvent = function(eventName, detail, removeAfterRaise) {
+Events.RaiseEvent = function(eventName, detail, removeAfterRaise, isNetworkEvent) {
+
+    if(isNetworkEvent) {
+        NetworkMessenger.TransmitEvent(eventName, detail);
+    }
 
     var subscribedEvents = Subscriptions[eventName];
     if(!subscribedEvents) return;   // handle no subscriptions
@@ -43,9 +48,6 @@ Events.RaiseEvent = function(eventName, detail, removeAfterRaise) {
             debugger;
         }
     }
-
-    // probly don't need to do this 
-	// if(typeof window != 'undefined') window.dispatchEvent(new CustomEvent(eventName, { detail }));
 }
 
 // Unsubscribe
