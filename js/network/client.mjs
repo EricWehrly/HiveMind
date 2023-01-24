@@ -30,7 +30,13 @@ export default class Client {
         this.join();
     }
 
+    get peerConnection() {
+        return Client._instance._PEER_CONNECTION;
+    }
+
     join() {
+
+        // I think each player needs a new rtc peer connection for each player that joins
 
         const url = `${SERVER}${ENDPOINTS.JOIN}`;
 
@@ -53,6 +59,7 @@ export default class Client {
                                 });
                         } else {
 
+                            // maybe call this "buildOffer"
                             makeOffer(this.sendOffer.bind(this)).then(
                                 (peerConnection) => {                    
                                     this._PEER_CONNECTION = peerConnection;

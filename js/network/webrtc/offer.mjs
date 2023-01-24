@@ -1,19 +1,21 @@
 import createPeerConnection from './common.mjs';
+import NetworkMessenger from '../network-messenger.mjs';
 
 export default async function makeOffer(lasticecandidate) {
   const peerConnection = createPeerConnection(lasticecandidate);
-  const dataChannel = peerConnection.createDataChannel('chat');
+  const dataChannel = peerConnection.createDataChannel('events');
   peerConnection.channels = {
-    "chat": dataChannel
+    "events": dataChannel
   };
   
-  dataChannel.onopen = () => {
-    console.log("Data channel open.");
-    dataChannel.send("Greetings!");
+  dataChannel.onopen = (details) => {
+    // console.log("Data channel [events] open.");
+    // console.log(details);
+    // dataChannel.send("Greetings!");
   }
   dataChannel.onmessage = (message) => {
-    console.log("New message:");
     console.log(message);
+    NetworkMessenger.ReceiveEvent(message);
   }
 
   const offer = await peerConnection.createOffer();

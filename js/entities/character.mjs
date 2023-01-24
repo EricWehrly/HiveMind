@@ -62,7 +62,7 @@ export default class Character {
 
         AddCharacterToList(this);
 
-        Events.RaiseEvent(Events.List.CharacterCreated, this);
+        Events.RaiseEvent(Events.List.CharacterCreated, this, false, true);
     }
 
     get position() {
