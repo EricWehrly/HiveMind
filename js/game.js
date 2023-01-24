@@ -47,21 +47,6 @@ const claws = new Technology({
     delay: 4200
 });
 
-const localPlayer = new Character({
-    name: "Local Player",
-    color: "blue",
-    speed: 5,
-    health: 40,
-    additionalClasses: "player",
-    ai: null,
-    isPlayer: true
-});
-new KeyboardController({ character: localPlayer });
-
-localPlayer.toolTip = new ToolTip({
-    entity: localPlayer
-});
-
 function checkPlayerInteraction() {
 
     const closest = localPlayer.target;
@@ -85,12 +70,27 @@ function checkPlayerInteraction() {
     }
 }
 
-Game.Camera.setTarget(localPlayer);
+Events.RaiseEvent(Events.List.GameStart);
 
-RegisterLoopMethod(checkPlayerInteraction, false);
+const localPlayer = new Character({
+    name: "Local Player",
+    color: "blue",
+    speed: 5,
+    health: 40,
+    additionalClasses: "player",
+    ai: null,
+    isPlayer: true
+});
+new KeyboardController({ character: localPlayer });
 
 localPlayer.AddTechnology(slap);
 
-Events.RaiseEvent(Events.List.GameStart);
+localPlayer.toolTip = new ToolTip({
+    entity: localPlayer
+});
+
+Game.Camera.setTarget(localPlayer);
+
+RegisterLoopMethod(checkPlayerInteraction, false);
 
 console.log('Starting game.');
