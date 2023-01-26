@@ -1,4 +1,5 @@
 import { RegisterLoopMethod } from "../loop.mjs";
+import Renderer from '../rendering/renderer.mjs';
 
 // TODO: timeout / hide
 export default class Tooltip {
@@ -19,8 +20,8 @@ export default class Tooltip {
 
         document.getElementById("playfield").appendChild(this.Element);
         this.message = options.message || "";
-
-        if(this.entity) RegisterLoopMethod(this.followEntity.bind(this), false);
+        
+        Renderer.RegisterRenderMethod(10, this.redraw.bind(this));
     }
 
     get message() {
@@ -35,17 +36,30 @@ export default class Tooltip {
         // TODO: show/hide methods?
         if(this.#message == null || this.#message == "") this.Element.style.display = "none";
         else {
-            this.followEntity();
+            // this.followEntity();
             this.Element.style.display = "inline-block";
         }
     }
 
-    followEntity() {
-        if(this.message != null && this.message != "") {
-            let position = this.entity.getScreenPosition();
-            // TODO: Add entity height to y
-            this.Element.style.left = position.x + "px";
-            this.Element.style.top = position.y + "px";
+    // TODO: No, this needs to go in the renderer
+    redraw(screenRect) {
+        if(this.message != null && this.message != ""
+            && this.entity) {
+
+            // TODO: get grid size constant
+            const gridSize = 32;
+
+            const offsetPosition = {
+                x: this.entity.position.x - screenRect.x,
+                y: this.entity.position.y - screenRect.y
+            };
+            let targetY = gridSize * offsetPosition.y;
+            if(this.entity?.graphic?.style?.height) {
+                targetY -= parseInt(this.entity.graphic.style.height);
+            }
+
+            this.Element.style.left = (gridSize * offsetPosition.x) + "px";
+            this.Element.style.top = targetY + "px";
         }
     }
 }
