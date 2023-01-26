@@ -32,8 +32,8 @@ export default class Camera {
     // pixels
     getViewPortSize() {
         return {
-            width: 800,
-            height: 600
+            width: window.innerWidth,
+            height: window.innerHeight
         }
     }
 
