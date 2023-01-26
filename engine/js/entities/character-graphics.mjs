@@ -38,7 +38,6 @@ function removeClass(character, className) {
     character.graphic.className = character.graphic.className.replace(className, "").trim();
 }
 
-// TODO: needs redraw
 function redraw(character, screenRect) {
 
     if(!character.graphic) createGraphic(character);
@@ -75,6 +74,7 @@ function redraw_loop(screenRect) {
 Events.Subscribe(Events.List.GameStart, function() {
     // Events.Subscribe(Events.List.CharacterCreated, createGraphic);
     
+    Events.Subscribe(Events.List.CharacterCreated, createGraphic);
     Events.Subscribe(Events.List.CharacterTargetChanged, updateTargetingClasses);
 });
 
