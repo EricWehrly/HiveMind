@@ -1,27 +1,27 @@
-import { RegisterLoopMethod } from "../loop.mjs";
-import Renderer from '../rendering/renderer.mjs';
+import UIElement from "./ui-element.mjs";
 
 // TODO: timeout / hide
-export default class Tooltip {
+export default class Tooltip extends UIElement {
 
     #message;
 
     constructor(options = {}) {
+
+        super(options);
 
         // TODO: reject if not given required parameters
         // screen position, NOT grid position!
         const position = options.position || {x: 0, y: 0};
         this.entity = options.entity || null;
 
-        this.Element = document.createElement('div');
-        this.Element.className = 'ui tooltip';
+        this.addClass("tooltip");
         this.Element.style.left = position.x + "px";
         this.Element.style.top = position.y + "px";
 
-        document.getElementById("playfield").appendChild(this.Element);
         this.message = options.message || "";
+        this.visible = this.message != "";
         
-        Renderer.RegisterRenderMethod(10, this.redraw.bind(this));
+        // Renderer.RegisterRenderMethod(10, this.redraw.bind(this));
     }
 
     get message() {
