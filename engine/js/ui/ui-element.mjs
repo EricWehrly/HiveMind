@@ -13,6 +13,7 @@ export default class UIElement {
     }
 
     static #UI_ELEMENTS = []
+    static #initialDisplay = "none";
 
     static {
         Renderer.RegisterRenderMethod(10, UIElement.#ui_loop);
@@ -27,16 +28,16 @@ export default class UIElement {
         }
     }
 
-    _visible = true
+    #visible = true
 
     get visible() {
-        return this._visible;
+        return this.#visible;
     }
 
     set visible(value) {
-        this._visible = value;
-        // if element 
-        // this.Element.style.display
+        this.#visible = value;
+        if(this.Element && this.#visible) this.Element.style.display = UIElement.#initialDisplay;
+        if(this.Element && !this.#visible) this.Element.style.display = "none";
     }
 
     constructor(options = {}) {
@@ -49,6 +50,7 @@ export default class UIElement {
         this.addClass(this.screenZone);
         // TODO: ui shouldnt be on 'playfield'...
         document.getElementById("playfield").appendChild(this.Element);
+        UIElement.#initialDisplay = this.Element.style.display;
 
         UIElement.#UI_ELEMENTS.push(this);
     }
