@@ -4,12 +4,12 @@ export default class UIElement {
 
     // css classes to apply
     static SCREEN_ZONE = {
-        BOTTOM_LEFT: "bottom,left",
-        BOTTOM_MIDDLE: "bottom,middle",
-        BOTTOM_RIGHT: "bottom,right",
-        TOP_RIGHT: "top,right",
-        TOP_MIDDLE: "top,middle",
-        TOP_LEFT: "top,left"
+        BOTTOM_LEFT: "bottom left",
+        BOTTOM_MIDDLE: "bottom middle",
+        BOTTOM_RIGHT: "bottom right",
+        TOP_RIGHT: "top right",
+        TOP_MIDDLE: "top middle",
+        TOP_LEFT: "top left"
     }
 
     static #UI_ELEMENTS = []
@@ -49,7 +49,7 @@ export default class UIElement {
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
         // TODO: ui shouldnt be on 'playfield'...
-        document.getElementById("playfield").appendChild(this.Element);
+        document.getElementById("ui-container").appendChild(this.Element);
         UIElement.#initialDisplay = this.Element.style.display;
 
         UIElement.#UI_ELEMENTS.push(this);
