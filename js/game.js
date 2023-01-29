@@ -20,6 +20,7 @@ import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 import CharacterType from './entities/characterType.mjs';
 import UI from './ui/ui.mjs';
+import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 
 import './entities/food.mjs';
 import './entities/enemies.mjs';
