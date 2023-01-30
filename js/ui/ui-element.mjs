@@ -4,6 +4,7 @@ export default class UIElement {
 
     // css classes to apply
     static SCREEN_ZONE = {
+        NONE: "",
         BOTTOM_LEFT: "bottom left",
         BOTTOM_MIDDLE: "bottom middle",
         BOTTOM_RIGHT: "bottom right",
@@ -42,7 +43,7 @@ export default class UIElement {
 
     constructor(options = {}) {
 
-        this.screenZone = options.screenZone || UIElement.SCREEN_ZONE.BOTTOM_MIDDLE;
+        this.screenZone = options.screenZone || UIElement.SCREEN_ZONE.NONE;
 
         this.Element = document.createElement('div');
         this.addClass("ui");
