@@ -58,6 +58,7 @@ function checkPlayerInteraction() {
         Action.List["study"].target = closest;
         Action.List["study"].enabled = true;
         localPlayer.toolTip.message = "'F' - Study";
+        localPlayer.toolTip.entity = closest;
     } else {
         Action.List["study"].enabled = false;
         localPlayer.toolTip.message = "";
