@@ -4,9 +4,16 @@
     --ui-opacity: 0.8;
 }
 
+#ui-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .ui {
     /* ui layer: 1000-9999 */
     z-index: 1000;
+    display: inline-flex;
 
     color: rgb(200, 200, 200);
     background-color: rgba(0, 0, 0, var(--ui-opacity));
@@ -18,6 +25,7 @@
 
 .ui.bottom {
     bottom: 0px;
+    align-self: flex-end;
 }
 
 .ui.left {
@@ -29,6 +37,12 @@
 }
 
 .ui.middle {    
-  display: flex;
-  justify-content: center;
+    /* align-self: center; */
+}
+
+.ui.bottom.middle {
+    position: absolute;
+    bottom: 5px;                
+    left: 50%;                  
+    transform: translateX(-50%);
 }
