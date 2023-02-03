@@ -10,7 +10,9 @@ import './character-graphics.mjs';
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
+Events.List.PlayerMoved = "PlayerMoved";
 
+// TODO: #private properties rather than _private
 export default class Character {
 
     _health = 1;
@@ -25,6 +27,7 @@ export default class Character {
     }
 
     _position = new Point(0, 0);
+    #lastPosition = null;
 
     _velocity = {
         x: 0,
@@ -236,6 +239,15 @@ export default class Character {
         } else {
             this._position.x += this._velocity.x * this._speed * amount;
             this._position.y += this._velocity.y * this._speed * amount;
+        }
+
+        if(!this._position.equals(this.#lastPosition)) {
+            if(this.isPlayer) Events.RaiseEvent(Events.List.PlayerMoved, {
+                character: this,
+                from: this.#lastPosition,
+                to: this._position
+            }, false, true);
+            this.#lastPosition = Object.assign({}, this._position);
         }
     }
 
