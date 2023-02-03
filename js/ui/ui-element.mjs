@@ -71,13 +71,15 @@ export default class UIElement {
             // TODO: get grid size constant
             const gridSize = 32;
 
+            const entityHeight = this.entity.graphic.offsetHeight;
             const offsetPosition = {
                 x: this.entity.position.x - screenRect.x,
                 y: this.entity.position.y - screenRect.y
             };
             let targetY = gridSize * offsetPosition.y;
             if(this.entity?.graphic?.style?.height) {
-                targetY -= parseInt(this.entity.graphic.style.height);
+                // multiply height for some reason
+                targetY -= (1.5 * parseInt(entityHeight));
             }
 
             this.Element.style.left = (gridSize * offsetPosition.x) + "px";
