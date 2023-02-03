@@ -11,7 +11,7 @@ export default class NetworkMessenger {
         var payload = JSON.stringify({
             eventName,
             newDetail
-        });
+        }, NetworkMessenger.#getCircularReplacer());
         // TODO: loop peerConnections instead, later, apparently
         // TODO: need to transmit a "welcome packet" of current state to any new players...
         if(Client?.peerConnection?.channels?.events) {
@@ -36,6 +36,8 @@ export default class NetworkMessenger {
 
             if(detail[key] == null) continue;
 
+            if(detail[key] instanceof HTMLElement) continue;
+
             // this is to remove circular dependencies for JSON.stringify
             if(typeof detail[key] == 'object') {
                 if(Object.values(detail[key]).includes(detail)) continue;
@@ -45,4 +47,18 @@ export default class NetworkMessenger {
 
         return newDetail;
     }
+
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value#examples
+    static #getCircularReplacer = () => {
+      const seen = new WeakSet();
+      return (key, value) => {
+        if (typeof value === "object" && value !== null) {
+          if (seen.has(value)) {
+            return;
+          }
+          seen.add(value);
+        }
+        return value;
+      };
+    };
 }
