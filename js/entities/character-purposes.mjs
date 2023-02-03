@@ -59,6 +59,7 @@ const Purposes =
             if (!character.target) character.target = character.parent;
             character.pointAtTarget();
             
+            // TODO: if collision boxes overlap ..
             if (character.position.equals(character.target.position)) {
                 character.Reabsorb();
             }

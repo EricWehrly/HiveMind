@@ -8,6 +8,8 @@ export default class Point {
     }
 
     equals(point) {
+        if(point == null) return false;
+        
         return this.x == point.x && this.y == point.y;
     }
 
