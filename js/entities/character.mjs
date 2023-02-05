@@ -65,7 +65,9 @@ export default class Character {
 
         AddCharacterToList(this);
 
-        Events.RaiseEvent(Events.List.CharacterCreated, this, false, true);
+        Events.RaiseEvent(Events.List.CharacterCreated, this, {
+            isNetworkBoundEvent: true
+        });
     }
 
     get position() {
@@ -246,7 +248,9 @@ export default class Character {
                 character: this,
                 from: this.#lastPosition,
                 to: this._position
-            }, false, true);
+            }, {
+                isNetworkBoundEvent: true
+            });
             this.#lastPosition = Object.assign({}, this._position);
         }
     }

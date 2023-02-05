@@ -22,9 +22,22 @@ Events.Subscribe = function(eventNames, callback, options) {
     }
 }
 
-Events.RaiseEvent = function(eventName, detail, removeAfterRaise, isNetworkEvent) {
+/**
+ * 
+ * @param {String} eventName The enum name from Events.List
+ * @param {Object} detail The details of the event (usually the subject of the action). Varies by event type.
+ * @param {Object} options 
+ * @param {Boolean} options.removeAfterRaise Whether to de-register the event after the first time that it is raised, preventing subsequent calls from resulting in a raised event.
+ * @param {Boolean} options.isNetworkBoundEvent Whether the event should go to the network.
+ * @param {Boolean} options.isNetworkOriginEvent Did the event originate from a machine other than this one?
+ */
+Events.RaiseEvent = function(eventName, detail, options) {
 
-    if(isNetworkEvent) {
+    const callbackOptions = {
+        isNetworkOriginEvent: options?.isNetworkOriginEvent || false
+    };
+
+    if(options?.isNetworkBoundEvent) {
         NetworkMessenger.TransmitEvent(eventName, detail);
     }
 
@@ -33,9 +46,9 @@ Events.RaiseEvent = function(eventName, detail, removeAfterRaise, isNetworkEvent
     subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
     for(var subscription of subscribedEvents) {
         try {
-            subscription.callback(detail);
+            subscription.callback(detail, callbackOptions);
 
-            if(subscription.oneTime || removeAfterRaise == true) {
+            if(subscription.oneTime || options?.removeAfterRaise == true) {
                 console.warn("Didn't implement unsubscribe ...");
                 // Events.Unsubscribe(subscription.subscriptionId);
             }

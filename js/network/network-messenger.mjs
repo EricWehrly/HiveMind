@@ -7,7 +7,7 @@ export default class NetworkMessenger {
 
         // TODO: attach playerid metadata info to request, just in case
 
-        const newDetail =NetworkMessenger.#sanitize(detail);
+        const newDetail = NetworkMessenger.#sanitize(detail);
         var payload = JSON.stringify({
             eventName,
             newDetail
@@ -22,7 +22,9 @@ export default class NetworkMessenger {
     static ReceiveEvent(event) {
         var parsed = JSON.parse(event);
         // if no eventName or detail, throw warning
-        Events.RaiseEvent(parsed.eventName, parsed.detail);
+        Events.RaiseEvent(parsed.eventName, parsed.detail, {
+          isNetworkOriginEvent: true
+        });
     }
 
     // TODO: this is almost certainly too slow a method ...
