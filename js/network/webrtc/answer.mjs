@@ -16,7 +16,7 @@ function handledatachannel(event) {
   const dataChannel = event.channel;
   dataChannel.onopen = () => {
     console.log("Data channel open.");
-    dataChannel.send("Greetings!");
+    // dataChannel.send("Greetings!");
   }
   dataChannel.onmessage = (message) => {
     console.log("New message:");
