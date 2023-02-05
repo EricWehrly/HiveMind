@@ -1,10 +1,19 @@
+import Map from '../mapping/map.mjs';
+
 export default class Point {
+
+    #chunk = null;
     x = 0;
-    y = 0;
+    y = 0
+
+    get chunk() {
+        return this.#chunk;
+    }
 
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.#chunk = Map.Map.getChunk(this);
     }
 
     equals(point) {
