@@ -77,3 +77,23 @@ function randomBetween(first, second) {
     return Math.floor(Math.random() * second) + first;
 }
 Math.randomBetween = randomBetween;
+
+/**
+ * Returns an object with any public properties copied by value, rather than reference.
+ * @param {Object} object 
+ */
+export function copyPublicProperties(object) {
+
+  const newObj = {};
+
+  for(var key of Object.getOwnPropertyNames(object.__proto__)) {
+
+    const field = object[key];
+    if(key.indexOf("#") == -1 && typeof field != "function") {
+      // do we need to eval?
+      newObj[key] = object[key];
+    }
+  }
+
+  return newObj;
+}
