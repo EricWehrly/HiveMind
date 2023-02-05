@@ -3,8 +3,26 @@ import Map from '../mapping/map.mjs';
 export default class Point {
 
     #chunk = null;
-    x = 0;
-    y = 0
+    #x = 0;
+    #y = 0;
+
+    get x() {
+        return this.#x;
+    }
+
+    set x(value) {
+        this.#x = value;
+        this.#chunk = Map.Map.getChunk(this);
+    }
+
+    get y() {
+        return this.#y;
+    }
+
+    set y(value) {
+        this.#y = value;
+        this.#chunk = Map.Map.getChunk(this);
+    }
 
     get chunk() {
         return this.#chunk;
