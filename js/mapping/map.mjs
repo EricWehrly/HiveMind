@@ -11,7 +11,7 @@ export default class Map {
     #chunks = {};
 
     constructor() {
-        if(Map.#map == null) Map.#map = this;
+        if(Map.#map == null) window.map = Map.#map = this;
         // hook into player move event
         // generate chunk if needed
         
@@ -19,9 +19,13 @@ export default class Map {
         Events.Subscribe(Events.List.PlayerMoved, this.#playerMoved.bind(this));
     }
 
+    addChunk(chunk) {
+        this.#chunks[chunk.coordinate] = chunk;
+    }
+
     #playerMoved(event) {
         const character = event.character || event;
-        console.log("'e moved, then.");
+        // console.log("'e moved, then.");
 
         const chunk = character.position.chunk;
 
@@ -81,7 +85,7 @@ export default class Map {
 
             const coordinate = chunkCoordinate.x + "," + chunkCoordinate.y;
             if(!(coordinate in this.#chunks)) {
-                this.#chunks[coordinate] = new Chunk(chunkCoordinate);
+                new Chunk(chunkCoordinate);
             }
             return this.#chunks[coordinate];
         } else {
