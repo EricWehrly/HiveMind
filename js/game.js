@@ -22,6 +22,7 @@ import CharacterType from './entities/characterType.mjs';
 import UI from './ui/ui.mjs';
 import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 
+import Map from '../engine/js/mapping/map.mjs';
 import './entities/food.mjs';
 import './entities/enemies.mjs';
 
@@ -30,6 +31,8 @@ KeyboardController.AddDefaultBinding("subdivide", "q");
 // TODO: this needs to be a more generic 'interact' with specific functions, maybe like how attack works
 KeyboardController.AddDefaultBinding("study", "f");
 KeyboardController.AddDefaultBinding("consume", "f");
+
+var map = new Map();
 
 const slap = new Technology({
     name: "slap",
