@@ -1,5 +1,5 @@
 import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
-import { AssignWithUnderscores, generateId } from '../util/javascript-extensions.js'
+import { AssignWithUnderscores, copyPublicProperties, generateId } from '../util/javascript-extensions.js'
 import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';
 import Equipment from './equipment.mjs';
@@ -251,7 +251,7 @@ export default class Character {
             }, {
                 isNetworkBoundEvent: true
             });
-            this.#lastPosition = Object.assign({}, this._position);
+            this.#lastPosition = copyPublicProperties(this._position)
         }
     }
 
