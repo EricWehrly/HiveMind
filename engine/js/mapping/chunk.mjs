@@ -7,14 +7,6 @@ export default class Chunk {
 
     static CHUNK_SIZE = 25;
 
-    static {
-        // TODO: Listen for (NETWORK ONLY) chunk create event
-        // if it's in conflict with a chunk we have, raise an alarm
-        // otherwise, add to the current(?) map
-        // actually, probably put this in the map class ...
-        // Events.RaiseEvent(Events.List.ChunkCreated, this, false, false);
-    }
-
     static getChunkCoordinate(x, y) {
 
         let chunkX = 0;
@@ -44,8 +36,10 @@ export default class Chunk {
         if(options.y) this.y = options.y;
 
         Map.Map.addChunk(this);
-        Events.RaiseEvent(Events.List.ChunkCreated, this, false, false);
-        console.log(`New chunk at ${options.x}, ${options.y}`);
+        Events.RaiseEvent(Events.List.ChunkCreated, this, {
+            isNetworkBoundEvent: true
+        });
+        // console.log(`New chunk at ${options.x}, ${options.y}`);
         // TODO: Biomes. Like, you can have data-driven biome selection for chunks ..
     }
 

@@ -8,6 +8,21 @@ export default class Map {
         return this.#map;
     };
 
+    static {
+
+        Events.Subscribe(Events.List.ChunkCreated, this.#chunkCreated.bind(this));
+    }
+
+    static #chunkCreated(chunk, eventOptions) {
+
+        if(eventOptions.isNetworkOriginEvent == false) return;
+        console.log(`New chunk at ${chunk.x}, ${chunk.y}`);
+
+        // TODO:
+        // if it's in conflict with a chunk we have, raise an alarm
+        // otherwise, add to the current(?) map
+    }
+
     #chunks = {};
 
     constructor() {
