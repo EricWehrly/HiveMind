@@ -4,11 +4,13 @@ export function AssignWithUnderscores(target, source) {
     for(var key of Object.keys(source)) {
 
         if(target["_" + key]) {
-            source["_" + key] = source[key];
+
+          // this doesn't work correctly with values passed in that are instantiated objects.
+            target["_" + key] = source[key];
             delete source[key];
         }
 
-        // if source[key] has keys
+        // TODO: if source[key] has keys
         // object assign the value
         // recursively ...
     }
