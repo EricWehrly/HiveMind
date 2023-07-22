@@ -11,7 +11,7 @@ const ENDPOINTS = {
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-export default class Client {
+class Client {
 
     static _instance;
 
@@ -30,7 +30,7 @@ export default class Client {
         this.join();
     }
 
-    get peerConnection() {
+    static get peerConnection() {
         return Client._instance._PEER_CONNECTION;
     }
 
@@ -137,3 +137,7 @@ export default class Client {
         fetch(url, options);
     }
 }
+
+if(Client._instance == null) new Client();
+
+export default Client._instance;
