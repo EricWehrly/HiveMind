@@ -69,7 +69,7 @@ export default class Action extends Listed {
             }
         });
 
-        // maybe not allowed to do this yet
+        // maybe not allowed to do this at first
         new Action({
             name: 'subdivide',
             // TODO: Maybe we should just have "on press" vs "on held" ...
@@ -79,7 +79,7 @@ export default class Action extends Listed {
             }
         })
 
-        // TODO: unavailable if a subdivided piece is already studying
+        // TODO: unavailable if a subdivided piece is already studying the target
         new Action({
             name: 'study',
             enabled: false,
@@ -94,7 +94,7 @@ export default class Action extends Listed {
             }
         });
 
-        // TODO: unavailable if a subdivided piece is already nomming
+        // TODO: unavailable if a subdivided piece is already nomming the target
         new Action({
             name: 'consume',
             enabled: false,
