@@ -44,4 +44,8 @@ export default class Point {
         return Math.abs(this.x - point.x)
             + Math.abs(this.y - point.y);
     }
+
+    toString() {
+        return this.#x + ", " + this.#y;
+    }
 }
