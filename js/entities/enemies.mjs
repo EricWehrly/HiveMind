@@ -2,6 +2,9 @@ import Character from './character-extensions.mjs';
 import Technology from '../../engine/js/technology.mjs';
 import Events from '../../engine/js/events.mjs';
 
+// TODO:
+// Events.Subscribe(Events.List.ChunkCreated, this.spawnFood.bind(this));
+
 Events.Subscribe(Events.List.GameStart, function() {
     
     const claws = Technology.Get("claws");

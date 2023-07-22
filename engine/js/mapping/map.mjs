@@ -15,8 +15,10 @@ export default class Map {
 
     static #chunkCreated(chunk, eventOptions) {
 
-        if(eventOptions.isNetworkOriginEvent == false) return;
+        // TODO: This needs to be tested (console log fires when in 2p)
         console.log(`New chunk at ${chunk.x}, ${chunk.y}`);
+        if(eventOptions.isNetworkOriginEvent == false) return;
+        console.log(`it came from outside the house`);
 
         // TODO:
         // if it's in conflict with a chunk we have, raise an alarm
