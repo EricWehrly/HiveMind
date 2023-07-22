@@ -46,26 +46,33 @@ class Client {
 
         fetch(url, options)
             .then(response => {
-                response.json()
-                    .then(body => {
-                        this._LOCAL_PLAYER_ID = body.playerId;
-                        console.debug(`Got player id ${this._LOCAL_PLAYER_ID}`);
 
-                        if (body.offer) {
-                            const offer = JSON.parse(body.offer);
-                            makeAnswer(offer)
-                                .then(answer => {
-                                    this.giveAnswer(offer, answer);
-                                });
-                        } else {
+                if(response.status == 404) {
+                    console.warn(`Could not connect to server ${SERVER}. Playing offline.`);
+                }
 
-                            // maybe call this "buildOffer"
-                            makeOffer(this.sendOffer.bind(this)).then(
-                                (peerConnection) => {                    
-                                    this._PEER_CONNECTION = peerConnection;
-                                });
-                        }
-                    });
+                else {
+                    response.json()
+                        .then(body => {
+                            this._LOCAL_PLAYER_ID = body.playerId;
+                            console.debug(`Got player id ${this._LOCAL_PLAYER_ID}`);
+
+                            if (body.offer) {
+                                const offer = JSON.parse(body.offer);
+                                makeAnswer(offer)
+                                    .then(answer => {
+                                        this.giveAnswer(offer, answer);
+                                    });
+                            } else {
+
+                                // maybe call this "buildOffer"
+                                makeOffer(this.sendOffer.bind(this)).then(
+                                    (peerConnection) => {                    
+                                        this._PEER_CONNECTION = peerConnection;
+                                    });
+                            }
+                        });
+                }
             })
 
         // TODO: on error
