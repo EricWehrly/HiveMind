@@ -49,6 +49,11 @@ export default class Character {
     #maxWanderDistance = 10
 
     constructor(options = {}) {
+        
+        if(options.position) { 
+            this._position = new Point(options.position.x, options.position.y);
+            delete options.position;
+        };
 
         AssignWithUnderscores(this, options);
 
