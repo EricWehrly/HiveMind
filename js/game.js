@@ -26,6 +26,7 @@ import Map from '../engine/js/mapping/map.mjs';
 import './entities/food.mjs';
 import './entities/buildings.mjs';
 import './entities/enemies.mjs';
+import Building from './entities/buildings.mjs';
 
 // let someTile = new Tile();
 KeyboardController.AddDefaultBinding("subdivide", "q");
@@ -34,6 +35,8 @@ KeyboardController.AddDefaultBinding("study", "f");
 KeyboardController.AddDefaultBinding("consume", "f");
 
 var map = new Map();
+
+const seeder = new Building(Object.assign({}, CharacterType.Seeder));
 
 const slap = new Technology({
     name: "slap",
