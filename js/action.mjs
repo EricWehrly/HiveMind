@@ -108,6 +108,22 @@ export default class Action extends Listed {
                 });
             }
         });
+
+        // TODO: generic "open menu" action that has variable context?
+        new Action({
+            name: 'buildMenu',
+            enabled: true,
+            oncePerPress: true,
+            delay: 1000,
+            callback: function(options) {
+
+                console.error("Not implemented yet.");
+                console.log(options);
+
+                // open menu
+                // build
+            }
+        });
     }
 
     constructor(options = {}) {
