@@ -24,6 +24,7 @@ import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 
 import Map from '../engine/js/mapping/map.mjs';
 import './entities/food.mjs';
+import './entities/buildings.mjs';
 import './entities/enemies.mjs';
 
 // let someTile = new Tile();
