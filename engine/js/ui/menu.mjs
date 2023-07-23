@@ -1,28 +1,24 @@
-import Action from '../action.mjs';
 import UIElement from './ui-element.mjs';
-
-const MENU_INTERACT_ACTION = new Action({
-    name: 'menu_interact',
-    enabled: true,
-    oncePerPress: true,
-    delay: 1000,
-    callback: function(options) {
-
-        // ok ... how do we know which menu is in context? 
-        // for now we can just assume only 1 menu ...
-        const currentMenu = Menu.MENU_LIST[0];
-        // TODO: can we pass ... from the menu calling somehow? into this method?
-        currentMenu.menuAction({
-            menu: currentMenu
-        });
-    }
-});
 
 export default class Menu extends UIElement {
     
-    static #MENU_LIST = []
+    // this is lazy
+    static #MENU_LIST_COUNT = 0;
+    // MENU_LIST = new Listed?
+    static #MENU_LIST = {}
     static get MENU_LIST() {
         return Menu.#MENU_LIST;
+    }
+
+    static getMenu(name) {
+        return Menu.#MENU_LIST[name];
+    }
+
+    // we already solved for this, I think in this codebase
+    static #addMenu(menu) {
+        
+        Menu.#MENU_LIST[Menu.#MENU_LIST_COUNT++] = menu;
+        Menu.#MENU_LIST[menu.name] = menu;
     }
 
     #name;
@@ -72,7 +68,7 @@ export default class Menu extends UIElement {
         // need button to cycle prev/next menu item
         // action (F) "activates" currently selected menu item
 
-        Menu.#MENU_LIST.push(this);
+        Menu.#addMenu(this);
     }
 
     addItem(options) {

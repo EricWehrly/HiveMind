@@ -3,6 +3,7 @@ import Character from '../../js/entities/character-extensions.mjs';
 import Listed from './baseTypes/listed.mjs';
 import Requirements from './requirements.mjs';
 import Events from './events.mjs';
+import Menu from './ui/menu.mjs';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -12,8 +13,8 @@ export default class Action extends Listed {
     static {
         new Action({
             name: 'move_up',
-            callback: function(options) {
-                if(options?.character?.velocity?.y != null) {
+            callback: function (options) {
+                if (options?.character?.velocity?.y != null) {
                     options.character.velocity.y = -1;
                 }
             }
@@ -21,8 +22,8 @@ export default class Action extends Listed {
 
         new Action({
             name: 'move_down',
-            callback: function(options) {
-                if(options?.character?.velocity?.y != null) {
+            callback: function (options) {
+                if (options?.character?.velocity?.y != null) {
                     options.character.velocity.y = 1;
                 }
             }
@@ -30,8 +31,8 @@ export default class Action extends Listed {
 
         new Action({
             name: 'move_left',
-            callback: function(options) {
-                if(options?.character?.velocity?.x != null) {
+            callback: function (options) {
+                if (options?.character?.velocity?.x != null) {
                     options.character.velocity.x = -1;
                 }
             }
@@ -39,8 +40,8 @@ export default class Action extends Listed {
 
         new Action({
             name: 'move_right',
-            callback: function(options) {
-                if(options?.character?.velocity?.x != null) {
+            callback: function (options) {
+                if (options?.character?.velocity?.x != null) {
                     options.character.velocity.x = 1;
                 }
             }
@@ -48,22 +49,22 @@ export default class Action extends Listed {
 
         new Action({
             name: 'attack',
-            callback: function(options) {
+            callback: function (options) {
                 // TODO: Pull in enum from technology class
                 const equipped = options?.character?.equipment?.attack;
-                if(equipped == null) {
+                if (equipped == null) {
                     console.log("Character has no attack skill equipped!");
                     return;
                 }
 
                 // TODO: This isn't going to track a per-character last action time. We need that.
-                if(!this.checkDelay(equipped)) return;
+                if (!this.checkDelay(equipped)) return;
 
-                if(!this.inRange(equipped, options.character)) return;
+                if (!this.inRange(equipped, options.character)) return;
 
                 // TODO: visual and audio cues
-                if(options?.character?.target) {
-                    if(equipped.sound) equipped.sound.play();
+                if (options?.character?.target) {
+                    if (equipped.sound) equipped.sound.play();
                     options.character.target.health -= equipped.damage;
                 }
             }
@@ -74,7 +75,7 @@ export default class Action extends Listed {
             name: 'subdivide',
             // TODO: Maybe we should just have "on press" vs "on held" ...
             oncePerPress: true,
-            callback: function(options) {
+            callback: function (options) {
                 options.character.Subdivide();
             }
         })
@@ -85,7 +86,7 @@ export default class Action extends Listed {
             enabled: false,
             oncePerPress: true,
             delay: 1000,
-            callback: function(options) {
+            callback: function (options) {
 
                 const piece = options.character.Subdivide({
                     purpose: Character.Purposes["study"],
@@ -100,7 +101,7 @@ export default class Action extends Listed {
             enabled: false,
             oncePerPress: true,
             delay: 1000,
-            callback: function(options) {
+            callback: function (options) {
 
                 const piece = options.character.Subdivide({
                     purpose: Character.Purposes["consume"],
@@ -115,13 +116,32 @@ export default class Action extends Listed {
             enabled: true,
             oncePerPress: true,
             delay: 1000,
-            callback: function(options) {
+            callback: function (options) {
 
                 console.error("Not implemented yet.");
                 console.log(options);
 
                 // open menu
                 // build
+                const buildMenu = Menu.getMenu("build");
+                console.log(buildMenu);
+            }
+        });
+
+        new Action({
+            name: 'menu_interact',
+            enabled: true,
+            oncePerPress: true,
+            delay: 1000,
+            callback: function (options) {
+
+                // ok ... how do we know which menu is in context? 
+                // for now we can just assume only 1 menu ...
+                const currentMenu = Menu.MENU_LIST[0];
+                // TODO: can we pass ... from the menu calling somehow? into this method?
+                currentMenu.menuAction({
+                    menu: currentMenu
+                });
             }
         });
     }
@@ -130,14 +150,14 @@ export default class Action extends Listed {
 
         super(options);
 
-        if(this.callback) {
+        if (this.callback) {
             const baseCallback = this.callback;
 
-            this.callback = function(options = {}) {
+            this.callback = function (options = {}) {
 
-                if(!Requirements.met(this, options.character)) return;
+                if (!Requirements.met(this, options.character)) return;
 
-                if(!this.checkDelay(this)) return;
+                if (!this.checkDelay(this)) return;
 
                 baseCallback.bind(this)(options);
 
@@ -147,7 +167,7 @@ export default class Action extends Listed {
                 details.name = this.name;
                 Events.RaiseEvent(Events.List.ActionFired, details);
                 */
-               
+
                 Events.RaiseEvent(`${Events.List.ActionFired}-${this.name}`, options);
             }
         }
@@ -155,19 +175,19 @@ export default class Action extends Listed {
 
     checkDelay(thing) {
 
-        if(thing.delay && this.lastFired && 
+        if (thing.delay && this.lastFired &&
             performance.now() - this.lastFired < thing.delay) return false;
-        else if(thing.delay) this.lastFired = performance.now();
+        else if (thing.delay) this.lastFired = performance.now();
 
         return true;
     }
 
     inRange(thing, character) {
 
-        if(thing.range) {
-            if(!character?.target) return false;
+        if (thing.range) {
+            if (!character?.target) return false;
 
-            if(character.getDistance(character.target) > thing.range) return false;
+            if (character.getDistance(character.target) > thing.range) return false;
         }
 
         return true;
