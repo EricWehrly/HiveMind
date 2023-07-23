@@ -118,13 +118,9 @@ export default class Action extends Listed {
             delay: 1000,
             callback: function (options) {
 
-                console.error("Not implemented yet.");
-                console.log(options);
-
-                // open menu
-                // build
                 const buildMenu = Menu.Get("build");
-                console.log(buildMenu);
+                // weirdly seems to not register properly if passed too quickly?
+                buildMenu.visible = !buildMenu.visible;
             }
         });
 
