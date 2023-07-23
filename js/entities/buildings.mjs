@@ -43,6 +43,7 @@ const Build = function(context) {
 const UI_MENU_BUILDINGS = new Menu({
     screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
     name: "Build",
+    visible: false,
     menuAction: Build
 });
 
