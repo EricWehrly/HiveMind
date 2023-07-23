@@ -15,7 +15,10 @@ const MENU_INTERACT_ACTION = new Action({
         // do the action, for the selected item ...
         // the action should be "build", but how do we know that?
         // console.log(selected);
-        currentMenu.menuAction();
+        // TODO: can we pass ... from the menu calling somehow? into this method?
+        currentMenu.menuAction({
+            menu: currentMenu
+        });
     }
 });
 

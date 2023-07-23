@@ -15,6 +15,18 @@ Events.List.PlayerMoved = "PlayerMoved";
 // TODO: #private properties rather than _private
 export default class Character {
 
+    // maybe we can find a way around this (better than how we do in game.js)
+    // but for now hack in some dumb reference stuff
+    static #LOCAL_PLAYER;
+
+    static get LOCAL_PLAYER() {
+        return Character.#LOCAL_PLAYER;
+    }
+
+    static set LOCAL_PLAYER(value) {
+        Character.#LOCAL_PLAYER = value;
+    }
+
     _health = 1;
 
     get health() {
