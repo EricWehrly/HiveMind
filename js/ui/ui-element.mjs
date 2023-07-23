@@ -45,6 +45,7 @@ export default class UIElement {
     constructor(options = {}) {
 
         this.screenZone = options.screenZone || UIElement.SCREEN_ZONE.NONE;
+        // we had a redundant 'options assign' method .. in entity
 
         this.Element = document.createElement('div');
         this.addClass("ui");
@@ -53,6 +54,7 @@ export default class UIElement {
         // TODO: ui shouldnt be on 'playfield'...
         document.getElementById("ui-container").appendChild(this.Element);
         UIElement.#initialDisplay = this.Element.style.display;
+        if('visible' in options) this.visible = options.visible;
 
         UIElement.#UI_ELEMENTS.push(this);
     }
