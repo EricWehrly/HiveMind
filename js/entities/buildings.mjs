@@ -4,6 +4,7 @@ import Events from '../../engine/js/events.mjs';
 import Chunk from '../../engine/js/mapping/chunk.mjs';
 import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
+import HiveMindCharacter from './character-extensions.mjs';
 
 // TODO: import from json, or ... ?
 new CharacterType({
@@ -13,20 +14,32 @@ new CharacterType({
     ai: null
 });
 
-const Build = function() {
+const Build = function(context) {
 
-    // TODO: properly get the "active" menu? or?
-    const currentMenu = Menu.MENU_LIST[0];
-    const selected = currentMenu.selected;
+    const selectedBuilding = context?.menu?.selected?.context;
 
     console.log("I gonna build this guy:");
-    console.log(selected);
+    console.log(selectedBuilding);
 
     // for now we can just spawn our first building
     // which will produce seeds, which eventually grow into fruit you can eat
+
+    const player = Character.LOCAL_PLAYER;
+
+    // check cost (player can "afford") before building
+    // instantiate the instance
+
+    // TODO: from selected
+        const spawnedCharacter = new HiveMindCharacter({
+            name: 'Seeder',
+            color: `blue`,  // player color
+            health: 15,
+            position: player.position,
+            // _currentPurposeKey: purpose.name.toLowerCase()
+            // needs some form of ai to build the seeds, but first..
+        });
 }
 
-// menu action property?
 const UI_MENU_BUILDINGS = new Menu({
     screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
     name: "Build",
@@ -39,8 +52,6 @@ export default class Building extends Character {
 
         super(options);
 
-        // add to global buildings list, which adds to menu
         UI_MENU_BUILDINGS.addItem(this);
     }
-    
 }

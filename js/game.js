@@ -39,8 +39,9 @@ KeyboardController.AddDefaultBinding("consume", "f");
 KeyboardController.AddDefaultBinding("menu_interact", "f");
 KeyboardController.AddDefaultBinding("buildMenu", "b");
 
-var map = new Map();
+const map = new Map();
 
+// I think we can get rid of object assign
 const seeder = new Building(Object.assign({}, CharacterType.Seeder));
 
 const slap = new Technology({
@@ -96,6 +97,7 @@ const localPlayer = new Character({
     isPlayer: true
 });
 new KeyboardController({ character: localPlayer });
+Character.LOCAL_PLAYER = localPlayer;
 
 localPlayer.AddTechnology(slap);
 
