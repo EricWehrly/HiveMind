@@ -2,7 +2,7 @@ import UIElement from "./ui-element.mjs";
 import Events from '../events.mjs';
 
 const UI_ELEMENT_ATTACK = new UIElement({
-    screenZone: UIElement.SCREEN_ZONE.BOTTOM_MIDDLE
+    screenZone: UIElement.SCREEN_ZONE.BOTTOM_CENTER
 });
 
 // create ui element ...

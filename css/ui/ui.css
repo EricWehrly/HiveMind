@@ -38,11 +38,11 @@
     right: 0px;
 }
 
-.ui.middle {    
+.ui.center {    
     /* align-self: center; */
 }
 
-.ui.bottom.middle {
+.ui.bottom.center {
     position: absolute;
     bottom: 5px;                
     left: 50%;                  

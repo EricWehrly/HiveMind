@@ -6,10 +6,10 @@ export default class UIElement {
     static SCREEN_ZONE = {
         NONE: "",
         BOTTOM_LEFT: "bottom left",
-        BOTTOM_MIDDLE: "bottom middle",
+        BOTTOM_CENTER: "bottom center",
         BOTTOM_RIGHT: "bottom right",
         TOP_RIGHT: "top right",
-        TOP_MIDDLE: "top middle",
+        TOP_CENTER: "top center",
         TOP_LEFT: "top left"
     }
 
