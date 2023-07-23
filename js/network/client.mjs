@@ -34,6 +34,28 @@ class Client {
         return Client._instance._PEER_CONNECTION;
     }
 
+    // method for sending message
+    // TODO: loop peerConnections instead, later, apparently
+    sendMessage(channelName, payload) {
+
+        if(Client.peerConnection == null) {
+            // console.warn(`No peer connection!`);
+            return;
+        }
+
+        if(!(channelName in Client.peerConnection.channels)) {
+            console.warn(`Channel ${channelName} not in list :(`);
+            return;
+        }
+
+        if(Client.peerConnection.channels[channelName] != "open") {
+            console.warn(`Peer connection state is ${Client.peerConnection.readyState} , not ready`);
+            return;
+        }
+
+        Client.peerConnection.channels[channelName].send(payload);
+    }
+
     join() {
 
         // I think each player needs a new rtc peer connection for each player that joins
