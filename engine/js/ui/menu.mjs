@@ -11,10 +11,6 @@ const MENU_INTERACT_ACTION = new Action({
         // ok ... how do we know which menu is in context? 
         // for now we can just assume only 1 menu ...
         const currentMenu = Menu.MENU_LIST[0];
-        const selected = currentMenu.selected;
-        // do the action, for the selected item ...
-        // the action should be "build", but how do we know that?
-        // console.log(selected);
         // TODO: can we pass ... from the menu calling somehow? into this method?
         currentMenu.menuAction({
             menu: currentMenu

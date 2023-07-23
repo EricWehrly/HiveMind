@@ -29,6 +29,7 @@ import './entities/enemies.mjs';
 import Building from './entities/buildings.mjs';
 
 // let someTile = new Tile();
+// TODO: when this file gets maybe ~200 lines, we can move all the setup to '/js/game/game-setup.js'
 KeyboardController.AddDefaultBinding("subdivide", "q");
 // TODO: this needs to be a more generic 'interact' with specific functions, maybe like how attack works
 // KeyboardController.AddDefaultBinding("interact", "f");
@@ -61,28 +62,39 @@ const claws = new Technology({
     delay: 4200
 });
 
+// half of this is "compute local player tooltip"
+// the other half is toggling the current action ...
 function checkPlayerInteraction() {
+
+    // if a menu is active,
+    // clear player tooltip and return
 
     const closest = localPlayer.target;
     const characterType = closest != null ?  closest.characterType : null;
+
+    let toolTipMessage = '';
+    if(closest?.name) {
+        toolTipMessage = closest.name + '<br />';
+    }
 
     if(closest != null && closest.canBeStudied) {
         // this only works with 1 local player cause actions will be local to this system ...
         Action.List["study"].target = closest;
         Action.List["study"].enabled = true;
-        localPlayer.toolTip.message = "'F' - Study";
+        toolTipMessage += "'F' - Study";
         localPlayer.toolTip.entity = closest;
     } else {
         Action.List["study"].enabled = false;
-        localPlayer.toolTip.message = "";
                 
         // for some reason we can fire off a consume and a study at the same time?
         if(characterType && CharacterType[characterType].isStudied) {
             Action.List["consume"].target = closest;
             Action.List["consume"].enabled = true;
-            localPlayer.toolTip.message = "'F' - Nom";            
+            toolTipMessage += "'F' - Nom";            
         }
     }
+
+    localPlayer.toolTip.message = toolTipMessage;
 }
 
 Events.RaiseEvent(Events.List.GameStart);
@@ -107,6 +119,8 @@ localPlayer.toolTip = new ToolTip({
 
 Game.Camera.setTarget(localPlayer);
 
+// we can limit this to when local player moves
+// this implementation is lazy but should technically work fine
 RegisterLoopMethod(checkPlayerInteraction, false);
 
 console.log('Starting game.');
