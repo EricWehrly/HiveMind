@@ -10,7 +10,8 @@ export default class UIElement {
         BOTTOM_RIGHT: "bottom right",
         TOP_RIGHT: "top right",
         TOP_CENTER: "top center",
-        TOP_LEFT: "top left"
+        TOP_LEFT: "top left",
+        MIDDLE_RIGHT: "middle right"
     }
 
     static #UI_ELEMENTS = []
