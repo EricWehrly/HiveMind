@@ -58,3 +58,7 @@
 .ui.h3 {
     padding: 0 .4em;
 }
+
+.selected {
+    border: 1px solid white;
+}
