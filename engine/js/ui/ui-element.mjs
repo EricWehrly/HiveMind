@@ -37,6 +37,8 @@ export default class UIElement {
     }
 
     set visible(value) {
+        if(this.#visible == value) return;
+        
         this.#visible = value;
         if(this.Element && this.#visible) this.Element.style.display = UIElement.#initialDisplay;
         if(this.Element && !this.#visible) this.Element.style.display = "none";
