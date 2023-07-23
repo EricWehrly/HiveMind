@@ -9,7 +9,7 @@ export default class Menu extends UIElement {
         return Menu.#MENU_LIST;
     }
 
-    static getMenu(name) {
+    static Get(name) {
         return Menu.#MENU_LIST[name.toLowerCase()];
     }
 
