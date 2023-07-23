@@ -31,8 +31,13 @@ import Building from './entities/buildings.mjs';
 // let someTile = new Tile();
 KeyboardController.AddDefaultBinding("subdivide", "q");
 // TODO: this needs to be a more generic 'interact' with specific functions, maybe like how attack works
+// KeyboardController.AddDefaultBinding("interact", "f");
 KeyboardController.AddDefaultBinding("study", "f");
 KeyboardController.AddDefaultBinding("consume", "f");
+
+// still 'interact' ... depends on what has focus right now ...
+KeyboardController.AddDefaultBinding("menu_interact", "f");
+KeyboardController.AddDefaultBinding("buildMenu", "b");
 
 var map = new Map();
 

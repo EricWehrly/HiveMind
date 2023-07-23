@@ -13,9 +13,24 @@ new CharacterType({
     ai: null
 });
 
+const Build = function() {
+
+    // TODO: properly get the "active" menu? or?
+    const currentMenu = Menu.MENU_LIST[0];
+    const selected = currentMenu.selected;
+
+    console.log("I gonna build this guy:");
+    console.log(selected);
+
+    // for now we can just spawn our first building
+    // which will produce seeds, which eventually grow into fruit you can eat
+}
+
+// menu action property?
 const UI_MENU_BUILDINGS = new Menu({
     screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
-    name: "Build"
+    name: "Build",
+    menuAction: Build
 });
 
 export default class Building extends Character {

@@ -14,7 +14,7 @@ export default class UIElement {
         MIDDLE_RIGHT: "middle right"
     }
 
-    static #UI_ELEMENTS = []
+    static #UI_ELEMENTS = [];
     static #initialDisplay = "none";
 
     static {
