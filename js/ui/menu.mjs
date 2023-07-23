@@ -2,28 +2,30 @@ import UIElement from './ui-element.mjs';
 
 export default class Menu extends UIElement {
     
-    // this is lazy
     static #MENU_LIST_COUNT = 0;
-    // MENU_LIST = new Listed?
+    // Menu class should "be" (extend) Listed, but can't extend 2, so...
     static #MENU_LIST = {}
     static get MENU_LIST() {
         return Menu.#MENU_LIST;
     }
 
     static getMenu(name) {
-        return Menu.#MENU_LIST[name];
+        return Menu.#MENU_LIST[name.toLowerCase()];
     }
 
-    // we already solved for this, I think in this codebase
     static #addMenu(menu) {
         
         Menu.#MENU_LIST[Menu.#MENU_LIST_COUNT++] = menu;
-        Menu.#MENU_LIST[menu.name] = menu;
+        Menu.#MENU_LIST[menu.name.toLowerCase()] = menu;
     }
 
     #name;
     #selected;
     #menuAction;
+
+    get name() {
+        return this.#name;
+    }
 
     get selected() {
         return this.#selected;
