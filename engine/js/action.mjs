@@ -123,7 +123,7 @@ export default class Action extends Listed {
 
                 // open menu
                 // build
-                const buildMenu = Menu.getMenu("build");
+                const buildMenu = Menu.Get("build");
                 console.log(buildMenu);
             }
         });
