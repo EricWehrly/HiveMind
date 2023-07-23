@@ -7,7 +7,7 @@ import Chunk from '../../engine/js/mapping/chunk.mjs';
 // so the player can study the type and learn how to gain health from it
 
 new CharacterType({
-    name: 'Apple',
+    name: 'Food',
     color: 'green',
     health: 5,
     ai: null
@@ -51,7 +51,7 @@ export default class Food {
                 
                 // Maybe we should have a "spawn item" shorthand function?
                 // or maybe "character type" should be an option we can pass into the character constructor?
-                Object.assign(opts, CharacterType.Apple);
+                Object.assign(opts, CharacterType.Food);
                 new Character(opts);
             }
         }
