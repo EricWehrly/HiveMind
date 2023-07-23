@@ -15,4 +15,14 @@ export default class Menu extends UIElement {
         title.innerHTML = this.#name;
         this.Element.appendChild(title);
     }
+
+    addItem(options) {
+        
+        const menuItem = document.createElement('div');
+        menuItem.innerHTML = options.name;
+        this.Element.appendChild(menuItem);
+
+        // console.log(`Adding item ${options.name} to menu ${this.#name}`);
+        // console.log(options);
+    }
 }
