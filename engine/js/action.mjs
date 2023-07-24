@@ -126,7 +126,7 @@ export default class Action extends Listed {
 
         new Action({
             name: 'menu_interact',
-            enabled: true,
+            enabled: false,
             oncePerPress: true,
             delay: 1000,
             callback: function (options) {

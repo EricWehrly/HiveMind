@@ -35,6 +35,16 @@ export default class Menu extends UIElement {
         return this.#menuAction;
     }
 
+    get visible() {
+        return super.visible;
+    }
+
+    // when I become visibile, I want to enable "menu_interact" from Action
+    set visible(value) {
+        super.visible = value;
+        Action.List["menu_interact"].enabled = super.visible;
+    }
+
     // TODO: when the menu is open / visible, need to enable
     // BUILD_ACTION
     // and disable when we lose visible / focus
