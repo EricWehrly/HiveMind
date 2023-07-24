@@ -30,13 +30,13 @@ const Build = function(context) {
     // instantiate the instance
 
     // TODO: from selected
+    // TODO: Why does the seeder move?
         const spawnedCharacter = new HiveMindCharacter({
             name: 'Seeder',
             color: `blue`,  // player color
             health: 15,
             position: player.position,
-            // _currentPurposeKey: purpose.name.toLowerCase()
-            // needs some form of ai to build the seeds, but first..
+            _currentPurposeKey: 'grow'
         });
 }
 

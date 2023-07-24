@@ -1,16 +1,21 @@
+- buildings for: eating nearby food, doing research, defending, healing
+defense can later break out to either turrets or unit spawners
+
+- set up a map object or some mechanism for spawning new entities as the player explores around
+
+- resources UI showing how much (food? size?) player has (and plan to add more eventually obviously)
+
 - would be nice to make a UI (options?) that shows which keys are bound
 
 - create a ui element showing player size
     within debug menu
-
-- set up a map object or some mechanism for spawning new entities as the player explores around
 
 - Camera controls & following player
     rendering controller or something for other entities
     smooth movement? tweening? speed and accel?
     when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
 
-- setting up player structures with purposes
+- need to have some collision
 
 - time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
 
