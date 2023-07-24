@@ -91,6 +91,8 @@ function checkPlayerInteraction() {
             Action.List["consume"].target = closest;
             Action.List["consume"].enabled = true;
             toolTipMessage += "'F' - Nom";            
+        } else {
+            localPlayer.toolTip.entity = closest;
         }
     }
 
