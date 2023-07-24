@@ -1,5 +1,16 @@
+import Point from "../../engine/js/baseTypes/point.mjs";
 import Character from "../../engine/js/entities/character.mjs";
 import CharacterType from "./characterType.mjs";
+
+function randomPositionOffset(source, offsetAmountPerAxis) {
+    
+    let xOffset = Math.randomBetween(0, offsetAmountPerAxis);
+    if(Math.random() < 0.5) xOffset *= -1;
+    let yOffset = Math.randomBetween(0, offsetAmountPerAxis);
+    if(Math.random() < 0.5) yOffset *= -1;
+
+    return new Point(source.x + xOffset, source.y + yOffset);
+}
 
 const Purposes =
 {
@@ -85,13 +96,9 @@ const Purposes =
             if(!character.growing) character.growing = [];
             if(character.growing.length < growConfig.max) {
                 // TODO: check if we have some to grow that are not yet fully grown
-                // const newGrow = new Food();
-                // ok so we need to have it be a portion ...
-                console.log("Grow new");
                 const newGrow = new Character(growConfig.subject);
                 newGrow.growth = 0;
-                // TODO: random scatter
-                newGrow.position = character.position;
+                newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);
             }
 
