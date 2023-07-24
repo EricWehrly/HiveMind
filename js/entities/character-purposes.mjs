@@ -1,5 +1,5 @@
 import Point from "../../engine/js/baseTypes/point.mjs";
-import Character from "../../engine/js/entities/character.mjs";
+import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 
 function randomPositionOffset(source, offsetAmountPerAxis) {
@@ -96,7 +96,7 @@ const Purposes =
             if(!character.growing) character.growing = [];
             if(character.growing.length < growConfig.max) {
                 // TODO: check if we have some to grow that are not yet fully grown
-                const newGrow = new Character(growConfig.subject);
+                const newGrow = new HiveMindCharacter(growConfig.subject);
                 newGrow.growth = 0;
                 newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);
