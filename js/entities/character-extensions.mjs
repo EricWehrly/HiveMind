@@ -18,9 +18,20 @@ export default class HiveMindCharacter extends Character {
 
     get purpose () { return HiveMindCharacter.Purposes[this._currentPurposeKey]; }
 
+    get isGrown() {
+
+        if(this.growth == undefined) return true;
+        if(this.growth == 100) return true;
+        return false;
+    }
+
     get canBeStudied() {
+        // TODO: use "or"s rather than all these if's
+        // this is something that would probably automatically benefit from 
+        // a magic function-level caching implementation
         if(this.isPlayer) return false;
         if(this.ai != null && this.dead == false) return false;
+        if(!this.isGrown) return false;
         if(this.characterType && CharacterType[this.characterType].isStudied == true) return false;
 
         return true;
