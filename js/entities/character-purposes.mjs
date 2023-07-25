@@ -112,6 +112,12 @@ const Purposes =
 
                 if (growing.growth == 100) {
                     delete growing.growth;
+                    Events.Subscribe(Events.List.CharacterDied, (deadGuy) => {
+                        const prevCount = character.growing.length;
+                        const index = character.growing.indexOf(deadGuy);
+                        if(index > -1) character.growing.splice(index, 1);
+                        console.log(`Cutting one out. Was ${prevCount} is ${character.growing.length}`);
+                    });
                     // TODO: When the thing gets killed, remove it from 'growing'
                 }
             }
