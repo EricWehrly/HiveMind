@@ -115,11 +115,9 @@ export default class Action extends Listed {
             name: 'buildMenu',
             enabled: true,
             oncePerPress: true,
-            delay: 1000,
+            // delay: 1000,
             callback: function (options) {
 
-                const buildMenu = Menu.Get("build");
-                // weirdly seems to not register properly if passed too quickly?
                 buildMenu.visible = !buildMenu.visible;
             }
         });
