@@ -1,4 +1,5 @@
 import Point from "../../engine/js/baseTypes/point.mjs";
+import Events from "../../engine/js/events.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 
@@ -112,13 +113,13 @@ const Purposes =
 
                 if (growing.growth == 100) {
                     delete growing.growth;
+
+                    // this should move to hive mind character?
+                    // maybe "growing" should be made generic as "children" ...
                     Events.Subscribe(Events.List.CharacterDied, (deadGuy) => {
-                        const prevCount = character.growing.length;
                         const index = character.growing.indexOf(deadGuy);
                         if(index > -1) character.growing.splice(index, 1);
-                        console.log(`Cutting one out. Was ${prevCount} is ${character.growing.length}`);
                     });
-                    // TODO: When the thing gets killed, remove it from 'growing'
                 }
             }
         }
