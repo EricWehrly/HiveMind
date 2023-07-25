@@ -118,6 +118,7 @@ export default class Action extends Listed {
             // delay: 1000,
             callback: function (options) {
 
+                const buildMenu = Menu.Get("build");
                 buildMenu.visible = !buildMenu.visible;
             }
         });
