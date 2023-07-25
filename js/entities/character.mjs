@@ -38,6 +38,10 @@ export default class Character {
         if (this._health <= 0) this.die();
     }
 
+    get maxHealth() {
+        return this.#initialHealth;
+    }
+
     _position = new Point(0, 0);
     #lastPosition = null;
 
