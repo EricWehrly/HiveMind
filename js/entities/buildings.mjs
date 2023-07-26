@@ -9,8 +9,8 @@ import HiveMindCharacter from './character-extensions.mjs';
 // TODO: import from json, or ... ?
 new CharacterType({
     name: 'Seeder',
-    color: 'blue',  // player color
     health: 15,
+    _currentPurposeKey: 'grow',
     ai: null
 });
 
@@ -18,25 +18,11 @@ const Build = function(context) {
 
     const selectedBuilding = context?.menu?.selected?.context;
 
-    // for now we can just spawn our first building
-    // which will produce seeds, which eventually grow into fruit you can eat
-
     const player = Character.LOCAL_PLAYER;
 
-    const characterOpts = {
-        name: 'Seeder',
-        color: `blue`,  // player color
-        health: 15,
-        position: player.position,
-        _currentPurposeKey: 'grow'
-    };
-
-    /*
-    console.log("I gonna build this guy:");
-    console.log(selectedBuilding);
-    console.log('Compare to:');
-    console.log(characterOpts);
-    */
+    const characterOpts = Object.assign({}, CharacterType[selectedBuilding.characterType]);
+    characterOpts.color = player.color;
+    characterOpts.position = player.position;
 
     const amount = characterOpts.health;
     if(!player.canAfford(amount)) {
@@ -46,9 +32,7 @@ const Build = function(context) {
     }
     player.health -= amount;
 
-    // TODO: from selected
-    // TODO: Why does the seeder move?
-        const spawnedCharacter = new HiveMindCharacter(characterOpts);
+    new HiveMindCharacter(characterOpts);
 }
 
 const UI_MENU_BUILDINGS = new Menu({
