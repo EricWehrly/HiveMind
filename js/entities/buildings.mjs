@@ -1,7 +1,5 @@
 import Character from './character-extensions.mjs';
 import CharacterType from './characterType.mjs';
-import Events from '../../engine/js/events.mjs';
-import Chunk from '../../engine/js/mapping/chunk.mjs';
 import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import HiveMindCharacter from './character-extensions.mjs';
