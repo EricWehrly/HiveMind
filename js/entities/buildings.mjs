@@ -6,6 +6,13 @@ import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import HiveMindCharacter from './character-extensions.mjs';
 
+const UI_MENU_BUILDINGS = new Menu({
+    screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
+    name: "Build",
+    visible: false,
+    menuAction: Build
+});
+
 // TODO: import from json, or ... ?
 new CharacterType({
     name: 'Seeder',
@@ -13,6 +20,8 @@ new CharacterType({
     _currentPurposeKey: 'grow',
     ai: null
 });
+
+UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
 
 const Build = function(context) {
 
@@ -33,21 +42,4 @@ const Build = function(context) {
     player.health -= amount;
 
     new HiveMindCharacter(characterOpts);
-}
-
-const UI_MENU_BUILDINGS = new Menu({
-    screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
-    name: "Build",
-    visible: false,
-    menuAction: Build
-});
-
-export default class Building extends Character {
-    
-    constructor(options) {
-
-        super(options);
-
-        UI_MENU_BUILDINGS.addItem(this);
-    }
 }
