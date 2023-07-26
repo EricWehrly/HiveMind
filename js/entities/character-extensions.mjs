@@ -57,6 +57,11 @@ export default class HiveMindCharacter extends Character {
         if(typeof newPurpose == "string") this._currentPurposeKey = newPurpose;
         else console.warn("What do I do with this");
     }
+
+    canAfford(amount) {
+
+        return this.health >= amount * 2;
+    }
     
     // TODO: set character current subdivision task/purpose
     Subdivide = function (options = {}) {
@@ -68,7 +73,7 @@ export default class HiveMindCharacter extends Character {
         // else if not in that array ...
         else purpose = HiveMindCharacter.Purposes[this._currentPurposeKey];
     
-        if (this.health < amount * 2) {
+        if (!this.canAfford(amount)) {
             console.log("Tell the player they can't subdivbide");
             return;
         }

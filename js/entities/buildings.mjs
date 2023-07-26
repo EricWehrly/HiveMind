@@ -38,8 +38,13 @@ const Build = function(context) {
     console.log(characterOpts);
     */
 
-    // check cost (player can "afford") before building
-    // instantiate the instance
+    const amount = characterOpts.health;
+    if(!player.canAfford(amount)) {
+        console.log(`You can't afford to build ${characterOpts.name} for ${amount}`);
+        console.log(`You got ${player.health}, son.`);
+        return;
+    }
+    player.health -= amount;
 
     // TODO: from selected
     // TODO: Why does the seeder move?
