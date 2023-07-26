@@ -87,7 +87,8 @@ function checkPlayerInteraction() {
         Action.List["study"].enabled = false;
                 
         // for some reason we can fire off a consume and a study at the same time?
-        if(characterType && CharacterType[characterType].isStudied) {
+        if(characterType && CharacterType[characterType].isStudied
+            && !closest.isGrown) {
             Action.List["consume"].target = closest;
             Action.List["consume"].enabled = true;
             toolTipMessage += "'F' - Nom";            

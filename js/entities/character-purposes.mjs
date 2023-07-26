@@ -33,7 +33,8 @@ const Purposes =
                         }
                         character.target = null;
                         character.SetCurrentPurpose("return");
-                    } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
+                    // } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
+                    } else character.target.health = 0; // cheat for make testing easier
                 }
             }
         }
@@ -113,17 +114,18 @@ const Purposes =
 
                 if (growing.growth == 100) {
                     delete growing.growth;
-
-                    // this should move to hive mind character?
-                    // maybe "growing" should be made generic as "children" ...
-                    Events.Subscribe(Events.List.CharacterDied, (deadGuy) => {
-                        const index = character.growing.indexOf(deadGuy);
-                        if(index > -1) character.growing.splice(index, 1);
-                    });
                 }
             }
         }
     }
 };
+
+// maybe "growing" should be made generic as "children" ...
+Events.Subscribe(Events.List.CharacterDied, (deadGuy) => {
+    for(var character of CHARACTER_LIST) {
+        const index = character?.growing?.indexOf(deadGuy);
+        if(index > -1) character.growing.splice(index, 1);
+    }
+});
 
 export default Purposes;
