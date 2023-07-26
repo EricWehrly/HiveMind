@@ -34,6 +34,8 @@ export default class Character {
     }
 
     set health(newValue) {
+        if(this.dead) return;
+
         this._health = newValue;
         if (this._health <= 0) this.die();
     }
@@ -329,9 +331,9 @@ export default class Character {
 
     // private?
     // TODO: Should we just flag not alive and defer 'fading out' corpse?
-    die() {
+    die() {        
         console.log(`${this.name} is dead now.`);
-        document.getElementById("playfield").removeChild(this.graphic);
+        if(this.graphic) document.getElementById("playfield").removeChild(this.graphic);
         
         Events.RaiseEvent(Events.List.CharacterDied, this);
         
