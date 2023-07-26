@@ -332,6 +332,10 @@ export default class Character {
     die() {
         console.log(`${this.name} is dead now.`);
         document.getElementById("playfield").removeChild(this.graphic);
-        RemoveCharacterFromList(this);
+        
+        Events.RaiseEvent(Events.List.CharacterDied, this);
+        
+        // TODO:
+        // RemoveCharacterFromList(this);
     }
 }
