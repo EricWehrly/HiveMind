@@ -181,7 +181,7 @@ export default class Character {
 
     AddTechnology(technology) {
         technology = Technology.Get(technology);
-        console.log(`Adding technology ${technology.name} to character ${this.name}`);
+        console.debug(`Adding technology ${technology.name} to character ${this.name}`);
         this._technologies.push(technology);
 
         if(technology.type) {
@@ -189,7 +189,7 @@ export default class Character {
                 this.equip(technology);
             }
 
-            console.log(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
+            console.debug(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
         }
     }
 
