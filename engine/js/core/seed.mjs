@@ -4,8 +4,25 @@
 // other stuff will need to reference it ...
 
 // https://stackoverflow.com/a/19303725/5450892
-export default function Seed(seed) {
+export default class Seed {
+
+    #seed;
+
+    constructor(seed) {
+
+        this.#seed = seed;
+    }
     
-    var x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
+    Random(min, max) {
+
+        // TODO: the 'if' should be 'isNumeric'?
+        if(min && max) {
+            
+            return Math.floor(Math.random() * max) + min;
+        } else {
+
+            var x = Math.sin(this.#seed++) * 10000;
+            return x - Math.floor(x);
+        }
+    }
 }

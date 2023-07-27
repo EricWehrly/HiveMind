@@ -1,5 +1,7 @@
 import Events from "../events.mjs";
 import Map from '../mapping/map.mjs';
+import Game from "../engine.mjs";
+import Seed from "../core/seed.mjs";
 
 Events.List.ChunkCreated = "ChunkCreated";
 
@@ -31,10 +33,28 @@ export default class Chunk {
         return this.x + "," + this.y;
     }
 
+    #seed
+    #danger
+    #hostility
+    #flora
+
+    get Seed() {
+        return this.#seed;
+    }
+
     constructor(options) {
         if(options.x) this.x = options.x;
         if(options.y) this.y = options.y;
+        this.#seed = new Seed(Game.Seed.Random());
+        const seed = this.#seed;
 
+        const distance = Math.abs(this.x) + Math.abs(this.y);
+        this.#danger = seed.Random(Math.max(distance - 1, 0), distance + 1) + 1;
+        this.#hostility = seed.Random(1, this.#danger * 3);
+        // TODO: base this off adjacent flora value (like be +- that value), not totally random
+        this.#flora = seed.Random(1, 10);
+
+        console.log(this);
         Map.Map.addChunk(this);
         Events.RaiseEvent(Events.List.ChunkCreated, this, {
             isNetworkBoundEvent: true
