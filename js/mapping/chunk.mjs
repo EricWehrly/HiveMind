@@ -34,9 +34,21 @@ export default class Chunk {
     }
 
     #seed
+    get seed() {
+        return this.#seed;
+    }
     #danger
+    get danger() {
+        return this.#danger;
+    }
     #hostility
+    get hostility() {
+        return this.#hostility;
+    }
     #flora
+    get flora() {
+        return this.#flora;
+    }
 
     get Seed() {
         return this.#seed;
