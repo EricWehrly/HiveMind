@@ -16,9 +16,9 @@ export default class Seed {
     Random(min, max) {
 
         // TODO: the 'if' should be 'isNumeric'?
-        if(min && max) {
+        if(min != null && max != null) {
             
-            return Math.floor(Math.random() * max) + min;
+            return (Math.random() * max) + min;
         } else {
 
             var x = Math.sin(this.#seed++) * 10000;
