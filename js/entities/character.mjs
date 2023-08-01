@@ -66,6 +66,14 @@ export default class Character {
 
     #maxWanderDistance = 10
 
+    // prevent trying to set x and y
+    get x() {
+        return this._position.x;
+    }
+    get y() {
+        return this._position.y;
+    }
+
     constructor(options = {}) {
         
         if(options.position) { 
