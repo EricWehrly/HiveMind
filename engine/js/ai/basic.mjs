@@ -27,10 +27,14 @@ export default class AI {
     think() {
 
         if(this.#shouldTarget()) {
+            const wasTarget = this.#character.target;
             this.#character.target = this.#character.getClosestEntity({
                 distance: this.#character.aggressionRange,
                 isPlayer: true
             });
+            if(wasTarget != this.#character.target && this.#character.target != null) {
+                // console.log(`Acquiring target ${this.#character.target.name}`);
+            }
         }
 
         // if I have a target
@@ -40,13 +44,15 @@ export default class AI {
         // if i don't have a target
         this.wander();
 
+        // this prevents the character chasing the player (too far) as well
         this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
 
         this.#character.pointAtTarget();
     }
 
     #shouldTarget() {
-        return this.#character.target == null && this.#character.aggression > 0;
+        return this.#character.aggression > 0 
+            && (this.#character.target == null || !(this.#character.target instanceof Character));
     }
 
     wander() {
@@ -79,9 +85,5 @@ export default class AI {
             console.debug(`Wandered too far (${dist}), leashing to ${point.x}, ${point.y}`);
             this.target = point;
         }
-    }
-
-    leashTarget() {
-        // if target distance > this.#character.aggressionRange * 2
     }
 }
