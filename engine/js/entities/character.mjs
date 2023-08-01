@@ -171,6 +171,15 @@ export default class Character {
         return this.#maxWanderDistance;
     }
 
+    // TODO: implement variable character attributes
+    get vision() {
+        return 1;
+    }
+
+    get aggressionRange() {
+        return this.aggression * this.vision;
+    }
+
     hasTechnology(technology) {
 
         if (typeof technology == "string") {

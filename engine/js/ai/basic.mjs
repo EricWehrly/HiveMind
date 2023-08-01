@@ -25,12 +25,17 @@ export default class AI {
     // TODO: faction
 
     think() {
-        
-        // if I should have a target
-        // find one
+
+        if(this.#shouldTarget()) {
+            this.#character.target = this.#character.getClosestEntity({
+                distance: this.#character.aggressionRange,
+                isPlayer: true
+            });
+        }
 
         // if I have a target
         // move to it
+        // pointAtTarget (below) seems to do this
 
         // if i don't have a target
         this.wander();
@@ -38,6 +43,10 @@ export default class AI {
         this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
 
         this.#character.pointAtTarget();
+    }
+
+    #shouldTarget() {
+        return this.#character.target == null && this.#character.aggression > 0;
     }
 
     wander() {
@@ -70,5 +79,9 @@ export default class AI {
             console.debug(`Wandered too far (${dist}), leashing to ${point.x}, ${point.y}`);
             this.target = point;
         }
+    }
+
+    leashTarget() {
+        // if target distance > this.#character.aggressionRange * 2
     }
 }
