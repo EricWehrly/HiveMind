@@ -5,22 +5,24 @@ import CharacterType from './characterType.mjs';
 import Chunk from '../../engine/js/mapping/chunk.mjs';
 
 new CharacterType({
-    name: "Enemy",
+    name: "Animal",
     color: 'red',
     health: 40,
 });
 
 // we may as well spawn "fauna", too, while we're at it
 // why don't we just have fauna have aggression from 0 to 100?
-function spawnEnemies(chunk) {
+function spawnFauna(chunk) {
 
     const seed = chunk.seed;
 
     const claws = Technology.Get("claws");
-    const characterOpts = Object.assign({}, CharacterType.Enemy);
+    const characterOpts = Object.assign({}, CharacterType.Animal);
     characterOpts.technologies = [claws];
     
-    const spawnCount = Math.ceil(seed.Random(0, 1) * 5);
+    // const spawnCount = seed.Random(0, 1) * 5;
+    // later, we can use the remainder to make monsters stronger
+    const spawnCount = Math.ceil(chunk.danger);
     // how much aggression?
     // later, the amount of aggression in the chunk can gate certain creatures from spawning
     // later, the amount of "points" (strength) a monster has should be used to determine if they get a technology like claws
@@ -28,6 +30,8 @@ function spawnEnemies(chunk) {
 
     console.log(`Spawning ${spawnCount} enemies for chunk ${chunk.x}, ${chunk.y}`);
     for(var i = 0; i < spawnCount; i++) {
+
+        characterOpts.aggression = seed.Random(0, chunk.hostility);
 
         const chunkX = chunk.x * Chunk.CHUNK_SIZE;
         const chunkY = chunk.y * Chunk.CHUNK_SIZE;
@@ -47,4 +51,4 @@ function spawnEnemies(chunk) {
     // aggression for each
 }
 
-Events.Subscribe(Events.List.ChunkCreated, spawnEnemies);
+Events.Subscribe(Events.List.ChunkCreated, spawnFauna);
