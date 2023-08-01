@@ -38,10 +38,12 @@ function spawnFauna(chunk) {
         const randomX = seed.Random(0, Chunk.CHUNK_SIZE - 1);
         const randomY = seed.Random(0, Chunk.CHUNK_SIZE - 1);
         const spawnOpts = {
-            x: chunkX + randomX,
-            y: chunkY + randomY
+            position: {
+                x: chunkX + randomX,
+                y: chunkY + randomY
+            }
         };
-        console.log(`at ${spawnOpts.x}, ${spawnOpts.y}`);
+        console.log(`at ${spawnOpts.position.x}, ${spawnOpts.position.y}`);
         Object.assign(spawnOpts, characterOpts);
         new Character(spawnOpts);
     }
