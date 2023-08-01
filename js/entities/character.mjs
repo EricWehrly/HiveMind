@@ -303,7 +303,8 @@ export default class Character {
     getClosestEntity(options = {
         distance: 100,
         filterChildren: true,
-        hostile: null
+        hostile: null,
+        isPlayer: null
     }) {
 
         let closest = {
@@ -316,6 +317,9 @@ export default class Character {
                     continue;
                 }
                 if (options.hostile != null && character.isHostile != options.hostile) {
+                    continue;
+                }
+                if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
                     continue;
                 }
                 const distance = character.getDistance(this);
