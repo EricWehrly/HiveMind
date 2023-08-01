@@ -40,7 +40,7 @@ KeyboardController.AddDefaultBinding("consume", "f");
 KeyboardController.AddDefaultBinding("menu_interact", "f");
 KeyboardController.AddDefaultBinding("buildMenu", "b");
 
-const map = new Map();
+Game.Map = new Map();
 
 const slap = new Technology({
     name: "slap",
@@ -123,4 +123,5 @@ Game.Camera.setTarget(localPlayer);
 // this implementation is lazy but should technically work fine
 RegisterLoopMethod(checkPlayerInteraction, false);
 
+window.Game = Game;
 console.log('Starting game.');
