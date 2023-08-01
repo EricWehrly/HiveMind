@@ -1,7 +1,10 @@
-- buildings for: eating nearby food, doing research, defending, healing
-defense can later break out to either turrets or unit spawners
+- add more technologies that enemies can have:
+    poison, projectiles, thorns, shell (protective)
+    bark - summons friends (useless to player, as they are a hive mind)
+        (this might be a fun one for later -- options of befriending fauna, and would be better telegraphed when enmies have appearance)
 
-- set up a map object or some mechanism for spawning new entities as the player explores around
+- buildings for: doing research, defending, healing
+defense can later break out to either turrets or unit spawners
 
 - resources UI showing how much (food? size?) player has (and plan to add more eventually obviously)
 
@@ -14,6 +17,8 @@ defense can later break out to either turrets or unit spawners
     rendering controller or something for other entities
     smooth movement? tweening? speed and accel?
     when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
+
+- need one 'interact' action that changes context, or some similar inhibition to 'F' overloading
 
 - need to have some collision
 
