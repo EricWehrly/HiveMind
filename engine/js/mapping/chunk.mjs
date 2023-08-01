@@ -54,13 +54,22 @@ export default class Chunk {
         return this.#seed;
     }
 
+    #x = 0
+    #y = 0
+    get x() {
+        return this.#x;
+    }
+    get y() {
+        return this.#y;
+    }
+
     constructor(options) {
-        if(options.x) this.x = options.x;
-        if(options.y) this.y = options.y;
+        if(options.x) this.#x = options.x;
+        if(options.y) this.#y = options.y;
         this.#seed = new Seed(Game.Seed.Random());
         const seed = this.#seed;
 
-        const distance = Math.abs(this.x) + Math.abs(this.y);
+        const distance = Math.abs(this.#x) + Math.abs(this.#y);
         this.#danger = seed.Random(Math.max(distance - 1, 0), distance + 1) + 1;
         this.#hostility = seed.Random(1, this.#danger * 3);
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
@@ -74,7 +83,4 @@ export default class Chunk {
         // console.log(`New chunk at ${options.x}, ${options.y}`);
         // TODO: Biomes. Like, you can have data-driven biome selection for chunks ..
     }
-
-    x = 0;
-    y = 0;
 }
