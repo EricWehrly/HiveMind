@@ -31,12 +31,13 @@ function spawnFauna(chunk) {
     console.log(`Spawning ${spawnCount} enemies for chunk ${chunk.x}, ${chunk.y}`);
     for(var i = 0; i < spawnCount; i++) {
 
+        const padding = 2;
         characterOpts.aggression = seed.Random(0, chunk.hostility);
 
         const chunkX = chunk.x * Chunk.CHUNK_SIZE;
         const chunkY = chunk.y * Chunk.CHUNK_SIZE;
-        const randomX = seed.Random(0, Chunk.CHUNK_SIZE - 1);
-        const randomY = seed.Random(0, Chunk.CHUNK_SIZE - 1);
+        const randomX = seed.Random(padding, Chunk.CHUNK_SIZE - (padding + 1));
+        const randomY = seed.Random(padding, Chunk.CHUNK_SIZE - (padding + 1));
         const spawnOpts = {
             position: {
                 x: chunkX + randomX,
