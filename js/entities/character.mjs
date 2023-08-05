@@ -11,6 +11,7 @@ Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.PlayerMoved = "PlayerMoved";
+Events.List.PlayerChunkChanged = "PlayerChunkChanged";
 
 // TODO: #private properties rather than _private
 export default class Character {
@@ -283,14 +284,28 @@ export default class Character {
             this._position.y += this._velocity.y * this._speed * amount;
         }
 
+        // TODO: We can probly extract to a method (#positionUpdated)
+        // and call from within the position setter
         if(!this._position.equals(this.#lastPosition)) {
-            if(this.isPlayer) Events.RaiseEvent(Events.List.PlayerMoved, {
-                character: this,
-                from: this.#lastPosition,
-                to: this._position
-            }, {
-                isNetworkBoundEvent: true
-            });
+            if(this.isPlayer) {
+                Events.RaiseEvent(Events.List.PlayerMoved, {
+                    character: this,
+                    from: this.#lastPosition,
+                    to: this._position
+                    }, {
+                    isNetworkBoundEvent: true
+                });
+                
+                if(!this._position.chunk.equals(this.#lastPosition?.chunk)) {
+                    Events.RaiseEvent(Events.List.PlayerChunkChanged, {
+                        character: this,
+                        from: this.#lastPosition?.chunk,
+                        to: this._position.chunk
+                    }, {
+                        isNetworkBoundEvent: true
+                    });
+                }
+            }
             this.#lastPosition = copyPublicProperties(this._position)
         }
     }

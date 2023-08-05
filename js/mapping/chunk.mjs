@@ -63,6 +63,16 @@ export default class Chunk {
         return this.#y;
     }
 
+    distance(chunk) {
+
+        if(!(chunk instanceof Chunk)) {
+            console.error("Hey, that's not a chunk.");
+            return null;
+        }
+        return Math.abs(this.x - chunk.x)
+            + Math.abs(this.y - chunk.y);
+    }
+
     constructor(options) {
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
@@ -82,5 +92,13 @@ export default class Chunk {
         });
         // console.log(`New chunk at ${options.x}, ${options.y}`);
         // TODO: Biomes. Like, you can have data-driven biome selection for chunks ..
+    }
+
+    equals(chunk) {
+
+        if(!(chunk instanceof Chunk)) return false;
+
+        return chunk.x == this.x
+            && chunk.y == this.y;
     }
 }
