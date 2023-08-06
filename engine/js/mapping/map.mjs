@@ -46,8 +46,8 @@ export default class Map {
         distance = Math.abs(distance);
 
         const nearbyChunks = [];
-        for(var deltaX = distance * -1; deltaX < distance; deltaX++) {
-            for(var deltaY = distance * -1; deltaY < distance; deltaY++) {
+        for(var deltaX = distance * -1; deltaX <= distance; deltaX++) {
+            for(var deltaY = distance * -1; deltaY <= distance; deltaY++) {
                 if(deltaX == 0 && deltaY == 0) continue;
                 const coordinate = (startingChunk.x + deltaX) + ","
                     + (startingChunk.y + deltaY);
