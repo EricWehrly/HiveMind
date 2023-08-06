@@ -63,19 +63,20 @@ export default class Chunk {
         return this.#y;
     }
 
-    distance(chunk) {
-
-        if(!(chunk instanceof Chunk)) {
-            console.error("Hey, that's not a chunk.");
-            return null;
-        }
-        return Math.abs(this.x - chunk.x)
-            + Math.abs(this.y - chunk.y);
+    #active = false;
+    get active() {
+        return this.#active;
+    }
+    set active(value) {
+        // if(value == false) console.log(`Deactivating chunk at ${this.coordinate}`);
+        // else console.log(`Activating chunk at ${this.coordinate}`);
+        this.#active = value;
     }
 
     constructor(options) {
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
+        if(options.active) this.active = options.active;
         this.#seed = new Seed(Game.Seed.Random());
         const seed = this.#seed;
 

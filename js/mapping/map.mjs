@@ -41,7 +41,7 @@ export default class Map {
     // should we have an option about whether to include the originating chunk?
     getNearbyChunks(startingChunk, distance) {
 
-        if(startingChunk == null) return;
+        if(startingChunk == null) return [];
         if(!distance) distance = 1;
         distance = Math.abs(distance);
 
@@ -51,27 +51,29 @@ export default class Map {
                 if(deltaX == 0 && deltaY == 0) continue;
                 const coordinate = (startingChunk.x + deltaX) + ","
                     + (startingChunk.y + deltaY);
-                    // console.log(`Looking for chunk at ${coordinate}`);
                 const chunk = this.#chunks[coordinate];
-                // if distance to startingChunk is 1?
-                if(chunk) nearbyChunks.push(chunk);
+                if(chunk) {
+                    nearbyChunks.push(chunk);
+                }
             }
         }
 
-        console.log(`${nearbyChunks.length} chunks within ${distance} of chunk ${startingChunk}`);
+        // console.log(`${nearbyChunks.length} chunks within ${distance} of chunk at ${startingChunk.coordinate}`);
         return nearbyChunks;
     }
 
-    // event has:
-    // character, from, to
     #playerChunkChanged(event) {
-        console.log("New chunk!");
-        console.log(event);
 
-        const nearbyChunks = this.getNearbyChunks(event.from);
+        const chunksNearFrom = this.getNearbyChunks(event.from);
+        const chunksNearTo = this.getNearbyChunks(event.to);
+        chunksNearFrom.forEach(chunk => {
 
-        // deactivate chunks we're moving away from
-        // activate chunks we're moving toward
+            // console.log(`Chunk at ${chunk.coordinate} active: ${chunk.active}`);
+            if(!chunksNearTo.includes(chunk)) chunk.active = false;
+        });
+        chunksNearTo.forEach(chunk => {
+            chunk.active = true;
+        });
     }
 
     #playerMoved(event) {
@@ -137,6 +139,7 @@ export default class Map {
 
             const coordinate = chunkCoordinate.x + "," + chunkCoordinate.y;
             if(!(coordinate in this.#chunks)) {
+                chunkCoordinate.active = true;
                 new Chunk(chunkCoordinate);
             }
             return this.#chunks[coordinate];
