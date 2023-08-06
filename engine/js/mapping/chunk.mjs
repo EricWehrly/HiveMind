@@ -68,6 +68,7 @@ export default class Chunk {
         return this.#active;
     }
     set active(value) {
+        if(value == this.#active) return;
         // if(value == false) console.log(`Deactivating chunk at ${this.coordinate}`);
         // else console.log(`Activating chunk at ${this.coordinate}`);
         this.#active = value;

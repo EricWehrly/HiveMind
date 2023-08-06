@@ -69,7 +69,10 @@ export default class Map {
         chunksNearFrom.forEach(chunk => {
 
             // console.log(`Chunk at ${chunk.coordinate} active: ${chunk.active}`);
-            if(!chunksNearTo.includes(chunk)) chunk.active = false;
+            if(chunk != event.to 
+                && !chunksNearTo.includes(chunk)) {
+                    chunk.active = false;
+                }
         });
         chunksNearTo.forEach(chunk => {
             chunk.active = true;
