@@ -77,6 +77,7 @@ export default class Map {
         chunksNearTo.forEach(chunk => {
             chunk.active = true;
         });
+        event.to.active = true;
     }
 
     #playerMoved(event) {
@@ -142,7 +143,7 @@ export default class Map {
 
             const coordinate = chunkCoordinate.x + "," + chunkCoordinate.y;
             if(!(coordinate in this.#chunks)) {
-                chunkCoordinate.active = true;
+                if(Object.keys(this.#chunks).length == 0) chunkCoordinate.active = true;
                 new Chunk(chunkCoordinate);
             }
             return this.#chunks[coordinate];
