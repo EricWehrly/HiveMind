@@ -41,6 +41,10 @@ export function GetClosestEntity(targetCharacter, options = {
 function characterLoop(elapsed) {
 
     for(var character of CHARACTER_LIST) {
+        // TODO: we could precompute this
+        if(character?.position?.chunk?.active == false) {
+            continue;
+        }
         character.think(elapsed);
 
         character.move(elapsed / 1000);
