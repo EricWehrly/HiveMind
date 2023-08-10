@@ -42,6 +42,9 @@ function redraw(character, screenRect) {
 
     if(!character.graphic) createGraphic(character);
 
+    // TODO: We could implement some "dirtying" to skip the whole method if not needed
+    // but even static characters need to be redrawn when screenRect moves
+
     // TODO: get grid size constant
     const gridSize = 32;
 
