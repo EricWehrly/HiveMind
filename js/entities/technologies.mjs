@@ -1,5 +1,6 @@
 import Technology from "../../engine/js/technology.mjs";
 
+// these, at least, are easy to load from json ... until we maybe attach script ...
 new Technology({
     name: "slap",
     type: Technology.Types.ATTACK,
@@ -17,7 +18,12 @@ new Technology({
     delay: 4200
 });
 
-// poison
+new Technology({
+    name: "poison",
+    type: Technology.Types.ATTACK_MODIFIER,
+    damage: 1,
+    damageInterval: 2000
+});
 
 // projectile
 

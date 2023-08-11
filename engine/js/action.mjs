@@ -4,6 +4,7 @@ import Listed from './baseTypes/listed.mjs';
 import Requirements from './requirements.mjs';
 import Events from './events.mjs';
 import Menu from './ui/menu.mjs';
+import Technology from './technology.mjs';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -61,6 +62,12 @@ export default class Action extends Listed {
                 if (!this.checkDelay(equipped)) return;
 
                 if (!this.inRange(equipped, options.character)) return;
+
+                const amo = Technology.Types.ATTACK_MODIFIER;
+                if(options?.character?.equipment?.attackModifier) {
+                    // check attack modifier
+                    console.log("Yes");
+                }
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
