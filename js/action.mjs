@@ -66,9 +66,14 @@ export default class Action extends Listed {
 
                 if (!this.inRange(equipped, options.character)) return;
 
+                // decided not to try to "do" poison
+                // it was going to maybe be a "buff" (attackModifier) _on_ a weapon,
+                // which applied a dot to an enemy?
+                // we have none of that
+                // maybe go implement bleed
                 if(equipment[Technology.Types.ATTACK_MODIFIER]) {
-                    // check attack modifier
-                    console.log("Yes");
+                    
+                    //damage, damageInterval ?
                 }
 
                 // TODO: visual and audio cues
