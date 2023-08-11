@@ -18,12 +18,15 @@ new Technology({
     delay: 4200
 });
 
+// on second thought, no poison yet
+/*
 new Technology({
     name: "poison",
     type: Technology.Types.ATTACK_MODIFIER,
     damage: 1,
     damageInterval: 2000
 });
+*/
 
 // projectile
 

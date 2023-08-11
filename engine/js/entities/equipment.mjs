@@ -7,6 +7,7 @@ export default class Equipment {
     // should these somehow be generated from Technology.Type ...?
     // (since we tie them together anyway on line 36)
     _attack = null;
+    // attackModifier isn't actually used
     _attackModifier = null;
 
     constructor(character) {
