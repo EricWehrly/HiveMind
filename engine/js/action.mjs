@@ -52,7 +52,10 @@ export default class Action extends Listed {
             name: 'attack',
             callback: function (options) {
                 // TODO: Pull in enum from technology class
-                const equipped = options?.character?.equipment?.attack;
+                const equipment = options?.character?.equipment;
+                if(equipment == null) return;
+
+                const equipped = equipment[Technology.Types.ATTACK];
                 if (equipped == null) {
                     console.log("Character has no attack skill equipped!");
                     return;
@@ -63,8 +66,7 @@ export default class Action extends Listed {
 
                 if (!this.inRange(equipped, options.character)) return;
 
-                const amo = Technology.Types.ATTACK_MODIFIER;
-                if(options?.character?.equipment?.attackModifier) {
+                if(equipment[Technology.Types.ATTACK_MODIFIER]) {
                     // check attack modifier
                     console.log("Yes");
                 }
