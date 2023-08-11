@@ -39,22 +39,7 @@ KeyboardController.AddDefaultBinding("buildMenu", "b");
 
 Game.Map = new Map();
 
-const slap = new Technology({
-    name: "slap",
-    type: Technology.Types.ATTACK,
-    range: 2,
-    damage: 10,
-    delay: 3000,
-    sound: 'audio/slap.mp3'
-});
-
-const claws = new Technology({
-    name: "claws",
-    type: Technology.Types.ATTACK,
-    range: 3,
-    damage: 3,
-    delay: 4200
-});
+const slap = Technology.Get("slap");
 
 // half of this is "compute local player tooltip"
 // the other half is toggling the current action ...
