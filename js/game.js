@@ -23,10 +23,7 @@ import UI from './ui/ui.mjs';
 import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 
 import Map from '../engine/js/mapping/map.mjs';
-import './entities/food.mjs';
-import './entities/buildings.mjs';
-import './entities/enemies.mjs';
-import './entities/buildings.mjs';
+import './entities/entities.mjs';
 
 // let someTile = new Tile();
 // TODO: when this file gets maybe ~200 lines, we can move all the setup to '/js/game/game-setup.js'
