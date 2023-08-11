@@ -3,7 +3,8 @@ import Listed from "./baseTypes/listed.mjs";
 export default class Technology extends Listed {
 
     static Types = {
-        ATTACK: "attack"
+        ATTACK: "attack",
+        ATTACK_MODIFIER: "attackModifier"
     }
 
     constructor(options = {}) {

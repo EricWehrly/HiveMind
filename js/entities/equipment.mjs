@@ -4,7 +4,10 @@ Events.List.EquipmentChanged = "EquipmentChanged"
 
 export default class Equipment {
 
+    // should these somehow be generated from Technology.Type ...?
+    // (since we tie them together anyway on line 36)
     _attack = null;
+    _attackModifier = null;
 
     constructor(character) {
 
@@ -27,6 +30,14 @@ export default class Equipment {
 
     set attack(newValue) {
         this._attack = newValue;
+    }
+
+    get attackModifier() {
+        return this._attackModifier;
+    }
+
+    set attackModifier(newValue) {
+        this._attackModifier = newValue;
     }
 
     equip(technology) {
