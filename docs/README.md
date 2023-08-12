@@ -4,6 +4,24 @@ A little game experiment.
 
 Forager but you're a hive mind. So far.
 
+---
+
+What we can do:
+- Fight monsters
+- Build buildings
+
+Kinda can: 
+- Multiplayer, ish.
+
+Want to do:
+- Have monsters fight back
+- Evolutions and stuff ... like, the player getting stronger (faster, +damage, +def) ...
+- "interesting" monster behavior AI
+- Learn new moves from monsters
+- Grow player power from built buildings
+    (gaining food)
+- Use food for stuff like .. learning new skills?
+
 ## Development
 
 `docker build . -t hivemind && docker run --init -it -v /$(pwd):/hivemind -p 5000:5000 hivemind`

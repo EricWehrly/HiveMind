@@ -3,6 +3,11 @@
     bark - summons friends (useless to player, as they are a hive mind)
         (this might be a fun one for later -- options of befriending fauna, and would be better telegraphed when enmies have appearance)
 
+- The more evolved an attack is, the longer it takes the player to switch to it.
+Should be able to switch to a new attack even if switch in progress is not complete
+- - Needs multiple attacks (we have slap, a ranged one would be interesting, but maybe a bite or claw first - - except I think claw was supposed to be upgraded slap)
+- - Also needs implemented ability to switch between them...
+
 - buildings for: doing research, defending, healing
 defense can later break out to either turrets or unit spawners
 
@@ -22,7 +27,22 @@ defense can later break out to either turrets or unit spawners
 
 - need to have some collision
 
+- maybe some terrain variety? Mountains, valleys, water
+trees, rocks
+
+- And with that, animals that can swim, amphibians, and the player needing to learn to swim in order to traverse that "biome"
+
+- maybe much later, we'll want to have differe
+
 - time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
+
+---
+
+Make it so that spawned slimes can lose line of sight
+In which case they will return to where they spawned from the player, and then wander looking for them.
+There's an evolution (radio?) that'll make them behave like the current implementation
+
+And maybe there's another upgrade that let's you make them stronger (more health, speed, yield when gathering) in exchange for being more expensive
 
 ---
 

@@ -1,5 +1,8 @@
 export default class Listed {
 
+    // I think we can change and convert this to "options"
+    // to support get options.type =
+    // but with arbitrary matching
     static Get(item) {
         if(typeof item == "string") return this.List[item];
         else if(item.name) return this.List[item.name];
