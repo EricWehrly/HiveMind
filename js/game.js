@@ -56,7 +56,11 @@ function checkPlayerInteraction() {
         toolTipMessage = closest.name + '<br />';
     }
 
-    if(closest != null && closest.canBeStudied) {
+    if(closest?.equipment?.attack != null) {
+        toolTipMessage += `Equipped: ${closest.equipment.attack.name}<br />`;
+    }
+
+    if(closest?.canBeStudied) {
         // this only works with 1 local player cause actions will be local to this system ...
         Action.List["study"].target = closest;
         Action.List["study"].enabled = true;
