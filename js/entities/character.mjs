@@ -82,6 +82,13 @@ export default class Character {
             delete options.position;
         };
 
+        if(options.technologies) {
+            for(var tech of options.technologies) {
+                this.AddTechnology(tech);
+            }
+            delete options.technologies;
+        }
+
         AssignWithUnderscores(this, options);
 
         this.id = options.id || generateId();
