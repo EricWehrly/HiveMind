@@ -84,7 +84,7 @@ export default class Chunk {
 
         const distance = Math.abs(this.#x) + Math.abs(this.#y);
         this.#danger = seed.Random(Math.max(distance - 1, 0), distance + 1) + 1;
-        this.#hostility = seed.Random(1, this.#danger * 3);
+        this.#hostility = seed.Random(1, this.#danger);
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this.#flora = seed.Random(1, 10);
 
