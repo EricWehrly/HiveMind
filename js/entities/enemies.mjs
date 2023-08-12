@@ -50,7 +50,7 @@ function spawnFauna(chunk) {
     for(var i = 0; i < spawnCount; i++) {
 
         const padding = 2;
-        characterOpts.aggression = seed.Random(0, chunk.hostility);
+        characterOpts.aggression = chunk.hostility;
         
         // need to allow for the possibility of 'no' techs (if fauna and not 'enemy')
         const techIndex = Math.round(seed.Random(0, techs.length - 1));

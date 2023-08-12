@@ -183,8 +183,11 @@ export default class Character {
         return this.#spawnPosition;
     }
 
+    // this may get confusing
     get maxWanderDistance() {
-        return this.#maxWanderDistance;
+        const aggressionRange = this.aggressionRange;
+        if(aggressionRange > 0) return aggressionRange * 1.5;
+        else return this.#maxWanderDistance;
     }
 
     // TODO: implement variable character attributes
@@ -193,7 +196,8 @@ export default class Character {
     }
 
     get aggressionRange() {
-        return this.aggression * this.vision;
+        // not vision. the range of the equipped attack
+        return this.aggression * (this?.equipment?.attack?.range || 0);
     }
 
     hasTechnology(technology) {
