@@ -1,12 +1,16 @@
 // Most basic / default AI
 // TODO: Predator and prey supertypes above this
 import Character from "../entities/character.mjs";
+import { Defer } from '../loop.mjs';
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
+const MS_LEASH_COOLDOWN = 3000;
 
 export default class AI {
 
     #character = null;
+
+    #leashing = false;
 
     #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
@@ -21,31 +25,41 @@ export default class AI {
     set target(newVal) {
         this.#character.target = newVal;
     }
+
+    get character() {
+        return this.#character;
+    }
     
     // TODO: faction
 
     think() {
 
-        if(this.#shouldTarget()) {
-            const wasTarget = this.#character.target;
-            this.#character.target = this.#character.getClosestEntity({
-                distance: this.#character.aggressionRange,
-                isPlayer: true
-            });
-            if(wasTarget != this.#character.target && this.#character.target != null) {
-                // console.log(`Acquiring target ${this.#character.target.name}`);
+        if(this.#leashing == false) {
+            if(this.#shouldTarget()) {
+                // const wasTarget = this.#character.target;
+                this.#character.target = this.#character.getClosestEntity({
+                    distance: this.#character.aggressionRange,
+                    isPlayer: true
+                });
+                /*
+                if(wasTarget != this.#character.target && this.#character.target != null) {
+                    const dist = this.#character.target.getDistance(this.#character);
+                    console.debug(`Acquiring target ${this.#character.target.name}`);
+                    console.debug(`Target distance: ${dist}. Aggression range: ${this.#character.aggressionRange}`);
+                }
+                */
             }
+
+            // if I have a target
+            // move to it
+            // pointAtTarget (below) seems to do this
+
+            // if i don't have a target
+            this.wander();
+
+            // this prevents the character chasing the player (too far) as well
+            this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
         }
-
-        // if I have a target
-        // move to it
-        // pointAtTarget (below) seems to do this
-
-        // if i don't have a target
-        this.wander();
-
-        // this prevents the character chasing the player (too far) as well
-        this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
 
         this.#character.pointAtTarget();
     }
@@ -59,7 +73,7 @@ export default class AI {
         if(this.#character.target instanceof Character) return;
 
         if(performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
-            if(this?.#character?.target?.position) {
+            if(this?.character?.target?.position) {
                 console.debug(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
             }
             this.#lastDestinationPickedTime = performance.now();
@@ -79,11 +93,18 @@ export default class AI {
         }
     }
 
+    #unleash() {
+        this.#leashing = false;
+    }
+
     leash(point, distance) {
         var dist = this.#character.position.distance(point);
         if(dist > distance) {
             console.debug(`Wandered too far (${dist}), leashing to ${point.x}, ${point.y}`);
             this.target = point;
+
+            this.#leashing = true;
+            Defer(this.#unleash.bind(this), MS_LEASH_COOLDOWN);
         }
     }
 }
