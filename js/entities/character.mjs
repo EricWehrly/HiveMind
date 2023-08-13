@@ -208,6 +208,7 @@ export default class Character {
         return this._technologies.includes(technology);
     }
 
+    // this either needs an event or to be moved into equipment.mjs
     AddTechnology(technology) {
         technology = Technology.Get(technology);
         console.debug(`Adding technology ${technology.name} to character ${this.name}`);
