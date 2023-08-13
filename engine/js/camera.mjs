@@ -1,5 +1,6 @@
 import Renderer from "./rendering/renderer-dom.mjs";
 import { RegisterLoopMethod } from "./loop.mjs";
+import Events from "./events.mjs";
 
 // TODO: Global reference somewhere somehow
 const GRID_SIZE = 32;
@@ -26,7 +27,7 @@ export default class Camera {
         Camera.#instance = this;
         if(window) window.Camera = this;
         
-        this.#renderloop();
+        Events.Subscribe(Events.List.GameStart, this.#renderloop.bind(this));
     }
 
     // pixels

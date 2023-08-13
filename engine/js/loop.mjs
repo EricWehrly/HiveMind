@@ -1,3 +1,5 @@
+import Events from "./events.mjs";
+
 const LOOP_METHODS_SLOW = [];
 const LOOP_METHODS_FAST = [];
 const DEFERRALS = [];
@@ -79,13 +81,9 @@ function _fastLoop() {
     setTimeout(_fastLoop, 30);
 }
 
-/*
-Monolith.Events.Subscribe(Monolith.Events.Names.GameDataLoad, function(event) {
+// TODO: Static / singleton?
+
+Events.Subscribe(Events.List.GameStart, function() {
     _slowLoop();
     _fastLoop();
 });
-*/
-
-// TODO: Static / singleton?
-_slowLoop();
-_fastLoop();
