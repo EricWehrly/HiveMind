@@ -51,20 +51,10 @@ function checkPlayerInteraction() {
     const closest = localPlayer.target;
     const characterType = closest != null ?  closest.characterType : null;
 
-    let toolTipMessage = '';
-    if(closest?.name) {
-        toolTipMessage = closest.name + '<br />';
-    }
-
-    if(closest?.equipment?.attack != null) {
-        toolTipMessage += `Equipped: ${closest.equipment.attack.name}<br />`;
-    }
-
     if(closest?.canBeStudied) {
         // this only works with 1 local player cause actions will be local to this system ...
         Action.List["study"].target = closest;
         Action.List["study"].enabled = true;
-        toolTipMessage += "'F' - Study";
         localPlayer.toolTip.entity = closest;
     } else {
         Action.List["study"].enabled = false;
@@ -73,14 +63,13 @@ function checkPlayerInteraction() {
         if(characterType && CharacterType[characterType].isStudied
             && !closest.isGrown) {
             Action.List["consume"].target = closest;
-            Action.List["consume"].enabled = true;
-            toolTipMessage += "'F' - Nom";            
+            Action.List["consume"].enabled = true; 
         } else {
             localPlayer.toolTip.entity = closest;
         }
     }
 
-    localPlayer.toolTip.message = toolTipMessage;
+    localPlayer.toolTip.message = closest?.toolTipMessage || '';
 }
 
 Events.RaiseEvent(Events.List.GameStart);

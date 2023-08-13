@@ -37,6 +37,31 @@ export default class HiveMindCharacter extends Character {
         return true;
     }
 
+    get toolTipMessage() {
+
+        let toolTipMessage = "";
+
+        if(this.name) {
+            toolTipMessage = this.name + '<br />';
+        }
+    
+        if(this.equipment?.attack != null) {
+            toolTipMessage += `Equipped: ${this.equipment.attack.name}<br />`;
+        }
+    
+        if(this.aggression != null) {
+            toolTipMessage += `Aggression Range: ${this.aggressionRange}<br />`;
+        }
+
+        if(this.canBeStudied) {            
+            toolTipMessage += "'F' - Study";
+        } else {            
+            toolTipMessage += "'F' - Nom";
+        }
+
+        return toolTipMessage;
+    }
+
     think(elapsed) {
 
         // stupid hack
@@ -64,7 +89,7 @@ export default class HiveMindCharacter extends Character {
     }
     
     // TODO: set character current subdivision task/purpose
-    Subdivide = function (options = {}) {
+    Subdivide (options = {}) {
 
         const amount = options.amount || 10;
         let purpose;
@@ -95,7 +120,7 @@ export default class HiveMindCharacter extends Character {
     }
 
     // to be called on the child to be reabsorbed into the parent
-    Reabsorb = function(options = {}) {
+    Reabsorb(options = {}) {
 
         this.parent.health += this.health;
         if(this.technologies && this.technologies.length > 0) {
