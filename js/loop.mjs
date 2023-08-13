@@ -1,5 +1,6 @@
 const LOOP_METHODS_SLOW = [];
 const LOOP_METHODS_FAST = [];
+const DEFERRALS = [];
 let LOOP_METHODS_REQUESTED = [];
 
 let LAST_SLOW_LOOP = performance.now();
@@ -21,6 +22,15 @@ export function RequestMethod(callback)
     }
 }
 
+// try to act like "setTimeout" but for the game loop
+export function Defer(callback, ms) {
+
+    DEFERRALS.push({
+        remainingMs: ms,
+        callback
+    });
+}
+
 function _slowLoop() {
 
     var elapsed = performance.now() - LAST_SLOW_LOOP;
@@ -29,6 +39,17 @@ function _slowLoop() {
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
 
         LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+    }
+
+    for(var index = 0; index < DEFERRALS.length; index++) {
+        const deferral = DEFERRALS[index];
+        deferral.remainingMs -= elapsed;
+        if(deferral.remainingMs <= 0) {
+            deferral.callback();
+            DEFERRALS.splice(index, 1);
+            index--;
+            continue;
+        }
     }
 
     for(var requestedMethod of LOOP_METHODS_REQUESTED) {
