@@ -1,3 +1,10 @@
+- default player should be faster than default enemies
+it should also be very difficult for enemies to kite players (may as well make that impossible for this iteration)
+
+- I think we need to have min and max aggression (and other things that get random)
+in part to be able to determine what % of max aggression a creature is
+(which will help us "paint it redder" to visually indicate)
+
 - add more technologies that enemies can have:
     poison, projectiles, thorns, shell (protective)
     bark - summons friends (useless to player, as they are a hive mind)
