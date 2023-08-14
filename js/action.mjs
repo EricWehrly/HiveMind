@@ -155,12 +155,24 @@ export default class Action extends Listed {
         });
     }
 
+    #enabled = null;
+    #oncePerPress = null;
+    #delay = null;
+    get enabled() { return this.#enabled; }
+    set enabled(value) { this.#enabled = value; }
+    get oncePerPress() { return this.#oncePerPress; }
+    get delay() { return this.#delay; }
+
     constructor(options = {}) {
 
         super(options);
 
-        if (this.callback) {
-            const baseCallback = this.callback;
+        if(options.enabled) this.#enabled = options.enabled;
+        if(options.oncePerPress) this.#oncePerPress = options.oncePerPress;
+        if(options.delay) this.#delay = options.delay;
+
+        if (options.callback) {
+            const baseCallback = options.callback;
 
             this.callback = function (options = {}) {
 
@@ -169,13 +181,6 @@ export default class Action extends Listed {
                 if (!this.checkDelay(this)) return;
 
                 baseCallback.bind(this)(options);
-
-                /*
-                const details = {}
-                Object.assign(details, options);
-                details.name = this.name;
-                Events.RaiseEvent(Events.List.ActionFired, details);
-                */
 
                 Events.RaiseEvent(`${Events.List.ActionFired}-${this.name}`, options);
             }

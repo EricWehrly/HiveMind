@@ -8,6 +8,12 @@ export default class Technology extends Listed {
         ATTACK_MODIFIER: "attackModifier"
     }
 
+    #statusEffect;
+
+    get statusEffect() {
+        return this.#statusEffect;
+    }
+
     get danger() {
 
         return (this.damage || 1) // should this be || 0 because no damage = no danger ... ?
@@ -24,6 +30,19 @@ export default class Technology extends Listed {
 
         if(options.sound) {
            this.sound = new Audio(options.sound);
+        }
+
+        // TODO: proper private members and getters
+        this.type = options.type;
+        this.range = options.range;
+        this.damage = options.damage;
+        this.delay = options.delay;
+
+        if(options.statusEffect) {
+            if(Number.isNaN(options.statusEffect.duration)) {
+                console.warn("You can't (currently) apply a status effect without a duration.");
+            }
+            else this.#statusEffect = options.statusEffect;
         }
     }
 }
