@@ -1,5 +1,10 @@
 export default class Listed {
 
+    #name;
+    get name() {
+        return this.#name;
+    }
+
     // I think we can change and convert this to "options"
     // to support get options.type =
     // but with arbitrary matching
@@ -23,8 +28,9 @@ export default class Listed {
                 List: this.constructor.List
             }
         }
-        
-        Object.assign(this, options);
+
+        this.#name = options.name;
+
         this.constructor.List[options.name] = this;
     }
 }
