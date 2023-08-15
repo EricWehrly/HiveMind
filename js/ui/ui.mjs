@@ -15,11 +15,6 @@ if(uiContainer == null) {
     equippedDisplay = document.createElement("div");
     equippedDisplay.className = "ui bottom";
     uiContainer.appendChild(equippedDisplay);
-
-    setTimeout(() => {
-        
-    equippedDisplay.innerHtml = "slap";
-    }, 1000);
 }
 
 Events.Subscribe(`${Events.List.ActionFired}-attack`, function(details) {
@@ -29,10 +24,9 @@ Events.Subscribe(`${Events.List.ActionFired}-attack`, function(details) {
 
 Events.Subscribe(Events.List.EquipmentChanged, function(details) {
 
-    // console.log("Got it");
-
-    // console.log(details);
-    // equippedDisplay.innerHtml = details;
+    if(details.character.isPlayer) {
+        equippedDisplay.innerHtml = details.to.name;
+    }
 });
 
 // import acting weird. do a dumb hack
