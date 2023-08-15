@@ -9,6 +9,7 @@ export default class Equipment {
     _attack = null;
     // attackModifier isn't actually used
     _attackModifier = null;
+    #character;
 
     constructor(character) {
 
@@ -23,6 +24,8 @@ export default class Equipment {
         character.equip = function (technology) {
             this._equipment.equip(technology);
         }
+
+        this.#character = character;
     }
 
     get attack() {
@@ -50,7 +53,8 @@ export default class Equipment {
         const details = {
             type: technology.type,
             from: this[technology.type],
-            to: technology
+            to: technology,
+            character: this.#character
         };
 
         Events.RaiseEvent(Events.List.EquipmentChanged, details);
