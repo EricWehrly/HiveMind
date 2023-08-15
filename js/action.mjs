@@ -53,7 +53,7 @@ export default class Action extends Listed {
             callback: function (options) {
                 // TODO: Pull in enum from technology class
                 const equipment = options?.character?.equipment;
-                if(equipment == null) return;
+                if(equipment == null) return false;
 
                 const equipped = equipment[Technology.Types.ATTACK];
                 if (equipped == null) {
@@ -62,9 +62,9 @@ export default class Action extends Listed {
                 }
 
                 // TODO: This isn't going to track a per-character last action time. We need that.
-                if (!this.checkDelay(equipped)) return;
+                if (!this.checkDelay(equipped)) return false;
 
-                if (!this.inRange(equipped, options.character)) return;
+                if (!this.inRange(equipped, options.character)) return false;
 
                 // decided not to try to "do" poison
                 // it was going to maybe be a "buff" (attackModifier) _on_ a weapon,
@@ -81,6 +81,8 @@ export default class Action extends Listed {
                     if (equipped.sound) equipped.sound.play();
                     options.character.target.health -= equipped.damage;
                 }
+
+                return true;
             }
         });
 
@@ -180,7 +182,7 @@ export default class Action extends Listed {
 
                 if (!this.checkDelay(this)) return;
 
-                baseCallback.bind(this)(options);
+                options.result = baseCallback.bind(this)(options);
 
                 Events.RaiseEvent(`${Events.List.ActionFired}-${this.name}`, options);
             }
