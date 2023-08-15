@@ -1,5 +1,3 @@
-import Events from "../../engine/js/events.mjs";
-
 let uiContainer = null;
 let equippedDisplay = null;
 
@@ -16,18 +14,6 @@ if(uiContainer == null) {
     equippedDisplay.className = "ui bottom";
     uiContainer.appendChild(equippedDisplay);
 }
-
-Events.Subscribe(`${Events.List.ActionFired}-attack`, function(details) {
-
-    console.log(details);
-});
-
-Events.Subscribe(Events.List.EquipmentChanged, function(details) {
-
-    if(details.character.isPlayer) {
-        equippedDisplay.innerHtml = details.to.name;
-    }
-});
 
 // import acting weird. do a dumb hack
 export default null;
