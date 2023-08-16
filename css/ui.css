@@ -1,3 +1,8 @@
+:root {
+    --ui-opacity: .85;
+    --main-bg-color-rgba: rgba(206, 189, 154, var(--ui-opacity));
+}
+
 #ui-container-parent {
 
     width: 99%;
