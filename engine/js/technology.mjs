@@ -9,10 +9,10 @@ export default class Technology extends Listed {
     }
 
     #statusEffect;
+    get statusEffect() { return this.#statusEffect; }
 
-    get statusEffect() {
-        return this.#statusEffect;
-    }
+    #statusEffectDuration;
+    get statusEffectDuration() { return this.#statusEffectDuration; }
 
     get danger() {
 
@@ -44,5 +44,6 @@ export default class Technology extends Listed {
             }
             else this.#statusEffect = options.statusEffect;
         }
+        this.#statusEffectDuration = options.statusEffectDuration;
     }
 }

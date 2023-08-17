@@ -1,11 +1,18 @@
+import StatusEffect from "../../engine/js/status-effect.mjs";
 import Technology from "../../engine/js/technology.mjs";
+
+const bleeding = new StatusEffect({
+    name: "bleeding",
+    damage: 1,
+    interval: 1000
+});
 
 // these, at least, are easy to load from json ... until we maybe attach script ...
 new Technology({
     name: "slap",
     type: Technology.Types.ATTACK,
-    range: 2,
-    damage: 10,
+    range: 10,
+    damage: 10,     // this damage is actually supposed to be super low (1), but we wanted to test combat systems
     delay: 3000,
     sound: 'audio/slap.mp3'
 });
@@ -19,13 +26,23 @@ new Technology({
     delay: 4200
 });
 
+new Technology({
+    name: "bite",
+    type: Technology.Types.ATTACK,
+    range: 1,
+    damage: 3,
+    delay: 6000,
+    statusEffect: bleeding,
+    statusEffectDuration: 3000
+});
+
 // on second thought, no poison yet
 /*
 new Technology({
     name: "poison",
     type: Technology.Types.ATTACK_MODIFIER,
     damage: 1,
-    damageInterval: 2000
+    interval: 2000
 });
 */
 
