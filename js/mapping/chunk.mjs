@@ -8,6 +8,10 @@ Events.List.ChunkCreated = "ChunkCreated";
 export default class Chunk {
 
     static CHUNK_SIZE = 25;
+    static get MIN_FERTILITY() { return 1; }
+    static get MAX_FERTILITY() { return 100; }
+    static get MIN_DANGER() { return 1; }
+    static get MAX_DANGER() { return 100; }
 
     static getChunkCoordinate(x, y) {
 
