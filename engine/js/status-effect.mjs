@@ -65,23 +65,16 @@ export default class StatusEffect extends Listed {
             || Number.isNaN(options.duration)
             || options.target == null) {
                 debugger;
-                throw "You need more options, son.";
             }
 
         const timeElapsed = performance.now() - options.startTime;
-        console.log(`Started callback for ${this.name} interval ${options.lastInterval + 1}. 
-        ${timeElapsed}ms have elapsed.`);
         // we thought we could get away without options.duration,
         // and perhaps someone less dumb at math could
         if(timeElapsed > options.duration) {
             const maxIntervals = (Math.floor(options.endTime - options.startTime) / this.interval);
             const remainingIntervals = maxIntervals - options.lastInterval;
-            console.log(`Ending ${this.name}. 
-                Max intervals: ${maxIntervals}. 
-                Remaining intervals: ${remainingIntervals}`);
             if(remainingIntervals < 0) debugger;
                 for(var i = 0; i < remainingIntervals; i++) {
-                    console.log(`Damaging for ${this.damage} via ${this.name} interval ${options.lastInterval + 1}`);
                     this.#intervalMethod(options.target);
                 }
             return;
@@ -89,7 +82,6 @@ export default class StatusEffect extends Listed {
         
         const intervalsElapsed = Math.floor(timeElapsed / this.interval);
         if(intervalsElapsed > options.lastInterval) {
-            console.log(`Damaging for ${this.damage} via ${this.name} interval ${intervalsElapsed}`);
             this.#intervalMethod(options.target);
             options.lastInterval += 1;
         }
