@@ -6,6 +6,7 @@ import Equipment from './equipment.mjs';
 import BasicAI from '../ai/basic.mjs';
 import Events from '../events.mjs';
 import './character-graphics.mjs';
+import { Defer } from '../loop.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -230,6 +231,15 @@ export default class Character {
                 this.target.getDistance(this) > distance);
     }
 
+    statusEffectThink() {
+        for(var key in Object.keys(this.#statusEffects)) {
+            const statusEffect = this.#statusEffects[key];
+            if(statusEffect > performance.now()) {
+                delete this.#statusEffects[key];
+            }
+        }
+    }
+
     think() {
         if (this.ai) this.ai.think();
         else if(this.isPlayer) {
@@ -250,6 +260,8 @@ export default class Character {
             }
             */
         }
+
+        this.statusEffectThink();
     }
 
     // player character is moving to target and shouldn't be
@@ -387,5 +399,39 @@ export default class Character {
         
         // TODO:
         // RemoveCharacterFromList(this);
+    }
+
+    #statusEffects = {};
+
+    getStatusEffect(statusEffect) {
+
+        if(!(statusEffect in this.#statusEffects)) {
+            this.#statusEffects[statusEffect] = performance.now();
+        }
+        
+        return this.#statusEffects[statusEffect];
+    }
+
+    /**
+     * 
+     * @param {StatusEffect} statusEffect 
+     * @param {int} duration ms
+     */
+    applyStatusEffect(statusEffect, duration) {
+
+        this.#statusEffects[statusEffect] = this.getStatusEffect(statusEffect) + duration;
+
+        const now = performance.now();
+        const options = {
+            startTime: now,
+            endTime: now + duration,
+            lastInterval: 0,
+            target: this.target,
+            duration
+        }
+        if(options.target == null) debugger;
+        Defer(function() {
+            statusEffect.callback(options)
+        }, statusEffect.interval + 1);
     }
 }

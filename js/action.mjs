@@ -8,6 +8,9 @@ import Technology from './technology.mjs';
 
 Events.List.ActionFired = "ActionFired";
 
+// todo: I think we need to "fix" this by implementing "ActionType"s.
+// These should each be action TYPES but instead they're action INSTANCES
+// which prevents us from making instances from them
 export default class Action extends Listed {
 
     // TODO: Read from config json?
@@ -62,24 +65,19 @@ export default class Action extends Listed {
                 }
 
                 // TODO: This isn't going to track a per-character last action time. We need that.
+                // is this redundant to the checkDelay call in the wrapping function?
                 if (!this.checkDelay(equipped)) return false;
 
                 if (!this.inRange(equipped, options.character)) return false;
-
-                // decided not to try to "do" poison
-                // it was going to maybe be a "buff" (attackModifier) _on_ a weapon,
-                // which applied a dot to an enemy?
-                // we have none of that
-                // maybe go implement bleed
-                if(equipment[Technology.Types.ATTACK_MODIFIER]) {
-                    
-                    //damage, damageInterval ?
-                }
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
                     if (equipped.sound) equipped.sound.play();
                     options.character.target.health -= equipped.damage;
+
+                    if(equipped.statusEffect) {
+                        options.character.target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
+                    }
                 }
 
                 return true;
