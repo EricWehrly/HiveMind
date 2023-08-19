@@ -40,4 +40,15 @@ new CharacterType({
     ai: null
 });
 
-UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+new CharacterType({
+    name: 'Eater',
+    health: 40,
+    _currentPurposeKey: 'spawn',
+    _spawnPurposeKey: 'consume',
+    ai: null
+});
+
+// rock driller
+
+// UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
