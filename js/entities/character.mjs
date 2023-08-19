@@ -360,7 +360,8 @@ export default class Character {
         distance: 100,
         filterChildren: true,
         hostile: null,
-        isPlayer: null
+        isPlayer: null,
+        characterType: null
     }) {
 
         let closest = {
@@ -376,6 +377,9 @@ export default class Character {
                     continue;
                 }
                 if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
+                    continue;
+                }
+                if(options.characterType != null && character.characterType != options.characterType) {
                     continue;
                 }
                 const distance = character.getDistance(this);
