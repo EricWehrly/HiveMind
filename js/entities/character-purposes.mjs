@@ -70,7 +70,9 @@ const Purposes =
         name: "return",
         think: function (character, elapsed) {
 
-            if (!character.target) character.target = character.parent;
+            if (!character.target) {
+                character.target = character.parent;
+            }
             character.pointAtTarget();
             
             // TODO: if collision boxes overlap ..
@@ -116,6 +118,37 @@ const Purposes =
                     delete growing.growth;
                 }
             }
+        }
+    },
+    // we kind of need to be able to "ask" if the thing to be spawned can do what it's purpose should be
+    "spawn": {
+        name: "spawn",
+        interval: 3000,
+        think: function(character, elapsed) {
+
+            // we could probably track "amount elapsed" in the character, 
+            // rather than needing to call performance.now here
+            const timeSinceLastSpawn = performance.now() - character.lastSpawn;
+            if(character.lastSpawn != null
+                && timeSinceLastSpawn < this.interval) {
+                    return;
+                }
+
+                // TODO: we need to clean spawnTargets when we reabsorb
+            if(!character.spawnTargets) character.spawnTargets = [];
+            const target = character.getClosestEntity({
+                characterType: "Food",  // this should be an enum
+                exclude: character.spawnTargets
+            });
+            character.spawnTargets.push(target);
+
+            const options = {
+                purposeKey: character._spawnPurposeKey,
+                target
+            }
+            character.Subdivide(options);
+
+            character.lastSpawn = performance.now();
         }
     }
 };
