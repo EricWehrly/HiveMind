@@ -365,6 +365,7 @@ export default class Character {
         exclude: []
     }) {
 
+        if(!options.distance) options.distance = Infinity;
         let closest = {
             entity: null,
             distance: options.distance
