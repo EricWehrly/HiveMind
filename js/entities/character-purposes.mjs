@@ -45,7 +45,13 @@ const Purposes =
             if (character.target) {
                 character.pointAtTarget();
 
+                if(character.target == null || character.target.dead) {
+                    character.SetCurrentPurpose("return");
+                }
+
                 if (character.position.equals(character.target.position)) {
+                    // we can probably now collapse this to an "if not"
+                    // (now that we've added the check above)
                     if(character.target.dead == true) {
                         character.target = null;
                         character.SetCurrentPurpose("return");
@@ -140,13 +146,16 @@ const Purposes =
                 characterType: "Food",  // this should be an enum
                 exclude: character.spawnTargets
             });
-            character.spawnTargets.push(target);
 
-            const options = {
-                purposeKey: character._spawnPurposeKey,
-                target
+            if(target != null) {
+                character.spawnTargets.push(target);
+
+                const options = {
+                    purposeKey: character._spawnPurposeKey,
+                    target
+                }
+                character.Subdivide(options);
             }
-            character.Subdivide(options);
 
             character.lastSpawn = performance.now();
         }
