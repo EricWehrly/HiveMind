@@ -1,13 +1,8 @@
-import managedImport from './util/managed-import.js';
-
 import Game from '../engine/js/engine.mjs';
 import Events from '../engine/js/events.mjs';
 
-await managedImport('../engine/js/util/custom-style.js');
-
-// can we make this stop using managedImport?
-const TileManager = await managedImport('../engine/js/mapping/tile-manager.mjs');
-const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
+import TileManager from '../engine/js/mapping/tile-manager.mjs';
+import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from './entities/character-extensions.mjs';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';

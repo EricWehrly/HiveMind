@@ -1,4 +1,15 @@
-const GRID_SIZE = 32;
+import addCustomStyle from "../util/custom-style.mjs";
+
+export default class TileManager {
+
+    static get GRID_SIZE() {
+        return 32;
+    }
+}
+
+addCustomStyle(`:root {
+    --gridSize: ${TileManager.GRID_SIZE};
+}`);
 
 // draw a grid
 
@@ -7,7 +18,3 @@ const GRID_SIZE = 32;
 // fill the grid?
 
 // on window resize, redraw grid ...
-
-addCustomStyle(`:root {
-    --gridSize: ${GRID_SIZE};
-}`);
