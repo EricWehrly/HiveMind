@@ -4,11 +4,11 @@ import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 
 function randomPositionOffset(source, offsetAmountPerAxis) {
-    
+
     let xOffset = Math.randomBetween(0, offsetAmountPerAxis);
-    if(Math.random() < 0.5) xOffset *= -1;
+    if (Math.random() < 0.5) xOffset *= -1;
     let yOffset = Math.randomBetween(0, offsetAmountPerAxis);
-    if(Math.random() < 0.5) yOffset *= -1;
+    if (Math.random() < 0.5) yOffset *= -1;
 
     return new Point(source.x + xOffset, source.y + yOffset);
 }
@@ -22,18 +22,18 @@ const Purposes =
                 character.pointAtTarget();
 
                 if (character.position.equals(character.target.position)) {
-                    if(character.target.dead == true) {
+                    if (character.target.dead == true) {
                         // TODO: contemplate
                         // TODO: support > 1 technology
-                        if(character.target.technologies && character.target.technologies.length > 0) {
+                        if (character.target.technologies && character.target.technologies.length > 0) {
                             character.AddTechnology(character.target.technologies[0]);
                         }
-                        if(character.target.characterType) {
+                        if (character.target.characterType) {
                             CharacterType[character.target.characterType].isStudied = true;
                         }
                         character.target = null;
                         character.SetCurrentPurpose("return");
-                    // } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
+                        // } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
                     } else character.target.health = 0; // cheat for make testing easier
                 }
             }
@@ -45,22 +45,17 @@ const Purposes =
             if (character.target) {
                 character.pointAtTarget();
 
-                if(character.target == null || character.target.dead) {
+                if (character.target == null || character.target.dead) {
+                    character.target = null;
                     character.SetCurrentPurpose("return");
                 }
 
-                if (character.position.equals(character.target.position)) {
-                    // we can probably now collapse this to an "if not"
-                    // (now that we've added the check above)
-                    if(character.target.dead == true) {
-                        character.target = null;
-                        character.SetCurrentPurpose("return");
-                    } else {
-                        const damageToDo = (character.damage || 1) * (elapsed / 1000);
-                        character.target.health -= damageToDo;
-                        // TODO: If more than remaining health, add that instead
-                        character.health += damageToDo;
-                    }
+                if (character.position.equals(character.target.position)
+                    && character.target.dead != true) {
+                    const damageToDo = (character.damage || 1) * (elapsed / 1000);
+                    character.target.health -= damageToDo;
+                    // TODO: If more than remaining health, add that instead
+                    character.health += damageToDo;
                 }
             }
         }
@@ -80,7 +75,7 @@ const Purposes =
                 character.target = character.parent;
             }
             character.pointAtTarget();
-            
+
             // TODO: if collision boxes overlap ..
             if (character.position.equals(character.target.position)) {
                 character.Reabsorb();
@@ -99,9 +94,9 @@ const Purposes =
                 interval: 10000 // how long does it take to fully grow 1 food?
             };
 
-            if(!character.growing) character.growing = [];
-                const growing = character.growing.filter(growing => growing.growth < 100);
-            if(growing.length < growConfig.batchSize
+            if (!character.growing) character.growing = [];
+            const growing = character.growing.filter(growing => growing.growth < 100);
+            if (growing.length < growConfig.batchSize
                 && character.growing.length < growConfig.max) {
                 const newGrow = new HiveMindCharacter(growConfig.subject);
                 newGrow.growth = 0;
@@ -110,14 +105,14 @@ const Purposes =
             }
 
             character.growing.forEach(growing => {
-                if(growing.growth < 100) {
+                if (growing.growth < 100) {
                     growing.growth += (100 / growConfig.interval) * elapsed;
                     growing.health = (growing.growth / 100) * growing.maxHealth;
                 }
-                if(growing.growth > 100) growing.growth = 100;
+                if (growing.growth > 100) growing.growth = 100;
             });
 
-            for(var index = 0; index < character.growing.length; index++) {
+            for (var index = 0; index < character.growing.length; index++) {
                 const growing = character.growing[index];
 
                 if (growing.growth == 100) {
@@ -130,24 +125,24 @@ const Purposes =
     "spawn": {
         name: "spawn",
         interval: 3000,
-        think: function(character, elapsed) {
+        think: function (character, elapsed) {
 
             // we could probably track "amount elapsed" in the character, 
             // rather than needing to call performance.now here
             const timeSinceLastSpawn = performance.now() - character.lastSpawn;
-            if(character.lastSpawn != null
+            if (character.lastSpawn != null
                 && timeSinceLastSpawn < this.interval) {
-                    return;
-                }
+                return;
+            }
 
-                // TODO: we need to clean spawnTargets when we reabsorb
-            if(!character.spawnTargets) character.spawnTargets = [];
+            // TODO: we need to clean spawnTargets when we reabsorb
+            if (!character.spawnTargets) character.spawnTargets = [];
             const target = character.getClosestEntity({
                 characterType: "Food",  // this should be an enum
                 exclude: character.spawnTargets
             });
 
-            if(target != null) {
+            if (target != null) {
                 character.spawnTargets.push(target);
 
                 const options = {
@@ -164,9 +159,9 @@ const Purposes =
 
 // maybe "growing" should be made generic as "children" ...
 Events.Subscribe(Events.List.CharacterDied, (deadGuy) => {
-    for(var character of CHARACTER_LIST) {
+    for (var character of CHARACTER_LIST) {
         const index = character?.growing?.indexOf(deadGuy);
-        if(index > -1) character.growing.splice(index, 1);
+        if (index > -1) character.growing.splice(index, 1);
     }
 });
 
