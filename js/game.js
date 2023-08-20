@@ -5,12 +5,7 @@ import Events from '../engine/js/events.mjs';
 
 await managedImport('../engine/js/util/custom-style.js');
 
-// const tileFile = `./tile.mjs?ver=${performance.now()}`;
-// const Tile = await import(tileFile);
-// import Tile from './tile.mjs';
-// eventually if we keep building this out, we should create a dividing line between the 'game' and the 'game engine'
-// and import the latter from a separate repository
-// const Tile = await managedImport('../engine/js/mapping/tile.mjs');
+// can we make this stop using managedImport?
 const TileManager = await managedImport('../engine/js/mapping/tile-manager.mjs');
 const KeyboardController = await managedImport('./controls/keyboard-controller.mjs');
 import Character from './entities/character-extensions.mjs';
@@ -21,9 +16,12 @@ import Technology from '../engine/js/technology.mjs';
 import CharacterType from './entities/characterType.mjs';
 import UI from './ui/ui.mjs';
 import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
+import * as uiResource from '../engine/js/ui/ui-resource.mjs';
 
 import Map from '../engine/js/mapping/map.mjs';
 import './entities/entities.mjs';
+// TODO: We can restructure 'entities.js' to import and export this
+import Resource from '../engine/js/entities/resource.mjs';
 
 // let someTile = new Tile();
 // TODO: when this file gets maybe ~200 lines, we can move all the setup to '/js/game/game-setup.js'
@@ -39,6 +37,9 @@ KeyboardController.AddDefaultBinding("buildMenu", "b");
 
 Game.Map = new Map();
 
+new Resource({
+    name: "food"
+});
 const slap = Technology.Get("slap");
 
 // half of this is "compute local player tooltip"
