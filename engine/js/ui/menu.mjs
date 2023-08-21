@@ -1,7 +1,12 @@
 import UIElement from './ui-element.mjs';
+import Events from '../events.mjs';
+
+Events.List.MenuOpened = "MenuOpened";
+Events.List.MenuClosed = "MenuClosed";
 
 export default class Menu extends UIElement {
     
+    static #isAnyMenuOpen = false;
     static #MENU_LIST_COUNT = 0;
     // Menu class should "be" (extend) Listed, but can't extend 2, so...
     static #MENU_LIST = {}
@@ -17,6 +22,18 @@ export default class Menu extends UIElement {
         
         Menu.#MENU_LIST[Menu.#MENU_LIST_COUNT++] = menu;
         Menu.#MENU_LIST[menu.name.toLowerCase()] = menu;
+    }
+
+    static get anyOpen() {
+
+        return Menu.#isAnyMenuOpen;
+    }
+
+    static #computeAnyMenuOpen() {
+
+        let menus = Object.values(Menu.#MENU_LIST);
+        menus = menus.filter(x => x.visible);
+        Menu.#isAnyMenuOpen = menus.length > 0;
     }
 
     #name;
@@ -43,6 +60,11 @@ export default class Menu extends UIElement {
     set visible(value) {
         super.visible = value;
         Action.List["menu_interact"].enabled = super.visible;
+
+        Menu.#computeAnyMenuOpen();
+
+        if(this.visible) Events.RaiseEvent(Events.List.MenuOpened, this);
+        else Events.RaiseEvent(Events.List.MenuClosed, this);
     }
 
     // TODO: when the menu is open / visible, need to enable
