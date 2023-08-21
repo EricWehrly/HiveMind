@@ -42,7 +42,8 @@ function characterLoop(elapsed) {
 
     for(var character of CHARACTER_LIST) {
         // TODO: we could precompute this
-        if(character?.position?.chunk?.active == false) {
+        if(character?.position?.chunk?.active == false
+            || character?.dead == true) {
             continue;
         }
         character.think(elapsed);
