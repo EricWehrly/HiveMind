@@ -53,6 +53,12 @@
     transform: translateX(-50%);
 }
 
+.ui.top.right {
+    position: absolute;
+    top: 5px;                
+    right: 5px;
+}
+
 .ui.middle.right {
     position: absolute;        
     top: 50%;                  
@@ -69,4 +75,8 @@
 
 .ui.menu {    
     border: 1px dashed black;
+}
+
+.ui.Resource {
+    text-transform: capitalize;
 }
