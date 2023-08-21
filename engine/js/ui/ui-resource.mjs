@@ -7,6 +7,8 @@ function createResourceUI(resource) {
     resource.UIElement = new UIElement({
         screenZone: UIElement.SCREEN_ZONE.TOP_RIGHT
     });
+    // TODO: Eventually want UIElement constructor to "magically" figure this out ...
+    resource.UIElement.addClass("Resource");
     resource.UIElement.Element.innerHTML = resource.name;
 }
 
