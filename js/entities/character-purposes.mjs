@@ -48,14 +48,11 @@ const Purposes =
                 if (character.target == null || character.target.dead) {
                     character.target = null;
                     character.SetCurrentPurpose("return");
-                }
-
-                if (character.position.equals(character.target.position)
+                } else if (character.position.equals(character.target.position)
                     && character.target.dead != true) {
                     const damageToDo = (character.damage || 1) * (elapsed / 1000);
+                    character.health += Math.min(damageToDo, character.target.health);
                     character.target.health -= damageToDo;
-                    // TODO: If more than remaining health, add that instead
-                    character.health += damageToDo;
                 }
             }
         }
