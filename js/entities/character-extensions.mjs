@@ -1,4 +1,5 @@
 import Character from '../../engine/js/entities/character.mjs';
+import Resource from '../../engine/js/entities/resource.mjs';
 import { GetColorAsRGBA } from '../../engine/js/util/javascript-extensions.js';
 import Purposes from './character-purposes.mjs';
 import CharacterType from './characterType.mjs';
@@ -99,9 +100,14 @@ export default class HiveMindCharacter extends Character {
         else if (options.purpose) purpose = options.purpose;
         // else if not in that array ...
         else purpose = HiveMindCharacter.Purposes[this._currentPurposeKey];
+
+        if(purpose == null) {
+            if(this.isPlayer) console.log("Tell the player they can't subdivbide (no purpose)");
+            return;
+        }
     
         if (!this.canAfford(amount)) {
-            if(this.isPlayer) console.log("Tell the player they can't subdivbide");
+            if(this.isPlayer) console.log("Tell the player they can't subdivbide (cant afford)");
             return;
         }
     
@@ -124,16 +130,22 @@ export default class HiveMindCharacter extends Character {
     // to be called on the child to be reabsorbed into the parent
     Reabsorb(options = {}) {
 
+        if(this.health == 0) debugger;
+
         // if we've exceeded the parent's "starting" health (and it's a building?)
         // contribute the difference to the player's resource pool
-        this.parent.health += this.health;
-        if(this.parent.health > this.parent.maxHealth) {
+        const maxToGive = this.parent.maxHealth - this.parent.health;
+        const amountToGive = Math.min(this.health, maxToGive);
 
+        if(this.health > amountToGive) {
+            const food = Resource.Get("food");
+            food.value += this.health - amountToGive;
         }
 
         if(this.technologies && this.technologies.length > 0) {
             this.parent.AddTechnology(this.technologies[0]);
         }
         this.health = 0;
+        this.parent.health += amountToGive;
     }
 }
