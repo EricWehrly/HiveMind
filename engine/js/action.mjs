@@ -101,7 +101,7 @@ export default class Action extends Listed {
             oncePerPress: true,
             delay: 1000,
             callback: function (options) {
-
+                
                 const piece = options.character.Subdivide({
                     purpose: Character.Purposes["study"],
                     target: Action.List["study"].target
@@ -167,11 +167,11 @@ export default class Action extends Listed {
 
         super(options);
 
-        if(options.enabled) this.#enabled = options.enabled;
-        if(options.oncePerPress) this.#oncePerPress = options.oncePerPress;
-        if(options.delay) this.#delay = options.delay;
+        if(options.enabled != null) this.#enabled = options.enabled;
+        if(options.oncePerPress != null) this.#oncePerPress = options.oncePerPress;
+        if(options.delay != null) this.#delay = options.delay;
 
-        if (options.callback) {
+        if (options.callback != null) {
             const baseCallback = options.callback;
 
             this.callback = function (options = {}) {
