@@ -1,3 +1,12 @@
+- When we hit "F", we drop a guy to consume.
+Why? That's a problem, son.
+
+- need to make it so that you have to study food before you can start growing it
+    - implement 'prerequisites', study technology unlocks, or equivalent
+
+- need to implement enemies attacking player
+engine\js\ai\basic.mjs -- think() method
+
 - default player should be faster than default enemies
 it should also be very difficult for enemies to kite players (may as well make that impossible for this iteration)
 

@@ -5,6 +5,8 @@ import CharacterType from './characterType.mjs';
 
 export default class HiveMindCharacter extends Character {
 
+    static get SUBDIVIDE_COST() { return 10; }
+
     static Purposes = Purposes;
 
     _currentPurposeKey = null;
@@ -91,7 +93,7 @@ export default class HiveMindCharacter extends Character {
     // TODO: set character current subdivision task/purpose
     Subdivide (options = {}) {
 
-        const amount = options.amount || 10;
+        const amount = options.amount || HiveMindCharacter.SUBDIVIDE_COST;
         let purpose;
         if (options.purposeKey) purpose = HiveMindCharacter.Purposes[options.purposeKey];
         else if (options.purpose) purpose = options.purpose;
@@ -99,7 +101,7 @@ export default class HiveMindCharacter extends Character {
         else purpose = HiveMindCharacter.Purposes[this._currentPurposeKey];
     
         if (!this.canAfford(amount)) {
-            console.log("Tell the player they can't subdivbide");
+            if(this.isPlayer) console.log("Tell the player they can't subdivbide");
             return;
         }
     
@@ -116,13 +118,19 @@ export default class HiveMindCharacter extends Character {
         spawnedCharacter.parent = this;
         if (options.target) spawnedCharacter.target = options.target;
         spawnedCharacter.graphic.innerHTML = spawnedCharacter.purpose.name;
-        console.log(`Subdivided new character for ${spawnedCharacter.purpose.name}`);
+        console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);
     }
 
     // to be called on the child to be reabsorbed into the parent
     Reabsorb(options = {}) {
 
+        // if we've exceeded the parent's "starting" health (and it's a building?)
+        // contribute the difference to the player's resource pool
         this.parent.health += this.health;
+        if(this.parent.health > this.parent.maxHealth) {
+
+        }
+
         if(this.technologies && this.technologies.length > 0) {
             this.parent.AddTechnology(this.technologies[0]);
         }

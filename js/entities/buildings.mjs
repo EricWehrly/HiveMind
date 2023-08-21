@@ -40,6 +40,7 @@ new CharacterType({
     ai: null
 });
 
+// this probably needs to express a (max) distance
 new CharacterType({
     name: 'Eater',
     health: 40,
@@ -49,6 +50,12 @@ new CharacterType({
 });
 
 // rock driller
+
+// building for doing 'research' ?
+
+// building for sending research home
+
+// building for receiving research from home
 
 // UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
 UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
