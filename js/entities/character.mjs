@@ -401,13 +401,12 @@ export default class Character {
     // private?
     // TODO: Should we just flag not alive and defer 'fading out' corpse?
     die() {        
-        console.log(`${this.name} is dead now.`);
+        // console.log(`${this.name} is dead now.`);
         if(this.graphic) document.getElementById("playfield").removeChild(this.graphic);
         
         Events.RaiseEvent(Events.List.CharacterDied, this);
         
-        // TODO:
-        // RemoveCharacterFromList(this);
+        RemoveCharacterFromList(this);
     }
 
     #statusEffects = {};
@@ -442,5 +441,10 @@ export default class Character {
         Defer(function() {
             statusEffect.callback(options)
         }, statusEffect.interval + 1);
+    }
+
+    equals(character) {
+        return character instanceof Character
+            && character?.id == this.id;
     }
 }
