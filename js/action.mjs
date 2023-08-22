@@ -58,6 +58,22 @@ export default class Action extends Listed {
         });
 
         new Action({
+            name: 'menu_previous',
+            isMenuAction: true,
+            callback: function (options) {
+                Menu.Current.selectPrevious();
+            }
+        });
+
+        new Action({
+            name: 'menu_next',
+            isMenuAction: true,
+            callback: function (options) {
+                Menu.Current.selectNext();
+            }
+        });
+
+        new Action({
             name: 'attack',
             isCharacterControl: true,
             callback: function (options) {
@@ -173,18 +189,23 @@ export default class Action extends Listed {
     
     static MenuOpened() {
 
-        // disabledForMenu
         for(var index in Action.List) {
             const action = Action.List[index];
             if(action.enabled != false && action.isCharacterControl) {
                 Action.#disabledForMenu.push(action);
                 action.enabled = false;
+            } else if(action.isMenuAction) {
+                action.enabled = true;
             }
         }
     }
     
     static MenuClosed() {
-
+        
+        for(var index in Action.List) {
+            const action = Action.List[index];
+            if(action.isMenuAction) action.enabled = false;
+        }
         for(var action of Action.#disabledForMenu) {
             action.enabled = true;
         }

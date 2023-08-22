@@ -14,6 +14,11 @@ export default class Menu extends UIElement {
         return Menu.#MENU_LIST;
     }
 
+    static #current = null;
+    static get Current() {
+        return Menu.#current;
+    }
+
     static Get(name) {
         return Menu.#MENU_LIST[name.toLowerCase()];
     }
@@ -64,8 +69,14 @@ export default class Menu extends UIElement {
 
         Menu.#computeAnyMenuOpen();
 
-        if(this.visible) Events.RaiseEvent(Events.List.MenuOpened, this);
-        else Events.RaiseEvent(Events.List.MenuClosed, this);
+        if(this.visible) {
+            Menu.#current = this;
+            Events.RaiseEvent(Events.List.MenuOpened, this);
+        }
+        else {
+            if(Menu.#current == this) Menu.#current = null;
+            Events.RaiseEvent(Events.List.MenuClosed, this);
+        }
     }
 
     // TODO: when the menu is open / visible, need to enable
@@ -79,7 +90,7 @@ export default class Menu extends UIElement {
         // we'd have access to these functions
         // if it was a uiElement instead of a dom element
         const selected = this.Element.querySelector(".selected");
-        if(selected) selected.className = selected.className.replace(className, "").trim();
+        if(selected) selected.className = selected.className.replace("selected", "").trim();
 
         // the ideal would probably still be for these classes to be enums
         menuItem.Element.className += "selected";
@@ -88,7 +99,7 @@ export default class Menu extends UIElement {
 
     selectNext() {
 
-        const selectedIndex = this.#items.indexOf(selected);
+        const selectedIndex = this.#items.indexOf(this.selected);
         if(this.#items.length - 1 > selectedIndex) {
             this.select(this.#items[selectedIndex + 1]);
         } else {
@@ -98,7 +109,7 @@ export default class Menu extends UIElement {
 
     selectPrevious() {
 
-        const selectedIndex = this.#items.indexOf(selected);
+        const selectedIndex = this.#items.indexOf(this.selected);
         if(selectedIndex - 1 > -1) {
             this.select(this.#items[selectedIndex - 1]);
         } else {
