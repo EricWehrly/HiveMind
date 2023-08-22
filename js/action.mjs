@@ -13,10 +13,13 @@ Events.List.ActionFired = "ActionFired";
 // which prevents us from making instances from them
 export default class Action extends Listed {
 
+    static #disabledForMenu = [];
+
     // TODO: Read from config json?
     static {
         new Action({
             name: 'move_up',
+            isCharacterControl: true,
             callback: function (options) {
                 if (options?.character?.velocity?.y != null) {
                     options.character.velocity.y = -1;
@@ -26,6 +29,7 @@ export default class Action extends Listed {
 
         new Action({
             name: 'move_down',
+            isCharacterControl: true,
             callback: function (options) {
                 if (options?.character?.velocity?.y != null) {
                     options.character.velocity.y = 1;
@@ -35,6 +39,7 @@ export default class Action extends Listed {
 
         new Action({
             name: 'move_left',
+            isCharacterControl: true,
             callback: function (options) {
                 if (options?.character?.velocity?.x != null) {
                     options.character.velocity.x = -1;
@@ -44,6 +49,7 @@ export default class Action extends Listed {
 
         new Action({
             name: 'move_right',
+            isCharacterControl: true,
             callback: function (options) {
                 if (options?.character?.velocity?.x != null) {
                     options.character.velocity.x = 1;
@@ -53,6 +59,7 @@ export default class Action extends Listed {
 
         new Action({
             name: 'attack',
+            isCharacterControl: true,
             callback: function (options) {
                 // TODO: Pull in enum from technology class
                 const equipment = options?.character?.equipment;
@@ -87,6 +94,7 @@ export default class Action extends Listed {
         // maybe not allowed to do this at first
         new Action({
             name: 'subdivide',
+            isCharacterControl: true,
             // TODO: Maybe we should just have "on press" vs "on held" ...
             oncePerPress: true,
             callback: function (options) {
@@ -97,6 +105,7 @@ export default class Action extends Listed {
         // TODO: unavailable if a subdivided piece is already studying the target
         new Action({
             name: 'study',
+            isCharacterControl: true,
             enabled: false,
             oncePerPress: true,
             delay: 1000,
@@ -112,6 +121,7 @@ export default class Action extends Listed {
         // TODO: unavailable if a subdivided piece is already nomming the target
         new Action({
             name: 'consume',
+            isCharacterControl: true,
             enabled: false,
             oncePerPress: true,
             delay: 1000,
@@ -153,15 +163,45 @@ export default class Action extends Listed {
                 });
             }
         });
+
+        Events.Subscribe(Events.List.GameStart, function() {
+            
+            Events.Subscribe(Events.List.MenuOpened, Action.MenuOpened);
+            Events.Subscribe(Events.List.MenuClosed, Action.MenuClosed);
+        });
+    }
+    
+    static MenuOpened() {
+
+        // disabledForMenu
+        for(var index in Action.List) {
+            const action = Action.List[index];
+            if(action.enabled != false && action.isCharacterControl) {
+                Action.#disabledForMenu.push(action);
+                action.enabled = false;
+            }
+        }
+    }
+    
+    static MenuClosed() {
+
+        for(var action of Action.#disabledForMenu) {
+            action.enabled = true;
+        }
+        Action.#disabledForMenu = [];
     }
 
     #enabled = null;
     #oncePerPress = null;
     #delay = null;
+    #isCharacterControl = false;
     get enabled() { return this.#enabled; }
     set enabled(value) { this.#enabled = value; }
     get oncePerPress() { return this.#oncePerPress; }
     get delay() { return this.#delay; }
+    get isCharacterControl() {
+        return this.#isCharacterControl;
+    }
 
     constructor(options = {}) {
 
@@ -170,6 +210,7 @@ export default class Action extends Listed {
         if(options.enabled != null) this.#enabled = options.enabled;
         if(options.oncePerPress != null) this.#oncePerPress = options.oncePerPress;
         if(options.delay != null) this.#delay = options.delay;
+        if(options.isCharacterControl != null) this.#isCharacterControl = options.isCharacterControl;
 
         if (options.callback != null) {
             const baseCallback = options.callback;
