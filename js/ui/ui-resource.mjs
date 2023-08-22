@@ -9,10 +9,19 @@ function createResourceUI(resource) {
     });
     // TODO: Eventually want UIElement constructor to "magically" figure this out ...
     resource.UIElement.addClass("Resource");
-    resource.UIElement.Element.innerHTML = resource.name;
+    resourceChanged({
+        resource,
+        to: resource.value
+    });
+    // resource.UIElement.Element.innerHTML = resource.name;
 }
 
 // on resource change, innerHTML = value
+
+function resourceChanged(details) {
+
+    details.resource.UIElement.Element.innerHTML = `${details.resource.name}: ${Math.round(details.to)}`;
+}
 
 Events.Subscribe(Events.List.GameStart, function() {
 
@@ -21,5 +30,6 @@ Events.Subscribe(Events.List.GameStart, function() {
         createResourceUI(resource);
     }
 
-    Events.Subscribe(Events.List.ResourceCreated, createResourceUI);
+    Events.Subscribe(Events.List.ResourceCreated, createResourceUI);    
+    Events.Subscribe(Events.List.ResourceValueChanged, resourceChanged);
 });
