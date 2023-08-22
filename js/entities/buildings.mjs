@@ -57,5 +57,5 @@ new CharacterType({
 
 // building for receiving research from home
 
-// UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
 UI_MENU_BUILDINGS.addItem(CharacterType.Eater);

@@ -25,7 +25,10 @@ export default class KeyboardController {
         "move_down": ['s'],
         "move_left": ['a'],
         "move_right": ['d'],
-        "attack": [' ']
+        "attack": [' '],
+        "menu_previous": ['a'],
+        "menu_next": ['d'],
+
         // I can't figure out why we're not seeing "f".
         // we bind it in game.js:30 : KeyboardController.AddDefaultBinding("subdivide", "q");
         // something to do with the 'character' object? but move_* is a character based action?
