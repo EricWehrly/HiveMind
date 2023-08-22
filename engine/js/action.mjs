@@ -60,6 +60,7 @@ export default class Action extends Listed {
         new Action({
             name: 'menu_previous',
             isMenuAction: true,
+            oncePerPress: true,
             callback: function (options) {
                 Menu.Current.selectPrevious();
             }
@@ -68,6 +69,7 @@ export default class Action extends Listed {
         new Action({
             name: 'menu_next',
             isMenuAction: true,
+            oncePerPress: true,
             callback: function (options) {
                 Menu.Current.selectNext();
             }
