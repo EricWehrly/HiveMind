@@ -1,5 +1,6 @@
 import Character from '../../engine/js/entities/character.mjs';
 import Resource from '../../engine/js/entities/resource.mjs';
+import Events from '../../engine/js/events.mjs';
 import { GetColorAsRGBA } from '../../engine/js/util/javascript-extensions.js';
 import Purposes from './character-purposes.mjs';
 import CharacterType from './characterType.mjs';
@@ -12,11 +13,19 @@ export default class HiveMindCharacter extends Character {
 
     _currentPurposeKey = null;
 
+    #spawnTargets = [];
+
+    get spawnTargets() {
+        return this.#spawnTargets;
+    }
+
     constructor(options) {
         const key = options._currentPurposeKey || options.currentPurposeKey;
         super(options);
 
         this._currentPurposeKey = key;
+
+        Events.Subscribe(Events.List.CharacterDied, this.removeSpawnTarget.bind(this));
     }
 
     get purpose () { return HiveMindCharacter.Purposes[this._currentPurposeKey]; }
@@ -125,6 +134,8 @@ export default class HiveMindCharacter extends Character {
         if (options.target) spawnedCharacter.target = options.target;
         spawnedCharacter.graphic.innerHTML = spawnedCharacter.purpose.name;
         console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);
+
+        return spawnedCharacter;
     }
 
     // to be called on the child to be reabsorbed into the parent
@@ -132,8 +143,6 @@ export default class HiveMindCharacter extends Character {
 
         if(this.health == 0) debugger;
 
-        // if we've exceeded the parent's "starting" health (and it's a building?)
-        // contribute the difference to the player's resource pool
         const maxToGive = this.parent.maxHealth - this.parent.health;
         const amountToGive = Math.min(this.health, maxToGive);
 
@@ -147,5 +156,16 @@ export default class HiveMindCharacter extends Character {
         }
         this.health = 0;
         this.parent.health += amountToGive;
+    }
+
+    removeSpawnTarget(target) {
+
+        for(var i = 0; i < this.#spawnTargets.length; i++) {
+            const spawnTarget = this.#spawnTargets[i];
+            if(spawnTarget.equals(target)) {
+                this.#spawnTargets = this.#spawnTargets.splice(i, 1);
+                break;
+            }
+        }
     }
 }
