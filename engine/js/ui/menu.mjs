@@ -37,6 +37,7 @@ export default class Menu extends UIElement {
     }
 
     #name;
+    #items = [];
     #selected;
     #menuAction;
 
@@ -85,6 +86,26 @@ export default class Menu extends UIElement {
         this.#selected = menuItem;
     }
 
+    selectNext() {
+
+        const selectedIndex = this.#items.indexOf(selected);
+        if(this.#items.length - 1 > selectedIndex) {
+            this.select(this.#items[selectedIndex + 1]);
+        } else {
+            this.select(this.#items[0]);
+        }
+    }
+
+    selectPrevious() {
+
+        const selectedIndex = this.#items.indexOf(selected);
+        if(selectedIndex - 1 > -1) {
+            this.select(this.#items[selectedIndex - 1]);
+        } else {
+            this.select(this.#items[this.#items.length - 1]);
+        }
+    }
+
     constructor(options = {}) {
 
         super(options);
@@ -122,7 +143,6 @@ export default class Menu extends UIElement {
             this.select(menuItem);
         }
 
-        // console.log(`Adding item ${options.name} to menu ${this.#name}`);
-        // console.log(options);
+        this.#items.push(menuItem);
     }
 }
