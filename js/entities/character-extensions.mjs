@@ -124,7 +124,9 @@ export default class HiveMindCharacter extends Character {
     
         let spawnedColor = GetColorAsRGBA(this.color);
         spawnedColor[1] = 25;   // for now ...
+        const name = options.name || "Slime Worker";
         const spawnedCharacter = new HiveMindCharacter({
+            name,
             color: `rgba(${spawnedColor.join(",")})`,
             health: amount,
             position: this.position,
