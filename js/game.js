@@ -18,6 +18,8 @@ import './entities/entities.mjs';
 // TODO: We can restructure 'entities.js' to import and export this
 import Resource from '../engine/js/entities/resource.mjs';
 
+import Cheat from './cheat.mjs';
+
 // let someTile = new Tile();
 // TODO: when this file gets maybe ~200 lines, we can move all the setup to '/js/game/game-setup.js'
 KeyboardController.AddDefaultBinding("subdivide", "q");
