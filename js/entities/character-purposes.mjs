@@ -132,21 +132,21 @@ const Purposes =
                 return;
             }
 
-            // TODO: we need to clean spawnTargets when we reabsorb
-            if (!character.spawnTargets) character.spawnTargets = [];
             const target = character.getClosestEntity({
                 characterType: "Food",  // this should be an enum
                 exclude: character.spawnTargets
             });
 
             if (target != null) {
-                character.spawnTargets.push(target);
-
                 const options = {
                     purposeKey: character._spawnPurposeKey,
                     target
                 }
-                character.Subdivide(options);
+                const spawnedCharacter = character.Subdivide(options);
+                if(spawnedCharacter != null) {                    
+                    character.spawnTargets.push(target);
+                    // console.log(`Character ${character.id} has ${character.spawnTargets.length} spawn targets.`);
+                }
             }
 
             character.lastSpawn = performance.now();
