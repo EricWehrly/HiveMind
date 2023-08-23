@@ -182,6 +182,8 @@ export default class Action extends Listed {
             }
         });
 
+        Action.MenuClosed();
+
         Events.Subscribe(Events.List.GameStart, function() {
             
             Events.Subscribe(Events.List.MenuOpened, Action.MenuOpened);
@@ -206,7 +208,9 @@ export default class Action extends Listed {
         
         for(var index in Action.List) {
             const action = Action.List[index];
-            if(action.isMenuAction) action.enabled = false;
+            if(action.isMenuAction) {
+                action.enabled = false;
+            }
         }
         for(var action of Action.#disabledForMenu) {
             action.enabled = true;
@@ -218,22 +222,24 @@ export default class Action extends Listed {
     #oncePerPress = null;
     #delay = null;
     #isCharacterControl = false;
+    #isMenuAction = false;
     get enabled() { return this.#enabled; }
     set enabled(value) { this.#enabled = value; }
     get oncePerPress() { return this.#oncePerPress; }
     get delay() { return this.#delay; }
-    get isCharacterControl() {
-        return this.#isCharacterControl;
-    }
+    get isCharacterControl() { return this.#isCharacterControl; }
+    get isMenuAction() { return this.#isMenuAction; }
 
     constructor(options = {}) {
 
         super(options);
 
+        // TODO: We should try "auto-mapping" some of this ...
         if(options.enabled != null) this.#enabled = options.enabled;
         if(options.oncePerPress != null) this.#oncePerPress = options.oncePerPress;
         if(options.delay != null) this.#delay = options.delay;
         if(options.isCharacterControl != null) this.#isCharacterControl = options.isCharacterControl;
+        if(options.isMenuAction != null) this.#isMenuAction = options.isMenuAction;
 
         if (options.callback != null) {
             const baseCallback = options.callback;
