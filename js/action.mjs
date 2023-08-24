@@ -277,3 +277,5 @@ export default class Action extends Listed {
         return true;
     }
 }
+
+if(window) window.Action = Action;
