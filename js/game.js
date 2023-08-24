@@ -59,10 +59,11 @@ function checkPlayerInteraction() {
                 
         // for some reason we can fire off a consume and a study at the same time?
         if(characterType && CharacterType[characterType].isStudied
-            && !closest.isGrown) {
+            && closest.isGrown) {
             Action.List["consume"].target = closest;
             Action.List["consume"].enabled = true; 
         } else {
+            Action.List["consume"].enabled = false;
             localPlayer.toolTip.entity = closest;
         }
     }
