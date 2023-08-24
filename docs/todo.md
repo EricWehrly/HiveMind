@@ -1,8 +1,6 @@
 - need to make it so that you have to study food before you can start growing it
     - implement 'prerequisites', study technology unlocks, or equivalent
 
-- player shouldn't be able to study things that they themselves made
-
 - need to implement enemies attacking player
     - engine\js\ai\basic.mjs -- think() method
     - enemies should also attack player entities (spawns, and buildings)
