@@ -1,11 +1,11 @@
-- When we hit "F", we drop a guy to consume.
-Why? That's a problem, son.
-
 - need to make it so that you have to study food before you can start growing it
     - implement 'prerequisites', study technology unlocks, or equivalent
 
+- player shouldn't be able to study things that they themselves made
+
 - need to implement enemies attacking player
-engine\js\ai\basic.mjs -- think() method
+    - engine\js\ai\basic.mjs -- think() method
+    - enemies should also attack player entities (spawns, and buildings)
 
 - default player should be faster than default enemies
 it should also be very difficult for enemies to kite players (may as well make that impossible for this iteration)
@@ -27,8 +27,6 @@ Should be able to switch to a new attack even if switch in progress is not compl
 - buildings for: doing research, defending, healing
 defense can later break out to either turrets or unit spawners
 
-- resources UI showing how much (food? size?) player has (and plan to add more eventually obviously)
-
 - would be nice to make a UI (options?) that shows which keys are bound
 
 - create a ui element showing player size
@@ -47,8 +45,6 @@ defense can later break out to either turrets or unit spawners
 trees, rocks
 
 - And with that, animals that can swim, amphibians, and the player needing to learn to swim in order to traverse that "biome"
-
-- maybe much later, we'll want to have differe
 
 - time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
 

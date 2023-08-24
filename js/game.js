@@ -20,8 +20,6 @@ import Resource from '../engine/js/entities/resource.mjs';
 
 import Cheat from './cheat.mjs';
 
-// let someTile = new Tile();
-// TODO: when this file gets maybe ~200 lines, we can move all the setup to '/js/game/game-setup.js'
 KeyboardController.AddDefaultBinding("subdivide", "q");
 // TODO: this needs to be a more generic 'interact' with specific functions, maybe like how attack works
 // KeyboardController.AddDefaultBinding("interact", "f");
@@ -39,8 +37,6 @@ new Resource({
 });
 const slap = Technology.Get("slap");
 
-// half of this is "compute local player tooltip"
-// the other half is toggling the current action ...
 function checkPlayerInteraction() {
 
     // if a menu is active,
@@ -98,4 +94,3 @@ Game.Camera.setTarget(localPlayer);
 RegisterLoopMethod(checkPlayerInteraction, false);
 
 window.Game = Game;
-console.log('Starting game.');
