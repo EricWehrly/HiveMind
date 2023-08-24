@@ -148,7 +148,7 @@ export default class HiveMindCharacter extends Character {
 
         // TODO: isPlayer -> (not) isBuilding
         let maxToGive = Infinity;
-        if(this.isPlayer != true) {
+        if(this.parent.isPlayer != true) {
             maxToGive = this.parent.maxHealth - this.parent.health;
         }
         const amountToGive = Math.min(this.health, maxToGive);
