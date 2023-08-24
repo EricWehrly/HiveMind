@@ -45,7 +45,7 @@ function checkPlayerInteraction() {
     const closest = localPlayer.target;
     const characterType = closest != null ?  closest.characterType : null;
 
-    if(closest?.canBeStudied) {
+    if(closest?.canBeStudied(localPlayer)) {
         // this only works with 1 local player cause actions will be local to this system ...
         Action.List["study"].target = closest;
         Action.List["study"].enabled = true;

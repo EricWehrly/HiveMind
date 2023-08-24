@@ -7,6 +7,7 @@ import BasicAI from '../ai/basic.mjs';
 import Events from '../events.mjs';
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
+import Faction from './faction.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -54,7 +55,7 @@ export default class Character {
         y: 0
     }
 
-    // TODO: use speed
+    // TODO: use this variable for ... things
     _speed = 1;
 
     _technologies = [];
@@ -68,13 +69,13 @@ export default class Character {
 
     #maxWanderDistance = 10
 
+    #faction = null;
+
+    get faction() { return this.#faction; }
+
     // prevent trying to set x and y
-    get x() {
-        return this._position.x;
-    }
-    get y() {
-        return this._position.y;
-    }
+    get x() { return this._position.x; }
+    get y() { return this._position.y; }
 
     constructor(options = {}) {
         
@@ -90,6 +91,11 @@ export default class Character {
             delete options.technologies;
         }
 
+        if(options.faction) {
+            this.#faction = options.faction;
+            delete options.faction;
+        }
+
         AssignWithUnderscores(this, options);
 
         this.id = options.id || generateId();
@@ -99,6 +105,10 @@ export default class Character {
         // options.image
         this.#spawnPosition = new Point(this.position.x, this.position.y);
         this.#initialHealth = JSON.parse(JSON.stringify(this.health));
+
+        if(options.isPlayer) {
+            this.#faction = new Faction({ name: this.name });
+        }
 
         // TODO: let's default to no AI at all unless prescribed ...
         this.setupAI();

@@ -37,13 +37,14 @@ export default class HiveMindCharacter extends Character {
         return false;
     }
 
-    get canBeStudied() {
+    canBeStudied(byWhom) {
         // TODO: use "or"s rather than all these if's
         // this is something that would probably automatically benefit from 
         // a magic function-level caching implementation
         if(this.isPlayer) return false;
         if(this.ai != null && this.dead == false) return false;
         if(!this.isGrown) return false;
+        if(byWhom?.faction != null && this.faction == byWhom.faction) return false;
         if(this.characterType && CharacterType[this.characterType].isStudied == true) return false;
 
         return true;
@@ -65,7 +66,7 @@ export default class HiveMindCharacter extends Character {
             toolTipMessage += `Aggression Range: ${this.aggressionRange}<br />`;
         }
 
-        if(this.canBeStudied) {            
+        if(this.canBeStudied(Character.LOCAL_PLAYER)) {            
             toolTipMessage += "'F' - Study";
         } else {
             if(this.isGrown) toolTipMessage += "'F' - Nom";
@@ -131,7 +132,8 @@ export default class HiveMindCharacter extends Character {
             color: `rgba(${spawnedColor.join(",")})`,
             health: amount,
             position: this.position,
-            _currentPurposeKey: purpose.name.toLowerCase()
+            _currentPurposeKey: purpose.name.toLowerCase(),
+            faction: this.faction
         });
         spawnedCharacter.parent = this;
         if (options.target) spawnedCharacter.target = options.target;

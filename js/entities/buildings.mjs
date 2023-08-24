@@ -13,6 +13,7 @@ const Build = function(context) {
     const characterOpts = Object.assign({}, CharacterType[selectedBuilding.characterType]);
     characterOpts.color = player.color;
     characterOpts.position = player.position;
+    characterOpts.faction = player.faction;
 
     const amount = characterOpts.health;
     if(!player.canAfford(amount)) {
