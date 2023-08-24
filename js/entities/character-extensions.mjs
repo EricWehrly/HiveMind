@@ -67,8 +67,9 @@ export default class HiveMindCharacter extends Character {
 
         if(this.canBeStudied) {            
             toolTipMessage += "'F' - Study";
-        } else {            
-            toolTipMessage += "'F' - Nom";
+        } else {
+            if(this.isGrown) toolTipMessage += "'F' - Nom";
+            else toolTipMessage += "Growing";
         }
 
         return toolTipMessage;
@@ -141,11 +142,15 @@ export default class HiveMindCharacter extends Character {
     }
 
     // to be called on the child to be reabsorbed into the parent
-    Reabsorb(options = {}) {
+    Reabsorb() {
 
-        if(this.health == 0) debugger;
+        if(this.health == 0 || this.parent == null) debugger;
 
-        const maxToGive = this.parent.maxHealth - this.parent.health;
+        // TODO: isPlayer -> (not) isBuilding
+        let maxToGive = Infinity;
+        if(this.isPlayer != true) {
+            maxToGive = this.parent.maxHealth - this.parent.health;
+        }
         const amountToGive = Math.min(this.health, maxToGive);
 
         if(this.health > amountToGive) {
