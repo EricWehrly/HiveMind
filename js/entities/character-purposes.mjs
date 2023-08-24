@@ -134,7 +134,8 @@ const Purposes =
 
             const target = character.getClosestEntity({
                 characterType: "Food",  // this should be an enum
-                exclude: character.spawnTargets
+                exclude: character.spawnTargets,
+                grown: true
             });
 
             if (target != null) {

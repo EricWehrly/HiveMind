@@ -362,6 +362,9 @@ export default class Character {
         hostile: null,
         isPlayer: null,
         characterType: null,
+        // Maybe rather than listing individual properties like this,
+        // we could have a way to automatically map properties?
+        grown: null,
         exclude: []
     }) {
 
@@ -385,6 +388,9 @@ export default class Character {
                     continue;
                 }
                 if(options.exclude && options.exclude.includes(character)) {
+                    continue;
+                }
+                if(options.grown != null && character.isGrown != options.grown) {
                     continue;
                 }
                 const distance = character.getDistance(this);
