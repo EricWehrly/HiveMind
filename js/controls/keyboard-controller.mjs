@@ -38,37 +38,30 @@ export default class KeyboardController {
         // press F to break off a piece to study something (in front of the player)
     }
 
-    // todo: combine these into Bindings
-    static Default_Binding_Parameters = {}
+    static AddDefaultBinding(name, button) {
 
-    static AddDefaultBinding(name, button, parameters) {
+        // TODO: warn button is already bound
 
-        // TODO: Warn if already bound?
-        KeyboardController.Default_Bindings[name] = button;        
-        if(parameters) {
-            KeyboardController.Default_Binding_Parameters[name] = parameters;
+        if(KeyboardController.Default_Bindings[name]) {
+            console.warn(`Action ${name} might already be bound?`);
         }
 
+        KeyboardController.Default_Bindings[name] = button
+
+        // I think this isn't currently used, so log to debug
+        // console.log(`I think there are currently ${KeyboardController.#List.length} keyboard controllers ...`);
         for(var controller of KeyboardController.#List) {
             controller.Bindings[name] = button;
-
-            if(parameters) {
-                controller.Binding_Parameters[name] = parameters;
-            }
         }
     }
 
     Bindings = {}
-
-    // todo: combine these into Bindings
-    Binding_Parameters = {}
 
     _keys_down = {};
 
     constructor(options = {}) {
 
         Object.assign(this.Bindings, KeyboardController.Default_Bindings);
-        Object.assign(this.Binding_Parameters, KeyboardController.Default_Binding_Parameters);
         // TODO: Take bindings from options?
         // Load bindings from persistence layer?
 
@@ -93,7 +86,7 @@ export default class KeyboardController {
     handleKeyDown(event) {
 
         // TODO: fire any actions immediately that don't require it to be held
-        this.performActions(event.key);
+        this.#performActions(event.key);
         // TODO: Check if actions are currently bound to this key that require us to track if its down
         // (otherwise don't track it)
         this._keys_down[event.key] = true;
@@ -124,19 +117,18 @@ export default class KeyboardController {
         }
     }
 
-    // TODO: Private
-    performActions(key) {
+    #performActions(key) {
 
-        for (var action of Object.keys(Actions)) {
-            if (Actions[action].enabled !== false
-                && this.Bindings[action]
-                && this.Bindings[action].includes(key)) {
-
-                let parameters = {};
-                if(this.Binding_Parameters[action]) parameters = this.Binding_Parameters[action];
-                parameters.character = this.character
-
-                Actions[action].callback(parameters);
+        // TODO: loopMethod needs to be refactored now, right?
+        for(var action of Object.keys(this.Bindings)) {
+            const bindingKeys = this.Bindings[action];
+            if(bindingKeys.includes(key)) {
+                const actionParams = action.split("/");
+                const coreAction = Actions[actionParams[0]];
+                coreAction.callback({
+                    character: this.character,
+                    parameters: actionParams
+                });
             }
         }
     }

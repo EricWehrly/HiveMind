@@ -13,7 +13,4 @@ const UI_MENU_RESEARCH = new Menu({
     menuAction: Research
 });
 
-const menuParameters = {
-    "menu": "Research"
-}
-KeyboardController.AddDefaultBinding("openMenu", "r", menuParameters);
+KeyboardController.AddDefaultBinding("openMenu/research", "r");

@@ -158,8 +158,8 @@ export default class Action extends Listed {
             oncePerPress: true,
             callback: function (options) {
 
-                if(options.menu) {
-                    const menu = Menu.Get(options.menu);
+                if(options?.parameters?.length > 0) {
+                    const menu = Menu.Get(options?.parameters[1]);
                     menu.visible = !menu.visible;
                 } else {
                     console.warn("Not sure which menu to open.");

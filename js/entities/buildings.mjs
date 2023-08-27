@@ -3,6 +3,7 @@ import CharacterType from './characterType.mjs';
 import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import HiveMindCharacter from './character-extensions.mjs';
+import KeyboardController from '../controls/keyboard-controller.mjs';
 
 const Build = function(context) {
 
@@ -61,3 +62,5 @@ new CharacterType({
 
 UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
 UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
+
+KeyboardController.AddDefaultBinding("openMenu/build", "b");

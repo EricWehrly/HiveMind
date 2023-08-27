@@ -29,7 +29,6 @@ KeyboardController.AddDefaultBinding("consume", "f");
 
 // still 'interact' ... depends on what has focus right now ...
 KeyboardController.AddDefaultBinding("menu_interact", "f");
-KeyboardController.AddDefaultBinding("buildMenu", "b");
 
 Game.Map = new Map();
 
