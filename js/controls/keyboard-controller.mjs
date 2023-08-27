@@ -38,23 +38,37 @@ export default class KeyboardController {
         // press F to break off a piece to study something (in front of the player)
     }
 
-    static AddDefaultBinding(name, button) {
+    // todo: combine these into Bindings
+    static Default_Binding_Parameters = {}
+
+    static AddDefaultBinding(name, button, parameters) {
+
         // TODO: Warn if already bound?
-        KeyboardController.Default_Bindings[name] = button;
+        KeyboardController.Default_Bindings[name] = button;        
+        if(parameters) {
+            KeyboardController.Default_Binding_Parameters[name] = parameters;
+        }
+
         for(var controller of KeyboardController.#List) {
-            // TODO: If button already bound?
             controller.Bindings[name] = button;
+
+            if(parameters) {
+                controller.Binding_Parameters[name] = parameters;
+            }
         }
     }
 
-    Bindings = {
-    }
+    Bindings = {}
+
+    // todo: combine these into Bindings
+    Binding_Parameters = {}
 
     _keys_down = {};
 
     constructor(options = {}) {
 
         Object.assign(this.Bindings, KeyboardController.Default_Bindings);
+        Object.assign(this.Binding_Parameters, KeyboardController.Default_Binding_Parameters);
         // TODO: Take bindings from options?
         // Load bindings from persistence layer?
 
@@ -117,9 +131,12 @@ export default class KeyboardController {
             if (Actions[action].enabled !== false
                 && this.Bindings[action]
                 && this.Bindings[action].includes(key)) {
-                Actions[action].callback({
-                    character: this.character
-                });
+
+                let parameters = {};
+                if(this.Binding_Parameters[action]) parameters = this.Binding_Parameters[action];
+                parameters.character = this.character
+
+                Actions[action].callback(parameters);
             }
         }
     }

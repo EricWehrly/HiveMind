@@ -10,6 +10,7 @@ import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 import CharacterType from './entities/characterType.mjs';
 import UI from './ui/ui.mjs';
+import './research.mjs';
 import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 import * as uiResource from '../engine/js/ui/ui-resource.mjs';
 
@@ -78,8 +79,9 @@ const localPlayer = new Character({
     ai: null,
     isPlayer: true
 });
-new KeyboardController({ character: localPlayer });
+localPlayer.controller = new KeyboardController({ character: localPlayer });
 Character.LOCAL_PLAYER = localPlayer;
+window.LOCAL_PLAYER = localPlayer;
 
 localPlayer.AddTechnology(slap);
 

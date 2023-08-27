@@ -152,16 +152,18 @@ export default class Action extends Listed {
             }
         });
 
-        // TODO: generic "open menu" action that has variable context?
         new Action({
-            name: 'buildMenu',
+            name: 'openMenu',
             enabled: true,
             oncePerPress: true,
-            // delay: 1000,
             callback: function (options) {
 
-                const buildMenu = Menu.Get("build");
-                buildMenu.visible = !buildMenu.visible;
+                if(options.menu) {
+                    const menu = Menu.Get(options.menu);
+                    menu.visible = !menu.visible;
+                } else {
+                    console.warn("Not sure which menu to open.");
+                }
             }
         });
 
