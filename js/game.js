@@ -45,26 +45,26 @@ function checkPlayerInteraction() {
     const closest = localPlayer.target;
     const characterType = closest != null ?  closest.characterType : null;
 
-    if(closest?.canBeStudied(localPlayer)) {
+    if(closest == null) return;
+    localPlayer.toolTip.entity = closest;
+
+    // maybe actions could have a "check condition" ?
+    if(closest.canBeStudied(localPlayer)) {
         // this only works with 1 local player cause actions will be local to this system ...
         Action.List["study"].target = closest;
         Action.List["study"].enabled = true;
-        localPlayer.toolTip.entity = closest;
     } else {
         Action.List["study"].enabled = false;
-                
-        // for some reason we can fire off a consume and a study at the same time?
-        if(characterType && CharacterType[characterType].isStudied
-            && closest.isGrown) {
-            Action.List["consume"].target = closest;
-            Action.List["consume"].enabled = true; 
-        } else {
-            Action.List["consume"].enabled = false;
-            localPlayer.toolTip.entity = closest;
-        }
     }
 
-    localPlayer.toolTip.message = closest?.toolTipMessage || '';
+    if(closest.canBeEaten(localPlayer)) {
+        Action.List["consume"].target = closest;
+        Action.List["consume"].enabled = true;
+    } else {        
+        Action.List["consume"].enabled = false;
+    }
+
+    localPlayer.toolTip.message = closest.toolTipMessage || '';
 }
 
 Events.RaiseEvent(Events.List.GameStart);

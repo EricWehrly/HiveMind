@@ -50,6 +50,15 @@ export default class HiveMindCharacter extends Character {
         return true;
     }
 
+    canBeEaten(byWhom) {
+
+        if(this.isBuilding == true) return false;
+        if(this.canBeStudied(byWhom)) return false;
+        if(!this.isGrown) return false;
+
+        return true;
+    }
+
     get toolTipMessage() {
 
         let toolTipMessage = "";
@@ -68,9 +77,14 @@ export default class HiveMindCharacter extends Character {
 
         if(this.canBeStudied(Character.LOCAL_PLAYER)) {            
             toolTipMessage += "'F' - Study";
-        } else {
-            if(this.isGrown) toolTipMessage += "'F' - Nom";
-            else toolTipMessage += "Growing";
+        }
+
+        if(this.canBeEaten(Character.LOCAL_PLAYER)) {
+            toolTipMessage += "'F' - Nom";
+        }
+
+        if(!this.isGrown) {
+            toolTipMessage += "Growing";
         }
 
         return toolTipMessage;

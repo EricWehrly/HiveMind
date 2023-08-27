@@ -14,6 +14,7 @@ const Build = function(context) {
     characterOpts.color = player.color;
     characterOpts.position = player.position;
     characterOpts.faction = player.faction;
+    characterOpts.isBuilding = true;
 
     const amount = characterOpts.health;
     if(!player.canAfford(amount)) {
