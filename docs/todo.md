@@ -17,9 +17,6 @@ in part to be able to determine what % of max aggression a creature is
     bark - summons friends (useless to player, as they are a hive mind)
         (this might be a fun one for later -- options of befriending fauna, and would be better telegraphed when enmies have appearance)
 
-- now we need some kind of filter so that players can't eat their own structures
-    - they probably shouldn't be able to eat ANY structures ...
-
 - The more evolved an attack is, the longer it takes the player to switch to it.
 Should be able to switch to a new attack even if switch in progress is not complete
 - - Needs multiple attacks (we have slap, a ranged one would be interesting, but maybe a bite or claw first - - except I think claw was supposed to be upgraded slap)
