@@ -1,4 +1,5 @@
 import Events from "../events.mjs";
+import Biome, { BiomeType } from "./biome.mjs";
 import Chunk from "./chunk.mjs";
 
 export default class Map {
@@ -25,6 +26,7 @@ export default class Map {
     }
 
     #chunks = {};
+    #biomes = [];
 
     constructor() {
         if(Map.#map == null) window.map = Map.#map = this;
@@ -134,16 +136,48 @@ export default class Map {
         this.#chunks[chunk.coordinate] = chunk;
     }
 
+    addBiome(biome) {
+        this.#biomes.push(biome);
+    }
+
+    getBiome(options) {
+
+        debugger;
+        if(options.x != null & options.y != null) {
+
+            for(var biome of this.#biomes) {
+                if(biome.contains(options)) {
+                    return biome;
+                }
+            }
+            // TODO: determine BiomeType to use based on adjacent biomes
+            const biomeType = BiomeType.Get("Grasslands");
+            return new Biome({
+                biomeType,
+                width: 1,
+                height: 1,
+                ...options
+            });
+        } else {
+            console.error(`Don't know how to look up biome for ${options}`);
+        }
+    }
+
     getChunk(options) {
 
         if(options.x != null && options.y != null) {
 
             const chunkCoordinate = Chunk.getChunkCoordinate(options.x, options.y);
 
+            // can this just be chunkCoordinate.toString?
             const coordinate = chunkCoordinate.x + "," + chunkCoordinate.y;
             if(!(coordinate in this.#chunks)) {
                 if(Object.keys(this.#chunks).length == 0) chunkCoordinate.active = true;
-                new Chunk(chunkCoordinate);
+                const biome = this.getBiome(chunkCoordinate);
+                new Chunk({
+                    biome,
+                    ...chunkCoordinate
+                });
             }
             return this.#chunks[coordinate];
         } else {
