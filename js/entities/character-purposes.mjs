@@ -28,7 +28,8 @@ const Purposes =
                         if (character.target.technologies && character.target.technologies.length > 0) {
                             character.AddTechnology(character.target.technologies[0]);
                         }
-                        if (character.target.characterType) {
+                        if (character.target.characterType) {                            
+                            CharacterType[character.target.characterType].unlock();
                             CharacterType[character.target.characterType].isStudied = true;
                         }
                         character.target = null;
