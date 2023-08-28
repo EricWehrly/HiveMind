@@ -10,7 +10,7 @@ export default class Listed {
     // but with arbitrary matching
     static Get(item) {
         if(typeof item == "string") return this.List[item];
-        else if(item.name) return this.List[item.name];
+        else if(item?.name) return this.List[item.name];
         else {
             console.warn(`Don't know how to get ${item}`);
             return null;
