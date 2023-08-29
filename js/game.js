@@ -48,7 +48,6 @@ function checkPlayerInteraction() {
     // clear player tooltip and return
 
     const closest = localPlayer.target;
-    const characterType = closest != null ?  closest.characterType : null;
 
     if(closest == null) return;
     localPlayer.toolTip.entity = closest;
