@@ -69,8 +69,6 @@ function checkPlayerInteraction() {
     localPlayer.toolTip.message = closest.toolTipMessage || '';
 }
 
-Events.RaiseEvent(Events.List.GameStart);
-
 const localPlayer = new Character({
     name: "Local Player",
     color: "blue",
@@ -89,6 +87,8 @@ localPlayer.AddTechnology(slap);
 localPlayer.toolTip = new ToolTip({
     entity: localPlayer
 });
+
+Events.RaiseEvent(Events.List.GameStart);
 
 Game.Camera.setTarget(localPlayer);
 

@@ -1,6 +1,9 @@
 import { generateId } from "./util/javascript-extensions.js";
 import NetworkMessenger from './network/network-messenger.mjs';
 
+// TODO: if an event is raised with the "FiresOnce" property,
+// remember it, and respond immediately to any subscribers
+
 const Events = {
     List: {
         "GameStart": "GameStart"
