@@ -8,6 +8,7 @@ import Events from '../events.mjs';
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
+import Research from '../research.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -70,6 +71,7 @@ export default class Character {
     #maxWanderDistance = 10
 
     #faction = null;
+    #research = {};
 
     get faction() { return this.#faction; }
 
@@ -94,6 +96,14 @@ export default class Character {
         if(options.faction) {
             this.#faction = options.faction;
             delete options.faction;
+        }
+
+        if(options.research) {
+            this.#research = new Research({
+                name: options.name,
+                ...options.research
+            });
+            delete options.research;
         }
 
         AssignWithUnderscores(this, options);
