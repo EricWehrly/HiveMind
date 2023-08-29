@@ -125,10 +125,12 @@ export default class KeyboardController {
             if(bindingKeys.includes(key)) {
                 const actionParams = action.split("/");
                 const coreAction = Actions[actionParams[0]];
-                coreAction.callback({
-                    character: this.character,
-                    parameters: actionParams
-                });
+                if(coreAction.enabled) {
+                    coreAction.callback({
+                        character: this.character,
+                        parameters: actionParams
+                    });
+                }
             }
         }
     }
