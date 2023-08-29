@@ -8,6 +8,10 @@ export default class CharacterType {
 
         // TODO: throw error if no name
 
+        if(this.research) {
+            this.research.name = this.name;
+        }
+
         Object.assign(this, options);
         this.characterType = this.name;
 

@@ -13,9 +13,7 @@ import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
-import CharacterType from './entities/characterType.mjs';
 import UI from './ui/ui.mjs';
-import './research.mjs';
 import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 import * as uiResource from '../engine/js/ui/ui-resource.mjs';
 
