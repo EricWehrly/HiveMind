@@ -1,5 +1,6 @@
 import UIElement from './ui-element.mjs';
 import Events from '../events.mjs';
+import Action from '../action.mjs';
 
 Events.List.MenuOpened = "MenuOpened";
 Events.List.MenuClosed = "MenuClosed";

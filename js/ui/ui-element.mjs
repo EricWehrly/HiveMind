@@ -1,4 +1,5 @@
 import Renderer from '../rendering/renderer.mjs';
+import Events from '../events.mjs';
 
 export default class UIElement {
 
@@ -54,11 +55,15 @@ export default class UIElement {
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
         // TODO: ui shouldnt be on 'playfield'...
-        document.getElementById("ui-container").appendChild(this.Element);
         UIElement.#initialDisplay = this.Element.style.display;
         if('visible' in options) this.visible = options.visible;
 
         UIElement.#UI_ELEMENTS.push(this);
+
+        const that = this;
+        Events.Subscribe(Events.List.GameStart, function() {
+            document.getElementById("ui-container").appendChild(that.Element);
+        });
     }
 
     addClass(className) {
