@@ -1,6 +1,11 @@
+// Core
 import Game from '../engine/js/engine.mjs';
 import Events from '../engine/js/events.mjs';
 
+// Data
+import './data/biomeTypes.mjs'
+
+// Functionality
 import TileManager from '../engine/js/mapping/tile-manager.mjs';
 import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from './entities/character-extensions.mjs';
