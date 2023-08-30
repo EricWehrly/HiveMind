@@ -88,7 +88,8 @@ localPlayer.toolTip = new ToolTip({
     entity: localPlayer
 });
 
-Events.RaiseEvent(Events.List.GameStart);
+const gameStartOptions = {finalFire: true };
+Events.RaiseEvent(Events.List.GameStart, null, gameStartOptions);
 
 Game.Camera.setTarget(localPlayer);
 

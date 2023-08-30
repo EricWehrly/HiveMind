@@ -10,6 +10,8 @@ export default class Events {
 
     static #Subscriptions = {};
 
+    static #FiredEvents = {};
+
     static Subscribe(eventNames, callback, options) {
 
         // TODO: check inputs for bad values
@@ -31,15 +33,20 @@ export default class Events {
      * @param {Boolean} options.removeAfterRaise Whether to de-register the event after the first time that it is raised, preventing subsequent calls from resulting in a raised event.
      * @param {Boolean} options.isNetworkBoundEvent Whether the event should go to the network.
      * @param {Boolean} options.isNetworkOriginEvent Did the event originate from a machine other than this one?
+     * @param {Boolean} options.finalFire This is the last time the event will fire. All registrations after will fire immediately.
      */
     static RaiseEvent(eventName, detail, options) {
 
-        const callbackOptions = {
-            isNetworkOriginEvent: options?.isNetworkOriginEvent || false
-        };
-
         if (options?.isNetworkBoundEvent) {
             NetworkMessenger.TransmitEvent(eventName, detail);
+        }
+
+        if(options?.finalFire == true) {
+            // TODO: Warn if eventName exists
+            Events.#FiredEvents[eventName] = {
+                detail,
+                options
+            };
         }
 
         var subscribedEvents = Events.#Subscriptions[eventName];
@@ -47,9 +54,8 @@ export default class Events {
         subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
 
         for (var subscription of subscribedEvents) {
-            Events.#raiseSubscription(subscription, {
+            Events.#raiseSubscription(subscription.callback, {
                 detail,
-                callbackOptions,
                 eventName
             });
 
@@ -61,19 +67,24 @@ export default class Events {
     }
 
     /**
-     * @param {*} subscription derp
+     * @param {*} callback derp
      * @param {*} options.detail derp
-     * @param {*} options.callbackOptions derp
      * @param {String} options.eventName From Events.List
      */
-    static #raiseSubscription(subscription, options) {
+    static #raiseSubscription(callback, options) {
+
+        // TODO: This is going to repeat instantiation inside the loop
+        // but whatever that's like 20 calls tops? fix it later
+        const callbackOptions = {
+            isNetworkOriginEvent: options?.isNetworkOriginEvent || false
+        };
 
         try {
-            subscription.callback(options.detail, options.callbackOptions);
+            callback(options.detail, callbackOptions);
         } catch (ex) {
             if(options.eventName) console.error(`Issue firing subscription for event ${options.eventName}`);
-            if (subscription.callback.name != "") {
-                console.log(subscription.callback.name);
+            if (callback.name != "") {
+                console.log(callback.name);
             }
             console.error(ex);
             debugger;
@@ -85,6 +96,16 @@ export default class Events {
     // subscribeOnce
 
     static #subscribe(eventName, callback, options) {
+        
+        if (eventName in Events.#FiredEvents) {
+            console.debug(`Immediately firing subscription for already fired event ${eventName}.`);
+            const firedEvent = Events.#FiredEvents[eventName];
+            Events.#raiseSubscription(callback, {
+                eventName,
+                ...firedEvent
+            });
+            return;
+        }
 
         const subscriptionId = generateId();
 
