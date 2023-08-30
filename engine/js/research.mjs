@@ -14,6 +14,8 @@ export default class Research extends Listed {
 
         const selectedResearch = context?.menu?.selected?.context;
         console.log(selectedResearch);
+
+        // when used, start counting down until the research is done
     }
 
     static {
@@ -32,11 +34,14 @@ export default class Research extends Listed {
 
     }
 
-    #enabled = false;
+    #cost = 0;
+    get cost() { return this.#cost; }
+    
+    #callback = null;
+    get callback() { return this.#callback; }
 
-    get enabled() {
-        return this.#enabled;
-    }
+    #enabled = false;
+    get enabled() { return this.#enabled; }
 
     set enabled(value) {
 
@@ -49,13 +54,18 @@ export default class Research extends Listed {
             // (but not really, for a tech demo. empty research menu is fine)
 
             Research.#UI_MENU_RESEARCH.addItem({
-                name: this.name
-            })
+                name: this.name,
+                cost: this.cost,
+                callback: this.callback
+            });
         }
     }
 
     constructor(options) {
         super(options);
+
+        this.#cost = options.cost || 0;
+        this.#callback = options.callback;
     }
 }
 

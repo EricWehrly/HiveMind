@@ -13,7 +13,13 @@ new CharacterType({
     name: 'Food',
     color: 'green',
     health: 5,
-    ai: null
+    ai: null,
+    research: {
+        cost: 10,
+        callback: function() {
+            console.log("You researched food.");
+        }
+    }
 });
 
 // we probably should be creating spawners.
