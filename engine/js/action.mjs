@@ -174,12 +174,8 @@ export default class Action extends Listed {
             delay: 1000,
             callback: function (options) {
 
-                // ok ... how do we know which menu is in context? 
-                // for now we can just assume only 1 menu ...
-                const currentMenu = Menu.MENU_LIST[0];
-                // TODO: can we pass ... from the menu calling somehow? into this method?
-                currentMenu.menuAction({
-                    menu: currentMenu
+                Menu.Current.menuAction({
+                    menu: Menu.Current
                 });
             }
         });
