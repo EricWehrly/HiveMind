@@ -3,8 +3,10 @@ import Menu from './ui/menu.mjs';
 import UIElement from './ui/ui-element.mjs';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.mjs';
+import { Defer } from "./loop.mjs";
 
 Events.List.ResearchEnabled = "ResearchEnabled";
+Events.List.ResearchFinished = "ResearchFinished";
 
 export default class Research extends Listed {
 
@@ -15,7 +17,14 @@ export default class Research extends Listed {
         const selectedResearch = context?.menu?.selected?.context;
         console.log(selectedResearch);
 
+        var options = {};
+
         // when used, start counting down until the research is done
+        Defer(function() {
+            selectedResearch.callback(options);
+            Events.RaiseEvent(Events.List.ResearchFinished, this);
+            Events.RaiseEvent(`${Events.List.ResearchFinished}-${selectedResearch.name}`, this);
+        }, selectedResearch.cost * 1000);
     }
 
     static {
