@@ -42,7 +42,10 @@ export default class Events {
         }
 
         if(options?.finalFire == true) {
-            // TODO: Warn if eventName exists
+            if(eventName in Events.#FiredEvents) {
+                console.warn(`${eventName} already called finalFire`);
+            }
+
             Events.#FiredEvents[eventName] = {
                 detail,
                 options
@@ -67,8 +70,8 @@ export default class Events {
     }
 
     /**
-     * @param {*} callback derp
-     * @param {*} options.detail derp
+     * @param {Function} callback The callback method of the subscriber.
+     * @param {Object} options.detail The details of the event (usually the subject of the action). Varies by event type.
      * @param {String} options.eventName From Events.List
      */
     static #raiseSubscription(callback, options) {
@@ -95,6 +98,14 @@ export default class Events {
 
     // subscribeOnce
 
+    /**
+     * @param {*} eventName 
+     * @param {*} callback 
+     * @param {*} options 
+     * @returns the id of the subscription if successful
+     * @returns null if the event has already fired for the last time
+     * but in that case it fires the subscription immediately
+     */
     static #subscribe(eventName, callback, options) {
         
         if (eventName in Events.#FiredEvents) {
@@ -104,7 +115,7 @@ export default class Events {
                 eventName,
                 ...firedEvent
             });
-            return;
+            return null;
         }
 
         const subscriptionId = generateId();
