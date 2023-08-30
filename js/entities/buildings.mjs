@@ -4,6 +4,7 @@ import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import HiveMindCharacter from './character-extensions.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
+import Events from '../../engine/js/events.mjs';
 
 const Build = function(context) {
 
@@ -52,6 +53,14 @@ new CharacterType({
     ai: null
 });
 
+// TODO: Later, generically unlock items in menus by having them locked/unlocked
+// TODO: get "Food" from its proper definition, or a constant somewhere ... 
+Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function() {
+
+    UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+    UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
+});
+
 // rock driller
 
 // building for doing 'research' ?
@@ -59,8 +68,5 @@ new CharacterType({
 // building for sending research home
 
 // building for receiving research from home
-
-UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
-UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
 
 KeyboardController.AddDefaultBinding("openMenu/build", "b");
