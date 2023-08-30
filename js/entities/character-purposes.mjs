@@ -1,5 +1,6 @@
 import Point from "../../engine/js/baseTypes/point.mjs";
 import Events from "../../engine/js/events.mjs";
+import Research from "../../engine/js/research.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 
@@ -28,9 +29,11 @@ const Purposes =
                         if (character.target.technologies && character.target.technologies.length > 0) {
                             character.AddTechnology(character.target.technologies[0]);
                         }
-                        if (character.target.characterType) {                            
-                            CharacterType[character.target.characterType].unlock();
+                        // TODO: When reabsorbed
+                        if (character.target.characterType) {
                             CharacterType[character.target.characterType].isStudied = true;
+                            const research = Research.Get(character.target.characterType);
+                            research.enabled = true;
                         }
                         character.target = null;
                         character.SetCurrentPurpose("return");
