@@ -1,9 +1,6 @@
 import { generateId } from "./util/javascript-extensions.js";
 import NetworkMessenger from './network/network-messenger.mjs';
 
-// TODO: if an event is raised with the "FiresOnce" property,
-// remember it, and respond immediately to any subscribers
-
 // TODO: extends Listed
 export default class Events {
 
@@ -50,21 +47,36 @@ export default class Events {
         subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
 
         for (var subscription of subscribedEvents) {
-            try {
-                subscription.callback(detail, callbackOptions);
+            Events.#raiseSubscription(subscription, {
+                detail,
+                callbackOptions,
+                eventName
+            });
 
-                if (subscription.oneTime || options?.removeAfterRaise == true) {
-                    console.warn("Didn't implement unsubscribe ...");
-                    // Events.Unsubscribe(subscription.subscriptionId);
-                }
-            } catch (ex) {
-                console.error(`Issue firing subscription for event ${eventName}`);
-                if (subscription.callback.name != "") {
-                    console.log(subscription.callback.name);
-                }
-                console.error(ex);
-                debugger;
+            if (subscription.oneTime || options?.removeAfterRaise == true) {
+                console.warn("Didn't implement unsubscribe ...");
+                // Events.Unsubscribe(subscription.subscriptionId);
             }
+        }
+    }
+
+    /**
+     * @param {*} subscription derp
+     * @param {*} options.detail derp
+     * @param {*} options.callbackOptions derp
+     * @param {String} options.eventName From Events.List
+     */
+    static #raiseSubscription(subscription, options) {
+
+        try {
+            subscription.callback(options.detail, options.callbackOptions);
+        } catch (ex) {
+            if(options.eventName) console.error(`Issue firing subscription for event ${options.eventName}`);
+            if (subscription.callback.name != "") {
+                console.log(subscription.callback.name);
+            }
+            console.error(ex);
+            debugger;
         }
     }
 
