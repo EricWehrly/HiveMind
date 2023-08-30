@@ -1,6 +1,3 @@
-- need to make it so that you have to study food before you can start growing it
-    - implement 'prerequisites', study technology unlocks, or equivalent
-
 - need to implement enemies attacking player
     - engine\js\ai\basic.mjs -- think() method
     - enemies should also attack player entities (spawns, and buildings)
@@ -25,6 +22,8 @@ Should be able to switch to a new attack even if switch in progress is not compl
 - buildings for: doing research, defending, healing
 defense can later break out to either turrets or unit spawners
 
+- (Visual) feedback for unlocks
+
 - would be nice to make a UI (options?) that shows which keys are bound
 
 - create a ui element showing player size
@@ -47,6 +46,10 @@ trees, rocks
 - time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
 
 ---
+
+- Maybe the javascript-extensions mergeDeep could check for properties that have a getter but not a setter,
+    and skip those?
+    Tried this. It's hard. The getOwnProperty doesn't show the get or set for some reason
 
 Make it so that spawned slimes can lose line of sight
 In which case they will return to where they spawned from the player, and then wander looking for them.

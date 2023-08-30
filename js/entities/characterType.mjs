@@ -7,8 +7,6 @@ export default class CharacterType {
 
     constructor(options) {
 
-        // TODO: throw error if no name
-
         if(options.research) {
             this.#research = new Research({
                 name: options.name,
