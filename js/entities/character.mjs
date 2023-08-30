@@ -99,10 +99,7 @@ export default class Character {
         }
 
         if(options.research) {
-            this.#research = new Research({
-                name: options.name,
-                ...options.research
-            });
+            this.#research = options.research;
             delete options.research;
         }
 
