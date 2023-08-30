@@ -1,9 +1,6 @@
-import Unlock from "../../engine/js/unlocks.mjs";
 import Research from "../../engine/js/research.mjs";
 
 export default class CharacterType {
-
-    #unlock = null;
 
     #research;
     get research() { return this.#research; }
@@ -24,13 +21,5 @@ export default class CharacterType {
         this.characterType = this.name;
 
         CharacterType[this.name] = this;
-
-        this.#unlock = new Unlock({
-            name: this.name
-        });
-    }
-
-    unlock() {
-        this.#unlock.unlock();
     }
 }
