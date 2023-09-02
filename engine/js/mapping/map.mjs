@@ -1,7 +1,10 @@
+import Seed from "../core/seed.mjs";
+import Game from "../engine.mjs";
 import Events from "../events.mjs";
 import Biome, { BiomeType } from "./biome.mjs";
 import Chunk from "./chunk.mjs";
 
+// TODO: export the instance, not the class
 export default class Map {
 
     static #map;
@@ -27,11 +30,16 @@ export default class Map {
 
     #chunks = {};
     #biomes = [];
+    #seed;
+
+    get Seed() {
+        return this.#seed;
+    }
 
     constructor() {
         if(Map.#map == null) window.map = Map.#map = this;
-        // hook into player move event
-        // generate chunk if needed
+
+        this.#seed = new Seed(Game.Seed.Random());
         
         Events.Subscribe(Events.List.CharacterCreated, this.#playerMoved.bind(this));
         Events.Subscribe(Events.List.PlayerMoved, this.#playerMoved.bind(this));
@@ -142,7 +150,6 @@ export default class Map {
 
     getBiome(options) {
 
-        debugger;
         if(options.x != null & options.y != null) {
 
             for(var biome of this.#biomes) {
@@ -152,10 +159,12 @@ export default class Map {
             }
             // TODO: determine BiomeType to use based on adjacent biomes
             const biomeType = BiomeType.Get("Grasslands");
+            const width = Math.round(this.Seed.Random(biomeType.minWidth, biomeType.maxWidth));
+            const height = Math.round(this.Seed.Random(biomeType.minHeight, biomeType.maxHeight));
             return new Biome({
                 biomeType,
-                width: 1,
-                height: 1,
+                width,
+                height,
                 ...options
             });
         } else {

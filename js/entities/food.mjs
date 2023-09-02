@@ -15,10 +15,7 @@ new CharacterType({
     health: 5,
     ai: null,
     research: {
-        cost: 10,
-        callback: function() {
-            console.log("You researched food.");
-        }
+        cost: 10
     }
 });
 
