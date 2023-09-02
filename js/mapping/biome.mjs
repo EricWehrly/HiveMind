@@ -3,10 +3,14 @@ import Map from '../mapping/map.mjs';
 
 export class BiomeType extends Listed {
 
-    #minWidth = 0;
+    #minWidth = 1;
+    get minWidth() { return this.#minWidth; }
     #maxWidth = 10;
-    #minHeight = 0;
+    get maxWidth() { return this.#maxWidth; }
+    #minHeight = 1;
+    get minHeight() { return this.#minHeight; }
     #maxHeight = 10;
+    get maxHeight() { return this.#maxHeight; }
 
     constructor(options) {
 
@@ -41,6 +45,11 @@ export default class Biome {
         // console.assert(typeof options.biomeType == BiomeType);
         if(!options.width) throw "Expected width to create biome.";
         if(!options.height) throw "Expected height to create biome.";
+
+        this.#x = options.x;
+        this.#y = options.y;
+        this.#width = options.width;
+        this.#height = options.height;
         
         Map.Map.addBiome(this);
     }

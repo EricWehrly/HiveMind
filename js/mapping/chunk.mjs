@@ -2,6 +2,7 @@ import Events from "../events.mjs";
 import Map from '../mapping/map.mjs';
 import Game from "../engine.mjs";
 import Seed from "../core/seed.mjs";
+import Biome from "./biome.mjs";
 
 Events.List.ChunkCreated = "ChunkCreated";
 
@@ -37,6 +38,7 @@ export default class Chunk {
         return this.x + "," + this.y;
     }
 
+    #biome
     #seed
     get seed() {
         return this.#seed;
@@ -80,10 +82,14 @@ export default class Chunk {
     }
 
     constructor(options) {
+
+        if(!options.biome) debugger;
+
+        this.#biome = options.biome;
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
         if(options.active) this.active = options.active;
-        this.#seed = new Seed(Game.Seed.Random());
+        this.#seed = new Seed(Map.Map.Seed.Random());
         const seed = this.#seed;
 
         const distance = Math.abs(this.#x) + Math.abs(this.#y);
