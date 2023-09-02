@@ -3,6 +3,7 @@ import Technology from '../../engine/js/technology.mjs';
 import Events from '../../engine/js/events.mjs';
 import CharacterType from './characterType.mjs';
 import Chunk from '../../engine/js/mapping/chunk.mjs';
+import PredatorAI from '../../engine/js/ai/predator.mjs';
 
 new CharacterType({
     name: "Animal",
@@ -32,9 +33,11 @@ function spawnFauna(chunk) {
     const characterOpts = Object.assign({}, CharacterType.Animal);
     // characterOpts.technologies = [claws];
     
-    // const spawnCount = seed.Random(0, 1) * 5;
     // later, we can use the remainder to make monsters stronger
-    const spawnCount = Math.ceil(chunk.danger * 0.8);
+    // const spawnCount = Math.ceil(chunk.danger * 0.8);
+    // for now, simple equations
+    const spawnCount = chunk.distance;
+
     // how much aggression?
     // later, the amount of aggression in the chunk can gate certain creatures from spawning
     // later, the amount of "points" (strength) a monster has should be used to determine if they get a technology like claws
@@ -64,9 +67,9 @@ function spawnFauna(chunk) {
                 x: chunkX + randomX,
                 y: chunkY + randomY
             },
-            technologies: [ techs[techIndex] ]
+            technologies: [ techs[techIndex] ],
+            ai: PredatorAI
         };
-        // console.log(`at ${spawnOpts.position.x}, ${spawnOpts.position.y}`);
         Object.assign(spawnOpts, characterOpts);
         new Character(spawnOpts);
     }

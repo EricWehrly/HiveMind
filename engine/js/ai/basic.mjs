@@ -11,6 +11,7 @@ export default class AI {
     #character = null;
 
     #leashing = false;
+    get leashing() { return this.#leashing; }
 
     #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
@@ -35,21 +36,6 @@ export default class AI {
     think() {
 
         if(this.#leashing == false) {
-            if(this.#shouldTarget()) {
-                // const wasTarget = this.#character.target;
-                const closest = this.#character.getClosestEntity({
-                    distance: this.#character.aggressionRange,
-                    isPlayer: true
-                });
-                if(closest != null) this.#character.target = closest;
-                /*
-                if(wasTarget != this.#character.target && this.#character.target != null) {
-                    const dist = this.#character.target.getDistance(this.#character);
-                    console.debug(`Acquiring target ${this.#character.target.name}`);
-                    console.debug(`Target distance: ${dist}. Aggression range: ${this.#character.aggressionRange}`);
-                }
-                */
-            }
 
             // if i don't have a target
             this.wander();
@@ -59,11 +45,6 @@ export default class AI {
         }
 
         this.#character.pointAtTarget();
-    }
-
-    #shouldTarget() {
-        return this.#character.aggression > 0 
-            && (this.#character.target == null || !(this.#character.target instanceof Character));
     }
 
     wander() {
