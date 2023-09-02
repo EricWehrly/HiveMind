@@ -38,6 +38,8 @@ defense can later break out to either turrets or unit spawners
 
 - need to have some collision
 
+- need to finish implementing biomes
+
 - maybe some terrain variety? Mountains, valleys, water
 trees, rocks
 

@@ -72,7 +72,7 @@ export default class HiveMindCharacter extends Character {
         }
     
         if(this.aggression != null) {
-            toolTipMessage += `Aggression Range: ${this.aggressionRange}<br />`;
+            toolTipMessage += `Aggression Range: ${Math.round(this.aggressionRange)}<br />`;
         }
 
         if(this.canBeStudied(Character.LOCAL_PLAYER)) {            
