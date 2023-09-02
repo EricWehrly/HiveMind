@@ -81,6 +81,9 @@ export default class Chunk {
         this.#active = value;
     }
 
+    #distance;
+    get distance() { return this.#distance; }
+
     constructor(options) {
 
         if(!options.biome) debugger;
@@ -92,8 +95,8 @@ export default class Chunk {
         this.#seed = new Seed(Map.Map.Seed.Random());
         const seed = this.#seed;
 
-        const distance = Math.abs(this.#x) + Math.abs(this.#y);
-        this.#danger = seed.Random(Math.max(distance - 1, 0), distance + 1) + 1;
+        this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
+        this.#danger = seed.Random(Math.max(this.#distance - 1, 0), this.#distance + 1) + 1;
         this.#hostility = seed.Random(1, this.#danger);
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this.#flora = seed.Random(1, 10);

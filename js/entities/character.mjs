@@ -118,7 +118,7 @@ export default class Character {
         }
 
         // TODO: let's default to no AI at all unless prescribed ...
-        this.setupAI();
+        this.setupAI(options.ai);
 
         AddCharacterToList(this);
 
@@ -351,9 +351,14 @@ export default class Character {
         }
     }
 
-    setupAI() {
-        // TODO: Allow config from options
-        if (this.ai === undefined) this.ai = new BasicAI(this);
+    setupAI(aiType) {
+        if (aiType === undefined) this.ai = new BasicAI(this);
+
+        else try {  // we should refactor out this 'try' once this is working
+            this.ai = new aiType(this);
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 
     getDistance(entity) {
