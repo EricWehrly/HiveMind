@@ -107,6 +107,8 @@ export default class Events {
      * but in that case it fires the subscription immediately
      */
     static #subscribe(eventName, callback, options) {
+
+        if(eventName == undefined) debugger;
         
         if (eventName in Events.#FiredEvents) {
             console.debug(`Immediately firing subscription for already fired event ${eventName}.`);
