@@ -20,7 +20,7 @@ const Purposes =
         name: "Study",
         think: function (character, elapsed) {
             if (character.target) {
-                character.pointAtTarget();
+                character.pointAtTarget(character.target);
 
                 if (character.position.equals(character.target.position)) {
                     if (character.target.dead == true) {
@@ -47,7 +47,7 @@ const Purposes =
         name: "consume",
         think: function (character, elapsed) {
             if (character.target) {
-                character.pointAtTarget();
+                character.pointAtTarget(character.target);
 
                 if (character.target == null || character.target.dead) {
                     character.target = null;
@@ -75,7 +75,7 @@ const Purposes =
             if (!character.target) {
                 character.target = character.parent;
             }
-            character.pointAtTarget();
+            character.pointAtTarget(character.target);
 
             // TODO: if collision boxes overlap ..
             if (character.position.equals(character.target.position)) {
