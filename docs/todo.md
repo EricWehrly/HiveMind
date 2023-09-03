@@ -1,3 +1,6 @@
+- We need to draw lines at chunk borders to better visualize
+    Use biome colors for now (tint?)
+
 - need to implement enemies attacking player
     - engine\js\ai\basic.mjs -- think() method
     - enemies should also attack player entities (spawns, and buildings)
