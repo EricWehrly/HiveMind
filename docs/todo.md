@@ -1,9 +1,7 @@
 - We need to draw lines at chunk borders to better visualize
     Use biome colors for now (tint?)
 
-- need to implement enemies attacking player
-    - engine\js\ai\basic.mjs -- think() method
-    - enemies should also attack player entities (spawns, and buildings)
+- enemies should also attack player entities (spawns, and buildings)
 
 - default player should be faster than default enemies
 it should also be very difficult for enemies to kite players (may as well make that impossible for this iteration)
@@ -16,6 +14,10 @@ in part to be able to determine what % of max aggression a creature is
     poison, projectiles, thorns, shell (protective)
     bark - summons friends (useless to player, as they are a hive mind)
         (this might be a fun one for later -- options of befriending fauna, and would be better telegraphed when enmies have appearance)
+
+- Maybe learning new technologies should work like:
+    - the more you already know, the more pieces (of a new one) that you need to collect in order to research
+    - but the more you know, the shorter it is to research?
 
 - The more evolved an attack is, the longer it takes the player to switch to it.
 Should be able to switch to a new attack even if switch in progress is not complete

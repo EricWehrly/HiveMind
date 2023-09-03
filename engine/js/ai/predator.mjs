@@ -45,7 +45,7 @@ export default class PredatorAI extends AI {
 
         super.think();
 
-        if(this.character.target 
+        if(this.character.target && this.equippedAttack != null
             && this.character.position.distance(this.character.target.position) < this.equippedAttack.range) {
             this.character.pointAtTarget(null);
         }

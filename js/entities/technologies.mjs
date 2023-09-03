@@ -59,6 +59,11 @@ new Technology({
 // we probably want to implement a "status effect" class
 // to deal with bleed, poison, and knockback
 
-// thorns
+new Technology({
+    name: "thorns",
+    type: Technology.Types.BUFF,
+    thorns: 1,
+    delay: 2200
+});
 
-// shell
+// shell (protective?)

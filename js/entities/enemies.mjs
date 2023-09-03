@@ -17,7 +17,8 @@ function getFaunaTechs() {
 
     return [
         Technology.Get("claws"),
-        Technology.Get("projectile")
+        Technology.Get("projectile"),
+        Technology.Get("thorns")
     ]
 }
 
