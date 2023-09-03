@@ -105,6 +105,11 @@ export default class Action extends Listed {
                     if(equipped.statusEffect) {
                         options.character.target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
                     }
+
+                    if(options.character.target.equipment) {
+                        const buff = options.character.target.equipment[Technology.Types.BUFF];
+                        options.character.health -= buff.thorns;
+                    }
                 }
 
                 return true;
