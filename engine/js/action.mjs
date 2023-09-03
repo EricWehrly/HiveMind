@@ -89,15 +89,13 @@ export default class Action extends Listed {
                     return;
                 }
 
-                // TODO: This isn't going to track a per-character last action time. We need that.
-                // is this redundant to the checkDelay call in the wrapping function?
+                // the wrapping function checks the delay on the action,
+                // this is checking delay set on the equipped technology
                 if (!this.checkDelay(equipped)) return false;
 
                 if(!(options.character.target instanceof Character)) return false;
 
                 if (!this.inRange(equipped, options.character)) return false;
-
-                // console.log(`${options?.character?.name} attacking ${options?.character?.target?.name}`);
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
@@ -261,9 +259,9 @@ export default class Action extends Listed {
 
     checkDelay(thing) {
 
-        if (thing.delay && this.lastFired &&
-            performance.now() - this.lastFired < thing.delay) return false;
-        else if (thing.delay) this.lastFired = performance.now();
+        if (thing.delay && thing.lastFired &&
+            performance.now() - thing.lastFired < thing.delay) return false;
+        else if (thing.delay) thing.lastFired = performance.now();
 
         return true;
     }
