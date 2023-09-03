@@ -5,7 +5,8 @@ export default class Technology extends Listed {
     static Types = {
         ATTACK: "attack",
         // maybe this should be called "buff"
-        ATTACK_MODIFIER: "attackModifier"
+        ATTACK_MODIFIER: "attackModifier",
+        BUFF: "buff"
     }
 
     #statusEffect;
@@ -37,6 +38,7 @@ export default class Technology extends Listed {
         this.range = options.range;
         this.damage = options.damage;
         this.delay = options.delay;
+        this.thorns = options.thorns;
 
         if(options.statusEffect) {
             if(Number.isNaN(options.statusEffect.duration)) {

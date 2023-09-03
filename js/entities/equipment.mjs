@@ -11,6 +11,8 @@ export default class Equipment {
     _attackModifier = null;
     #character;
 
+    #buff = null;
+
     constructor(character) {
 
         character.getEquipped = function (techType) {
@@ -42,6 +44,11 @@ export default class Equipment {
 
     set attackModifier(newValue) {
         this._attackModifier = newValue;
+    }
+
+    get buff() { return this.#buff; }
+    set buff(newValue) {
+        this.#buff = newValue;
     }
 
     equip(technology) {
