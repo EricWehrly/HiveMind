@@ -1,8 +1,6 @@
 import Events from "../events.mjs";
 import Map from '../mapping/map.mjs';
-import Game from "../engine.mjs";
 import Seed from "../core/seed.mjs";
-import Biome from "./biome.mjs";
 
 Events.List.ChunkCreated = "ChunkCreated";
 
@@ -107,7 +105,6 @@ export default class Chunk {
             isNetworkBoundEvent: true
         });
         // console.log(`New chunk at ${options.x}, ${options.y}`);
-        // TODO: Biomes. Like, you can have data-driven biome selection for chunks ..
     }
 
     equals(chunk) {

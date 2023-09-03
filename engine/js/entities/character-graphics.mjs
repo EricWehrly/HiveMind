@@ -1,6 +1,5 @@
 import Character from './character.mjs';
 import Events from '../events.mjs';
-import { RegisterLoopMethod } from './../loop.mjs';
 import Renderer from '../rendering/renderer.mjs';
 
 function createGraphic(character) {
@@ -75,12 +74,9 @@ function redraw_loop(screenRect) {
 }
 
 Events.Subscribe(Events.List.GameStart, function() {
-    // Events.Subscribe(Events.List.CharacterCreated, createGraphic);
     
     Events.Subscribe(Events.List.CharacterCreated, createGraphic);
     Events.Subscribe(Events.List.CharacterTargetChanged, updateTargetingClasses);
 });
 
 Renderer.RegisterRenderMethod(10, redraw_loop);
-
-// RegisterLoopMethod(redraw_loop, true);

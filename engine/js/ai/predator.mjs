@@ -7,8 +7,6 @@ export default class PredatorAI extends AI {
 
     constructor(character) {
         super(character);
-
-        console.log("I A PREDATOR")
     }
 
     get equippedAttack() {

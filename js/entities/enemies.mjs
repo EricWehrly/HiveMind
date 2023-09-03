@@ -74,10 +74,6 @@ function spawnFauna(chunk) {
         Object.assign(spawnOpts, characterOpts);
         new Character(spawnOpts);
     }
-
-    // from chunk seed:
-    // how many to spawn
-    // aggression for each
 }
 
 Events.Subscribe(Events.List.ChunkCreated, spawnFauna);
