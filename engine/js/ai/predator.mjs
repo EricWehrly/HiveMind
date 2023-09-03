@@ -65,7 +65,8 @@ export default class PredatorAI extends AI {
 
     #shouldAttack() {
 
-        return this.character.target instanceof Character;
+        return this.character.target instanceof Character
+            && this.equippedAttack && this.equippedAttack.damage > 0;
     }
 
     #attack() {
