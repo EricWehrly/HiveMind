@@ -1,6 +1,7 @@
 import AI from "./basic.mjs";
 import Character from "../entities/character.mjs";
 import Action from "../action.mjs";
+import Technology from "../technology.mjs";
 
 export default class PredatorAI extends AI {
 
@@ -8,6 +9,16 @@ export default class PredatorAI extends AI {
         super(character);
 
         console.log("I A PREDATOR")
+    }
+
+    get equippedAttack() {
+        
+        const equipment = this.character.equipment;
+        if(equipment == null) return null;
+
+        const equipped = equipment[Technology.Types.ATTACK];
+
+        return equipped;
     }
     
     think() {
@@ -33,6 +44,14 @@ export default class PredatorAI extends AI {
         }
 
         super.think();
+
+        // target = far enough to attack
+        if(this.character.target 
+            && this.character.position.distance(this.character.target.position) < this.equippedAttack.range) {
+            this.character.pointAtTarget(null);
+        }
+
+        // this.character.pointAtTarget(this.character.target);
 
         if(this.#shouldAttack()) {
             // this.#attack(this.character.target);

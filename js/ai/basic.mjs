@@ -44,7 +44,7 @@ export default class AI {
             this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
         }
 
-        this.#character.pointAtTarget();
+        this.#character.pointAtTarget(this.#character.target);
     }
 
     wander() {

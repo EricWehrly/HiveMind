@@ -281,17 +281,19 @@ export default class Character {
         this.statusEffectThink();
     }
 
-    // player character is moving to target and shouldn't be
-    pointAtTarget() {
+    pointAtTarget(target) {
 
-        if (this.target) {
-            if (this.position.x != this.target.position.x
-                || this.position.y != this.target.position.y) {
-                if (this.position.x < this.target.position.x) this._velocity.x = 1;
-                else if (this.position.x > this.target.position.x) this._velocity.x = -1;
-                if (this.position.y < this.target.position.y) this._velocity.y = 1;
-                else if (this.position.y > this.target.position.y) this._velocity.y = -1;
+        if (target) {
+            if (this.position.x != target.position.x
+                || this.position.y != target.position.y) {
+                if (this.position.x < target.position.x) this._velocity.x = 1;
+                else if (this.position.x > target.position.x) this._velocity.x = -1;
+                if (this.position.y < target.position.y) this._velocity.y = 1;
+                else if (this.position.y > target.position.y) this._velocity.y = -1;
             }
+        } else {
+            this._velocity.x = 0;
+            this._velocity.y = 0;
         }
     }
 
