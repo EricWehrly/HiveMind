@@ -354,11 +354,8 @@ export default class Character {
     setupAI(aiType) {
         if (aiType === undefined) this.ai = new BasicAI(this);
 
-        else try {  // we should refactor out this 'try' once this is working
-            this.ai = new aiType(this);
-        } catch (ex) {
-            console.error(ex);
-        }
+        // TODO: Would be better to type-validate aiType (but it's a class, not an instance)
+        else if (aiType != null) this.ai = new aiType(this);
     }
 
     getDistance(entity) {

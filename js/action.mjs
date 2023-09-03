@@ -93,7 +93,11 @@ export default class Action extends Listed {
                 // is this redundant to the checkDelay call in the wrapping function?
                 if (!this.checkDelay(equipped)) return false;
 
+                if(!(options.character.target instanceof Character)) return false;
+
                 if (!this.inRange(equipped, options.character)) return false;
+
+                // console.log(`${options?.character?.name} attacking ${options?.character?.target?.name}`);
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
