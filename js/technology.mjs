@@ -10,7 +10,7 @@ export default class Technology extends Listed {
     }
 
     #lastPlayedSoundIndex = -1;
-    #sound;
+    #sound = [];
 
     #statusEffect;
     get statusEffect() { return this.#statusEffect; }
@@ -33,8 +33,16 @@ export default class Technology extends Listed {
         super(options);
 
         if(options.sound) {
-           this.#sound = new Audio(options.sound);
+            if (Array.isArray(options.sound)) {
+                const that = this;
+                options.sound.forEach(function (sound) {
+                    that.#sound.push(new Audio(sound));
+                });
+            } else {
+                this.#sound.push(new Audio(options.sound));
+            }
         }
+        console.log(`${this.name} registered ${this.#sound.length} sounds`);
 
         // TODO: proper private members and getters
         this.type = options.type;
@@ -54,8 +62,9 @@ export default class Technology extends Listed {
 
     playSound() {
 
-        if(this.#sound) this.#sound.play();
-        
-        else console.warn(`No sound for ${equipped.name}`);
+        if(this.#sound.length > 0) {
+            this.#sound[0].play();
+        }
+        else console.warn(`No sound for ${this.name}`);
     }
 }
