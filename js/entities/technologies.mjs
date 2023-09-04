@@ -51,7 +51,12 @@ new Technology({
     type: Technology.Types.ATTACK,
     range: 10,
     damage: 1,
-    delay: 4200 // can we make it take longer based on how far away?
+    delay: 4200, // can we make it take longer based on how far away?
+    sound: [
+        'audio/attacks/projectile/projectile-1.mp3',
+        'audio/attacks/projectile/projectile-2.mp3',
+        'audio/attacks/projectile/projectile-3.mp3'
+    ]
 });
 
 // club (has knockback)
