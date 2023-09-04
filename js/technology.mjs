@@ -9,6 +9,9 @@ export default class Technology extends Listed {
         BUFF: "buff"
     }
 
+    #lastPlayedSoundIndex = -1;
+    #sound;
+
     #statusEffect;
     get statusEffect() { return this.#statusEffect; }
 
@@ -30,7 +33,7 @@ export default class Technology extends Listed {
         super(options);
 
         if(options.sound) {
-           this.sound = new Audio(options.sound);
+           this.#sound = new Audio(options.sound);
         }
 
         // TODO: proper private members and getters
@@ -47,5 +50,12 @@ export default class Technology extends Listed {
             else this.#statusEffect = options.statusEffect;
         }
         this.#statusEffectDuration = options.statusEffectDuration;
+    }
+
+    playSound() {
+
+        if(this.#sound) this.#sound.play();
+        
+        else console.warn(`No sound for ${equipped.name}`);
     }
 }
