@@ -108,7 +108,7 @@ export default class Action extends Listed {
 
                     if(options.character.target.equipment) {
                         const buff = options.character.target.equipment[Technology.Types.BUFF];
-                        options.character.health -= buff.thorns;
+                        if(buff) options.character.health -= buff.thorns;
                     }
                 }
 
