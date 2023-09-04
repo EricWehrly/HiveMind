@@ -8,6 +8,8 @@ body {
     overflow: hidden;
 }
 
+/* This isn't applying because the casing is different.
+    was that intentional ...? */
 #playField {
     
     width: 100%;
@@ -20,4 +22,21 @@ body {
     position: absolute;
     left: 30%;
     top: 0;
+}
+
+.chunk {
+
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 1px;
+    height: 1px;
+
+    /* foreground layer (100-999) */
+    z-index: 100;
+}
+
+.chunk:after {
+
+    content: 'chunk corner';
 }

@@ -1,3 +1,8 @@
+- why are chunks not generating in the negative (left and top)?
+
+- it's time to refactor chunks to only generate for players
+    - event context?
+
 - We need to draw lines at chunk borders to better visualize
     Use biome colors for now (tint?)
 
