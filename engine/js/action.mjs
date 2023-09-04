@@ -99,8 +99,7 @@ export default class Action extends Listed {
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
-                    if (equipped.sound) equipped.sound.play();
-                    else console.warn(`No sound for ${equipped.name}`);
+                    equipped.playSound();
                     options.character.target.health -= equipped.damage;
 
                     if(equipped.statusEffect) {
