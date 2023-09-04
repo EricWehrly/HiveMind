@@ -42,7 +42,6 @@ export default class Technology extends Listed {
                 this.#sound.push(new Audio(options.sound));
             }
         }
-        console.log(`${this.name} registered ${this.#sound.length} sounds`);
 
         // TODO: proper private members and getters
         this.type = options.type;
@@ -62,8 +61,13 @@ export default class Technology extends Listed {
 
     playSound() {
 
+        // it would be desirable to make this random instead of cyclical, eventually
         if(this.#sound.length > 0) {
-            this.#sound[0].play();
+            if(this.#lastPlayedSoundIndex > this.#sound.length - 2) {
+                this.#lastPlayedSoundIndex = -1;
+            }
+            this.#lastPlayedSoundIndex += 1;
+            this.#sound[this.#lastPlayedSoundIndex].play();
         }
         else console.warn(`No sound for ${this.name}`);
     }
