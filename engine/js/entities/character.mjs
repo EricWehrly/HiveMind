@@ -432,6 +432,8 @@ export default class Character {
         if(this.graphic) document.getElementById("playfield").removeChild(this.graphic);
         
         Events.RaiseEvent(Events.List.CharacterDied, this);
+
+        if(this.isPlayer) alert('So the player is dead now ... this is game over.');
         
         RemoveCharacterFromList(this);
     }
