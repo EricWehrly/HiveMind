@@ -1,6 +1,7 @@
 import Events from "../events.mjs";
 import Map from '../mapping/map.mjs';
 import Seed from "../core/seed.mjs";
+import './chunk-graphic.mjs';
 
 Events.List.ChunkCreated = "ChunkCreated";
 

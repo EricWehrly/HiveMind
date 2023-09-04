@@ -32,9 +32,9 @@ export default class Map {
     #biomes = [];
     #seed;
 
-    get Seed() {
-        return this.#seed;
-    }
+    get chunks() { return this.#chunks; }
+
+    get Seed() { return this.#seed; }
 
     constructor() {
         if(Map.#map == null) window.map = Map.#map = this;
