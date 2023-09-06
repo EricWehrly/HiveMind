@@ -94,11 +94,13 @@ export default class Menu extends UIElement {
         if(selected) selected.className = selected.className.replace("selected", "").trim();
 
         // the ideal would probably still be for these classes to be enums
-        menuItem.Element.className += "selected";
+        menuItem.Element.className += " selected";
         this.#selected = menuItem;
     }
 
     selectNext() {
+
+        if(this.#items.length < 2) return;
 
         const selectedIndex = this.#items.indexOf(this.selected);
         if(this.#items.length - 1 > selectedIndex) {
@@ -109,6 +111,8 @@ export default class Menu extends UIElement {
     }
 
     selectPrevious() {
+
+        if(this.#items.length < 2) return;
 
         const selectedIndex = this.#items.indexOf(this.selected);
         if(selectedIndex - 1 > -1) {
@@ -140,8 +144,6 @@ export default class Menu extends UIElement {
 
     addItem(options) {
         
-        this.Element.appendChild(document.createElement('br'));
-        
         // should menuItem be a ui element?
         const menuItem = {
             context: {}
@@ -156,5 +158,21 @@ export default class Menu extends UIElement {
         }
 
         this.#items.push(menuItem);
+
+        return menuItem;
+    }
+
+    addLabel(options) {
+        
+        // should menuItem be a ui element?
+        const menuItem = {
+            context: {}
+        };
+        Object.assign(menuItem.context, options);
+        menuItem.Element = document.createElement('span');
+        menuItem.Element.innerHTML = options.name;
+        this.Element.appendChild(menuItem.Element);
+
+        return menuItem;
     }
 }
