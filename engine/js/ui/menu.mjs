@@ -145,9 +145,25 @@ export default class Menu extends UIElement {
     addItem(options) {
         
         // should menuItem be a ui element?
-        const menuItem = {
-            context: {}
+        let menuItem = {
+            context: {},
+            name: options.name
         };
+        if(options.cost) {
+            menuItem = {
+                name: options.name,
+                _cost:  0,
+                get cost() { return this._cost; },
+                set cost(newVal) {
+                    this._cost = newVal;
+                    this.Element.innerHTML = this.name 
+                        + `<br />Cost: ${this._cost}`;
+                },
+                context: {}
+            };
+            menuItem.cost = options.cost;
+            delete options.cost;
+        }
         Object.assign(menuItem.context, options);
         menuItem.Element = document.createElement('div');
         menuItem.Element.innerHTML = options.name;
