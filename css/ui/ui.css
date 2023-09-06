@@ -73,11 +73,22 @@
     border: 1px solid white;
 }
 
-.ui.menu {    
-    border: 1px dashed black;
-}
-
 .ui.Resource {
     text-transform: capitalize;
     font-size: 1.3em;
+}
+
+.ui.menu {    
+    border: 1px dashed black;
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.ui.menu > * {
+  flex: 1 100%;
+}
+  
+.ui.menu div { 
+    flex: 3 0px;
 }
