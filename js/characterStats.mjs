@@ -2,6 +2,7 @@ import UIElement from "../engine/js/ui/ui-element.mjs";
 import Menu from "../engine/js/ui/menu.mjs";
 import KeyboardController from "./controls/keyboard-controller.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
+import Character from "../engine/js/entities/character.mjs";
 
 function characterMenuAction(context) {
 
@@ -18,6 +19,23 @@ const characterMenu = new Menu({
 });
 
 const makeStronger = function() {
+
+    const localPlayer = Character.LOCAL_PLAYER;
+    const strength = localPlayer.getAttribute("Strength");
+
+    strength.value += 1;
+    
+    // if we can pay the cost
+    const food = Resource.Get("food")?.value || 0;
+    this.cost = Math.round(this.cost + Math.log(this.cost));
+}
+
+const makeFaster = function() {
+
+    const localPlayer = Character.LOCAL_PLAYER;
+    const speed = localPlayer.getAttribute("Speed");
+
+    speed.value += 1;
     
     // if we can pay the cost
     const food = Resource.Get("food")?.value || 0;
@@ -33,7 +51,7 @@ const strongerItem = characterMenu.addItem({
 const fasterItem = characterMenu.addItem({
     name: 'Run Faster',
     cost: 40,
-    callback: makeStronger
+    callback: makeFaster
 });
 
 KeyboardController.AddDefaultBinding("openMenu/character upgrades", "c");

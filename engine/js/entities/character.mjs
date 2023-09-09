@@ -79,6 +79,7 @@ export default class Character {
 
     #faction = null;
     #research = {};
+    #attributes = {};
 
     get faction() { return this.#faction; }
 
@@ -223,6 +224,16 @@ export default class Character {
     get aggressionRange() {
         // not vision. the range of the equipped attack
         return this.aggression * (this?.equipment?.attack?.range || 0);
+    }
+
+    addAttribute(characterAttribute) {
+
+        this.#attributes[characterAttribute.name] = characterAttribute;
+    }
+
+    getAttribute(name) {
+
+        return this.#attributes[name];
     }
 
     hasTechnology(technology) {

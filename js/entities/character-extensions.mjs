@@ -1,3 +1,4 @@
+import CharacterAttribute from '../../engine/js/entities/character-attribute.mjs';
 import Character from '../../engine/js/entities/character.mjs';
 import Resource from '../../engine/js/entities/resource.mjs';
 import Events from '../../engine/js/events.mjs';
@@ -24,6 +25,15 @@ export default class HiveMindCharacter extends Character {
         super(options);
 
         this._currentPurposeKey = key;
+
+        this.addAttribute(new CharacterAttribute({
+            name: 'Strength',
+            value: 1
+        }));
+        this.addAttribute(new CharacterAttribute({
+            name: 'Speed',
+            value: 1
+        }));
 
         Events.Subscribe(Events.List.CharacterDied, this.removeSpawnTarget.bind(this));
     }
