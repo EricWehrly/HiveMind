@@ -163,6 +163,7 @@ export default class Menu extends UIElement {
             };
         }
         Object.assign(menuItem.context, options);
+        if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
         menuItem.Element = document.createElement('div');
         menuItem.Element.innerHTML = options.name;
         this.Element.appendChild(menuItem.Element);
