@@ -1,8 +1,6 @@
 import UIElement from "../engine/js/ui/ui-element.mjs";
 import Menu from "../engine/js/ui/menu.mjs";
 import KeyboardController from "./controls/keyboard-controller.mjs";
-import Events from "../engine/js/events.mjs";
-import Character from "../engine/js/entities/character.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
 
 function characterMenuAction(context) {
@@ -17,10 +15,6 @@ const characterMenu = new Menu({
     name: "Character",
     visible: false,
     menuAction: characterMenuAction
-});
-
-const foodLabel = characterMenu.addLabel({
-    name: 'Current Food: ??'
 });
 
 const makeStronger = function() {
@@ -43,26 +37,5 @@ const fasterItem = characterMenu.addItem({
     cost: 40,
     callback: makeStronger
 });
-
-function playerHealthChanged(context) {
-
-    // if the menu is open
-    // update the menu
-    console.log(context);
-}
-
-function menuOpened(menu) {
-
-    if(menu == characterMenu) {
-        // console.log(menu);
-
-        const localPlayer = Character.LOCAL_PLAYER;
-        
-        foodLabel.Element.innerHTML = `Current Food: ${localPlayer.health}`;
-    }
-}
-
-Events.Subscribe(Events.List.PlayerHealthChanged, playerHealthChanged);
-Events.Subscribe(Events.List.MenuOpened, menuOpened);
 
 KeyboardController.AddDefaultBinding("openMenu/character", "c");
