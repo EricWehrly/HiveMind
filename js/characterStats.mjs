@@ -12,18 +12,16 @@ function characterMenuAction(context) {
 // we actually probably want this to be more of a modal
 const characterMenu = new Menu({
     screenZone: UIElement.SCREEN_ZONE.TOP_CENTER,
-    name: "Character",
+    name: "Character Upgrades",
     visible: false,
     menuAction: characterMenuAction
 });
 
 const makeStronger = function() {
     
-    console.log(this);
     // if we can pay the cost
     const food = Resource.Get("food")?.value || 0;
-    console.log(food);
-    this.cost = Math.log(this.cost);
+    this.cost = Math.round(this.cost + Math.log(this.cost));
 }
 
 const strongerItem = characterMenu.addItem({
@@ -38,4 +36,4 @@ const fasterItem = characterMenu.addItem({
     callback: makeStronger
 });
 
-KeyboardController.AddDefaultBinding("openMenu/character", "c");
+KeyboardController.AddDefaultBinding("openMenu/character upgrades", "c");
