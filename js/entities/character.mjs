@@ -15,6 +15,7 @@ Events.List.CharacterDied = "CharacterDied";
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.PlayerMoved = "PlayerMoved";
 Events.List.PlayerChunkChanged = "PlayerChunkChanged";
+Events.List.PlayerHealthChanged = "PlayerHealthChanged";
 
 // TODO: #private properties rather than _private
 export default class Character {
@@ -40,7 +41,13 @@ export default class Character {
     set health(newValue) {
         if(this.dead) return;
 
+        const oldValue = this._health;
         this._health = newValue;
+        Events.RaiseEvent(Events.List.PlayerHealthChanged, {
+            character: this,
+            from: oldValue,
+            to: newValue
+        });
         if (this._health <= 0) this.die();
     }
 
