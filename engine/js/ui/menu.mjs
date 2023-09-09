@@ -161,13 +161,16 @@ export default class Menu extends UIElement {
                 },
                 context: {}
             };
-            menuItem.cost = options.cost;
-            delete options.cost;
         }
         Object.assign(menuItem.context, options);
         menuItem.Element = document.createElement('div');
         menuItem.Element.innerHTML = options.name;
         this.Element.appendChild(menuItem.Element);
+
+        if(options.cost) {
+            menuItem.cost = options.cost;
+            delete options.cost;
+        }
 
         if(!this.#selected) {
             this.select(menuItem);
