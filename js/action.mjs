@@ -99,8 +99,11 @@ export default class Action extends Listed {
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
+                    // get value of strength attribute
+                    const strAttr = options.character.getAttribute("Strength");
+
                     equipped.playSound();
-                    options.character.target.health -= equipped.damage;
+                    options.character.target.health -= (equipped.damage + strAttr?.value || 0);
 
                     if(equipped.statusEffect) {
                         options.character.target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
