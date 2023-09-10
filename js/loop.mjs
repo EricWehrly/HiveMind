@@ -40,7 +40,11 @@ function _slowLoop() {
 
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
 
-        LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+        try {
+            LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 
     for(var index = 0; index < DEFERRALS.length; index++) {
@@ -75,7 +79,11 @@ function _fastLoop() {
     LAST_FAST_LOOP = performance.now();
 
     for(var index = 0; index < LOOP_METHODS_FAST.length; index++) {
-        LOOP_METHODS_FAST[index](elapsed, LAST_FAST_LOOP);
+        try {
+            LOOP_METHODS_FAST[index](elapsed, LAST_FAST_LOOP);
+        } catch (ex) {
+            console.error(ex);
+        }
     }
 
     setTimeout(_fastLoop, 30);
