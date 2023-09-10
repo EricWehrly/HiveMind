@@ -153,7 +153,8 @@ export default class HiveMindCharacter extends Character {
             health: amount,
             position: this.position,
             _currentPurposeKey: purpose.name.toLowerCase(),
-            faction: this.faction
+            faction: this.faction,
+            technologies: options.technologies
         });
         spawnedCharacter.parent = this;
         if (options.target) spawnedCharacter.target = options.target;
