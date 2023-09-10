@@ -1,5 +1,6 @@
 import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
 import { AssignWithUnderscores, copyPublicProperties, generateId } from '../util/javascript-extensions.js'
+import CharacterAttribute from './character-attribute.mjs';
 import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';
 import Equipment from './equipment.mjs';
@@ -8,7 +9,6 @@ import Events from '../events.mjs';
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
-import Research from '../research.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -64,7 +64,13 @@ export default class Character {
     }
 
     // TODO: use this variable for ... things
-    _speed = 1;
+    get speed() {
+        return this.getAttribute("Speed").value;
+    }
+
+    set speed(newValue) {        
+        return this.getAttribute("Speed").value = newValue;
+    }
 
     _technologies = [];
 
@@ -111,6 +117,13 @@ export default class Character {
             delete options.research;
         }
 
+        let speedVal = 1;
+        if(options.speed) {
+
+            speedVal = options.speed;
+            delete options.speed;
+        }
+
         AssignWithUnderscores(this, options);
 
         this.id = options.id || generateId();
@@ -120,6 +133,11 @@ export default class Character {
         // options.image
         this.#spawnPosition = new Point(this.position.x, this.position.y);
         this.#initialHealth = JSON.parse(JSON.stringify(this.health));
+        
+        this.addAttribute(new CharacterAttribute({
+            name: 'Speed',
+            value: speedVal
+        }));
 
         if(options.isPlayer) {
             this.#faction = new Faction({ name: this.name });
@@ -320,7 +338,7 @@ export default class Character {
     }
 
     shouldStopOnAxis(axis, amount) {
-        return Math.abs(this._position[axis] - this.target.position[axis]) < this._speed * amount;
+        return Math.abs(this._position[axis] - this.target.position[axis]) < this.speed * amount;
     }
 
     atTarget(axis) {
@@ -336,13 +354,13 @@ export default class Character {
                         this._position[axis] = this.target.position[axis];
                         this._velocity[axis] = 0;
                     } else {
-                        this._position[axis] += this._velocity[axis] * this._speed * amount;
+                        this._position[axis] += this._velocity[axis] * this.speed * amount;
                     }
                 }
             }
         } else {
-            this._position.x += this._velocity.x * this._speed * amount;
-            this._position.y += this._velocity.y * this._speed * amount;
+            this._position.x += this._velocity.x * this.speed * amount;
+            this._position.y += this._velocity.y * this.speed * amount;
         }
 
         // TODO: We can probly extract to a method (#positionUpdated)

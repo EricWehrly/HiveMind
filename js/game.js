@@ -21,6 +21,7 @@ import Map from '../engine/js/mapping/map.mjs';
 import './entities/entities.mjs';
 // TODO: We can restructure 'entities.js' to import and export this
 import Resource from '../engine/js/entities/resource.mjs';
+import './characterStats.mjs';
 
 import Cheat from './cheat.mjs';
 
@@ -49,6 +50,8 @@ function checkPlayerInteraction() {
 
     if(closest == null) return;
     localPlayer.toolTip.entity = closest;
+
+    if(closest.canBeStudied == undefined) debugger;
 
     // maybe actions could have a "check condition" ?
     if(closest.canBeStudied(localPlayer)) {

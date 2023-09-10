@@ -4,6 +4,9 @@ import KeyboardController from "./controls/keyboard-controller.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
 import Character from "../engine/js/entities/character.mjs";
 
+let strength = null,
+speed = null;
+
 function characterMenuAction(context) {
 
     const selected = characterMenu.selected;
@@ -20,26 +23,35 @@ const characterMenu = new Menu({
 
 const makeStronger = function() {
 
-    const localPlayer = Character.LOCAL_PLAYER;
-    const strength = localPlayer.getAttribute("Strength");
-
-    strength.value += 1;
+    if(!strength) {
+        const localPlayer = Character.LOCAL_PLAYER;
+        strength = localPlayer.getAttribute("Strength");        
+    }
     
-    // if we can pay the cost
+    // TODO: Move cost into attribute
     const food = Resource.Get("food")?.value || 0;
-    this.cost = Math.round(this.cost + Math.log(this.cost));
+    if(food > this.cost) {
+        Resource.Get("food").value -= this.cost;
+        this.cost = Math.round(this.cost + Math.log(this.cost));
+        strength.value += 1;
+    }
 }
 
 const makeFaster = function() {
 
-    const localPlayer = Character.LOCAL_PLAYER;
-    const speed = localPlayer.getAttribute("Speed");
+    if(!speed) {
 
-    speed.value += 1;
+        const localPlayer = Character.LOCAL_PLAYER;
+        speed = localPlayer.getAttribute("Speed");
+    }
     
-    // if we can pay the cost
+    // TODO: Move cost into attribute
     const food = Resource.Get("food")?.value || 0;
-    this.cost = Math.round(this.cost + Math.log(this.cost));
+    if(food > this.cost) {
+        Resource.Get("food").value -= this.cost;
+        this.cost = Math.round(this.cost + Math.log(this.cost));
+        speed.value += 1;
+    }
 }
 
 const strongerItem = characterMenu.addItem({

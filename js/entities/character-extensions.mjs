@@ -30,10 +30,6 @@ export default class HiveMindCharacter extends Character {
             name: 'Strength',
             value: 1
         }));
-        this.addAttribute(new CharacterAttribute({
-            name: 'Speed',
-            value: 1
-        }));
 
         Events.Subscribe(Events.List.CharacterDied, this.removeSpawnTarget.bind(this));
     }
