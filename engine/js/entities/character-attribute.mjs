@@ -11,7 +11,6 @@ export default class CharacterAttribute {
     get value() { return this.#value; }
     set value(newValue) { 
         this.#value = newValue;
-        console.log(`Updating value of ${this.#name} to ${newValue}`)
     }
 
     constructor(options) {
