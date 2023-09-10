@@ -13,6 +13,7 @@ import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
+import Menu from '../engine/js/ui/menu.mjs';
 import UI from './ui/ui.mjs';
 import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
 import * as uiResource from '../engine/js/ui/ui-resource.mjs';
@@ -43,8 +44,13 @@ const slap = Technology.Get("slap");
 
 function checkPlayerInteraction() {
 
-    // if a menu is active,
-    // clear player tooltip and return
+    if(Menu.anyOpen) {
+
+        localPlayer.toolTip.entity = null;
+        localPlayer.toolTip.visible = false;
+        // localPlayer.toolTip.message = '';
+        return;
+    }
 
     const closest = localPlayer.target;
 
