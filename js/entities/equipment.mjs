@@ -1,4 +1,5 @@
 import Events from "../events.mjs";
+import Technology from "../technology.mjs";
 
 Events.List.EquipmentChanged = "EquipmentChanged"
 
@@ -66,6 +67,8 @@ export default class Equipment {
 
         Events.RaiseEvent(Events.List.EquipmentChanged, details);
 
-        this[technology.type] = technology;
+        // if we were to write a unit test here, it would say:
+        // assigned must be a new instance, not a reference to an existing one
+        this[technology.type] = new Technology(technology);
     }
 }
