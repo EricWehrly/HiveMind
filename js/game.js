@@ -107,3 +107,5 @@ Game.Camera.setTarget(localPlayer);
 RegisterLoopMethod(checkPlayerInteraction, false);
 
 window.Game = Game;
+
+Cheat.Beefcake;
