@@ -90,6 +90,10 @@ export default class KeyboardController {
         // TODO: Check if actions are currently bound to this key that require us to track if its down
         // (otherwise don't track it)
         this._keys_down[event.key] = true;
+        
+        if (event.ctrlKey && event.keyCode === 70) { 
+            event.preventDefault();
+        }
     }
 
     handleKeyUp(event) {
