@@ -3,6 +3,7 @@ import Events from "../../engine/js/events.mjs";
 import Research from "../../engine/js/research.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
+import Technology from "../../engine/js/technology.mjs";
 
 function randomPositionOffset(source, offsetAmountPerAxis) {
 
@@ -49,22 +50,26 @@ const Purposes =
             if (character.target) {
                 character.pointAtTarget(character.target);
 
+                const attack = character.getEquipped(Technology.Types.ATTACK);
+                // if(attack == null) console.warn(`Attack is null.`);
                 if (character.target == null || character.target.dead) {
                     character.target = null;
                     character.SetCurrentPurpose("return");
-                } else if (character.position.equals(character.target.position)
-                    && character.target.dead != true) {
-                    const damageToDo = (character.damage || 1) * (elapsed / 1000);
-                    character.health += Math.min(damageToDo, character.target.health);
-                    character.target.health -= damageToDo;
+                } else if (attack && character.position.distance(character.target.position) < attack.range
+                    && character.target.dead != true) {                
+                    Action.List['attack'].callback({
+                        character
+                    });
                 }
             }
         }
     },
     "hunt": {
         name: "hunt",
-        think: function () {
-
+        think: function (character, elapsed) {
+            const attack = character.getEquipped(Technology.Types.ATTACK);
+            if(attack == null) console.warn(`Attack is null.`);
+            Purposes["consume"].think(character, elapsed);
         }
     },
     "return": {
@@ -136,8 +141,14 @@ const Purposes =
                 return;
             }
 
+            const purpose = character._spawnPurposeKey;
+            let targetType;
+            // both consume/hunt and Food/Animal should come from enums
+            if(purpose == "consume") targetType = "Food";
+            else if (purpose == "hunt") targetType = "Animal";
+
             const target = character.getClosestEntity({
-                characterType: "Food",  // this should be an enum
+                characterType: targetType,
                 exclude: character.spawnTargets,
                 grown: true
             });
@@ -146,6 +157,11 @@ const Purposes =
                 const options = {
                     purposeKey: character._spawnPurposeKey,
                     target
+                }
+                if(purpose == "hunt") {
+                    // assign attack to character
+                    const slap = Technology.Get("slap");
+                    options.technologies = [ slap ];
                 }
                 const spawnedCharacter = character.Subdivide(options);
                 if(spawnedCharacter != null) {                    

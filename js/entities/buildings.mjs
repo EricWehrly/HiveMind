@@ -53,6 +53,16 @@ new CharacterType({
     ai: null
 });
 
+// the spawn needs to have ... damage probably?
+new CharacterType({
+    name: 'Hunter',
+    health: 30,
+    _currentPurposeKey: 'spawn',
+    _spawnPurposeKey: 'hunt',
+    ai: null
+});
+UI_MENU_BUILDINGS.addItem(CharacterType.Hunter);
+
 // TODO: Later, generically unlock items in menus by having them locked/unlocked
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
 Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function() {
