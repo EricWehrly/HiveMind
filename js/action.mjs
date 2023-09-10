@@ -104,9 +104,6 @@ export default class Action extends Listed {
                     const target = character.target;
                     const strAttr = character.getAttribute("Strength");
 
-                    // const dmg = (equipped.damage + strAttr?.value || 0);
-                    // console.log(`Character ${character.id} attacking ${target.id} for ${dmg} damage.`);
-
                     equipped.playSound();
                     target.health -= (equipped.damage + strAttr?.value || 0);
 
