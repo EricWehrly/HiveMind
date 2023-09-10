@@ -99,19 +99,24 @@ export default class Action extends Listed {
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
-                    // get value of strength attribute
-                    const strAttr = options.character.getAttribute("Strength");
+
+                    const character = options.character;
+                    const target = character.target;
+                    const strAttr = character.getAttribute("Strength");
+
+                    // const dmg = (equipped.damage + strAttr?.value || 0);
+                    // console.log(`Character ${character.id} attacking ${target.id} for ${dmg} damage.`);
 
                     equipped.playSound();
-                    options.character.target.health -= (equipped.damage + strAttr?.value || 0);
+                    target.health -= (equipped.damage + strAttr?.value || 0);
 
                     if(equipped.statusEffect) {
-                        options.character.target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
+                        target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
                     }
 
-                    if(options.character.target.equipment) {
-                        const buff = options.character.target.equipment[Technology.Types.BUFF];
-                        if(buff) options.character.health -= buff.thorns;
+                    if(target.equipment) {
+                        const buff = target.equipment[Technology.Types.BUFF];
+                        if(buff) character.health -= buff.thorns;
                     }
                 }
 
