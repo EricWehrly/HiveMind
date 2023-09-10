@@ -2,6 +2,17 @@ import Listed from "./baseTypes/listed.mjs";
 
 export default class Technology extends Listed {
 
+    static #sounds = {};
+
+    static #getSound(name) {
+
+        if(!(name in Technology.#sounds)) {
+            Technology.#sounds[name] = new Audio(name);
+        }
+
+        return Technology.#sounds[name];
+    }
+
     static Types = {
         ATTACK: "attack",
         // maybe this should be called "buff"
@@ -11,6 +22,9 @@ export default class Technology extends Listed {
 
     #lastPlayedSoundIndex = -1;
     #sound = [];
+    get sound() {
+        return this.#sound;
+    }
 
     #statusEffect;
     get statusEffect() { return this.#statusEffect; }
@@ -36,10 +50,10 @@ export default class Technology extends Listed {
             if (Array.isArray(options.sound)) {
                 const that = this;
                 options.sound.forEach(function (sound) {
-                    that.#sound.push(new Audio(sound));
+                    that.#sound.push(sound);
                 });
             } else {
-                this.#sound.push(new Audio(options.sound));
+                this.#sound.push(options.sound);
             }
         }
 
@@ -67,7 +81,9 @@ export default class Technology extends Listed {
                 this.#lastPlayedSoundIndex = -1;
             }
             this.#lastPlayedSoundIndex += 1;
-            this.#sound[this.#lastPlayedSoundIndex].play();
+            const soundName = this.#sound[this.#lastPlayedSoundIndex];
+            const sound = Technology.#getSound(soundName);
+            sound.play();
         }
         else console.warn(`No sound for ${this.name}`);
     }
