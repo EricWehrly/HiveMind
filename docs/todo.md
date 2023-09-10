@@ -5,6 +5,11 @@
 - it's time to refactor chunks to only generate for players
     - event context?
 
+- list of entities targeting the player?
+    very helpful for debg
+    but could easily be a game mechanic later
+    with incrementing upgrades
+
 - enemies should also attack player entities (spawns, and buildings)
 
 - I think we need to have min and max aggression (and other things that get random)
