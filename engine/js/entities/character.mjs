@@ -263,8 +263,9 @@ export default class Character {
     }
 
     // this either needs an event or to be moved into equipment.mjs
-    AddTechnology(technology) {
-        technology = Technology.Get(technology);
+    AddTechnology(technologyName) {
+        
+        const technology = Technology.Get(technologyName);
         console.debug(`Adding technology ${technology.name} to character ${this.name}`);
         this._technologies.push(technology);
 

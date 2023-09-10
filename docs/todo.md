@@ -23,8 +23,11 @@ Should be able to switch to a new attack even if switch in progress is not compl
 - - Needs multiple attacks (we have slap, a ranged one would be interesting, but maybe a bite or claw first - - except I think claw was supposed to be upgraded slap)
 - - Also needs implemented ability to switch between them...
 
+- Research to be able to automatically absorb things X smaller than you
+
 - buildings for: doing research, defending, healing
 defense can later break out to either turrets or unit spawners
+Once 1 research, can research research and unlock research node which speeds up research
 
 - Camera controls & following player
     rendering controller or something for other entities
@@ -49,3 +52,9 @@ and another track just being an all-consuming
 
 There's a node you can build that allows you to (slowly) beam back things you learn from the tech tree to the universal hive mind (persists between runs)
 Conversely, you're only allowed to send a finite information to new runs, so the node would also be downloading researched techs from the tree.
+
+- End goal:
+    Working towards "critical mass" for the planet. Don't need to take everything over, just spread enough. 
+    Bigger planet needs more to reach critical mass 
+    More biodiverse planet also needs more
+    

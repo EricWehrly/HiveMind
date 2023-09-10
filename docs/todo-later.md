@@ -7,6 +7,8 @@
     bark - summons friends (useless to player, as they are a hive mind)
         (this might be a fun one for later -- options of befriending fauna, and would be better telegraphed when enmies have appearance)
 
+- Studying somethin adds it to research menu
+
 - (Visual) feedback for unlocks
 
 - would be nice to make a UI (options?) that shows which keys are bound
@@ -22,6 +24,11 @@ In which case they will return to where they spawned from the player, and then w
 There's an evolution (radio?) that'll make them behave like the current implementation
 
 it should be very difficult for enemies to kite players (may as well make that impossible for this iteration)
+
+- Difficulties: 
+    Easy mode is what we have now
+    In medium mode you impact the environment, with fauna learning or adapting based on your abilities
+    On hard, planets have dominant sentient species that will react to you and have tactics
 
 ---
 
