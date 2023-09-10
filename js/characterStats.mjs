@@ -39,18 +39,29 @@ const makeStronger = function() {
 
 const makeFaster = function() {
 
+    const localPlayer = Character.LOCAL_PLAYER;
     if(!speed) {
-
-        const localPlayer = Character.LOCAL_PLAYER;
         speed = localPlayer.getAttribute("Speed");
+    }
+
+    let increment = 1;
+    let costProjection = this.cost;
+
+    // TODO: It will "look" better if the cost is updated when ctrl is depressed
+    const ctrl = localPlayer.controller.isKeyDown("Control");
+    if(ctrl) {
+        for(var i = 0; i < 10; i++) {
+            costProjection = Math.round(costProjection + Math.log(costProjection));
+            increment += 1;
+        }
     }
     
     // TODO: Move cost into attribute
     const food = Resource.Get("food")?.value || 0;
-    if(food > this.cost) {
-        Resource.Get("food").value -= this.cost;
-        this.cost = Math.round(this.cost + Math.log(this.cost));
-        speed.value += 1;
+    if(food > costProjection) {
+        Resource.Get("food").value -= costProjection;
+        this.cost = Math.round(costProjection + Math.log(costProjection));
+        speed.value += increment;
     }
 }
 
