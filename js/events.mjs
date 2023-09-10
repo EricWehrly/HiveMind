@@ -12,6 +12,8 @@ export default class Events {
 
     static #FiredEvents = {};
 
+    static Context = {};
+
     static Subscribe(eventNames, callback, options) {
 
         // TODO: check inputs for bad values
@@ -57,6 +59,7 @@ export default class Events {
         subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
 
         for (var subscription of subscribedEvents) {
+            Events.Context = detail;
             Events.#raiseSubscription(subscription.callback, {
                 detail,
                 eventName
@@ -67,6 +70,7 @@ export default class Events {
                 // Events.Unsubscribe(subscription.subscriptionId);
             }
         }
+        Events.Context = {};
     }
 
     /**
