@@ -154,14 +154,11 @@ const Purposes =
             });
 
             if (target != null) {
+                const slap = Technology.Get("slap");
                 const options = {
                     purposeKey: character._spawnPurposeKey,
+                    technologies: [ slap ],
                     target
-                }
-                if(purpose == "hunt") {
-                    // assign attack to character
-                    const slap = Technology.Get("slap");
-                    options.technologies = [ slap ];
                 }
                 const spawnedCharacter = character.Subdivide(options);
                 if(spawnedCharacter != null) {                    
