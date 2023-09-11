@@ -423,7 +423,8 @@ export default class Character {
         // Maybe rather than listing individual properties like this,
         // we could have a way to automatically map properties?
         grown: null,
-        exclude: []
+        exclude: [],
+        faction: null
     }) {
 
         if(!options.distance) options.distance = Infinity;
@@ -449,6 +450,9 @@ export default class Character {
                     continue;
                 }
                 if(options.grown != null && character.isGrown != options.grown) {
+                    continue;
+                }
+                if(options.faction && character.faction != options.faction) {
                     continue;
                 }
                 const distance = character.getDistance(this);

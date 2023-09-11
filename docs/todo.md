@@ -1,6 +1,10 @@
+- Predator AI doesn't seem to give up chasing player
+
 - why are chunks not generating in the negative (left and top)?
 
 - why do spawned slimes not have a visual element? (like a blue square)
+
+- need some kind of indicator for doing research
 
 - it's time to refactor chunks to only generate for players
     We can use the Events.Context that we started ...
@@ -39,6 +43,9 @@ Should be able to switch to a new attack even if switch in progress is not compl
     rendering controller or something for other entities
     smooth movement? tweening? speed and accel?
     when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
+
+- priorities for targets for player acquisition
+    Animal > Native Flora > Player Spawns
 
 - need to have some collision
 

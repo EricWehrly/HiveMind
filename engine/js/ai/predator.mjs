@@ -28,7 +28,7 @@ export default class PredatorAI extends AI {
                 // const wasTarget = this.#character.target;
                 const closest = this.character.getClosestEntity({
                     distance: this.character.aggressionRange,
-                    isPlayer: true
+                    faction: Character.LOCAL_PLAYER.faction
                 });
                 if(closest != null) this.character.target = closest;
                 /*
