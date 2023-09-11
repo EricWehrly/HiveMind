@@ -73,7 +73,7 @@ export default class Technology extends Listed {
         this.#statusEffectDuration = options.statusEffectDuration;
     }
 
-    playSound() {
+    playSound(options) {
 
         // it would be desirable to make this random instead of cyclical, eventually
         if(this.#sound.length > 0) {
@@ -83,6 +83,10 @@ export default class Technology extends Listed {
             this.#lastPlayedSoundIndex += 1;
             const soundName = this.#sound[this.#lastPlayedSoundIndex];
             const sound = Technology.#getSound(soundName);
+            if(options.volume) {
+                while(options.volume > 1) options.volume = options.volume / 10;
+                sound.volume = options.volume;
+            }
             sound.play();
         }
         else console.warn(`No sound for ${this.name}`);
