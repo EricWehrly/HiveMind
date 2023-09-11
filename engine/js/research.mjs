@@ -19,7 +19,7 @@ export default class Research extends Listed {
         // TODO: when used, start counting down until the research is done
         // (later that'll make it easier to add visuals)
         Defer(function() {
-            selectedResearch.callback();
+            if(selectedResearch.callback) selectedResearch.callback();
             Events.RaiseEvent(Events.List.ResearchFinished, this);
             Events.RaiseEvent(`${Events.List.ResearchFinished}-${selectedResearch.name}`, this);
         }, selectedResearch.cost * 1000);
