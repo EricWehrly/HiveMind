@@ -104,7 +104,13 @@ export default class Action extends Listed {
                     const target = character.target;
                     const strAttr = character.getAttribute("Strength");
 
-                    equipped.playSound();
+                    // compute volume based on distance
+                    // maybe every 10 pixels away = -1 volume?
+                    // (volume is between 0.0 and 1.0)
+                    const distance = 100 - character.position.distance(Character.LOCAL_PLAYER.position);
+                    equipped.playSound({
+                        volume: distance
+                    });
                     target.health -= (equipped.damage + strAttr?.value || 0);
 
                     if(equipped.statusEffect) {
