@@ -1,9 +1,13 @@
 import Events from '../events.mjs';
 import Renderer from '../rendering/renderer.mjs';
+import Chunk from './chunk.mjs';
 import Map from './map.mjs';
 
 // TODO: This playfield reference should probably be stored somewhere more globally referencable
 let playfield = null;
+
+// TODO: make this a global enum
+const gridSize = 32;
 
 function createGraphic(chunk) {
 
@@ -13,6 +17,12 @@ function createGraphic(chunk) {
 
     if(playfield == null) playfield = document.getElementById("playfield");
     playfield.appendChild(chunk.graphic);
+
+    const chunkPixels = Chunk.CHUNK_SIZE * gridSize;
+    chunk.graphic.style.width = chunkPixels + "px";
+    chunk.graphic.style.height = chunkPixels + "px";
+
+    // border color from biome?
 }
 
 function redraw(chunk, screenRect) {
