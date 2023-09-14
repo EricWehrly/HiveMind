@@ -6,14 +6,26 @@ function createGraphic(character) {
 
     character.graphic = document.createElement('div');
     character.graphic.className = 'character';
-    // if(this.color) this.graphic.style.backgroundColor = this.color;
-    if (character.color) character.graphic.className += ` ${character.color}`;
     if (character.isAlive) character.graphic.className += ' alive';
+    setColor(character);
 
     if (character.additionalClasses) character.graphic.className += " " + character.additionalClasses;
 
     // TODO: This playfield reference should probably be stored somewhere more globally referencable
     document.getElementById("playfield").appendChild(character.graphic);
+}
+
+function setColor(character) {
+
+    let color;
+    if(character.color) color = character.color;
+    else if(character?.faction?.color) color = character.faction.color;
+
+    if(color?.indexOf("rgb") > -1) {
+        character.graphic.style.backgroundColor = color;
+    } else if(color) {
+        character.graphic.className += ` ${color}`;
+    }
 }
 
 function updateTargetingClasses(event) {
