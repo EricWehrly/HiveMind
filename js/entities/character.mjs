@@ -127,7 +127,7 @@ export default class Character {
         AssignWithUnderscores(this, options);
 
         this.id = options.id || generateId();
-        this.color = options.color || 'red';
+        this.color = options.color;
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
         // options.image
@@ -140,7 +140,10 @@ export default class Character {
         }));
 
         if(options.isPlayer) {
-            this.#faction = new Faction({ name: this.name });
+            this.#faction = new Faction({ 
+                name: this.name,
+                color: this.color
+            });
         }
 
         // TODO: let's default to no AI at all unless prescribed ...
