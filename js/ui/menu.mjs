@@ -195,4 +195,12 @@ export default class Menu extends UIElement {
 
         return menuItem;
     }
+
+    removeItem(item) {
+
+        const index = this.#items.indexOf(item);
+        if(index > -1) {
+            this.#items = this.#items.splice(index);
+        }
+    }
 }
