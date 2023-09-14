@@ -15,11 +15,17 @@ export default class Research extends Listed {
     static DoResearch(context) {
 
         const selectedResearch = context?.menu?.selected?.context;
+        if(context?.menu?.selected?.Element) {
+            context.menu.selected.Element.innerHTML = selectedResearch.name + "<br>Researching...";
+        }
+        // disable the research from being double-tapped
 
         // TODO: when used, start counting down until the research is done
         // (later that'll make it easier to add visuals)
         Defer(function() {
             if(selectedResearch.callback) selectedResearch.callback();
+            context.menu.selected.Element.remove();
+            context?.menu.removeItem(selectedResearch.research);
             Events.RaiseEvent(Events.List.ResearchFinished, this);
             Events.RaiseEvent(`${Events.List.ResearchFinished}-${selectedResearch.name}`, this);
         }, selectedResearch.cost * 1000);
@@ -63,7 +69,9 @@ export default class Research extends Listed {
             Research.#UI_MENU_RESEARCH.addItem({
                 name: this.name,
                 cost: this.cost,
-                callback: this.callback
+                // TODO: reference callback from research, rather than assigning it here
+                callback: this.callback,
+                research: this
             });
         }
     }
