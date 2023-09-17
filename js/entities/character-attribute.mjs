@@ -1,4 +1,5 @@
 import Events from "../events.mjs";
+import Resource from './resource.mjs';
 
 Events.List.CharacterAttributeChanged = "CharacterAttributeChanged";
 
@@ -28,6 +29,8 @@ export default class CharacterAttribute {
     #baseCost = 0;
     get baseCost() { return this.#baseCost; }
 
+    #costFunction;
+
     constructor(options) {
 
         if(!options.name) debugger;
@@ -39,12 +42,32 @@ export default class CharacterAttribute {
     
         const that = this;
         if(options.costFunction) {
+            this.#costFunction = options.costFunction;
             Object.defineProperties(this, {
                 "cost": {
-                    "get": function() { return options.costFunction(that) },
-                    // "set": function() { ... }
+                    "get": function() { return this.#costFunction(this) },
                 }
             });
+        }
+    }
+
+    buy(amount) {
+
+        let value = this.value;
+        let cost = 0;
+        while(amount > 0) {
+            cost += this.#costFunction({
+                baseCost: this.#baseCost,
+                value
+            });
+            value++;
+            amount--;
+        }
+        
+        const food = Resource.Get("food")?.value || 0;
+        if(food > cost) {
+            Resource.Get("food").value -= cost;
+            this.value += (value - this.value);
         }
     }
 }
