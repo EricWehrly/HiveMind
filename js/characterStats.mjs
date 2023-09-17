@@ -36,30 +36,14 @@ const makeStronger = function() {
     if(!strength) {
         strength = localPlayer.getAttribute("Strength");
     }
-    const cost = strength.cost;
 
-    let increment = 1;
-    let costProjection = cost;
-
-    /*
-    // TODO: It will "look" better if the cost is updated when ctrl is depressed
+    // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
     const ctrl = localPlayer.controller.isKeyDown("Control");
     if(ctrl) {
-        for(var i = 0; i < 10; i++) {
-            costProjection = Math.round(costProjection + Math.log(costProjection));
-            increment += 1;
-        }
+        strength.buy(10);
+    } else {        
+        strength.buy(1);
     }
-    */
-    
-    // TODO: Move cost into attribute
-    const food = Resource.Get("food")?.value || 0;
-    if(food > costProjection) {
-        Resource.Get("food").value -= costProjection;
-        strength.value += increment;
-    }
-
-    // strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
 }
 
 const makeFaster = function() {
@@ -69,17 +53,13 @@ const makeFaster = function() {
         speed = localPlayer.getAttribute("Speed");
     }
 
-    let increment = 1;
-    let costProjection = this.cost;
-    
-    // TODO: Move cost into attribute
-    const food = Resource.Get("food")?.value || 0;
-    if(food > costProjection) {
-        Resource.Get("food").value -= costProjection;
-        speed.value += increment;
+    // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
+    const ctrl = localPlayer.controller.isKeyDown("Control");
+    if(ctrl) {
+        speed.buy(10);
+    } else {        
+        speed.buy(1);
     }
-
-    // speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
 }
 
 const strengthMenuItem = characterMenu.addItem({
