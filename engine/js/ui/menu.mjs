@@ -149,19 +149,6 @@ export default class Menu extends UIElement {
             context: {},
             name: options.name
         };
-        if(options.cost) {
-            menuItem = {
-                name: options.name,
-                _cost:  0,
-                get cost() { return this._cost; },
-                set cost(newVal) {
-                    this._cost = newVal;
-                    this.Element.innerHTML = this.name 
-                        + `<br />Cost: ${this._cost}`;
-                },
-                context: {}
-            };
-        }
         Object.assign(menuItem.context, options);
         if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
         menuItem.Element = document.createElement('div');

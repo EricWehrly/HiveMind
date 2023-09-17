@@ -36,10 +36,12 @@ const makeStronger = function() {
     if(!strength) {
         strength = localPlayer.getAttribute("Strength");
     }
+    const cost = strength.cost;
 
     let increment = 1;
-    let costProjection = this.cost;
+    let costProjection = cost;
 
+    /*
     // TODO: It will "look" better if the cost is updated when ctrl is depressed
     const ctrl = localPlayer.controller.isKeyDown("Control");
     if(ctrl) {
@@ -48,16 +50,16 @@ const makeStronger = function() {
             increment += 1;
         }
     }
+    */
     
     // TODO: Move cost into attribute
     const food = Resource.Get("food")?.value || 0;
     if(food > costProjection) {
         Resource.Get("food").value -= costProjection;
-        this.cost = Math.round(costProjection + Math.log(costProjection));
         strength.value += increment;
     }
 
-    strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
+    // strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
 }
 
 const makeFaster = function() {
@@ -69,38 +71,42 @@ const makeFaster = function() {
 
     let increment = 1;
     let costProjection = this.cost;
-
-    // TODO: It will "look" better if the cost is updated when ctrl is depressed
-    const ctrl = localPlayer.controller.isKeyDown("Control");
-    if(ctrl) {
-        for(var i = 0; i < 10; i++) {
-            costProjection = Math.round(costProjection + Math.log(costProjection));
-            increment += 1;
-        }
-    }
     
     // TODO: Move cost into attribute
     const food = Resource.Get("food")?.value || 0;
     if(food > costProjection) {
         Resource.Get("food").value -= costProjection;
-        this.cost = Math.round(costProjection + Math.log(costProjection));
         speed.value += increment;
     }
 
-    speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
+    // speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
 }
 
-characterMenu.addItem({
+const strengthMenuItem = characterMenu.addItem({
     name: 'Hit Harder',
     cost: 40,
     callback: makeStronger
 });
 
-characterMenu.addItem({
+const speedMenuItem = characterMenu.addItem({
     name: 'Run Faster',
     cost: 40,
     callback: makeFaster
 });
+
+function updateMenuItemText(event) {
+
+    const { attribute } = event;
+    if(attribute == strength) {
+        strengthMenuItem.Element.innerHTML = strengthMenuItem.name 
+            + `<br />Cost: ${attribute.cost}`;
+        strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
+    } else if(attribute == speed) {
+        speedMenuItem.Element.innerHTML = speedMenuItem.name 
+            + `<br />Cost: ${attribute.cost}`;
+        speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
+    }
+}
 
 KeyboardController.AddDefaultBinding("openMenu/character upgrades", "c");
 
@@ -109,7 +115,11 @@ Events.Subscribe(Events.List.GameStart, function() {
     const localPlayer = Character.LOCAL_PLAYER;
     
     strength = localPlayer.getAttribute("Strength");
+    updateMenuItemText( { attribute: strength } );
     strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
     speed = localPlayer.getAttribute("Speed");
+    updateMenuItemText( { attribute: speed } );
     speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
+
+    Events.Subscribe(Events.List.CharacterAttributeChanged, updateMenuItemText);
 });

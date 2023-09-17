@@ -1,8 +1,8 @@
 - Predator AI doesn't seem to give up chasing player
+    put a console log on the leash releasing the target,
+    and then note here that we did that -- in case we did and forgot ...
 
 - why are chunks not generating in the negative (left and top)?
-
-- why do spawned slimes not have a visual element? (like a blue square)
 
 - need some kind of indicator for doing research
 

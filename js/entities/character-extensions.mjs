@@ -28,7 +28,9 @@ export default class HiveMindCharacter extends Character {
 
         this.addAttribute(new CharacterAttribute({
             name: 'Strength',
-            value: 1
+            value: 1,
+            baseCost: 40,
+            costFunction: this.logarithmicCost
         }));
 
         Events.Subscribe(Events.List.CharacterDied, this.removeSpawnTarget.bind(this));

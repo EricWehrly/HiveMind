@@ -14,7 +14,7 @@ export default class Research extends Listed {
 
     static DoResearch(context) {
 
-        const selectedResearch = context?.menu?.selected?.context;
+        const selectedResearch = context?.menu?.selected?.context?.research;
         if(context?.menu?.selected?.Element) {
             context.menu.selected.Element.innerHTML = selectedResearch.name + "<br>Researching...";
         }
@@ -25,7 +25,7 @@ export default class Research extends Listed {
         Defer(function() {
             if(selectedResearch.callback) selectedResearch.callback();
             context.menu.selected.Element.remove();
-            context?.menu.removeItem(selectedResearch.research);
+            context?.menu.removeItem(selectedResearch);
             Events.RaiseEvent(Events.List.ResearchFinished, this);
             Events.RaiseEvent(`${Events.List.ResearchFinished}-${selectedResearch.name}`, this);
         }, selectedResearch.cost * 1000);
@@ -69,8 +69,6 @@ export default class Research extends Listed {
             Research.#UI_MENU_RESEARCH.addItem({
                 name: this.name,
                 cost: this.cost,
-                // TODO: reference callback from research, rather than assigning it here
-                callback: this.callback,
                 research: this
             });
         }

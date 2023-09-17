@@ -136,7 +136,9 @@ export default class Character {
         
         this.addAttribute(new CharacterAttribute({
             name: 'Speed',
-            value: speedVal
+            value: speedVal,
+            baseCost: 40,
+            costFunction: this.logarithmicCost
         }));
 
         if(options.isPlayer) {
@@ -245,6 +247,12 @@ export default class Character {
     get aggressionRange() {
         // not vision. the range of the equipped attack
         return this.aggression * (this?.equipment?.attack?.range || 0);
+    }
+
+    logarithmicCost(characterAttribute) {
+        
+        const baseCost = characterAttribute.baseCost || 1;
+        return Math.round(baseCost + Math.log(characterAttribute.value * baseCost));
     }
 
     addAttribute(characterAttribute) {
