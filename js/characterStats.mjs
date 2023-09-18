@@ -30,36 +30,26 @@ const speedLabel = characterMenu.addLabel({
     name: 'Speed'
 });
 
-const makeStronger = function() {
-
-    const localPlayer = Character.LOCAL_PLAYER;
-    if(!strength) {
-        strength = localPlayer.getAttribute("Strength");
-    }
+const incrementAttribute = function(attribute) {
 
     // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
+    const localPlayer = Character.LOCAL_PLAYER;
     const ctrl = localPlayer.controller.isKeyDown("Control");
     if(ctrl) {
-        strength.buy(10);
+        attribute.buy(10);
     } else {        
-        strength.buy(1);
+        attribute.buy(1);
     }
+}
+
+const makeStronger = function() {
+
+    incrementAttribute(strength);
 }
 
 const makeFaster = function() {
 
-    const localPlayer = Character.LOCAL_PLAYER;
-    if(!speed) {
-        speed = localPlayer.getAttribute("Speed");
-    }
-
-    // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
-    const ctrl = localPlayer.controller.isKeyDown("Control");
-    if(ctrl) {
-        speed.buy(10);
-    } else {        
-        speed.buy(1);
-    }
+    incrementAttribute(speed);
 }
 
 const strengthMenuItem = characterMenu.addItem({
