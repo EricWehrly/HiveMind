@@ -1,10 +1,8 @@
 - Predator AI doesn't seem to give up chasing player
-    put a console log on the leash releasing the target,
-    and then note here that we did that -- in case we did and forgot ...
+    They ARE leashing -- added output for distance and speed
+        to analyize if it's taking too long? Or going too far?
 
-- why are chunks not generating in the negative (left and top)?
-
-- need some kind of indicator for doing research
+- need some kind of indicator that research is being done
 
 - it's time to refactor chunks to only generate for players
     We can use the Events.Context that we started ...

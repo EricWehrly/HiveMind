@@ -2,7 +2,6 @@ import CharacterAttribute from '../../engine/js/entities/character-attribute.mjs
 import Character from '../../engine/js/entities/character.mjs';
 import Resource from '../../engine/js/entities/resource.mjs';
 import Events from '../../engine/js/events.mjs';
-import { GetColorAsRGBA } from '../../engine/js/util/javascript-extensions.js';
 import Purposes from './character-purposes.mjs';
 import CharacterType from './characterType.mjs';
 
