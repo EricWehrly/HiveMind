@@ -7,15 +7,14 @@ export default class CharacterAttribute {
 
     // maybe later static list of possible character attributes?
     // should there be min and max values?
-    // increment costs?
 
     #name;
     get name() { return this.#name; }
 
     #value;
     get value() { return this.#value; }
-    set value(newValue) { 
-
+    set value(newValue) {
+        
         const oldVal = this.#value;
         this.#value = newValue;
 
@@ -40,7 +39,6 @@ export default class CharacterAttribute {
         if(options.value) this.#value = options.value;
         if(options.baseCost) this.#baseCost = options.baseCost;
     
-        const that = this;
         if(options.costFunction) {
             this.#costFunction = options.costFunction;
             Object.defineProperties(this, {
@@ -69,5 +67,9 @@ export default class CharacterAttribute {
             Resource.Get("food").value -= cost;
             this.value += (value - this.value);
         }
+
+        Events.RaiseEvent(Events.List.CharacterAttributeChanged, {
+            attribute: this
+        });
     }
 }
