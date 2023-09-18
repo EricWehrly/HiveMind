@@ -180,9 +180,10 @@ export default class Map {
 
             // can this just be chunkCoordinate.toString?
             const coordinate = chunkCoordinate.x + "," + chunkCoordinate.y;
-            if(!(coordinate in this.#chunks)) {
+            if(this.#shouldMakeNewChunk(coordinate)) {
                 if(Object.keys(this.#chunks).length == 0) chunkCoordinate.active = true;
                 const biome = this.getBiome(chunkCoordinate);
+                // if(Events.Context?.character?.isPlayer) ...
                 new Chunk({
                     biome,
                     ...chunkCoordinate
@@ -192,6 +193,12 @@ export default class Map {
         } else {
             console.error(`Don't know how to look up chunk for ${options}`);
         }
+    }
+
+    #shouldMakeNewChunk(coordinate) {
+        
+        return (!(coordinate in this.#chunks))
+            && (Events.Context?.character?.isPlayer || coordinate == "0,0");
     }
 
     /**
