@@ -10,7 +10,7 @@ function expectCoordinate(input, expected) {
     }
         
     if(coordinate.y != expected.y) {
-        console.error(`Expected Y of ${coordinate.y} to match ${expected.y} for input ${inputy.y}`);
+        console.error(`Expected Y of ${coordinate.y} to match ${expected.y} for input ${input.y}`);
         return false;
     }
 }
@@ -48,9 +48,33 @@ const tests = {
     },
 
     negativeY: function() {
+
+        console.log(`Starting negativeY`);
+        
+        const input = {
+            x: 5,
+            y: -5
+        };
+        const expected = {
+            x: 0,
+            y: -1
+        }
+        expectCoordinate(input, expected);
     },
 
     negativeXAndY: function() {
+
+        console.log(`Starting negativeXAndY`);
+        
+        const input = {
+            x: -5,
+            y: -5
+        };
+        const expected = {
+            x: -1,
+            y: -1
+        }
+        expectCoordinate(input, expected);
     },
 
     multipleChunkDistance: function() {
@@ -68,7 +92,19 @@ const tests = {
         expectCoordinate(input, expected);
     },
 
-    negativeDistance: function() {
+    multipleNegative: function() {
+
+        console.log(`Starting multipleNegative`);
+        
+        const input = {
+            x: -55,
+            y: 5
+        };
+        const expected = {
+            x: -3,
+            y: 0
+        }
+        expectCoordinate(input, expected);
     },
 }
 
@@ -76,4 +112,10 @@ tests.gets00ForSmallNumbers();
 
 tests.negativeX();
 
+tests.negativeY();
+
+tests.negativeXAndY();
+
 tests.multipleChunkDistance();
+
+tests.multipleNegative();

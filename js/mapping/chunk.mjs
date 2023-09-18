@@ -17,14 +17,33 @@ export default class Chunk {
 
         let chunkX = 0;
         let chunkY = 0;
-        while(x >= this.CHUNK_SIZE) {
-            chunkX++;
-            x -= this.CHUNK_SIZE;
+        // if x (or y) less than 0
+        if(x < 0) {
+            chunkX = -1;
+            while(x <= -1 * this.CHUNK_SIZE) {
+                chunkX--;
+                x += this.CHUNK_SIZE;
+            }
+        } else {
+            while(x >= this.CHUNK_SIZE) {
+                chunkX++;
+                x -= this.CHUNK_SIZE;
+            }
         }
-        while(y >= this.CHUNK_SIZE) {
 
-            chunkY++;
-            y -= this.CHUNK_SIZE;
+        if(y < 0) {
+            chunkY = -1;
+            while(y <= -1 * this.CHUNK_SIZE) {
+    
+                chunkY--;
+                y += this.CHUNK_SIZE;
+            }
+        } else {
+            while(y >= this.CHUNK_SIZE) {
+    
+                chunkY++;
+                y -= this.CHUNK_SIZE;
+            }
         }
 
         return {
@@ -100,7 +119,7 @@ export default class Chunk {
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this.#flora = seed.Random(1, 10);
 
-        console.log(this);
+        console.log(`New chunk at ${this.x}, ${this.y}`);
         Map.Map.addChunk(this);
         Events.RaiseEvent(Events.List.ChunkCreated, this, {
             isNetworkBoundEvent: true
