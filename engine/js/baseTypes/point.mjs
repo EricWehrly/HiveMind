@@ -25,6 +25,9 @@ export default class Point {
     }
 
     get chunk() {
+        if(this.#chunk == null) {
+            this.#chunk = Map.Map.getChunk(this);
+        }
         return this.#chunk;
     }
 
