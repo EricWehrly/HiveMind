@@ -61,12 +61,12 @@ function spawnFauna(chunk) {
 
         const chunkX = chunk.x * Chunk.CHUNK_SIZE;
         const chunkY = chunk.y * Chunk.CHUNK_SIZE;
-        const randomX = seed.Random(padding, Chunk.CHUNK_SIZE - (padding + 1));
-        const randomY = seed.Random(padding, Chunk.CHUNK_SIZE - (padding + 1));
+        const randomX = seed.Random(padding, (Chunk.CHUNK_SIZE / 2) - (padding + 1));
+        const randomY = seed.Random(padding, (Chunk.CHUNK_SIZE / 2) - (padding + 1));
         const spawnOpts = {
             position: {
-                x: chunkX + randomX,
-                y: chunkY + randomY
+                x: chunkX + (Chunk.CHUNK_SIZE / 2) + randomX,
+                y: chunkY + (Chunk.CHUNK_SIZE / 2) + randomY
             },
             technologies: [ techs[techIndex] ],
             ai: PredatorAI

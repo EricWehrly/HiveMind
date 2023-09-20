@@ -40,11 +40,11 @@ export default class Food {
     
             const chunkX = chunk.x * Chunk.CHUNK_SIZE;
             const chunkY = chunk.y * Chunk.CHUNK_SIZE;
-            const randomX = Math.randomBetween(1, Chunk.CHUNK_SIZE - 1);
-            const randomY = Math.randomBetween(1, Chunk.CHUNK_SIZE - 1);
+            const randomX = Math.randomBetween(1, (Chunk.CHUNK_SIZE / 2) - 1);
+            const randomY = Math.randomBetween(1, (Chunk.CHUNK_SIZE / 2) - 1);
             const spawnerPosition = {
-                x: chunkX + randomX,
-                y: chunkY + randomY,
+                x: chunkX + (Chunk.CHUNK_SIZE / 2) + randomX,
+                y: chunkY + (Chunk.CHUNK_SIZE / 2) + randomY,
             }
             const amountToSpawn = Math.randomBetween(food_per_spawn_min, food_per_spawn_max);
             for(var i2 = 0; i2 < amountToSpawn; i2++) {
