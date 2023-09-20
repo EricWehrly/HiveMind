@@ -14,11 +14,13 @@ export default class Research extends Listed {
 
     static DoResearch(context) {
 
+        if(context?.menu?.selected?.enabled === false) return;
         const selectedResearch = context?.menu?.selected?.context?.research;
         if(context?.menu?.selected?.Element) {
             context.menu.selected.Element.innerHTML = selectedResearch.name + "<br>Researching...";
         }
-        // disable the research from being double-tapped
+        context.menu.selected.enabled = false;
+        context.menu.selected.Element.className += " disabled";
 
         // TODO: when used, start counting down until the research is done
         // (later that'll make it easier to add visuals)

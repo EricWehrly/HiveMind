@@ -1,5 +1,6 @@
 import Character from "../engine/js/entities/character.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
+import Technology from "../engine/js/technology.mjs";
 
 export default class Cheat {
     static get Health() {
@@ -19,6 +20,9 @@ export default class Cheat {
         
         const localPlayer = Character.LOCAL_PLAYER;
         localPlayer.speed = 15;
+        
+        const thorns = Technology.Get("thorns");
+        Character.LOCAL_PLAYER.AddTechnology(thorns);
     }
 }
 

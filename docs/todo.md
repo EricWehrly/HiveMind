@@ -2,15 +2,12 @@
     They ARE leashing -- added output for distance and speed
         to analyize if it's taking too long? Or going too far?
 
-- need some kind of indicator that research is being done
+- priorities for targets for player acquisition
+    Animal > Native Flora > Player Spawns
 
-- it's time to refactor chunks to only generate for players
-    We can use the Events.Context that we started ...
-
-- list of entities targeting the player?
-    very helpful for debug
-    but could easily be a proper game mechanic later
-    with upgrades incrementing through to that eventual result
+- buildings for: doing research, defending, healing
+    defense can later break out to either turrets or unit spawners
+    Once 1 research, can research research and unlock research node which speeds up research
 
 - enemies should also attack player entities (spawns, and buildings)
 
@@ -33,17 +30,10 @@ Should be able to switch to a new attack even if switch in progress is not compl
 
 - Research to be able to automatically absorb things X smaller than you
 
-- buildings for: doing research, defending, healing
-    defense can later break out to either turrets or unit spawners
-    Once 1 research, can research research and unlock research node which speeds up research
-
 - Camera controls & following player
     rendering controller or something for other entities
     smooth movement? tweening? speed and accel?
     when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
-
-- priorities for targets for player acquisition
-    Animal > Native Flora > Player Spawns
 
 - need to have some collision
 
@@ -57,6 +47,11 @@ Should be able to switch to a new attack even if switch in progress is not compl
 - Upgrade that let's you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
 
 - I think the "chunk" graphic could be a bordered-box that's sized and colored to the chunk ...
+
+- list of entities targeting the player?
+    very helpful for debug
+    but could easily be a proper game mechanic later
+    with upgrades incrementing through to that eventual result
 
 ---
 
