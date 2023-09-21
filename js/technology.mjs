@@ -1,4 +1,5 @@
 import Listed from "./baseTypes/listed.mjs";
+import Research from "./research.mjs";
 
 export default class Technology extends Listed {
 
@@ -32,6 +33,9 @@ export default class Technology extends Listed {
     #statusEffectDuration;
     get statusEffectDuration() { return this.#statusEffectDuration; }
 
+    #research;
+    get research() { return this.#research; }
+
     get danger() {
 
         return (this.damage || 1) // should this be || 0 because no damage = no danger ... ?
@@ -45,6 +49,13 @@ export default class Technology extends Listed {
         if(!options.name) throw `Technology needs name!`;
         if(!options.type) throw `Technology ${options.name} needs type!`;
         super(options);
+
+        if(options.research) {
+            this.#research = new Research({
+                name: options.name,
+                ...options.research
+            });
+        }
 
         if(options.sound) {
             if (Array.isArray(options.sound)) {
@@ -87,7 +98,11 @@ export default class Technology extends Listed {
                 while(options.volume > 1) options.volume = options.volume / 10;
                 sound.volume = options.volume;
             }
-            sound.play();
+            try {
+                sound.play();
+            } catch(ex) {
+                console.warn(ex);
+            }
         }
         else console.warn(`No sound for ${this.name}`);
     }
