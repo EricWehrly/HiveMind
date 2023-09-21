@@ -76,7 +76,7 @@ export default class UIElement {
 
     redraw(screenRect) {
         
-        if(this.entity) {
+        if(this?.entity?.graphic) {
 
             // TODO: get grid size constant
             const gridSize = 32;
