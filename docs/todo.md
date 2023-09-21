@@ -11,40 +11,53 @@
 
 - enemies should also attack player entities (spawns, and buildings)
 
-- I think we need to have min and max aggression (and other things that get random)
-in part to be able to determine what % of max aggression a creature is
-(which will help us "paint it redder" to visually indicate)
+- conquest target
+    The player is trying to saturate the planet with a critical mass of your hive mind
+    Start small with this, we can expand.
+    Use fixed numbers / amounts,
+    and just add a visual indicator for how far along we are
+    and if we've "won"
 
 - Enemy technologies:
     - poison,
     - thorns (unless we finished this?),
     - shell (protective)
 
-- Maybe learning new technologies should work like:
-    - the more you already know, the more pieces (of a new one) that you need to collect in order to research
-    - but the more you know, the shorter it is to research?
+- need to finish implementing biomes
 
-- The more evolved an attack is, the longer it takes the player to switch to it.
-Should be able to switch to a new attack even if switch in progress is not complete
-- - Also needs implemented ability to switch between attacks / equipment...
+- maybe some terrain variety? Mountains, valleys, water
+    obstacles like trees, rocks
 
-- Research to be able to automatically absorb things X smaller than you
+- need to have some collision
 
 - Camera controls & following player
     rendering controller or something for other entities
     smooth movement? tweening? speed and accel?
     when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
 
-- need to have some collision
+- The more evolved an attack is, the longer it takes the player to switch to it.
+Should be able to switch to a new attack even if switch in progress is not complete
+- - Also needs implemented ability to switch between attacks / equipment...
 
-- need to finish implementing biomes
+- Maybe learning new technologies should work like:
+    - the more you already know, the more pieces (of a new one) that you need to collect in order to research
+    - but the more you know, the shorter it is to research?
 
-- maybe some terrain variety? Mountains, valleys, water
-    obstacles like trees, rocks
+- Mountains spawn streams
+    - which spawn food
+        - which attract (spawn) fauna
+
+---
+
+- I think we need to have min and max aggression (and other things that get random)
+in part to be able to determine what % of max aggression a creature is
+(which will help us "paint it redder" to visually indicate)
 
 - time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
 
 - Upgrade that let's you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
+
+- Research to be able to automatically absorb things X smaller than you
 
 - I think the "chunk" graphic could be a bordered-box that's sized and colored to the chunk ...
 
