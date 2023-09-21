@@ -287,6 +287,13 @@ export default class Character {
 
             console.debug(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
         }
+        
+        // CharacterType[character.target.characterType].isStudied = true;
+        if(technology.research) {
+
+            // const research = Research.Get(technology.research);
+            technology.research.enabled = true;
+        }
     }
 
     shouldStopTargeting(distance = 6) {
