@@ -1,3 +1,4 @@
+import Character from "../../engine/js/entities/character.mjs";
 import StatusEffect from "../../engine/js/status-effect.mjs";
 import Technology from "../../engine/js/technology.mjs";
 
@@ -64,11 +65,19 @@ new Technology({
 // we probably want to implement a "status effect" class
 // to deal with bleed, poison, and knockback
 
+function makeThornier() {
+
+    Character.LOCAL_PLAYER.thornMultiplier++;
+}
+
 new Technology({
     name: "thorns",
     type: Technology.Types.BUFF,
     thorns: 1,
-    delay: 2200
+    delay: 2200,
+    research: {
+        callback: makeThornier
+    }
 });
 
 // shell (protective?)

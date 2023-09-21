@@ -93,6 +93,10 @@ export default class Character {
     get x() { return this._position.x; }
     get y() { return this._position.y; }
 
+    #thornMultiplier = 1;
+    get thornMultiplier() { return this.#thornMultiplier; }
+    set thornMultiplier(newValue) { this.#thornMultiplier = newValue; }
+
     constructor(options = {}) {
         
         if(options.position) { 
