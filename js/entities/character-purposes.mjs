@@ -56,7 +56,7 @@ const Purposes =
                     character.target = null;
                     character.SetCurrentPurpose("return");
                 } else if (attack && character.position.distance(character.target.position) < attack.range
-                    && character.target.dead != true) {                
+                    && character.target.dead != true) {
                     Action.List['attack'].callback({
                         character
                     });
@@ -68,7 +68,7 @@ const Purposes =
         name: "hunt",
         think: function (character, elapsed) {
             const attack = character.getEquipped(Technology.Types.ATTACK);
-            if(attack == null) console.warn(`Attack is null.`);
+            if (attack == null) console.warn(`Attack is null.`);
             Purposes["consume"].think(character, elapsed);
         }
     },
@@ -144,7 +144,7 @@ const Purposes =
             const purpose = character._spawnPurposeKey;
             let targetType;
             // both consume/hunt and Food/Animal should come from enums
-            if(purpose == "consume") targetType = "Food";
+            if (purpose == "consume") targetType = "Food";
             else if (purpose == "hunt") targetType = "Animal";
 
             const target = character.getClosestEntity({
@@ -157,11 +157,11 @@ const Purposes =
                 const slap = Technology.Get("slap");
                 const options = {
                     purposeKey: character._spawnPurposeKey,
-                    technologies: [ slap ],
+                    technologies: [slap],
                     target
                 }
                 const spawnedCharacter = character.Subdivide(options);
-                if(spawnedCharacter != null) {                    
+                if (spawnedCharacter != null) {
                     character.spawnTargets.push(target);
                     // console.log(`Character ${character.id} has ${character.spawnTargets.length} spawn targets.`);
                 }
