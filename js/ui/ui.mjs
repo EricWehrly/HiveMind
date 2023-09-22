@@ -1,3 +1,5 @@
+import './combatLog.mjs';
+
 let uiContainer = null;
 let equippedDisplay = null;
 

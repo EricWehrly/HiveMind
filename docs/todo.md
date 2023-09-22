@@ -1,3 +1,5 @@
+- I think the consume nodes still can't attack their targets
+
 - Predator AI doesn't seem to give up chasing player
     They ARE leashing -- added output for distance and speed
         to analyize if it's taking too long? Or going too far?
@@ -9,7 +11,18 @@
     defense can later break out to either turrets or unit spawners
     Once 1 research, can research research and unlock research node which speeds up research
 
+- I think we need a combat log to easier follow along
+
 - enemies should also attack player entities (spawns, and buildings)
+    (let's see if the logs show us enemies targeting hunters)
+    (then we'll need to work on buildings afterwards)
+
+- maybe buildings should work like:
+    - you hit 'B' to drop a new node (in exchange for food, as now)
+    - that node will auto-expand with its own AI (as we've kind of described in other notes,
+        with some kind of like 'nearby proximity prioritization' -- if desired not in range, add)
+    - player can similarly pay to choose to make a building a specific type
+        but maybe that functionality ( / player choice / influence) can wait until later
 
 - conquest target
     The player is trying to saturate the planet with a critical mass of your hive mind
@@ -48,6 +61,10 @@ Should be able to switch to a new attack even if switch in progress is not compl
         - which attract (spawn) fauna
 
 ---
+
+- I think starting a 2nd research screws up one already researching?
+
+- shouldn't be able to open a menu when another menu is already open
 
 - I think we need to have min and max aggression (and other things that get random)
 in part to be able to determine what % of max aggression a creature is

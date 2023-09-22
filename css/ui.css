@@ -23,6 +23,11 @@
     text-align: center;
 }
 
+/* TODO: not this stupid fix */
+#CombatLog {
+    max-width: 34%;
+}
+
 /*
 .ui.bottom {
     width: 100%;
