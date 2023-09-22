@@ -54,7 +54,6 @@ export default class UIElement {
         this.addClass("ui");
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
-        // TODO: ui shouldnt be on 'playfield'...
         UIElement.#initialDisplay = this.Element.style.display;
         if('visible' in options) this.visible = options.visible;
 
