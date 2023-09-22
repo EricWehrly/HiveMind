@@ -73,6 +73,15 @@ export default class UIElement {
         this.Element.className = this.Element.className.replace(className, "").trim();
     }
 
+    toggleClass(className) {
+
+        if(this.Element.className.indexOf(className) > -1) {
+            this.removeClass(className);
+        } else {
+            this.addClass(className);
+        }
+    }
+
     redraw(screenRect) {
         
         if(this?.entity?.graphic) {

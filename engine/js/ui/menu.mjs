@@ -37,9 +37,9 @@ export default class Menu extends UIElement {
 
     static #computeAnyMenuOpen() {
 
-        let menus = Object.values(Menu.#MENU_LIST);
-        menus = menus.filter(x => x.visible);
-        Menu.#isAnyMenuOpen = menus.length > 0;
+        let visibleMenus = Object.values(Menu.#MENU_LIST);
+        visibleMenus = visibleMenus.filter(x => x.visible && x.collapsed != true);
+        Menu.#isAnyMenuOpen = visibleMenus.length > 0;
     }
 
     #name;
@@ -139,11 +139,22 @@ export default class Menu extends UIElement {
 
         if(options.menuAction) this.#menuAction = options.menuAction;
 
-        // TODO: for menu items:
-        // need button to cycle prev/next menu item
-        // action (F) "activates" currently selected menu item
+        // TODO: Handle input situations without mouse
+        if(options.collapsible) {
+            this.collapse = document.createElement("span");
+            this.collapse.className = "collapse-handler";
+            this.Element.appendChild(this.collapse);
+            this.Element.addEventListener("click", this.collapseClicked.bind(this), false); //where func is your function name
+        }
 
         Menu.#addMenu(this);
+    }
+
+    collapseClicked() {
+
+        this.collapsed = !this.collapsed;
+        Menu.#computeAnyMenuOpen();
+        this.toggleClass("collapse");
     }
 
     addItem(options) {
@@ -195,3 +206,5 @@ export default class Menu extends UIElement {
         }
     }
 }
+
+if(window) window.Menu = Menu;

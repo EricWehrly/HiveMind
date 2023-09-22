@@ -9,7 +9,8 @@ const UI_MENU_COMABT_LOG = new Menu({
     screenZone: UIElement.SCREEN_ZONE.BOTTOM_LEFT,
     name: "Combat Log",
     visible: true,
-    vertical: true
+    vertical: true,
+    collapsible: true
 });
 UI_MENU_COMABT_LOG.Element.id = "CombatLog";
 
