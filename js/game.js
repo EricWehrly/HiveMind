@@ -29,7 +29,8 @@ import MessageLog from '../engine/js/core/messageLog.mjs';
 
 new MessageLog({
     name: "Combat",
-    retentionStrategy: MessageLog.RETENTION_STRATEGY.MESSAGE_COUNT
+    retentionStrategy: MessageLog.RETENTION_STRATEGY.MESSAGE_COUNT,
+    maxMessages: 5
 });
 
 KeyboardController.AddDefaultBinding("subdivide", "q");

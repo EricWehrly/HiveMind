@@ -112,14 +112,14 @@ export default class Action extends Listed {
                     equipped.playSound({
                         volume: distance
                     });
-                    
+
                     const strengthMultiplier = 1.0 + (strAttr?.value || 0 / 10);
                     const damage = (equipped.damage * strengthMultiplier);
                     const combatLog = MessageLog.Get("Combat");
                     target.health -= damage;
 
                     const message = `${character.name} attacked ${target.name}`
-                        + ` for ${equipped.damage} (base) * ${strengthMultiplier} (multiplier) damage.`;
+                        + ` for ${equipped.damage} * ${strengthMultiplier}.`;
                     combatLog.log(message, {
                         attacker: character.id,
                         attackee: target.id,
@@ -135,6 +135,14 @@ export default class Action extends Listed {
                         if(buff) {                            
                             const thornDamage = buff.thorns * target.thornMultiplier;
                             character.health -= thornDamage;
+
+                            const message = `${target.name} thorns ${character.name}`
+                                + ` for ${buff.thorns} * ${target.thornMultiplier}.`;
+                            combatLog.log(message, {
+                                attacker: character.id,
+                                attackee: target.id,
+                                damage
+                            });
                         }
                     }
                 }

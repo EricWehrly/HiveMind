@@ -21,10 +21,11 @@ function updateCombatLog() {
     for (var menuItem of UI_MENU_COMABT_LOG.items) {
 
         if(!menuItems.includes(menuItem)) {
-            console.log("Time to remove.");
             UI_MENU_COMABT_LOG.removeItem(menuItem);
         }
     }
+
+    if(UI_MENU_COMABT_LOG.visible == false) return;
 
     for (var log of combatLog.logs) {
         if (!log.menuItem) {

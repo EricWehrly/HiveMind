@@ -14,7 +14,10 @@ export default class MessageLog extends Listed {
     #retentionStrategy;
     #logs = [];
 
+    #retentionParameter;
     get retentionParameter() {
+
+        if(this.#retentionParameter) return this.#retentionParameter;
 
         if(this.#retentionStrategy == MessageLog.RETENTION_STRATEGY.MESSAGE_COUNT) {
             return MessageLog.#MESSAGE_COUNT_DEFAULT;
@@ -42,6 +45,9 @@ export default class MessageLog extends Listed {
             console.warn("Unimplemented.");
         }
 
+        if(options.retentionParameter) this.#retentionParameter = options.retentionParameter;
+        if(options.maxMessages) this.#retentionParameter = options.maxMessages;
+
         // TODO: if retention is time, then loop method
     }
 
@@ -57,7 +63,7 @@ export default class MessageLog extends Listed {
         if(this.#retentionStrategy == MessageLog.RETENTION_STRATEGY.MESSAGE_COUNT) {
             const messagesToRetain = this.retentionParameter;
             while(this.#logs.length > messagesToRetain) {
-                this.#logs.slice(0, 1);
+                this.#logs.splice(0, 1);
             }
         }
     }

@@ -28,6 +28,10 @@
     max-width: 34%;
 }
 
+#CombatLog h3 {
+    margin: 0;
+}
+
 /*
 .ui.bottom {
     width: 100%;
