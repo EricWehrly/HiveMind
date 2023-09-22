@@ -63,6 +63,8 @@ export default class Menu extends UIElement {
         return super.visible;
     }
 
+    get items() { return this.#items; }
+
     // when I become visibile, I want to enable "menu_interact" from Action
     set visible(value) {
         super.visible = value;
@@ -186,9 +188,10 @@ export default class Menu extends UIElement {
 
     removeItem(item) {
 
+        item.Element.remove();
         const index = this.#items.indexOf(item);
         if(index > -1) {
-            this.#items = this.#items.splice(index);
+            this.#items.splice(index, 1);
         }
     }
 }
