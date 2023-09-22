@@ -76,6 +76,7 @@ new Technology({
     thorns: 1,
     delay: 2200,
     research: {
+        cost: 15,
         callback: makeThornier
     }
 });
