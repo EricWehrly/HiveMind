@@ -4,6 +4,7 @@ import UIElement from './ui/ui-element.mjs';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.mjs';
 import { Defer } from "./loop.mjs";
+import Character from './entities/character.mjs';
 
 Events.List.ResearchEnabled = "ResearchEnabled";
 Events.List.ResearchFinished = "ResearchFinished";
@@ -22,6 +23,12 @@ export default class Research extends Listed {
         context.menu.selected.enabled = false;
         context.menu.selected.Element.className += " disabled";
 
+        const researchers = Character.get({
+            name: "Researcher"
+        });
+        const researchMultiplier = 1 + (researchers.length / 10);
+        const researchCost = selectedResearch.cost / researchMultiplier;
+
         // TODO: when used, start counting down until the research is done
         // (later that'll make it easier to add visuals)
         Defer(function() {
@@ -30,7 +37,7 @@ export default class Research extends Listed {
             context?.menu.removeItem(selectedResearch);
             Events.RaiseEvent(Events.List.ResearchFinished, this);
             Events.RaiseEvent(`${Events.List.ResearchFinished}-${selectedResearch.name}`, this);
-        }, selectedResearch.cost * 1000);
+        }, researchCost * 1000);
     }
 
     static {

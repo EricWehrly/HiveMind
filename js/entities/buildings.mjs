@@ -53,7 +53,6 @@ new CharacterType({
     ai: null
 });
 
-// the spawn needs to have ... damage probably?
 new CharacterType({
     name: 'Hunter',
     health: 30,
@@ -62,6 +61,15 @@ new CharacterType({
     ai: null
 });
 UI_MENU_BUILDINGS.addItem(CharacterType.Hunter);
+
+// TODO: Make these actually contribute to a research speed multiplier
+// ideally render that somewhere
+new CharacterType({
+    name: 'Researcher',
+    health: 50,
+    ai: null
+});
+UI_MENU_BUILDINGS.addItem(CharacterType.Researcher);
 
 // TODO: Later, generically unlock items in menus by having them locked/unlocked
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
