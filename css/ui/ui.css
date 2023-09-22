@@ -102,3 +102,17 @@
 .ui.menu.vertical div {
     flex: 1 100%;
 }
+
+.collapse-handler {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+}
+
+.collapse-handler:after {
+    content: '-';
+}
+
+.collapse > div {
+    display: none;
+}
