@@ -32,6 +32,16 @@ export default class Character {
         Character.#LOCAL_PLAYER = value;
     }
 
+    static get(options) {
+
+        let charList = CHARACTER_LIST;
+        if(options.name) {
+            charList = charList.filter(x => x.name == options.name);
+        }
+
+        return charList;
+    }
+
     _health = 1;
 
     get health() {
