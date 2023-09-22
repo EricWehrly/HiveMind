@@ -65,6 +65,12 @@
     transform: translateY(-50%);
 }
 
+.ui.bottom.left {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+}
+
 .ui.h3 {
     padding: 0 .4em;
 }
@@ -90,5 +96,9 @@
 }
   
 .ui.menu div { 
-    flex: 3 0px;
+    flex: 3 32%;
+}
+
+.ui.menu.vertical div {
+    flex: 1 100%;
 }

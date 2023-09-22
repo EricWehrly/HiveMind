@@ -128,6 +128,8 @@ export default class Menu extends UIElement {
 
         this.addClass("menu");
 
+        if(options.vertical) this.addClass("vertical");
+
         if(options.name) this.#name = options.name;
         const title = document.createElement('h3');
         title.innerHTML = this.#name;
