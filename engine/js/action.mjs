@@ -5,6 +5,7 @@ import Requirements from './requirements.mjs';
 import Events from './events.mjs';
 import Menu from './ui/menu.mjs';
 import Technology from './technology.mjs';
+import MessageLog from './core/messageLog.mjs';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -111,7 +112,19 @@ export default class Action extends Listed {
                     equipped.playSound({
                         volume: distance
                     });
-                    target.health -= (equipped.damage + strAttr?.value || 0);
+                    
+                    const strengthMultiplier = 1.0 + (strAttr?.value || 0 / 10);
+                    const damage = (equipped.damage * strengthMultiplier);
+                    const combatLog = MessageLog.Get("Combat");
+                    target.health -= damage;
+
+                    const message = `${character.name} attacked ${target.name}`
+                        + ` for ${equipped.damage} (base) * ${strengthMultiplier} (multiplier) damage.`;
+                    combatLog.log(message, {
+                        attacker: character.id,
+                        attackee: target.id,
+                        damage
+                    });
 
                     if(equipped.statusEffect) {
                         target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
