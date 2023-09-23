@@ -1,6 +1,3 @@
-- priorities for targets for player acquisition
-    Animal > Native Flora > Player Spawns
-
 - buildings for: defending
     defense can later break out to either turrets or unit spawners
     Once 1 research, can research research and unlock research node which speeds up research
@@ -58,6 +55,9 @@ Should be able to switch to a new attack even if switch in progress is not compl
 
 - Combat Log "ignoreInput" menu property to allow open without stealing focus
     ( basically rather than "collapsed" )
+
+- priorities for targets for player acquisition
+    Animal > Native Flora > Player Spawns
 
 ---
 
