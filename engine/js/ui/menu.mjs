@@ -82,6 +82,14 @@ export default class Menu extends UIElement {
         }
     }
 
+    #collapsed;
+    get collapsed() { return this.#collapsed; }
+    set collapsed(newValue) {
+        this.#collapsed = newValue;
+        if(this.#collapsed) this.addClass("collapse");
+        else this.removeClass("collapse");
+    }
+
     // TODO: when the menu is open / visible, need to enable
     // BUILD_ACTION
     // and disable when we lose visible / focus
@@ -139,6 +147,11 @@ export default class Menu extends UIElement {
 
         if(options.menuAction) this.#menuAction = options.menuAction;
 
+        if(options.collapsed) {
+            options.collapsible = true;
+            this.collapsed = true;
+        }
+
         // TODO: Handle input situations without mouse
         if(options.collapsible) {
             this.collapse = document.createElement("span");
@@ -154,7 +167,6 @@ export default class Menu extends UIElement {
 
         this.collapsed = !this.collapsed;
         Menu.#computeAnyMenuOpen();
-        this.toggleClass("collapse");
     }
 
     addItem(options) {
