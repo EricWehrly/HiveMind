@@ -26,49 +26,39 @@
 }
 
 .ui.top {
-    top: 0px;
+    position: absolute;
+    top: 5px;
 }
 
 .ui.bottom {
-    bottom: 0px;
+    position: absolute;
+    bottom: 5px;
     align-self: flex-end;
 }
 
 .ui.left {
-    left: 0px;
+    left: 5px;
 }
 
 .ui.right {
-    right: 0px;
+    right: 5px;
 }
 
 .ui.center {    
     /* align-self: center; */
+    left: 50%;                  
+    transform: translateX(-50%);
 }
 
 .ui.bottom.center {
     position: absolute;
     bottom: 5px;                
-    left: 50%;                  
-    transform: translateX(-50%);
-}
-
-.ui.top.right {
-    position: absolute;
-    top: 5px;                
-    right: 5px;
 }
 
 .ui.middle.right {
     position: absolute;        
     top: 50%;                  
     transform: translateY(-50%);
-}
-
-.ui.bottom.left {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
 }
 
 .ui.h3 {
