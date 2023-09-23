@@ -33,8 +33,7 @@ export default class Research extends Listed {
         // (later that'll make it easier to add visuals)
         Defer(function() {
             if(selectedResearch.callback) selectedResearch.callback();
-            context.menu.selected.Element.remove();
-            context?.menu.removeItem(selectedResearch);
+            context?.menu.removeItem(context.menu.selected);
             Events.RaiseEvent(Events.List.ResearchFinished, this);
             Events.RaiseEvent(`${Events.List.ResearchFinished}-${selectedResearch.name}`, this);
         }, researchCost * 1000);

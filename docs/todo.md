@@ -1,3 +1,5 @@
+we should reduce the interval for spawning for subdivide
+
 - buildings for: defending
     defense can later break out to either turrets or unit spawners
     Once 1 research, can research research and unlock research node which speeds up research
