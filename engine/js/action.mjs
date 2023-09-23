@@ -80,7 +80,6 @@ export default class Action extends Listed {
             name: 'attack',
             isCharacterControl: true,
             callback: function (options) {
-                // TODO: Pull in enum from technology class
                 const equipment = options?.character?.equipment;
                 if(equipment == null) return false;
 
@@ -113,7 +112,7 @@ export default class Action extends Listed {
                         volume: distance
                     });
 
-                    const strengthMultiplier = 1.0 + (strAttr?.value || 0 / 10);
+                    const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
                     const damage = (equipped.damage * strengthMultiplier);
                     const combatLog = MessageLog.Get("Combat");
                     target.health -= damage;
