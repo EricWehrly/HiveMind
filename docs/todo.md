@@ -15,13 +15,6 @@ we should reduce the interval for spawning for subdivide
     - player can similarly pay to choose to make a building a specific type
         but maybe that functionality ( / player choice / influence) can wait until later
 
-- conquest target
-    The player is trying to saturate the planet with a critical mass of your hive mind
-    Start small with this, we can expand.
-    Use fixed numbers / amounts,
-    and just add a visual indicator for how far along we are
-    and if we've "won"
-
 - Enemy technologies:
     - poison,
     - shell (protective)
@@ -93,7 +86,6 @@ in part to be able to determine what % of max aggression a creature is
     Conversely, you're only allowed to send a finite information to new runs, so the node would also be downloading researched techs from the tree.
 
 - End goal:
-    Working towards "critical mass" for the planet. Don't need to take everything over, just spread enough. 
     Bigger planet needs more to reach critical mass 
     More biodiverse planet also needs more
     
