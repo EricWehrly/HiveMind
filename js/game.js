@@ -24,7 +24,7 @@ import './entities/entities.mjs';
 import Resource from '../engine/js/entities/resource.mjs';
 import './characterStats.mjs';
 
-import Cheat from './cheat.mjs';
+import Cheat from './util/cheat.mjs';
 import MessageLog from '../engine/js/core/messageLog.mjs';
 
 new MessageLog({

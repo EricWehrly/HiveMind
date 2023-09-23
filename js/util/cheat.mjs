@@ -1,6 +1,6 @@
-import Character from "../engine/js/entities/character.mjs";
-import Resource from "../engine/js/entities/resource.mjs";
-import Technology from "../engine/js/technology.mjs";
+import Character from "../../engine/js/entities/character.mjs";
+import Resource from "../../engine/js/entities/resource.mjs";
+import Technology from "../../engine/js/technology.mjs";
 
 export default class Cheat {
     static get Health() {
@@ -23,6 +23,9 @@ export default class Cheat {
         
         const thorns = Technology.Get("thorns");
         Character.LOCAL_PLAYER.AddTechnology(thorns);
+        
+        const claws = Technology.Get("claws");
+        Character.LOCAL_PLAYER.AddTechnology(claws);
     }
 }
 
