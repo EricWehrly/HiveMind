@@ -37,8 +37,8 @@ export default class Character {
     static get(options) {
 
         let charList = CHARACTER_LIST;
-        if(options.name) {
-            charList = charList.filter(x => x.name == options.name);
+        for(var key of Object.keys(options)) {
+            charList = charList.filter(x => x[key] == options[key]);
         }
 
         return charList;
