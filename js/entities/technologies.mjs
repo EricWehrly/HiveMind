@@ -13,8 +13,8 @@ new Technology({
     name: "slap",
     type: Technology.Types.ATTACK,
     range: 10,
-    damage: 10,     // this damage is actually supposed to be super low (1), but we wanted to test combat systems
-    delay: 3000,
+    damage: 1,     // this damage is actually supposed to be super low (1), but we wanted to test combat systems
+    delay: 2200,
     sound: 'audio/slap.mp3'
 });
 

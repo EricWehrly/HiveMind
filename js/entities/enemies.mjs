@@ -8,7 +8,7 @@ import PredatorAI from '../../engine/js/ai/predator.mjs';
 new CharacterType({
     name: "Animal",
     color: 'red',
-    health: 40,
+    health: 4,
 });
 
 // can't declare these at file level because it's too early in lifecycle
@@ -37,7 +37,7 @@ function spawnFauna(chunk) {
     // later, we can use the remainder to make monsters stronger
     // const spawnCount = Math.ceil(chunk.danger * 0.8);
     // for now, simple equations
-    const spawnCount = chunk.distance;
+    const spawnCount = chunk.distance - 1;
 
     // how much aggression?
     // later, the amount of aggression in the chunk can gate certain creatures from spawning

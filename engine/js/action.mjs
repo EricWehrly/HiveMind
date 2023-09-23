@@ -186,9 +186,13 @@ export default class Action extends Listed {
             delay: 1000,
             callback: function (options) {
 
-                const piece = options.character.Subdivide({
+                // TODO: take this from the player eventually
+                const slap = Technology.Get("slap");
+
+                options.character.Subdivide({
                     purpose: Character.Purposes["consume"],
-                    target: Action.List["consume"].target
+                    target: Action.List["consume"].target,
+                    technologies: [ slap ]
                 });
             }
         });

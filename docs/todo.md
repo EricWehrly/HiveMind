@@ -1,17 +1,9 @@
-- I think the consume nodes still can't attack their targets
-
-- Predator AI doesn't seem to give up chasing player
-    They ARE leashing -- added output for distance and speed
-        to analyize if it's taking too long? Or going too far?
-
 - priorities for targets for player acquisition
     Animal > Native Flora > Player Spawns
 
 - buildings for: doing research, defending, healing
     defense can later break out to either turrets or unit spawners
     Once 1 research, can research research and unlock research node which speeds up research
-
-- I think we need a combat log to easier follow along
 
 - enemies should also attack player entities (spawns, and buildings)
     (let's see if the logs show us enemies targeting hunters)
@@ -33,7 +25,6 @@
 
 - Enemy technologies:
     - poison,
-    - thorns (unless we finished this?),
     - shell (protective)
 
 - need to finish implementing biomes
@@ -59,6 +50,14 @@ Should be able to switch to a new attack even if switch in progress is not compl
 - Mountains spawn streams
     - which spawn food
         - which attract (spawn) fauna
+
+- Learned / research punch attack that's faster & stronger than slap, and is kind of a mid game attack?
+    it'd be pretty cool if we had other attack modifiers 
+    (we kinda started with poison, but there's got to be cooler ways we can go with that)
+    so the player can tech a build like hades ...
+
+- Combat Log "ignoreInput" menu property to allow open without stealing focus
+    ( basically rather than "collapsed" )
 
 ---
 
