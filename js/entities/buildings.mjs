@@ -6,6 +6,8 @@ import HiveMindCharacter from './character-extensions.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.mjs';
 
+Events.List.BuildingBuilt = "BuildingBuilt";
+
 const Build = function(context) {
 
     const selectedBuilding = context?.menu?.selected?.context;
@@ -26,7 +28,11 @@ const Build = function(context) {
     }
     player.health -= amount;
 
-    new HiveMindCharacter(characterOpts);
+    const building = new HiveMindCharacter(characterOpts);
+
+    Events.RaiseEvent(Events.List.BuildingBuilt, building);
+
+    return building;
 }
 
 const UI_MENU_BUILDINGS = new Menu({

@@ -13,6 +13,12 @@ export default class Cheat {
         Resource.Get("food").value = 1000;
     }
 
+    // alias :shrug:
+    static get Gains() {
+
+        Cheat.Health;
+    }
+
     static get Beefcake() {
 
         Cheat.Health;

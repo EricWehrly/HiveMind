@@ -26,6 +26,7 @@ import './characterStats.mjs';
 
 import Cheat from './util/cheat.mjs';
 import MessageLog from '../engine/js/core/messageLog.mjs';
+import "./goal.mjs";
 
 new MessageLog({
     name: "Combat",

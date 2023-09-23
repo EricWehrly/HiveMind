@@ -36,6 +36,9 @@ export default class Map {
 
     get Seed() { return this.#seed; }
 
+    // TODO: proper implementation (based on difficulty at generation time)
+    get size() { return 100; }
+
     constructor() {
         if(Map.#map == null) window.map = Map.#map = this;
 

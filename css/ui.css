@@ -32,6 +32,14 @@
     margin: 0;
 }
 
+#objective-progress {
+    border: 2px solid black;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
 /*
 .ui.bottom {
     width: 100%;
