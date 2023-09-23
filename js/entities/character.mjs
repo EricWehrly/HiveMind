@@ -10,6 +10,7 @@ import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
 import PredatorAI from '../ai/predator.mjs';
+import CharacterType from '../../../js/entities/characterType.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -342,7 +343,12 @@ export default class Character {
             let dist = 5;
             const attack = this.getEquipped(Technology.Types.ATTACK);
             if(attack && attack.range) dist = attack.range;
-            this.target = this.getClosestEntity({ distance: dist, filterChildren: true });
+            const closestOptions = {
+                distance: dist,
+                filterChildren: true,
+                // priorities: [CharacterType.]
+            };
+            this.target = this.getClosestEntity(closestOptions);
 
             /*
             if(this.shouldStopTargeting()) {
@@ -486,7 +492,9 @@ export default class Character {
         return nearbyEntities;
     }
 
+    // TODO: Also take into account directionality -- prioritize where the player is facing
     // TODO: Need to prioritize close hostile entities over closer non-hostile
+    // this really needs a test now ...
     getClosestEntity(options = {
         distance: 100,
         filterChildren: true,
@@ -498,14 +506,36 @@ export default class Character {
         grown: null,
         exclude: [],
         faction: null,
+        // lowest to highest
         priorities: []
     }) {
 
         const nearbyEntities = this.getNearbyEntities(options);
 
-        // NOW implement priorities
+        // for now, we'll just do in order, but later we could add in Weights to priorities
+        if(options.priorities) {
+            const distMargin = 5;
+
+            nearbyEntities.sort(this.#prioritizedNearestSort(options.priorities, distMargin));
+        }
 
         return nearbyEntities[0]?.entity;
+    }
+
+    #prioritizedNearestSort(priorities, margin) {
+        return function(first, second) {
+
+            const firstPriority = priorities.indexOf(first.entity.characterType) + 1;
+            const secondPriority = priorities.indexOf(second.entity.characterType) + 1;
+
+            if(firstPriority > secondPriority && first.distance - margin < second.distance) {
+                return 1;
+            }
+            else if(secondPriority > firstPriority && second.distance - margin < first.distance) {
+                return -1;
+            }
+            else return 0;
+        }
     }
 
     #nearestSort(first, second) {
