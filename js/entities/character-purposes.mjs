@@ -4,6 +4,8 @@ import Research from "../../engine/js/research.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 import Technology from "../../engine/js/technology.mjs";
+import Character from "../../engine/js/entities/character.mjs";
+import Resource from "../../engine/js/entities/resource.mjs";
 
 function randomPositionOffset(source, offsetAmountPerAxis) {
 
@@ -168,6 +170,39 @@ const Purposes =
             }
 
             character.lastSpawn = performance.now();
+        }
+    },
+    "heal": {
+        name: "heal",
+        interval: 2000,
+        range: 20,
+        amount: 5,
+        think: function (character, elapsed) {
+
+            const timeSinceLastHeal = performance.now() - character.lastHeal;
+            if (character.lastHeal != null
+                && timeSinceLastHeal < this.interval) {
+                return;
+            }
+
+            const closest = character.getClosestEntity({
+                distance: this.range,
+                faction: Character.LOCAL_PLAYER.faction
+            });
+
+            if(closest) {
+                const maxHeal = closest.maxHealth - closest.health;
+                const amountToHeal = Math.min(maxHeal, this.amount);
+                if(amountToHeal < 1) return;
+
+                const food = Resource.Get("food")?.value || 0;
+                if(food > amountToHeal) {
+                    Resource.Get("food").value -= amountToHeal;
+                    closest.health += amountToHeal;
+                    
+                    character.lastHeal = performance.now();
+                }
+            }
         }
     }
 };

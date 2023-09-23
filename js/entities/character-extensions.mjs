@@ -108,7 +108,12 @@ export default class HiveMindCharacter extends Character {
         if (this._currentPurposeKey) {
             if(origTarget) this.target = origTarget;
             // maybe the purposes should be specific AI implementations ...
-            HiveMindCharacter.Purposes[this._currentPurposeKey].think(this, elapsed);
+            // if Purposes doesn't contain key, warn
+            if(!(this._currentPurposeKey in HiveMindCharacter.Purposes)) {
+                console.warn(`${this._currentPurposeKey} not in purposes.`);
+            } else {
+                HiveMindCharacter.Purposes[this._currentPurposeKey].think(this, elapsed);
+            }
         }
     }
 

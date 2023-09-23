@@ -71,6 +71,14 @@ new CharacterType({
 });
 UI_MENU_BUILDINGS.addItem(CharacterType.Researcher);
 
+new CharacterType({
+    name: 'Healer',
+    health: 30,
+    _currentPurposeKey: 'heal',
+    ai: null
+});
+UI_MENU_BUILDINGS.addItem(CharacterType.Healer);
+
 // TODO: Later, generically unlock items in menus by having them locked/unlocked
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
 Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function() {
@@ -80,8 +88,6 @@ Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function() {
 });
 
 // rock driller
-
-// building for doing 'research' ?
 
 // building for sending research home
 
