@@ -9,6 +9,7 @@ import Events from '../events.mjs';
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
+import PredatorAI from '../ai/predator.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -263,6 +264,13 @@ export default class Character {
         return this.aggression * (this?.equipment?.attack?.range || 0);
     }
 
+    get hostile() {
+
+        // TODO: faction calculation
+        // if ai is predator
+        return this.ai instanceof PredatorAI;
+    }
+
     logarithmicCost(characterAttribute) {
         
         const baseCost = characterAttribute.baseCost || 1;
@@ -445,6 +453,39 @@ export default class Character {
         };
     }
 
+    getNearbyEntities(options = {}) {
+
+        options.max = options.max || 10;
+        options.distance = options.distance || 100;
+
+        const nearbyEntities = [];
+
+        for (var character of CHARACTER_LIST) {
+
+            if(character == this 
+                || this.#shouldFilterCharacter(character, options)) {
+                continue;
+            }
+
+            // Remember this is going to be weird because we're doing origin coordinates
+            // rather than bounding boxes
+            const distance = character.getDistance(this);
+            if (distance < options.distance) {
+                nearbyEntities.push({
+                    distance,
+                    entity: character
+                });
+            }
+        }
+
+        nearbyEntities.sort(this.#nearestSort);
+        if(nearbyEntities.length > options.max) {
+            nearbyEntities.splice(options.max - 1);
+        }
+
+        return nearbyEntities;
+    }
+
     // TODO: Need to prioritize close hostile entities over closer non-hostile
     getClosestEntity(options = {
         distance: 100,
@@ -456,46 +497,53 @@ export default class Character {
         // we could have a way to automatically map properties?
         grown: null,
         exclude: [],
-        faction: null
+        faction: null,
+        priorities: []
     }) {
 
-        if(!options.distance) options.distance = Infinity;
-        let closest = {
-            entity: null,
-            distance: options.distance
-        };
-        for (var character of CHARACTER_LIST) {
-            if (character != this) {
-                if (options.filterChildren && character.parent == this) {
-                    continue;
-                }
-                if (options.hostile != null && character.isHostile != options.hostile) {
-                    continue;
-                }
-                if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
-                    continue;
-                }
-                if(options.characterType != null && character.characterType != options.characterType) {
-                    continue;
-                }
-                if(options.exclude && options.exclude.includes(character)) {
-                    continue;
-                }
-                if(options.grown != null && character.isGrown != options.grown) {
-                    continue;
-                }
-                if(options.faction && character.faction != options.faction) {
-                    continue;
-                }
-                const distance = character.getDistance(this);
-                if (distance < closest.distance) {
-                    closest.distance = distance;
-                    closest.entity = character;
-                }
-            }
+        const nearbyEntities = this.getNearbyEntities(options);
+
+        // NOW implement priorities
+
+        return nearbyEntities[0]?.entity;
+    }
+
+    #nearestSort(first, second) {
+
+        if(first.distance > second.distance) {
+            return 1;
+        } else if(second.distance > first.distance) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    #shouldFilterCharacter(character, options) {
+
+        if (options.filterChildren && character.parent == this) {
+            return true;
+        }
+        if (options.hostile != null && character.isHostile != options.hostile) {
+            return true;
+        }
+        if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
+            return true;
+        }
+        if(options.characterType != null && character.characterType != options.characterType) {
+            return true;
+        }
+        if(options.exclude && options.exclude.includes(character)) {
+            return true;
+        }
+        if(options.grown != null && character.isGrown != options.grown) {
+            return true;
+        }
+        if(options.faction && character.faction != options.faction) {
+            return true;
         }
 
-        return closest.entity;
+        return false;
     }
 
     // private?
