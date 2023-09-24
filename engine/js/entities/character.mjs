@@ -507,7 +507,8 @@ export default class Character {
         exclude: [],
         faction: null,
         // lowest to highest
-        priorities: []
+        priorities: [],
+        characterProperties: {}
     }) {
 
         const nearbyEntities = this.getNearbyEntities(options);
@@ -571,6 +572,13 @@ export default class Character {
         }
         if(options.faction && character.faction != options.faction) {
             return true;
+        }
+        if(options.characterProperties) {
+            for(var key of Object.keys(options.characterProperties)) {
+                if(character[key] != options.characterProperties[key]) {
+                    return true;
+                }
+            }
         }
 
         return false;
