@@ -9,9 +9,10 @@ let LAST_SLOW_LOOP = performance.now();
 let LAST_FAST_LOOP = performance.now();
 
 export function RegisterLoopMethod (callback, needsFast = false) {
-    if(needsFast == true) {
+    if(needsFast == true
+        && !LOOP_METHODS_FAST.includes(callback)) {
         LOOP_METHODS_FAST.push(callback);
-    } else {
+    } else if(!LOOP_METHODS_SLOW.includes(callback)) {
         LOOP_METHODS_SLOW.push(callback);
     }
 }
