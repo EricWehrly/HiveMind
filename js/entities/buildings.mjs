@@ -2,15 +2,20 @@ import Character from './character-extensions.mjs';
 import CharacterType from './characterType.mjs';
 import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
-import HiveMindCharacter from './character-extensions.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.mjs';
-
-Events.List.BuildingBuilt = "BuildingBuilt";
+import BuildingsHiveMind from '../ai/hivemind-buildings.mjs';
+import { BuildBuilding } from './building.mjs';
 
 const Build = function(context) {
 
     const selectedBuilding = context?.menu?.selected?.context;
+
+    if(selectedBuilding.name != "Node") {
+
+        BuildingsHiveMind.QueueDesire(selectedBuilding);
+        return;
+    }
 
     const player = Character.LOCAL_PLAYER;
 
@@ -18,21 +23,8 @@ const Build = function(context) {
     characterOpts.color = player.color;
     characterOpts.position = player.position;
     characterOpts.faction = player.faction;
-    characterOpts.isBuilding = true;
 
-    const amount = characterOpts.health;
-    if(!player.canAfford(amount)) {
-        console.log(`You can't afford to build ${characterOpts.name} for ${amount}`);
-        console.log(`You got ${player.health}, son.`);
-        return;
-    }
-    player.health -= amount;
-
-    const building = new HiveMindCharacter(characterOpts);
-
-    Events.RaiseEvent(Events.List.BuildingBuilt, building);
-
-    return building;
+    return BuildBuilding(characterOpts);
 }
 
 const UI_MENU_BUILDINGS = new Menu({
@@ -60,13 +52,21 @@ new CharacterType({
 });
 
 new CharacterType({
+    name: 'Node',
+    health: 40,
+    ai: null
+});
+UI_MENU_BUILDINGS.addItem(CharacterType.Node);
+
+new CharacterType({
     name: 'Hunter',
     health: 30,
     _currentPurposeKey: 'spawn',
     _spawnPurposeKey: 'hunt',
     ai: null
 });
-UI_MENU_BUILDINGS.addItem(CharacterType.Hunter);
+const hunterMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Hunter);
+hunterMenuItem.Element.innerHTML = `Desire ${CharacterType.Hunter.name}`;
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
@@ -75,7 +75,8 @@ new CharacterType({
     health: 50,
     ai: null
 });
-UI_MENU_BUILDINGS.addItem(CharacterType.Researcher);
+const researcherMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Researcher);
+researcherMenuItem.Element.innerHTML = `Desire ${CharacterType.Researcher.name}`;
 
 new CharacterType({
     name: 'Healer',
@@ -83,14 +84,17 @@ new CharacterType({
     _currentPurposeKey: 'heal',
     ai: null
 });
-UI_MENU_BUILDINGS.addItem(CharacterType.Healer);
+const healerMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Healer);
+healerMenuItem.Element.innerHTML = `Desire ${CharacterType.Healer.name}`;
 
 // TODO: Later, generically unlock items in menus by having them locked/unlocked
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
 Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function() {
 
-    UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
-    UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
+    const seeder = UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+    seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
+    const eater = UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
+    eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
 });
 
 // rock driller
