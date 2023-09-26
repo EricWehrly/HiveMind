@@ -5,7 +5,7 @@ import UIElement from '../../engine/js/ui/ui-element.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.mjs';
 import BuildingsHiveMind from '../ai/hivemind-buildings.mjs';
-import { BuildBuilding } from './building.mjs';
+import Building from './building.mjs';
 
 const Build = function(context) {
 
@@ -24,7 +24,7 @@ const Build = function(context) {
     characterOpts.position = player.position;
     characterOpts.faction = player.faction;
 
-    return BuildBuilding(characterOpts);
+    return Building.Build(characterOpts);
 }
 
 const UI_MENU_BUILDINGS = new Menu({
