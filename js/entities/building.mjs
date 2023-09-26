@@ -48,7 +48,7 @@ export default class Building extends HiveMindCharacter {
         // TODO: check minimum food before doing this?
 
         this.characterType = intent.characterType;
-        if(this.health > (0.2 * this.maxHealth)) {
+        if (this.health > (0.2 * this.maxHealth)) {
             this.health -= (0.2 * this.maxHealth);
         }
         // TODO: Get this to stop producing negative numbers and drop the Math.abs
@@ -75,7 +75,7 @@ export default class Building extends HiveMindCharacter {
                 // ... do this with growing entities as well
                 this.health = (this.growth / 100) * this.growConfig.maxHealth;
 
-                if(this.isGrown) {
+                if (this.isGrown) {
                     const characterType = CharacterType[this.characterType];
                     this.name = characterType.name;
                     delete this.growth;

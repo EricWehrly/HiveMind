@@ -7,11 +7,11 @@ import Events from '../../engine/js/events.mjs';
 import BuildingsHiveMind from '../ai/hivemind-buildings.mjs';
 import Building from './building.mjs';
 
-const Build = function(context) {
+const Build = function (context) {
 
     const selectedBuilding = context?.menu?.selected?.context;
 
-    if(selectedBuilding.name != "Node") {
+    if (selectedBuilding.name != "Node") {
 
         BuildingsHiveMind.QueueDesire(selectedBuilding);
         return;
@@ -89,7 +89,7 @@ healerMenuItem.Element.innerHTML = `Desire ${CharacterType.Healer.name}`;
 
 // TODO: Later, generically unlock items in menus by having them locked/unlocked
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
-Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function() {
+Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
 
     const seeder = UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
     seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;

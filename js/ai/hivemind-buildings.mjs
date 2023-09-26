@@ -28,13 +28,13 @@ export default class BuildingsHiveMind {
 
     static #think() {
 
-        if(performance.now() < BuildingsHiveMind.#lastThought + BuildingsHiveMind.TIME_BETWEEN_THOUGHTS) {
+        if (performance.now() < BuildingsHiveMind.#lastThought + BuildingsHiveMind.TIME_BETWEEN_THOUGHTS) {
             return;
         }
 
         const localPlayer = Character.LOCAL_PLAYER;
         const food = Resource.Get("food");
-        if(food.value > FOOD_THRESHOLD) {
+        if (food.value > FOOD_THRESHOLD) {
 
             const closestToPlayer = localPlayer.getClosestEntity({
                 faction: localPlayer.faction,
@@ -43,25 +43,25 @@ export default class BuildingsHiveMind {
                 }
             });
 
-            if(closestToPlayer) {
+            if (closestToPlayer) {
 
-                if(!BuildingsHiveMind.#lastNodePosition) {
+                if (!BuildingsHiveMind.#lastNodePosition) {
                     BuildingsHiveMind.#lastNodePosition = closestToPlayer.position;
                 }
 
-                if(BuildingsHiveMind.#wantDevelopNode()) {
+                if (BuildingsHiveMind.#wantDevelopNode()) {
 
-                    const nodes = Character.get({characterType: "Node"});
+                    const nodes = Character.get({ characterType: "Node" });
                     const intent = BuildingsHiveMind.#desiredBuildingsQueue[0];
                     // check that we have node and intent, warn if no
-                    if(nodes && nodes.length > 0 && intent) {
+                    if (nodes && nodes.length > 0 && intent) {
                         nodes[0].Develop(intent);
                         BuildingsHiveMind.#buildNodeCount = nodes.length - 1;
                         BuildingsHiveMind.#desiredBuildingsQueue.splice(0, 1);
                     }
                     else console.warn(`No nodes?`);
 
-                } else if(BuildingsHiveMind.#wantNewNode()) {
+                } else if (BuildingsHiveMind.#wantNewNode()) {
 
                     const xDiff = Math.randomBool() ? 5 : -5;
 
@@ -78,7 +78,7 @@ export default class BuildingsHiveMind {
                     const building = Building.Build(options);
 
                     BuildingsHiveMind.#lastNodePosition = building.position;
-                } else if(BuildingsHiveMind.#buildNodeCount > 0) {
+                } else if (BuildingsHiveMind.#buildNodeCount > 0) {
                     // do we have nodes to develop?
                 }
             }
@@ -89,8 +89,8 @@ export default class BuildingsHiveMind {
 
     static #wantDevelopNode() {
 
-        return BuildingsHiveMind.#buildNodeCount > 0 
-        && BuildingsHiveMind.#desiredBuildingsQueue.length > 0;
+        return BuildingsHiveMind.#buildNodeCount > 0
+            && BuildingsHiveMind.#desiredBuildingsQueue.length > 0;
     }
 
     static #wantNewNode() {
@@ -104,9 +104,9 @@ export default class BuildingsHiveMind {
     static {
         RegisterLoopMethod(BuildingsHiveMind.#think, false);
 
-        Events.Subscribe(Events.List.GameStart, function() {
-            Events.Subscribe(Events.List.BuildingBuilt, function(building) {
-                if(building.name == "Node") BuildingsHiveMind.#buildNodeCount++;
+        Events.Subscribe(Events.List.GameStart, function () {
+            Events.Subscribe(Events.List.BuildingBuilt, function (building) {
+                if (building.name == "Node") BuildingsHiveMind.#buildNodeCount++;
             });
         });
     }
