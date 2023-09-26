@@ -80,6 +80,10 @@ function randomBetween(first, second) {
 }
 Math.randomBetween = randomBetween;
 
+Math.randomBool = function() {
+  return Math.randomBetween(0, 1) > 0.5;
+}
+
 /**
  * Returns an object with any public properties copied by value, rather than reference.
  * @param {Object} object 
