@@ -584,11 +584,18 @@ export default class Character {
         return false;
     }
 
+    removeGraphic() {
+
+        if(this.graphic) {
+            document.getElementById("playfield").removeChild(this.graphic);
+            delete this.graphic;
+        }
+    }
+
     // private?
     // TODO: Should we just flag not alive and defer 'fading out' corpse?
     die() {        
-        // console.log(`${this.name} is dead now.`);
-        if(this.graphic) document.getElementById("playfield").removeChild(this.graphic);
+        this.removeGraphic();
         
         Events.RaiseEvent(Events.List.CharacterDied, this);
 

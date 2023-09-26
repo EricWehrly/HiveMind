@@ -42,11 +42,11 @@ function updateTargetingClasses(event) {
 }
 
 function addClass(character, className) {
-    character.graphic.className += ` ${className}`;
+    if(character.graphic) character.graphic.className += ` ${className}`;
 }
 
 function removeClass(character, className) {
-    character.graphic.className = character.graphic.className.replace(className, "").trim();
+    if(character.graphic) character.graphic.className = character.graphic.className.replace(className, "").trim();
 }
 
 function redraw(character, screenRect) {
