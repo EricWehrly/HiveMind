@@ -153,3 +153,5 @@ export default class Events {
         return 0;
     }
 }
+
+if(window) window.Events = Events;

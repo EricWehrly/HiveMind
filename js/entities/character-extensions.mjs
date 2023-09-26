@@ -40,7 +40,7 @@ export default class HiveMindCharacter extends Character {
     get isGrown() {
 
         if(this.growth == undefined) return true;
-        if(this.growth == 100) return true;
+        if(this.growth >= 100) return true;
         return false;
     }
 
