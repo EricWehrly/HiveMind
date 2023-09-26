@@ -29,4 +29,18 @@ export default class Resource extends Listed {
 
         Events.RaiseEvent(Events.List.ResourceCreated, this);
     }
+
+    canAfford(amount) {
+
+        return this.#value >= amount;
+    }
+
+    pay(amount) {
+
+        if(!this.canAfford(amount)) return false;
+
+        this.value -= amount;
+
+        return true;
+    }
 }
