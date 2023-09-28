@@ -94,6 +94,7 @@ export default class Map {
 
     #playerMoved(event) {
         const character = event.character || event;
+        if(!character.isPlayer) return;
 
         const chunk = character.position.chunk;
 
