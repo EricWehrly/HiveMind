@@ -94,19 +94,11 @@ const Purposes =
         name: "grow",
         think: function (character, elapsed) {
 
-            // TODO: get from character config ...
-            const growConfig = {
-                subject: CharacterType.Food,
-                max: 8, // once 8 are grown, don't start any more
-                batchSize: 4,   // grow 4 at a time
-                interval: 10000 // how long does it take to fully grow 1 food?
-            };
-
             if (!character.growing) character.growing = [];
             const growing = character.growing.filter(growing => growing.growth < 100);
-            if (growing.length < growConfig.batchSize
-                && character.growing.length < growConfig.max) {
-                const newGrow = new HiveMindCharacter(growConfig.subject);
+            if (growing.length < character.growConfig.batchSize
+                && character.growing.length < character.growConfig.max) {
+                const newGrow = new HiveMindCharacter(character.growConfig.subject);
                 newGrow.growth = 0;
                 newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);
@@ -114,7 +106,7 @@ const Purposes =
 
             character.growing.forEach(growing => {
                 if (growing.growth < 100) {
-                    growing.growth += (100 / growConfig.interval) * elapsed;
+                    growing.growth += (100 / character.growConfig.interval) * elapsed;
                     growing.health = (growing.growth / 100) * growing.maxHealth;
                 }
                 if (growing.growth > 100) growing.growth = 100;

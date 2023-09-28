@@ -39,6 +39,12 @@ new CharacterType({
     name: 'Seeder',
     health: 15,
     _currentPurposeKey: 'grow',
+    growConfig: {
+        subject: CharacterType.Food,
+        max: 8, // once 8 are grown, don't start any more
+        batchSize: 4,   // grow 4 at a time
+        interval: 10000 // how long does it take to fully grow 1 food?
+    },
     ai: null
 });
 

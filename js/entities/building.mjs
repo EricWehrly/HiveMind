@@ -43,8 +43,6 @@ export default class Building extends HiveMindCharacter {
 
     Develop(intent) {
 
-        console.log(`Starting to develop ${this.name} into ${intent.characterType}`);
-
         // TODO: check minimum food before doing this?
 
         this.characterType = intent.characterType;
@@ -58,12 +56,9 @@ export default class Building extends HiveMindCharacter {
             interval: healthDiff * 500,
             maxHealth: CharacterType[intent.characterType].health
         }
-        console.log(`Healthdiff is ${healthDiff}`);
     }
 
     think(elapsed) {
-
-        if (this.ai) this.ai.think(elapsed);
 
         if (this.growth < 100) {
 
@@ -78,6 +73,8 @@ export default class Building extends HiveMindCharacter {
                 if (this.isGrown) {
                     const characterType = CharacterType[this.characterType];
                     this.name = characterType.name;
+                    this.growConfig = characterType.growConfig;
+                    this._currentPurposeKey = characterType._currentPurposeKey;
                     delete this.growth;
                     this.removeGraphic();
                     // assign ai?
@@ -86,5 +83,7 @@ export default class Building extends HiveMindCharacter {
                 }
             }
         }
+
+        super.think(elapsed);
     }
 }
