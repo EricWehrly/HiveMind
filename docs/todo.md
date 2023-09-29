@@ -1,4 +1,7 @@
-Player needs a way to 'deposit' food
+Are spawns having trouble moving when their y is 0?
+
+food is going to have to cost less than what you get for eating it
+    currently it is the case that food yields exactly what it costs to grow
 
 Building "find empty plot" method 
 
@@ -13,10 +16,6 @@ Less opaque
 Thicker border
 
 Maybe spawner should look wide and short 
-
-- enemies should also attack player entities (spawns, and buildings)
-    (let's see if the logs show us enemies targeting hunters)
-    (then we'll need to work on buildings afterwards)
 
 - maybe buildings should work like:
     - you hit 'B' to drop a new node (in exchange for food, as now)

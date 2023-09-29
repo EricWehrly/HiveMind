@@ -9,6 +9,7 @@ export default class Cheat {
         const localPlayer = Character.LOCAL_PLAYER;
 
         localPlayer.health *= 3;
+        localPlayer.maxHealth = localPlayer.health;
     }
 
     static get Food() {

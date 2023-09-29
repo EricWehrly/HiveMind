@@ -158,6 +158,7 @@ export default class HiveMindCharacter extends Character {
         const spawnedCharacter = new HiveMindCharacter({
             name,
             health: amount,
+            maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
             position: this.position,
             _currentPurposeKey: purpose.name.toLowerCase(),
             faction: this.faction,
@@ -176,11 +177,7 @@ export default class HiveMindCharacter extends Character {
 
         if(this.health == 0 || this.parent == null) debugger;
 
-        // TODO: isPlayer -> (not) isBuilding
-        let maxToGive = Infinity;
-        if(this.parent.isPlayer != true) {
-            maxToGive = this.parent.maxHealth - this.parent.health;
-        }
+        const maxToGive = this.parent.maxHealth - this.parent.health;
         const amountToGive = Math.min(this.health, maxToGive);
 
         if(this.health > amountToGive) {
@@ -238,6 +235,7 @@ export default class HiveMindCharacter extends Character {
                     this.name = characterType.name;
                     this.growConfig = characterType.growConfig;
                     this._currentPurposeKey = characterType._currentPurposeKey;
+                    this._spawnPurposeKey = characterType._spawnPurposeKey;
                     delete this.growth;
                     this.removeGraphic();
                     // assign ai?
