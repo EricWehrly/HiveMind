@@ -51,10 +51,7 @@ export default class Building extends HiveMindCharacter {
         }
         // TODO: Get this to stop producing negative numbers and drop the Math.abs
         const healthDiff = Math.abs(intent.health - this.health);
-        this.growth = 0;
+        this.grow(healthDiff * 500);
         this.maxHealth = CharacterType[intent.characterType].health;
-        this.growConfig = {
-            interval: healthDiff * 500
-        }
     }
 }

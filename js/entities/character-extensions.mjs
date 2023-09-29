@@ -117,7 +117,7 @@ export default class HiveMindCharacter extends Character {
         }
 
         if (this.growth != null && this.growth < 100) {
-            this.grow(elapsed);
+            this.#grow(elapsed);
         }
     }
 
@@ -206,20 +206,29 @@ export default class HiveMindCharacter extends Character {
         }
     }
 
+    // assert type integer?
+    grow(interval) {
+        this.growth = 0;
+        // TODO: I hate this.
+        this.health = .0001;
+        this.growConfig = {
+            interval
+        };
+    }
+
     // maybe we could expand this to accept a growthconfig
     // as a means to get growing started
-    grow(elapsed) {
+    #grow(elapsed) {
 
-        // abort if no growth or growconfig
         if(this.growth == null) return;
 
         const food = Resource.Get("food");
         const growthAmount = (100 / this.growConfig.interval) * elapsed;
         if (food.pay(growthAmount)) {
             this.growth += growthAmount;
-            // TODO: +=, not =
-            // ... do this with growing entities as well
-            this.health = (this.growth / 100) * this.maxHealth;
+            const growthIncrement = growthAmount / 100;
+            const healAmount = growthIncrement * this.maxHealth
+            this.health += healAmount;
 
             if(this.isGrown) {
                 delete this.growth;

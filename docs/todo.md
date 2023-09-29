@@ -1,3 +1,5 @@
+Player needs a way to 'deposit' food
+
 Building "find empty plot" method 
 
 - we should reduce the interval for spawning for subdivide

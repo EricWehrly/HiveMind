@@ -99,10 +99,7 @@ const Purposes =
             if (growing.length < character.growConfig.batchSize
                 && character.growing.length < character.growConfig.max) {
                 const newGrow = new HiveMindCharacter(character.growConfig.subject);
-                newGrow.growth = 0;
-                newGrow.growConfig = {
-                    interval: character.growConfig.interval
-                };
+                newGrow.grow(character.growConfig.interval);
                 newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);
             }
