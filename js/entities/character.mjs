@@ -153,7 +153,7 @@ export default class Character {
         if (options.color === null) delete this.color;
         // options.image
         this.#spawnPosition = new Point(this.position.x, this.position.y);
-        this.#initialHealth = JSON.parse(JSON.stringify(this.health));
+        if(!options.maxHealth) this.#initialHealth = JSON.parse(JSON.stringify(this.health));
         
         this.addAttribute(new CharacterAttribute({
             name: 'Speed',

@@ -81,21 +81,21 @@ export default class Action extends Listed {
             isCharacterControl: true,
             callback: function (options) {
                 const equipment = options?.character?.equipment;
-                if(equipment == null) return false;
+                if(equipment == null) return 0;
 
                 const equipped = equipment[Technology.Types.ATTACK];
                 if (equipped == null) {
                     console.log("Character has no attack skill equipped!");
-                    return;
+                    return 0;
                 }
 
                 // the wrapping function checks the delay on the action,
                 // this is checking delay set on the equipped technology
-                if (!this.checkDelay(equipped)) return false;
+                if (!this.checkDelay(equipped)) return 0;
 
-                if(!(options.character.target instanceof Character)) return false;
+                if(!(options.character.target instanceof Character)) return 0;
 
-                if (!this.inRange(equipped, options.character)) return false;
+                if (!this.inRange(equipped, options.character)) return 0;
 
                 // TODO: visual and audio cues
                 if (options?.character?.target) {
@@ -104,13 +104,16 @@ export default class Action extends Listed {
                     const target = character.target;
                     const strAttr = character.getAttribute("Strength");
 
-                    // compute volume based on distance
-                    // maybe every 10 pixels away = -1 volume?
-                    // (volume is between 0.0 and 1.0)
-                    const distance = 100 - character.position.distance(Character.LOCAL_PLAYER.position);
-                    equipped.playSound({
-                        volume: distance
-                    });
+                    // TODO: is there a better way to check whether to play sound?
+                    if(character._currentPurposeKey != "consume") {
+                        // compute volume based on distance
+                        // maybe every 10 pixels away = -1 volume?
+                        // (volume is between 0.0 and 1.0)
+                        const distance = 100 - character.position.distance(Character.LOCAL_PLAYER.position);
+                        equipped.playSound({
+                            volume: distance
+                        });
+                    }
 
                     const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
                     const damage = (equipped.damage * strengthMultiplier);
@@ -144,9 +147,9 @@ export default class Action extends Listed {
                             });
                         }
                     }
-                }
 
-                return true;
+                    return damage;
+                }
             }
         });
 
@@ -293,9 +296,11 @@ export default class Action extends Listed {
 
                 if (!this.checkDelay(this)) return;
 
-                options.result = baseCallback.bind(this)(options);
+                const result = baseCallback.bind(this)(options);
 
                 Events.RaiseEvent(`${Events.List.ActionFired}-${this.name}`, options);
+
+                return result;
             }
         }
     }
