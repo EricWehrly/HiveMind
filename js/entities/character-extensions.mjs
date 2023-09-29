@@ -115,6 +115,10 @@ export default class HiveMindCharacter extends Character {
                 HiveMindCharacter.Purposes[this._currentPurposeKey].think(this, elapsed);
             }
         }
+
+        if (this.growth != null && this.growth < 100) {
+            this.grow(elapsed);
+        }
     }
 
     SetCurrentPurpose = function (newPurpose) {
@@ -198,6 +202,39 @@ export default class HiveMindCharacter extends Character {
             if(spawnTarget.equals(target)) {
                 this.#spawnTargets = this.#spawnTargets.splice(i, 1);
                 break;
+            }
+        }
+    }
+
+    // maybe we could expand this to accept a growthconfig
+    // as a means to get growing started
+    grow(elapsed) {
+
+        // abort if no growth or growconfig
+        if(this.growth == null) return;
+
+        const food = Resource.Get("food");
+        const growthAmount = (100 / this.growConfig.interval) * elapsed;
+        if (food.pay(growthAmount)) {
+            this.growth += growthAmount;
+            // TODO: +=, not =
+            // ... do this with growing entities as well
+            this.health = (this.growth / 100) * this.maxHealth;
+
+            if(this.isGrown) {
+                delete this.growth;
+
+                const characterType = CharacterType[this.characterType];
+                if (this.name != characterType.name) {
+                    this.name = characterType.name;
+                    this.growConfig = characterType.growConfig;
+                    this._currentPurposeKey = characterType._currentPurposeKey;
+                    delete this.growth;
+                    this.removeGraphic();
+                    // assign ai?
+                    // health is correect?
+                    console.log(`Finished developing ${this.name}`);
+                }
             }
         }
     }

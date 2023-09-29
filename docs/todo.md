@@ -1,8 +1,16 @@
-we should reduce the interval for spawning for subdivide
+Building "find empty plot" method 
+
+- we should reduce the interval for spawning for subdivide
 
 - buildings for: defending
     defense can later break out to either turrets or unit spawners
     Once 1 research, can research research and unlock research node which speeds up research
+
+Defense building should look tougher, more callous:
+Less opaque
+Thicker border
+
+Maybe spawner should look wide and short 
 
 - enemies should also attack player entities (spawns, and buildings)
     (let's see if the logs show us enemies targeting hunters)
@@ -53,6 +61,10 @@ Should be able to switch to a new attack even if switch in progress is not compl
 
 - priorities for targets for player acquisition
     Animal > Native Flora > Player Spawns
+
+Rather than a broad Ai, each 'node' (or structure) should only be able to think about either 
+    doings it's job, or building another node 
+    Until whichever it chooses has finished, and it can reconsider
 
 ---
 

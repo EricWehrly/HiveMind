@@ -67,6 +67,11 @@ export default class Character {
         return this.#initialHealth;
     }
 
+    // TODO: wish this was 'protected'
+    set maxHealth(newValue) {
+        this.#initialHealth = newValue;
+    }
+
     _position = new Point(0, 0);
     #lastPosition = null;
 

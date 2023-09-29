@@ -100,24 +100,11 @@ const Purposes =
                 && character.growing.length < character.growConfig.max) {
                 const newGrow = new HiveMindCharacter(character.growConfig.subject);
                 newGrow.growth = 0;
+                newGrow.growConfig = {
+                    interval: character.growConfig.interval
+                };
                 newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);
-            }
-
-            character.growing.forEach(growing => {
-                if (growing.growth < 100) {
-                    growing.growth += (100 / character.growConfig.interval) * elapsed;
-                    growing.health = (growing.growth / 100) * growing.maxHealth;
-                }
-                if (growing.growth > 100) growing.growth = 100;
-            });
-
-            for (var index = 0; index < character.growing.length; index++) {
-                const growing = character.growing[index];
-
-                if (growing.growth == 100) {
-                    delete growing.growth;
-                }
             }
         }
     },

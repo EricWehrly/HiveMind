@@ -52,38 +52,9 @@ export default class Building extends HiveMindCharacter {
         // TODO: Get this to stop producing negative numbers and drop the Math.abs
         const healthDiff = Math.abs(intent.health - this.health);
         this.growth = 0;
+        this.maxHealth = CharacterType[intent.characterType].health;
         this.growConfig = {
-            interval: healthDiff * 500,
-            maxHealth: CharacterType[intent.characterType].health
+            interval: healthDiff * 500
         }
-    }
-
-    think(elapsed) {
-
-        if (this.growth < 100) {
-
-            const food = Resource.Get("food");
-            const growthAmount = (100 / this.growConfig.interval) * elapsed;
-            if (food.pay(growthAmount)) {
-                this.growth += growthAmount;
-                // TODO: +=, not =
-                // ... do this with growing entities as well
-                this.health = (this.growth / 100) * this.growConfig.maxHealth;
-
-                if (this.isGrown) {
-                    const characterType = CharacterType[this.characterType];
-                    this.name = characterType.name;
-                    this.growConfig = characterType.growConfig;
-                    this._currentPurposeKey = characterType._currentPurposeKey;
-                    delete this.growth;
-                    this.removeGraphic();
-                    // assign ai?
-                    // health is correect?
-                    console.log(`Finished developing ${this.name}`);
-                }
-            }
-        }
-
-        super.think(elapsed);
     }
 }
