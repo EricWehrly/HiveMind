@@ -24,7 +24,7 @@ const Build = function (context) {
     characterOpts.position = player.position;
     characterOpts.faction = player.faction;
 
-    return Building.Build(characterOpts);
+    return new Building(characterOpts);
 }
 
 const UI_MENU_BUILDINGS = new Menu({

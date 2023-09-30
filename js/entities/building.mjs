@@ -7,33 +7,17 @@ Events.List.BuildingBuilt = "BuildingBuilt";
 
 export default class Building extends HiveMindCharacter {
 
-    // probably need to move this to constructor
-    static Build(options) {
-
-        if (!options.characterType) throw `You need a character type.`;
-
-        const characterOpts = Object.assign({}, CharacterType[options.characterType]);
-        if (options.color) characterOpts.color = options.color;
-        if (options.position) characterOpts.position = options.position;
-        if (options.faction) characterOpts.faction = options.faction;
-
-        const amount = characterOpts.health;
-        const food = Resource.Get("food");
-
-        if (food.pay(amount)) {
-            const building = new Building(characterOpts);
-
-            return building;
-        } else {
-            console.log(`You can't afford to build ${characterOpts.characterType} for ${amount}`);
-            console.log(`You got ${food.value}, son.`);
-        }
-    }
-
+    // we may be able to do all this in the base class
     constructor(options) {
 
-        // TODO: If this.position collides, "slide" it until it doesn't
-        // .. with a max amount
+        if(options.cost) {
+            const food = Resource.Get("food");
+            if(!food.pay(options.cost)) {
+                console.log(`You can't afford to build ${characterOpts.characterType} for ${amount}`);
+                console.log(`You got ${food.value}, son.`);
+                return;
+            }
+        }
 
         super(options);
         this.isBuilding = true;

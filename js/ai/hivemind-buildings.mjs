@@ -75,7 +75,8 @@ export default class BuildingsHiveMind {
                         faction: localPlayer.faction
                     };
 
-                    const building = Building.Build(options);
+                    // take some time to construct?
+                    const building = new Building(options);
 
                     BuildingsHiveMind.#lastNodePosition = building.position;
                 } else if (BuildingsHiveMind.#buildNodeCount > 0) {
