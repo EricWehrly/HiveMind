@@ -2,27 +2,126 @@ import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "./characterType.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import Events from "../../engine/js/events.mjs";
+import Character from "../../engine/js/entities/character.mjs";
+import Point from "../../engine/js/baseTypes/point.mjs"
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
+const TIME_BETWEEN_THOUGHTS = 3000;
+
 export default class Building extends HiveMindCharacter {
+
+    static #FOOD_THRESHOLD = 100;
+    static #BUILDING_PADDING = 10;
+    static #MAX_SPARE_NODES = 5;
+    static #desiredBuildingsQueue = [];
+
+    static QueueDesire(desire) {
+
+        Building.#desiredBuildingsQueue.push(desire);
+        // console.log(`Desure: ${desire}`);
+    }
+
+    static #wantDevelopNode() {
+
+        return Building.#desiredBuildingsQueue.length > 0;
+    }
+
+    static #wantNewNode() {
+
+        // we probably do want to go back to event tracking,
+        // rather than needing to traverse the character list each tick
+        const nodeCount = Character.get({
+            name: "Node"
+        }).length;
+
+        return (nodeCount == 0
+            || Building.#desiredBuildingsQueue.length == 0)
+            && nodeCount < Building.#MAX_SPARE_NODES;
+        // if request queue is empty, MAYBE we want new nodes?
+    }
+
+    // TODO: We should be able to get rid of this once it takes time to make a node
+    #lastThought = performance.now();
 
     // we may be able to do all this in the base class
     constructor(options) {
 
-        if(options.cost) {
+        // TODO: there are a LOT of undefined variables on these
+        // 'name' is actually unset/undefined
+        // but color and cost are getting assigned the VALUE of undefined
+        const characterType = CharacterType[options.characterType];
+        const cost = options.cost || characterType.cost || characterType.health;
+
+        if(cost) {
             const food = Resource.Get("food");
-            if(!food.pay(options.cost)) {
+            if(!food.pay(cost)) {
                 console.log(`You can't afford to build ${characterOpts.characterType} for ${amount}`);
                 console.log(`You got ${food.value}, son.`);
                 return;
             }
+        } else {
+            console.warn(`No cost!`);
         }
+
+        // does this fix it moving?
+        options.speed = 0;
 
         super(options);
         this.isBuilding = true;
 
         Events.RaiseEvent(Events.List.BuildingBuilt, this);
+    }
+
+    think(elapsed) {
+        // TODO: pretty sure this guy is moving and shouldn't be
+        super.think(elapsed);
+
+        // if last thought
+        if(this.#lastThought + TIME_BETWEEN_THOUGHTS > performance.now()) {
+            return;
+        }
+
+        if(this.name == "Node") {
+            const localPlayer = Character.LOCAL_PLAYER;
+            const food = Resource.Get("food");
+            if (food.value > Building.#FOOD_THRESHOLD) {
+
+                if (Building.#wantDevelopNode()) {
+
+                    const intent = Building.#desiredBuildingsQueue[0];
+                    // check that we have node and intent, warn if no
+                    if (intent) {
+                        this.Develop(intent);
+                        // Building.#buildNodeCount -= 1;
+                        // we could probably slice it off instead?
+                        Building.#desiredBuildingsQueue.splice(0, 1);
+                    }
+                    // else come up with our own building to develop
+
+                } else if (Building.#wantNewNode()) {
+
+                    // this needs to be changed entirely
+                    const xDiff = Math.randomBool() ? 5 : -5;
+
+                    const position = new Point(
+                        this.position.x + xDiff,
+                        this.position.y + Building.#BUILDING_PADDING / 2);
+
+                    // console.log(`I'm at ${this.position}, making a new node at ${position}`);
+
+                    const options = Object.assign({}, CharacterType.Node);
+                    options.position = position;
+                    options.faction = this.faction;
+                    options.cost = CharacterType.Node.health;
+
+                    // TODO: take some time to construct (grow)
+                    new Building(options);
+                }
+            }
+        }
+
+        this.#lastThought = performance.now();
     }
 
     Develop(intent) {

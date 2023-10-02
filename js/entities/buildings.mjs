@@ -4,7 +4,6 @@ import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.mjs';
-import BuildingsHiveMind from '../ai/hivemind-buildings.mjs';
 import Building from './building.mjs';
 
 const Build = function (context) {
@@ -13,7 +12,7 @@ const Build = function (context) {
 
     if (selectedBuilding.name != "Node") {
 
-        BuildingsHiveMind.QueueDesire(selectedBuilding);
+        Building.QueueDesire(selectedBuilding);
         return;
     }
 
