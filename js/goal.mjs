@@ -6,6 +6,8 @@ import UIElement from "../engine/js/ui/ui-element.mjs";
 // of Engine-level Objective definitions
 // but that's arguably more than we need right now
 
+let playerHasWon = false;
+
 const UI_ELEMENT_PROGRESS = new UIElement({
     screenZone: UIElement.SCREEN_ZONE.TOP_CENTER
 });
@@ -14,6 +16,8 @@ UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress";
 
 
 Events.Subscribe(Events.List.BuildingBuilt, function(building) {
+
+    if(playerHasWon) return;
 
     const buildings = Character.get({
         isBuilding: true
@@ -30,5 +34,7 @@ Events.Subscribe(Events.List.BuildingBuilt, function(building) {
 
     if(progress >= 100) {
         alert("You win!");
+        // TODO: unsubscribe event (instead of using variable)
+        playerHasWon = true;
     }
 });
