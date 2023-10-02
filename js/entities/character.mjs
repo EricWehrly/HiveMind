@@ -139,7 +139,7 @@ export default class Character {
         }
 
         let speedVal = 1;
-        if(options.speed) {
+        if(options.speed != undefined) {
 
             speedVal = options.speed;
             delete options.speed;
@@ -648,3 +648,5 @@ export default class Character {
             && character?.id == this.id;
     }
 }
+
+if(window) window.Character = Character;
