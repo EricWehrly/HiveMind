@@ -33,11 +33,12 @@ export default class CharacterAttribute {
     constructor(options) {
 
         if(!options.name) debugger;
+        if(options.value == undefined) debugger;
 
         this.#name = options.name;
 
-        if(options.value) this.#value = options.value;
-        if(options.baseCost) this.#baseCost = options.baseCost;
+        if(options.value != undefined) this.#value = options.value;
+        if(options.baseCost != undefined) this.#baseCost = options.baseCost;
     
         if(options.costFunction) {
             this.#costFunction = options.costFunction;
