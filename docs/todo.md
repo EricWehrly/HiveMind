@@ -1,9 +1,13 @@
+buildings issues:
+    - consumer slimes too quick
+    - food costs same as it makes
+    - too easy to get stuck in not having enough food
+    - new nodes have a tendency to 'stack' position
+
 Are spawns having trouble moving when their y is 0?
 
 food is going to have to cost less than what you get for eating it
     currently it is the case that food yields exactly what it costs to grow
-
-Building "find empty plot" method 
 
 - we should reduce the interval for spawning for subdivide
 
@@ -27,6 +31,10 @@ Maybe spawner should look wide and short
 - Enemy technologies:
     - poison,
     - shell (protective)
+
+Building "find empty plot" method 
+    (after a little physics / collision maybe?)
+    we also probably need methods for comparing areas rather than points
 
 - need to finish implementing biomes
 

@@ -22,6 +22,16 @@ export default class Building extends HiveMindCharacter {
         // console.log(`Desure: ${desire}`);
     }
 
+    static #randomPositionOffset(source, offsetAmountPerAxis) {
+    
+        let xOffset = Math.randomBetween(0, offsetAmountPerAxis);
+        if (Math.random() < 0.5) xOffset *= -1;
+        let yOffset = Math.randomBetween(0, offsetAmountPerAxis);
+        if (Math.random() < 0.5) yOffset *= -1;
+    
+        return new Point(source.x + xOffset, source.y + yOffset);
+    }
+
     static #wantDevelopNode() {
 
         return Building.#desiredBuildingsQueue.length > 0;
@@ -69,6 +79,7 @@ export default class Building extends HiveMindCharacter {
 
         super(options);
         this.isBuilding = true;
+        this.growing = [];
 
         Events.RaiseEvent(Events.List.BuildingBuilt, this);
     }
@@ -83,7 +94,17 @@ export default class Building extends HiveMindCharacter {
         }
 
         if(this.name == "Node") {
-            const localPlayer = Character.LOCAL_PLAYER;
+
+            // there HAS to be a cleaner way to do this
+            for(var index = 0; index < this.growing.length; index++) {
+                if(this.growing[index].isGrown) {
+                    this.growing.splice(index, 1);
+                    index--;
+                }
+            }
+            
+            if(this.growing.length > 0) return;
+
             const food = Resource.Get("food");
             if (food.value > Building.#FOOD_THRESHOLD) {
 
@@ -102,11 +123,7 @@ export default class Building extends HiveMindCharacter {
                 } else if (Building.#wantNewNode()) {
 
                     // this needs to be changed entirely
-                    const xDiff = Math.randomBool() ? 5 : -5;
-
-                    const position = new Point(
-                        this.position.x + xDiff,
-                        this.position.y + Building.#BUILDING_PADDING / 2);
+                    const position = Building.#randomPositionOffset(this.position, Building.#BUILDING_PADDING / 2);
 
                     // console.log(`I'm at ${this.position}, making a new node at ${position}`);
 
@@ -116,7 +133,13 @@ export default class Building extends HiveMindCharacter {
                     options.cost = CharacterType.Node.health;
 
                     // TODO: take some time to construct (grow)
-                    new Building(options);
+                    const building = new Building(options);
+
+                    const healthDiff = building.health * .9;
+                    building.health = building.health * 0.1;
+                    building.grow(healthDiff * 500);
+
+                    this.growing.push(building);
                 }
             }
         }
