@@ -59,9 +59,7 @@ const Purposes =
                     character.SetCurrentPurpose("return");
                 } else if (attack && character.position.distance(character.target.position) < attack.range
                     && character.target.dead != true) {
-                    const attackAmount = Action.List['attack'].callback({
-                        character
-                    });
+                    const attackAmount = character.attack();
                     character.health += attackAmount;
                 }
             }

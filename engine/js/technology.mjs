@@ -21,6 +21,7 @@ export default class Technology extends Listed {
         BUFF: "buff"
     }
 
+    #lastFired = performance.now();
     #lastPlayedSoundIndex = -1;
     #sound = [];
     get sound() {
@@ -82,6 +83,26 @@ export default class Technology extends Listed {
             else this.#statusEffect = options.statusEffect;
         }
         this.#statusEffectDuration = options.statusEffectDuration;
+    }
+
+    checkDelay() {
+
+        if (this.delay && this.#lastFired &&
+            performance.now() - this.#lastFired < this.delay) return false;
+        else if (this.delay) this.#lastFired = performance.now();
+
+        return true;
+    }
+
+    checkRange(character) {
+
+        if (this.range) {
+            if (!character?.target) return false;
+
+            if (character.getDistance(character.target) > this.range) return false;
+        }
+
+        return true;
     }
 
     playSound(options) {

@@ -10,7 +10,7 @@ import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
 import PredatorAI from '../ai/predator.mjs';
-import CharacterType from '../../../js/entities/characterType.mjs';
+import MessageLog from '../core/messageLog.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 Events.List.CharacterDied = "CharacterDied";
@@ -275,6 +275,78 @@ export default class Character {
         // TODO: faction calculation
         // if ai is predator
         return this.ai instanceof PredatorAI;
+    }
+
+    attack() {
+        
+        const equipment = this.equipment;
+        if(equipment == null) return 0;
+
+        const equipped = equipment[Technology.Types.ATTACK];
+        if (equipped == null) {
+            console.log("Character has no attack skill equipped!");
+            return 0;
+        }
+
+        if (!equipped.checkDelay()) return 0;
+
+        if(!(this.target instanceof Character)) return 0;
+
+        if (!equipped.checkRange(this)) return 0;
+
+        // TODO: visual and audio cues
+        if (this.target) {
+
+            const character = this;
+            const target = character.target;
+            const strAttr = character.getAttribute("Strength");
+
+            // TODO: is there a better way to check whether to play sound?
+            if(character._currentPurposeKey != "consume") {
+                // compute volume based on distance
+                // maybe every 10 pixels away = -1 volume?
+                // (volume is between 0.0 and 1.0)
+                const distance = 100 - character.position.distance(Character.LOCAL_PLAYER.position);
+                equipped.playSound({
+                    volume: distance
+                });
+            }
+
+            const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
+            const damage = (equipped.damage * strengthMultiplier);
+            const combatLog = MessageLog.Get("Combat");
+            target.health -= damage;
+
+            const message = `${character.name} attacked ${target.name}`
+                + ` for ${equipped.damage} * ${strengthMultiplier}.`;
+            combatLog.log(message, {
+                attacker: character.id,
+                attackee: target.id,
+                damage
+            });
+
+            if(equipped.statusEffect) {
+                target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
+            }
+
+            if(target.equipment) {
+                const buff = target.equipment[Technology.Types.BUFF];
+                if(buff) {                            
+                    const thornDamage = buff.thorns * target.thornMultiplier;
+                    character.health -= thornDamage;
+
+                    const message = `${target.name} thorns ${character.name}`
+                        + ` for ${buff.thorns} * ${target.thornMultiplier}.`;
+                    combatLog.log(message, {
+                        attacker: character.id,
+                        attackee: target.id,
+                        damage
+                    });
+                }
+            }
+
+            return damage;
+        }
     }
 
     logarithmicCost(characterAttribute) {
