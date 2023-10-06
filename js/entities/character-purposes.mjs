@@ -60,7 +60,7 @@ const Purposes =
                 } else if (attack && character.position.distance(character.target.position) < attack.range
                     && character.target.dead != true) {
                     const attackAmount = character.attack();
-                    character.health += attackAmount;
+                    character.health += 2 * attackAmount;
                 }
             }
         }
