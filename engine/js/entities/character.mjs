@@ -277,76 +277,83 @@ export default class Character {
         return this.ai instanceof PredatorAI;
     }
 
-    attack() {
+    canAttack() {
+
+        // eventually, we won't want this to be the case ...
+        if(!this.target) return false;
         
         const equipment = this.equipment;
-        if(equipment == null) return 0;
+        if(equipment == null) return false;
 
         const equipped = equipment[Technology.Types.ATTACK];
         if (equipped == null) {
             console.log("Character has no attack skill equipped!");
-            return 0;
+            return false;
         }
 
-        if (!equipped.checkDelay()) return 0;
+        if (!equipped.checkDelay()) return false;
 
-        if(!(this.target instanceof Character)) return 0;
+        if(!(this.target instanceof Character)) return false;
 
-        if (!equipped.checkRange(this)) return 0;
+        if (!equipped.checkRange(this)) return false;
+
+        return true;
+    }
+
+    attack() {
+
+        if(!this.canAttack()) return 0;
 
         // TODO: visual and audio cues
-        if (this.target) {
 
-            const character = this;
-            const target = character.target;
-            const strAttr = character.getAttribute("Strength");
+        const target = this.target;
+        const strAttr = this.getAttribute("Strength");
 
-            // TODO: is there a better way to check whether to play sound?
-            if(character._currentPurposeKey != "consume") {
-                // compute volume based on distance
-                // maybe every 10 pixels away = -1 volume?
-                // (volume is between 0.0 and 1.0)
-                const distance = 100 - character.position.distance(Character.LOCAL_PLAYER.position);
-                equipped.playSound({
-                    volume: distance
+        // TODO: is there a better way to check whether to play sound?
+        if(this._currentPurposeKey != "consume") {
+            // compute volume based on distance
+            // maybe every 10 pixels away = -1 volume?
+            // (volume is between 0.0 and 1.0)
+            const distance = 100 - this.position.distance(Character.LOCAL_PLAYER.position);
+            equipped.playSound({
+                volume: distance
+            });
+        }
+
+        const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
+        const damage = (equipped.damage * strengthMultiplier);
+        const combatLog = MessageLog.Get("Combat");
+        target.health -= damage;
+
+        const message = `${this.name} attacked ${target.name}`
+            + ` for ${equipped.damage} * ${strengthMultiplier}.`;
+        combatLog.log(message, {
+            attacker: this.id,
+            attackee: target.id,
+            damage
+        });
+
+        if(equipped.statusEffect) {
+            target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
+        }
+
+        if(target.equipment) {
+            const buff = target.equipment[Technology.Types.BUFF];
+            if(buff) {                            
+                const thornDamage = buff.thorns * target.thornMultiplier;
+                this.health -= thornDamage;
+
+                const message = `${target.name} thorns ${this.name}`
+                    + ` for ${buff.thorns} * ${target.thornMultiplier}.`;
+                combatLog.log(message, {
+                    attacker: this.id,
+                    attackee: target.id,
+                    damage
                 });
             }
-
-            const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
-            const damage = (equipped.damage * strengthMultiplier);
-            const combatLog = MessageLog.Get("Combat");
-            target.health -= damage;
-
-            const message = `${character.name} attacked ${target.name}`
-                + ` for ${equipped.damage} * ${strengthMultiplier}.`;
-            combatLog.log(message, {
-                attacker: character.id,
-                attackee: target.id,
-                damage
-            });
-
-            if(equipped.statusEffect) {
-                target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
-            }
-
-            if(target.equipment) {
-                const buff = target.equipment[Technology.Types.BUFF];
-                if(buff) {                            
-                    const thornDamage = buff.thorns * target.thornMultiplier;
-                    character.health -= thornDamage;
-
-                    const message = `${target.name} thorns ${character.name}`
-                        + ` for ${buff.thorns} * ${target.thornMultiplier}.`;
-                    combatLog.log(message, {
-                        attacker: character.id,
-                        attackee: target.id,
-                        damage
-                    });
-                }
-            }
-
-            return damage;
         }
+
+        return damage;
     }
 
     logarithmicCost(characterAttribute) {
