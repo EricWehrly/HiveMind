@@ -5,7 +5,6 @@ import Requirements from './requirements.mjs';
 import Events from './events.mjs';
 import Menu from './ui/menu.mjs';
 import Technology from './technology.mjs';
-import MessageLog from './core/messageLog.mjs';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -80,76 +79,14 @@ export default class Action extends Listed {
             name: 'attack',
             isCharacterControl: true,
             callback: function (options) {
-                const equipment = options?.character?.equipment;
-                if(equipment == null) return 0;
 
-                const equipped = equipment[Technology.Types.ATTACK];
-                if (equipped == null) {
-                    console.log("Character has no attack skill equipped!");
+                if(!options.character) {
+                    console.warn("No character. Fix this.");
                     return 0;
                 }
 
-                // the wrapping function checks the delay on the action,
-                // this is checking delay set on the equipped technology
-                if (!this.checkDelay(equipped)) return 0;
-
-                if(!(options.character.target instanceof Character)) return 0;
-
-                if (!this.inRange(equipped, options.character)) return 0;
-
-                // TODO: visual and audio cues
-                if (options?.character?.target) {
-
-                    const character = options.character;
-                    const target = character.target;
-                    const strAttr = character.getAttribute("Strength");
-
-                    // TODO: is there a better way to check whether to play sound?
-                    if(character._currentPurposeKey != "consume") {
-                        // compute volume based on distance
-                        // maybe every 10 pixels away = -1 volume?
-                        // (volume is between 0.0 and 1.0)
-                        const distance = 100 - character.position.distance(Character.LOCAL_PLAYER.position);
-                        equipped.playSound({
-                            volume: distance
-                        });
-                    }
-
-                    const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
-                    const damage = (equipped.damage * strengthMultiplier);
-                    const combatLog = MessageLog.Get("Combat");
-                    target.health -= damage;
-
-                    const message = `${character.name} attacked ${target.name}`
-                        + ` for ${equipped.damage} * ${strengthMultiplier}.`;
-                    combatLog.log(message, {
-                        attacker: character.id,
-                        attackee: target.id,
-                        damage
-                    });
-
-                    if(equipped.statusEffect) {
-                        target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
-                    }
-
-                    if(target.equipment) {
-                        const buff = target.equipment[Technology.Types.BUFF];
-                        if(buff) {                            
-                            const thornDamage = buff.thorns * target.thornMultiplier;
-                            character.health -= thornDamage;
-
-                            const message = `${target.name} thorns ${character.name}`
-                                + ` for ${buff.thorns} * ${target.thornMultiplier}.`;
-                            combatLog.log(message, {
-                                attacker: character.id,
-                                attackee: target.id,
-                                damage
-                            });
-                        }
-                    }
-
-                    return damage;
-                }
+                // TODO: remove 'options.character'
+                return options.character.attack(options);
             }
         });
 
