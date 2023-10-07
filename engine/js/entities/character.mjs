@@ -304,6 +304,8 @@ export default class Character {
 
         if(!this.canAttack()) return 0;
 
+        const equipped = this.equipment[Technology.Types.ATTACK];
+
         // TODO: visual and audio cues
 
         const target = this.target;
