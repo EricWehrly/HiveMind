@@ -23,11 +23,13 @@ export default class Building extends HiveMindCharacter {
     }
 
     static #randomPositionOffset(source, offsetAmountPerAxis) {
+
+        const seed = source?.chunk?.seed;
     
-        let xOffset = Math.randomBetween(0, offsetAmountPerAxis);
-        if (Math.random() < 0.5) xOffset *= -1;
-        let yOffset = Math.randomBetween(0, offsetAmountPerAxis);
-        if (Math.random() < 0.5) yOffset *= -1;
+        let xOffset = seed.Random(0, offsetAmountPerAxis);
+        if (seed.Random() < 0.5) xOffset *= -1;
+        let yOffset = seed.Random(0, offsetAmountPerAxis);
+        if (seed.Random() < 0.5) yOffset *= -1;
     
         return new Point(source.x + xOffset, source.y + yOffset);
     }
@@ -85,66 +87,79 @@ export default class Building extends HiveMindCharacter {
     }
 
     think(elapsed) {
-        // TODO: pretty sure this guy is moving and shouldn't be
         super.think(elapsed);
 
-        // if last thought
         if(this.#lastThought + TIME_BETWEEN_THOUGHTS > performance.now()) {
             return;
         }
 
         if(this.name == "Node") {
-
-            // there HAS to be a cleaner way to do this
-            for(var index = 0; index < this.growing.length; index++) {
-                if(this.growing[index].isGrown) {
-                    this.growing.splice(index, 1);
-                    index--;
-                }
-            }
-            
-            if(this.growing.length > 0) return;
-
-            const food = Resource.Get("food");
-            if (food.value > Building.#FOOD_THRESHOLD) {
-
-                if (Building.#wantDevelopNode()) {
-
-                    const intent = Building.#desiredBuildingsQueue[0];
-                    // check that we have node and intent, warn if no
-                    if (intent) {
-                        this.Develop(intent);
-                        // Building.#buildNodeCount -= 1;
-                        // we could probably slice it off instead?
-                        Building.#desiredBuildingsQueue.splice(0, 1);
-                    }
-                    // else come up with our own building to develop
-
-                } else if (Building.#wantNewNode()) {
-
-                    // this needs to be changed entirely
-                    const position = Building.#randomPositionOffset(this.position, Building.#BUILDING_PADDING / 2);
-
-                    // console.log(`I'm at ${this.position}, making a new node at ${position}`);
-
-                    const options = Object.assign({}, CharacterType.Node);
-                    options.position = position;
-                    options.faction = this.faction;
-                    options.cost = CharacterType.Node.health;
-
-                    // TODO: take some time to construct (grow)
-                    const building = new Building(options);
-
-                    const healthDiff = building.health * .9;
-                    building.health = building.health * 0.1;
-                    building.grow(healthDiff * 500);
-
-                    this.growing.push(building);
-                }
-            }
+            this.#nodeThink();
         }
 
         this.#lastThought = performance.now();
+    }
+
+    #nodeThink() {
+
+        if(!this.isGrown) return;
+
+        // there HAS to be a cleaner way to do this
+        for(var index = 0; index < this.growing.length; index++) {
+            if(this.growing[index].isGrown) {
+                this.growing.splice(index, 1);
+                index--;
+            }
+        }
+        
+        if(this.growing.length > 0) return;
+
+        const food = Resource.Get("food");
+        if (food.value > Building.#FOOD_THRESHOLD) {
+
+            // declare a const range to define "nearby"
+
+            // at least 1 other node nearby (that can build other nodes ...)
+            // we may want to allow non-nodes to build buildings?
+
+            // if we don't have any eaters nearby, make one
+
+            // no seeders nearby, make one
+
+            if (Building.#wantDevelopNode()) {
+
+                const intent = Building.#desiredBuildingsQueue[0];
+                // check that we have node and intent, warn if no
+                if (intent) {
+                    this.Develop(intent);
+                    // Building.#buildNodeCount -= 1;
+                    // we could probably slice it off instead?
+                    Building.#desiredBuildingsQueue.splice(0, 1);
+                }
+                // else come up with our own building to develop
+
+            } else if (Building.#wantNewNode()) {
+
+                // this needs to be changed entirely
+                const position = Building.#randomPositionOffset(this.position, Building.#BUILDING_PADDING / 2);
+
+                // console.log(`I'm at ${this.position}, making a new node at ${position}`);
+
+                const options = Object.assign({}, CharacterType.Node);
+                options.position = position;
+                options.faction = this.faction;
+                options.cost = CharacterType.Node.health;
+
+                // TODO: take some time to construct (grow)
+                const building = new Building(options);
+
+                const healthDiff = building.health * .9;
+                building.health = building.health * 0.1;
+                building.grow(healthDiff * 500);
+
+                this.growing.push(building);
+            }
+        }
     }
 
     Develop(intent) {
