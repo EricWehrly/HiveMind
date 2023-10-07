@@ -85,7 +85,6 @@ export default class Action extends Listed {
                     return 0;
                 }
 
-                // TODO: remove 'options.character'
                 return options.character.attack(options);
             }
         });
@@ -123,7 +122,7 @@ export default class Action extends Listed {
             isCharacterControl: true,
             enabled: false,
             oncePerPress: true,
-            delay: 1000,
+            delay: 250,    // do we even want this? maybe there should be a generic one
             callback: function (options) {
 
                 // TODO: take this from the player eventually
@@ -231,7 +230,7 @@ export default class Action extends Listed {
 
                 if (!Requirements.met(this, options.character)) return;
 
-                if (!this.checkDelay(this)) return;
+                if (!this.#checkDelay(this)) return;
 
                 const result = baseCallback.bind(this)(options);
 
@@ -242,22 +241,11 @@ export default class Action extends Listed {
         }
     }
 
-    checkDelay(thing) {
+    #checkDelay(thing) {
 
         if (thing.delay && thing.lastFired &&
             performance.now() - thing.lastFired < thing.delay) return false;
         else if (thing.delay) thing.lastFired = performance.now();
-
-        return true;
-    }
-
-    inRange(thing, character) {
-
-        if (thing.range) {
-            if (!character?.target) return false;
-
-            if (character.getDistance(character.target) > thing.range) return false;
-        }
 
         return true;
     }
