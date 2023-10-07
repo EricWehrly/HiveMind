@@ -1,13 +1,11 @@
 buildings issues:
     - consumer slimes too quick
-    - food costs same as it makes
     - too easy to get stuck in not having enough food
+        - if we don't have enough food, limit what's grown
+        - debugger when trying to take food when value < 100 ...
     - new nodes have a tendency to 'stack' position
 
 Are spawns having trouble moving when their y is 0?
-
-food is going to have to cost less than what you get for eating it
-    currently it is the case that food yields exactly what it costs to grow
 
 - we should reduce the interval for spawning for subdivide
 
@@ -21,18 +19,13 @@ Thicker border
 
 Maybe spawner should look wide and short 
 
-- maybe buildings should work like:
-    - you hit 'B' to drop a new node (in exchange for food, as now)
-    - that node will auto-expand with its own AI (as we've kind of described in other notes,
-        with some kind of like 'nearby proximity prioritization' -- if desired not in range, add)
-    - player can similarly pay to choose to make a building a specific type
-        but maybe that functionality ( / player choice / influence) can wait until later
+- need visual indicator for cooldown(s)
 
 - Enemy technologies:
     - poison,
     - shell (protective)
 
-Building "find empty plot" method 
+- Building "find empty plot" method 
     (after a little physics / collision maybe?)
     we also probably need methods for comparing areas rather than points
 
