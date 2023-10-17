@@ -6,6 +6,8 @@ import Character from "../../engine/js/entities/character.mjs";
 import Point from "../../engine/js/baseTypes/point.mjs"
 
 Events.List.BuildingBuilt = "BuildingBuilt";
+Events.List.BuildingDesired = "BuildingDesired";
+Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
 
 const TIME_BETWEEN_THOUGHTS = 3000;
 
@@ -19,7 +21,8 @@ export default class Building extends HiveMindCharacter {
     static QueueDesire(desire) {
 
         Building.#desiredBuildingsQueue.push(desire);
-        // console.log(`Desure: ${desire}`);
+        
+        Events.RaiseEvent(Events.List.BuildingDesired, desire);
     }
 
     static #randomPositionOffset(source, offsetAmountPerAxis) {
@@ -132,6 +135,7 @@ export default class Building extends HiveMindCharacter {
                 // check that we have node and intent, warn if no
                 if (intent) {
                     this.Develop(intent);
+                    Events.RaiseEvent(Events.List.BuildingDesireFulfilled, intent);
                     // Building.#buildNodeCount -= 1;
                     // we could probably slice it off instead?
                     Building.#desiredBuildingsQueue.splice(0, 1);

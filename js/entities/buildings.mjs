@@ -6,6 +6,8 @@ import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.mjs';
 import Building from './building.mjs';
 
+const desireLabels = {};
+
 const Build = function (context) {
 
     const selectedBuilding = context?.menu?.selected?.context;
@@ -32,6 +34,34 @@ const UI_MENU_BUILDINGS = new Menu({
     visible: false,
     menuAction: Build
 });
+
+Events.Subscribe(Events.List.BuildingDesired, function (desire) {
+
+    desireLabels[desire] = UI_MENU_BUILDINGS.addLabel({
+        name: `${desire.name} desired`,
+    })
+});
+
+Events.Subscribe(Events.List.BuildingDesireFulfilled, function (desire) {
+
+    console.log("filling desire...");
+    UI_MENU_BUILDINGS.removeItem(desireLabels[desire]);
+    delete desireLabels[desire];
+});
+
+// TODO: Later, generically unlock items in menus by having them locked/unlocked
+// TODO: get "Food" from its proper definition, or a constant somewhere ... 
+Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
+
+    const seeder = UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+    seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
+    const eater = UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
+    eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
+});
+
+KeyboardController.AddDefaultBinding("openMenu/build", "b");
+
+/* Buildings data begin */
 
 // TODO: import from json, or ... ?
 new CharacterType({
@@ -92,20 +122,8 @@ new CharacterType({
 const healerMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Healer);
 healerMenuItem.Element.innerHTML = `Desire ${CharacterType.Healer.name}`;
 
-// TODO: Later, generically unlock items in menus by having them locked/unlocked
-// TODO: get "Food" from its proper definition, or a constant somewhere ... 
-Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
-
-    const seeder = UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
-    seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
-    const eater = UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
-    eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
-});
-
 // rock driller
 
 // building for sending research home
 
 // building for receiving research from home
-
-KeyboardController.AddDefaultBinding("openMenu/build", "b");
