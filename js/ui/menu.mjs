@@ -211,6 +211,12 @@ export default class Menu extends UIElement {
 
     removeItem(item) {
 
+        if(item?.Element == null) {
+            console.warn("Invalid item for removal.");
+            debugger;
+            return;
+        }
+
         item.Element.remove();
         const index = this.#items.indexOf(item);
         if(index > -1) {
