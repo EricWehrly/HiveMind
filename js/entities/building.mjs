@@ -10,6 +10,7 @@ Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
 
 const TIME_BETWEEN_THOUGHTS = 3000;
+const NEARBY_RANGE = 100;
 
 export default class Building extends HiveMindCharacter {
 
@@ -96,11 +97,47 @@ export default class Building extends HiveMindCharacter {
             return;
         }
 
+        // node ai?
         if(this.name == "Node") {
             this.#nodeThink();
         }
 
         this.#lastThought = performance.now();
+    }
+
+    #whatToBuild() {
+
+            // at least 1 other node nearby (that can build other nodes ...)
+            // we may want to allow non-nodes to build buildings?
+
+            // TODO: Should be using characterType enums
+            const nearbyNodes = this.getNearbyEntities({
+                distance: NEARBY_RANGE,
+                characterType: 'Node'
+            });
+            if(nearbyNodes.length == 0) {
+                return CharacterType.Node;
+            }
+
+            // TODO: We probably eventually want to balance seeders and eaters and not just have one ...
+            // maybe we can 'default' one at the end, and compare counts?
+            const nearbyEaters = this.getNearbyEntities({
+                distance: NEARBY_RANGE,
+                characterType: 'Eater'
+            });
+            if(nearbyEaters.length == 0) {
+                return CharacterType.Eater;
+            }
+
+            return CharacterType.Seeder;
+
+            const nearbySeeders = this.getNearbyEntities({
+                distance: NEARBY_RANGE,
+                characterType: 'Seeder'
+            });
+            if(nearbySeeders.length == 0) {
+                return CharacterType.Seeder;
+            }
     }
 
     #nodeThink() {
@@ -120,15 +157,6 @@ export default class Building extends HiveMindCharacter {
         const food = Resource.Get("food");
         if (food.value > Building.#FOOD_THRESHOLD) {
 
-            // declare a const range to define "nearby"
-
-            // at least 1 other node nearby (that can build other nodes ...)
-            // we may want to allow non-nodes to build buildings?
-
-            // if we don't have any eaters nearby, make one
-
-            // no seeders nearby, make one
-
             if (Building.#wantDevelopNode()) {
 
                 const intent = Building.#desiredBuildingsQueue[0];
@@ -142,19 +170,20 @@ export default class Building extends HiveMindCharacter {
                 }
                 // else come up with our own building to develop
 
-            } else if (Building.#wantNewNode()) {
+            } else {
 
+                const wantToBuild = this.#whatToBuild();
                 // this needs to be changed entirely
                 const position = Building.#randomPositionOffset(this.position, Building.#BUILDING_PADDING / 2);
-
                 // console.log(`I'm at ${this.position}, making a new node at ${position}`);
 
-                const options = Object.assign({}, CharacterType.Node);
+                const options = Object.assign({}, wantToBuild);
                 options.position = position;
                 options.faction = this.faction;
-                options.cost = CharacterType.Node.health;
+                options.cost = wantToBuild.health;
 
                 // TODO: take some time to construct (grow)
+                console.log(`Trying to build ${wantToBuild.name} at ${position}`);
                 const building = new Building(options);
 
                 const healthDiff = building.health * .9;
