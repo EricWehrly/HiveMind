@@ -5,6 +5,8 @@ export default class Faction extends Listed {
     #color;
     get color() { return this.#color; }
 
+    reservedFood = 0;
+
     constructor(options) {
 
         super(options);
