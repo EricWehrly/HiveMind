@@ -1,3 +1,10 @@
+dont start growing new food if cant reserve enough to grow it to completion
+can we make this generic to all growing?
+
+when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
+
+We ideally want to leave the player some margin of food to work with, rather than running everything to 0 all the time
+
 buildings issues:
     - consumer slimes too quick
     - too easy to get stuck in not having enough food

@@ -94,7 +94,8 @@ const Purposes =
         think: function (character, elapsed) {
 
             if (!character.growing) character.growing = [];
-            const growing = character.growing.filter(growing => growing.growth < 100);
+            const growing = character.growing.filter(growing => growing.growth < 100)
+                || [];
             if (growing.length < character.growConfig.batchSize
                 && character.growing.length < character.growConfig.max) {
                 const newGrow = new HiveMindCharacter(character.growConfig.subject);

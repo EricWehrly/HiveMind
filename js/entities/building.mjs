@@ -43,20 +43,6 @@ export default class Building extends HiveMindCharacter {
         return Building.#desiredBuildingsQueue.length > 0;
     }
 
-    static #wantNewNode() {
-
-        // we probably do want to go back to event tracking,
-        // rather than needing to traverse the character list each tick
-        const nodeCount = Character.get({
-            name: "Node"
-        }).length;
-
-        return (nodeCount == 0
-            || Building.#desiredBuildingsQueue.length == 0)
-            && nodeCount < Building.#MAX_SPARE_NODES;
-        // if request queue is empty, MAYBE we want new nodes?
-    }
-
     // TODO: We should be able to get rid of this once it takes time to make a node
     #lastThought = performance.now();
 
@@ -86,7 +72,7 @@ export default class Building extends HiveMindCharacter {
         super(options);
         this.isBuilding = true;
         this.growing = [];
-
+        
         Events.RaiseEvent(Events.List.BuildingBuilt, this);
     }
 
@@ -113,7 +99,8 @@ export default class Building extends HiveMindCharacter {
             // TODO: Should be using characterType enums
             const nearbyNodes = this.getNearbyEntities({
                 distance: NEARBY_RANGE,
-                characterType: 'Node'
+                faction: this.faction,
+                characterType: 'Node',
             });
             if(nearbyNodes.length == 0) {
                 return CharacterType.Node;
@@ -123,6 +110,7 @@ export default class Building extends HiveMindCharacter {
             // maybe we can 'default' one at the end, and compare counts?
             const nearbyEaters = this.getNearbyEntities({
                 distance: NEARBY_RANGE,
+                faction: this.faction,
                 characterType: 'Eater'
             });
             if(nearbyEaters.length == 0) {
@@ -131,8 +119,11 @@ export default class Building extends HiveMindCharacter {
 
             return CharacterType.Seeder;
 
+            // defense and stuff tho
+
             const nearbySeeders = this.getNearbyEntities({
                 distance: NEARBY_RANGE,
+                faction: this.faction,
                 characterType: 'Seeder'
             });
             if(nearbySeeders.length == 0) {
@@ -155,7 +146,8 @@ export default class Building extends HiveMindCharacter {
         if(this.growing.length > 0) return;
 
         const food = Resource.Get("food");
-        if (food.value > Building.#FOOD_THRESHOLD) {
+        const minFood = Building.#FOOD_THRESHOLD + this.faction?.reservedFood;
+        if (food.value > minFood) {
 
             if (Building.#wantDevelopNode()) {
 
@@ -164,12 +156,9 @@ export default class Building extends HiveMindCharacter {
                 if (intent) {
                     this.Develop(intent);
                     Events.RaiseEvent(Events.List.BuildingDesireFulfilled, intent);
-                    // Building.#buildNodeCount -= 1;
                     // we could probably slice it off instead?
                     Building.#desiredBuildingsQueue.splice(0, 1);
                 }
-                // else come up with our own building to develop
-
             } else {
 
                 const wantToBuild = this.#whatToBuild();
@@ -183,7 +172,7 @@ export default class Building extends HiveMindCharacter {
                 options.cost = wantToBuild.health;
 
                 // TODO: take some time to construct (grow)
-                console.log(`Trying to build ${wantToBuild.name} at ${position}`);
+                // console.log(`Trying to build ${wantToBuild.name} at ${position}`);
                 const building = new Building(options);
 
                 const healthDiff = building.health * .9;

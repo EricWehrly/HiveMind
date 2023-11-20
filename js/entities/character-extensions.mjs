@@ -204,13 +204,19 @@ export default class HiveMindCharacter extends Character {
     }
 
     // assert type integer?
+    // Realistically I think the problem is that "growConfig" is currently being used
+    // for both growing self as well as growing a target
+    // why did we do it like that?
     grow(interval) {
         this.growth = 0;
         // TODO: I hate this.
         this.health = .0001;
+        // growConfig is being overwritten here
         this.growConfig = {
             interval
         };
+        // console.log(`Start growing ${this.name} with ${this.maxHealth} max health.`);
+        if(this.faction) this.faction.reservedFood += this.maxHealth;
     }
 
     // maybe we could expand this to accept a growthconfig
@@ -226,21 +232,24 @@ export default class HiveMindCharacter extends Character {
             const growthIncrement = growthAmount / 100;
             const healAmount = growthIncrement * this.maxHealth
             this.health += healAmount;
+            if(this.faction) this.faction.reservedFood -= healAmount;
 
             if(this.isGrown) {
                 delete this.growth;
 
                 const characterType = CharacterType[this.characterType];
+                this.growConfig = characterType.growConfig;
                 if (this.name != characterType.name) {
                     this.name = characterType.name;
                     this.growConfig = characterType.growConfig;
                     this._currentPurposeKey = characterType._currentPurposeKey;
                     this._spawnPurposeKey = characterType._spawnPurposeKey;
-                    delete this.growth;
                     this.removeGraphic();
                     // assign ai?
                     // health is correect?
                     console.log(`Finished developing ${this.name}`);
+
+                    // if(this.growConfig?.subject) console.log(this.growConfig.subject);
                 }
             }
         }
