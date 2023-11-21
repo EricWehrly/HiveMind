@@ -190,7 +190,7 @@ export default class Building extends HiveMindCharacter {
                 // TODO: take some time to construct (grow)
                 // console.log(`Trying to build ${wantToBuild.name} at ${position}`);
                 const building = new Building(options);
-                food.reserve(building.maxHealth);
+                if(!food.reserve(building.maxHealth)) return;
 
                 const healthDiff = building.health * .9;
                 building.health = building.health * 0.1;

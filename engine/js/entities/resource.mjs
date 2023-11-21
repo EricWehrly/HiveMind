@@ -35,13 +35,18 @@ export default class Resource extends Listed {
         Events.RaiseEvent(Events.List.ResourceCreated, this);
     }
 
-    canAfford(amount) {
+    canAfford(amount, ignoreReserved) {
 
-        return this.#value >= amount;
+        if(ignoreReserved == true) {
+            return this.#value >= amount;
+        } else {
+            return this.#value - this.#reserved >= amount;
+        }
     }
 
     pay(amount) {
 
+        // should probably ignore reserved
         if(!this.canAfford(amount)) return false;
 
         this.value -= amount;
