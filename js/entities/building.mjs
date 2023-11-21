@@ -2,8 +2,8 @@ import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "./characterType.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import Events from "../../engine/js/events.mjs";
-import Character from "../../engine/js/entities/character.mjs";
 import Point from "../../engine/js/baseTypes/point.mjs"
+import Map from "../../engine/js/mapping/map.mjs";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 Events.List.BuildingDesired = "BuildingDesired";
@@ -26,9 +26,12 @@ export default class Building extends HiveMindCharacter {
         Events.RaiseEvent(Events.List.BuildingDesired, desire);
     }
 
+    // "source" sometimes won't have a chunk.
+    // Hopefully the early return accounts for that
     static #randomPositionOffset(source, offsetAmountPerAxis) {
 
         const seed = source?.chunk?.seed;
+        if(seed == null) return null;
     
         let xOffset = seed.Random(0, offsetAmountPerAxis);
         if (seed.Random() < 0.5) xOffset *= -1;
@@ -135,6 +138,15 @@ export default class Building extends HiveMindCharacter {
 
         if(!this.isGrown) return;
 
+        // because we won't be able to get "randomPositionOffset" further down
+        if(this.position?.chunk == null) {
+            this.position.chunk = Map.Map.getChunk(this.position);
+            if(this.position.chunk == null) {
+                console.warn(`Couldn't resolve chunk for position.`);
+                return;
+            }
+        }
+
         // there HAS to be a cleaner way to do this
         for(var index = 0; index < this.growing.length; index++) {
             if(this.growing[index].isGrown) {
@@ -148,6 +160,7 @@ export default class Building extends HiveMindCharacter {
         const food = Resource.Get("food");
         const minFood = Building.#FOOD_THRESHOLD + this.faction?.reservedFood;
         if (food.value > minFood) {
+        // if (food.available > Building.#FOOD_THRESHOLD) {
 
             if (Building.#wantDevelopNode()) {
 
@@ -164,6 +177,10 @@ export default class Building extends HiveMindCharacter {
                 const wantToBuild = this.#whatToBuild();
                 // this needs to be changed entirely
                 const position = Building.#randomPositionOffset(this.position, Building.#BUILDING_PADDING / 2);
+                if(position == null) {
+                    console.warn(`Couldn't get position for new building. Probably out of bounds.`);
+                    return;
+                }
                 // console.log(`I'm at ${this.position}, making a new node at ${position}`);
 
                 const options = Object.assign({}, wantToBuild);

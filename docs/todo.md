@@ -1,3 +1,5 @@
+Need to instantiate nearby chunks on player spawn
+
 dont start growing new food if cant reserve enough to grow it to completion
 can we make this generic to all growing?
 
