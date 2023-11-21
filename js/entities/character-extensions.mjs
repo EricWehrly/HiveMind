@@ -215,8 +215,9 @@ export default class HiveMindCharacter extends Character {
         this.growConfig = {
             interval
         };
-        // console.log(`Start growing ${this.name} with ${this.maxHealth} max health.`);
-        if(this.faction) this.faction.reservedFood += this.maxHealth;
+
+        // TODO: instrument and console.log Context.Character
+        // check if it's "this" or not ...
     }
 
     // maybe we could expand this to accept a growthconfig
@@ -232,9 +233,11 @@ export default class HiveMindCharacter extends Character {
             const growthIncrement = growthAmount / 100;
             const healAmount = growthIncrement * this.maxHealth
             this.health += healAmount;
-            if(this.faction) this.faction.reservedFood -= healAmount;
+            // TODO: if food has been reserved?
+            food.unReserve(healAmount);
 
             if(this.isGrown) {
+                // console.log(`Done growing ${this.name}`);
                 delete this.growth;
 
                 const characterType = CharacterType[this.characterType];

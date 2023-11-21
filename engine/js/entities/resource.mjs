@@ -7,6 +7,7 @@ Events.List.ResourceValueChanged = "ResourceValueChanged";
 export default class Resource extends Listed {
 
     #value = 0;
+    #reserved = 0;
 
     get value() {
         return this.#value;
@@ -21,6 +22,10 @@ export default class Resource extends Listed {
             from: oldValue,
             to: this.#value
         });
+    }
+
+    get available() {
+        return this.#value - this.#reserved;
     }
 
     constructor(options) {
@@ -42,5 +47,19 @@ export default class Resource extends Listed {
         this.value -= amount;
 
         return true;
+    }
+
+    reserve(amount) {
+
+        if(!this.canAfford(amount)) return false;
+
+        this.#reserved += amount;
+
+        return true;
+    }
+
+    unReserve(amount) {
+
+        this.#reserved -= amount;
     }
 }

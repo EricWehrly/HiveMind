@@ -98,6 +98,23 @@ const Purposes =
                 || [];
             if (growing.length < character.growConfig.batchSize
                 && character.growing.length < character.growConfig.max) {
+
+                const subject = character.growConfig.subject;
+                // console.log(`I want to grow a new ${subject.name}`)
+                // console.log(`Health for ${subject.name} is ${subject.health}`);
+
+                const food = Resource.Get("food");
+                // Building.#FOOD_THRESHOLD ?
+                const characterType = CharacterType[subject.characterType];
+                if(food.available < characterType.health) {
+                    // console.log("but not right now");
+                    return;
+                }                
+                food.reserve(characterType.health);
+
+                // check if we have the food to do this
+                // should we wait until we "have had" food for X "cycles"
+                // or implement some kind of priority queuing system? ("want to grow")
                 const newGrow = new HiveMindCharacter(character.growConfig.subject);
                 newGrow.grow(character.growConfig.interval);
                 newGrow.position = randomPositionOffset(character.position, 5);

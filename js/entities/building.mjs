@@ -61,7 +61,7 @@ export default class Building extends HiveMindCharacter {
         if(cost) {
             const food = Resource.Get("food");
             if(!food.pay(cost)) {
-                console.log(`You can't afford to build ${characterOpts.characterType} for ${amount}`);
+                console.log(`You can't afford to build ${characterType.name} for ${amount}`);
                 console.log(`You got ${food.value}, son.`);
                 return;
             }
@@ -158,9 +158,7 @@ export default class Building extends HiveMindCharacter {
         if(this.growing.length > 0) return;
 
         const food = Resource.Get("food");
-        const minFood = Building.#FOOD_THRESHOLD + this.faction?.reservedFood;
-        if (food.value > minFood) {
-        // if (food.available > Building.#FOOD_THRESHOLD) {
+        if (food.available > Building.#FOOD_THRESHOLD) {
 
             if (Building.#wantDevelopNode()) {
 
@@ -175,6 +173,7 @@ export default class Building extends HiveMindCharacter {
             } else {
 
                 const wantToBuild = this.#whatToBuild();
+                if (food.available < Building.#FOOD_THRESHOLD + wantToBuild.health) return;
                 // this needs to be changed entirely
                 const position = Building.#randomPositionOffset(this.position, Building.#BUILDING_PADDING / 2);
                 if(position == null) {
@@ -191,6 +190,7 @@ export default class Building extends HiveMindCharacter {
                 // TODO: take some time to construct (grow)
                 // console.log(`Trying to build ${wantToBuild.name} at ${position}`);
                 const building = new Building(options);
+                food.reserve(building.maxHealth);
 
                 const healthDiff = building.health * .9;
                 building.health = building.health * 0.1;

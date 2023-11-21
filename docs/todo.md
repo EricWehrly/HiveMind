@@ -1,5 +1,12 @@
 Need to instantiate nearby chunks on player spawn
 
+debug console command:
+list of everything currently growing
+    need to find out why reservations + food threshold aren't keeping a steady minimum
+
+events like 'character created' fire in the base class but don't let the super classes finish
+    we need some kind of "post constructor" pattern to fire these events for classes that have derivatives
+
 dont start growing new food if cant reserve enough to grow it to completion
 can we make this generic to all growing?
 
