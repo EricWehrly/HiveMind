@@ -7,7 +7,11 @@ export function AssignWithUnderscores(target, source) {
 
       // this doesn't work correctly with values passed in that are instantiated objects.
       target["_" + key] = source[key];
-      delete source[key];
+      try {
+        delete source[key];
+      } catch (ex) {
+        // TODO: log
+      }
     }
 
     // TODO: if source[key] has keys
