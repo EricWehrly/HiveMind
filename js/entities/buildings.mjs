@@ -5,6 +5,7 @@ import UIElement from '../../engine/js/ui/ui-element.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.mjs';
 import Building from './building.mjs';
+import NodeAI from '../ai/node.mjs';
 
 const desireLabels = {};
 
@@ -14,7 +15,7 @@ const Build = function (context) {
 
     if (selectedBuilding.name != "Node") {
 
-        Building.QueueDesire(selectedBuilding);
+        NodeAI.QueueDesire(selectedBuilding);
         return;
     }
 
@@ -89,7 +90,7 @@ new CharacterType({
 new CharacterType({
     name: 'Node',
     health: 40,
-    ai: null
+    ai: NodeAI
 });
 UI_MENU_BUILDINGS.addItem(CharacterType.Node);
 
