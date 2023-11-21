@@ -19,5 +19,6 @@ export default class CharacterType {
         this.characterType = this.name;
 
         CharacterType[this.name] = this;
+        Object.freeze(this);
     }
 }
