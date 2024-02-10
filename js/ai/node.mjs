@@ -60,16 +60,16 @@ export default class NodeAI extends AI {
         NodeAI.#lastThought = performance.now();
     }
 
-    #nodeThink() {
+    #isNodeBusy() {
 
-        if(!this.character.isGrown) return;
+        if(!this.character.isGrown) return true;
 
         // because we won't be able to get "randomPositionOffset" further down
         if(this.character.position?.chunk == null) {
             this.character.position.chunk = Map.Map.getChunk(this.character.position);
             if(this.character.position.chunk == null) {
                 console.warn(`Couldn't resolve chunk for position.`);
-                return;
+                return true;
             }
         }
 
@@ -81,53 +81,43 @@ export default class NodeAI extends AI {
             }
         }
         
-        if(this.character.growing.length > 0) return;
+        if(this.character.growing.length > 0) return true;
+
+        return false;
+    }
+
+    #nodeThink() {
+
+        if(this.#isNodeBusy()) return;
 
         const food = Resource.Get("food");
         if (food.available > NodeAI.#FOOD_THRESHOLD) {
 
             if (NodeAI.#wantDevelopNode()) {
 
-                const intent = NodeAI.#desiredBuildingsQueue[0];
-                // check that we have node and intent, warn if no
-                if (intent) {
-                    this.character.Develop(intent);
-                    Events.RaiseEvent(Events.List.BuildingDesireFulfilled, intent);
-                    // we could probably slice it off instead?
-                    NodeAI.#desiredBuildingsQueue.splice(0, 1);
-                }
+                this.#buildFromQueue();
             } else {
 
-                const wantToBuild = this.#whatToBuild();
-                if (food.available < NodeAI.#FOOD_THRESHOLD + wantToBuild.health) return;
-                // this needs to be changed entirely
-                const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
-                if(position == null) {
-                    console.warn(`Couldn't get position for new building. Probably out of bounds.`);
-                    return;
-                }
-                // console.log(`I'm at ${this.character.position}, making a new node at ${position}`);
-
-                const options = Object.assign({}, wantToBuild);
-                options.position = position;
-                options.faction = this.character.faction;
-                options.cost = wantToBuild.health;
-
-                // TODO: take some time to construct (grow)
-                // console.log(`Trying to build ${wantToBuild.name} at ${position}`);
-                const building = new Building(options);
-                if(!food.reserve(building.maxHealth)) return;
-
-                const healthDiff = building.health * .9;
-                building.health = building.health * 0.1;
-                building.grow(healthDiff * 500);
-
-                this.character.growing.push(building);
+                const wantToBuild = this.#whatShouldBeBuilt();
+                this.#buildDesired(wantToBuild);
             }
         }
     }
 
-    #whatToBuild() {
+    #buildFromQueue() {
+
+        const intent = NodeAI.#desiredBuildingsQueue[0];
+        if (intent) {
+            this.character.Develop(intent);
+            Events.RaiseEvent(Events.List.BuildingDesireFulfilled, intent);
+            // we could probably slice it off instead?
+            NodeAI.#desiredBuildingsQueue.splice(0, 1);
+        } else {
+            console.warn(`Thought we had intent, but we don't.`);
+        }
+    }
+
+    #whatShouldBeBuilt() {
 
             // at least 1 other node nearby (that can build other nodes ...)
             // we may want to allow non-nodes to build buildings?
@@ -165,5 +155,43 @@ export default class NodeAI extends AI {
             if(nearbySeeders.length == 0) {
                 return CharacterType.Seeder;
             }
+    }
+
+    #buildDesired(wantToBuild) {
+
+        const buildOptions = this.#getDesiredBuildOptions(wantToBuild);
+
+        // TODO: take some time to construct (grow)
+        // (we are, though, aren't we? just below?)
+        console.log(`Node has chosen to build ${wantToBuild.name} at ${position}`);
+        const building = new Building(buildOptions);
+        if(!food.reserve(building.maxHealth)) return;
+
+        const healthDiff = building.health * .9;
+        building.health = building.health * 0.1;
+        building.grow(healthDiff * 500);
+
+        this.character.growing.push(building);
+
+        return building;
+    }
+
+    #getDesiredBuildOptions(wantToBuild) {
+
+        if (food.available < NodeAI.#FOOD_THRESHOLD + wantToBuild.health) return;
+        // this needs to be changed entirely
+        const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
+        if(position == null) {
+            console.warn(`Couldn't get position for new building. Probably out of bounds.`);
+            return;
+        }
+        // console.log(`I'm at ${this.character.position}, making a new node at ${position}`);
+
+        const options = Object.assign({}, wantToBuild);
+        options.position = position;
+        options.faction = this.character.faction;
+        options.cost = wantToBuild.health;
+
+        return options;
     }
 }
