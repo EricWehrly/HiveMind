@@ -159,11 +159,14 @@ export default class NodeAI extends AI {
 
     #buildDesired(wantToBuild) {
 
+        const food = Resource.Get("food");
+        if (food.available < NodeAI.#FOOD_THRESHOLD + wantToBuild.health) return;
+
         const buildOptions = this.#getDesiredBuildOptions(wantToBuild);
 
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
-        console.log(`Node has chosen to build ${wantToBuild.name} at ${position}`);
+        console.log(`Node has chosen to build ${wantToBuild.name} at ${buildOptions.position}`);
         const building = new Building(buildOptions);
         if(!food.reserve(building.maxHealth)) return;
 
@@ -178,7 +181,6 @@ export default class NodeAI extends AI {
 
     #getDesiredBuildOptions(wantToBuild) {
 
-        if (food.available < NodeAI.#FOOD_THRESHOLD + wantToBuild.health) return;
         // this needs to be changed entirely
         const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
         if(position == null) {
