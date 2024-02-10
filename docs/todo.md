@@ -1,3 +1,7 @@
+maximum food reserve?
+variable to limit how quickly nodes can "act"
+    research that allows more / faster
+
 Need to instantiate nearby chunks on player spawn
 
 debug console command:
