@@ -45,6 +45,7 @@ function _slowLoop() {
             LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
         } catch (ex) {
             console.error(ex);
+            debugger;
         }
     }
 
@@ -84,6 +85,7 @@ function _fastLoop() {
             LOOP_METHODS_FAST[index](elapsed, LAST_FAST_LOOP);
         } catch (ex) {
             console.error(ex);
+            debugger;
         }
     }
 
