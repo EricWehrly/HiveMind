@@ -5,6 +5,12 @@ export default class CharacterType {
     #research;
     get research() { return this.#research; }
 
+    #isStudied = false;
+    get isStudied() { return this.#isStudied; }
+    set isStudied(value) {
+        this.#isStudied = value;
+    }
+
     constructor(options) {
 
         if(options.research) {
