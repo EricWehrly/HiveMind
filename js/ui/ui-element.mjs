@@ -25,9 +25,7 @@ export default class UIElement {
     static #ui_loop(screenRect) {
     
         for(var element of UIElement.#UI_ELEMENTS) {
-            // if character in screenRect
             element.redraw(screenRect);
-            // redraw(character, screenRect);
         }
     }
 
@@ -60,7 +58,7 @@ export default class UIElement {
         UIElement.#UI_ELEMENTS.push(this);
 
         const that = this;
-        Events.Subscribe(Events.List.GameStart, function() {
+        Events.Subscribe(Events.List.GameStart, function appendUIElement() {
             document.getElementById("ui-container").appendChild(that.Element);
         });
     }
@@ -80,6 +78,17 @@ export default class UIElement {
         } else {
             this.addClass(className);
         }
+    }
+
+    setText(text) {
+
+        let span = this.Element.getElementsByTagName('span')[0] || null;
+        if(!span) {
+            span = document.createElement('span');
+            this.Element.appendChild(span);
+        }
+
+        span.innerHTML = text;
     }
 
     redraw(screenRect) {

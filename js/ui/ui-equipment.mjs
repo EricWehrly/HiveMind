@@ -10,6 +10,6 @@ Events.Subscribe(Events.List.EquipmentChanged, function(details) {
 
     if(details.type == Technology.Types.ATTACK && details.character.isPlayer == true) {
         // TODO: get the bound key rather than using "magic strings"
-        UI_ELEMENT_ATTACK.Element.innerHTML = `[ space ] - ${details.to.name}`;
+        UI_ELEMENT_ATTACK.setText(`[ space ] - ${details.to.name}`);
     }
 });
