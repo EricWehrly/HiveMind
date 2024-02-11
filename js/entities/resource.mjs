@@ -9,6 +9,8 @@ export default class Resource extends Listed {
     #value = 0;
     #reserved = 0;
 
+    #reservations = {};
+
     get value() {
         return this.#value;
     }
@@ -24,6 +26,10 @@ export default class Resource extends Listed {
         });
     }
 
+    get reserved() {
+        return this.#reserved;
+    }
+
     get available() {
         return this.#value - this.#reserved;
     }
@@ -31,6 +37,8 @@ export default class Resource extends Listed {
     constructor(options) {
 
         super(options);
+
+        if(options.value) this.#value = options.value;
 
         Events.RaiseEvent(Events.List.ResourceCreated, this);
     }
@@ -44,27 +52,38 @@ export default class Resource extends Listed {
         }
     }
 
-    pay(amount) {
+    pay(amount, ignoreReserved = false) {
 
-        // should probably ignore reserved
-        if(!this.canAfford(amount)) return false;
+        if(!this.canAfford(amount, ignoreReserved)) return false;
 
         this.value -= amount;
 
         return true;
     }
 
-    reserve(amount) {
+    reserve(amount, object) {
 
         if(!this.canAfford(amount)) return false;
 
         this.#reserved += amount;
+        if(object) {
+            this.#reservations[object] = amount;
+            // console.debug(`Reserved ${amount} ${this.name} for ${object?.name || object}`);
+        }
 
         return true;
     }
 
-    unReserve(amount) {
+    unReserve(amount, object) {
 
         this.#reserved -= amount;
+
+        if(object) {
+            // console.debug(`Unreserving ${amount} ${this.name} for ${object?.name || object}`);
+            this.#reservations[object] -= amount;
+            if(this.#reservations[object] == 0) {
+                delete this.#reservations[object];
+            }
+        }
     }
 }
