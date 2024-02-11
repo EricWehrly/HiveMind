@@ -52,6 +52,9 @@ export default class UIElement {
         this.addClass("ui");
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
+        for(var uiClass of options?.classes || []) {
+            this.addClass(uiClass);
+        }
         UIElement.#initialDisplay = this.Element.style.display;
         if('visible' in options) this.visible = options.visible;
 

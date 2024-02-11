@@ -9,18 +9,15 @@ const RENDER_RESERVED = true;
 function createResourceUI(resource) {
 
     resource.UIElement = new UIElement({
-        screenZone: UIElement.SCREEN_ZONE.TOP_RIGHT
+        screenZone: UIElement.SCREEN_ZONE.TOP_RIGHT,
+        classes: [ 'Resource' ]
     });
-    // TODO: Eventually want UIElement constructor to "magically" figure this out ...
-    resource.UIElement.addClass("Resource");
+
     resourceChanged({
         resource,
         to: resource.value
     });
-    // resource.UIElement.Element.innerHTML = resource.name;
 }
-
-// on resource change, innerHTML = value
 
 function resourceChanged(details) {
 
