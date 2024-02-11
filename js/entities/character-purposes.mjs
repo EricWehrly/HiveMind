@@ -105,14 +105,18 @@ const Purposes =
                 // Building.#FOOD_THRESHOLD ?
                 const characterType = CharacterType[subject.characterType];
                 if(food.available < characterType.health) {
+                    // console.debug(`${food.available} food < ${characterType.health}, can't build ${character.growConfig.subject.name}`);
                     return;
-                }                
-                if(!food.reserve(characterType.health)) return;
+                }
 
                 // check if we have the food to do this
                 // should we wait until we "have had" food for X "cycles"
                 // or implement some kind of priority queuing system? ("want to grow")
                 const newGrow = new HiveMindCharacter(character.growConfig.subject);
+                if(!food.reserve(characterType.health, newGrow)) {
+                    console.warn(`The food was available but isn't now?`);
+                    return;
+                }
                 newGrow.grow(character.growConfig.interval);
                 newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);

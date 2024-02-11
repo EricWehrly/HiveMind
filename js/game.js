@@ -45,9 +45,13 @@ KeyboardController.AddDefaultBinding("menu_interact", "f");
 
 Game.Map = new Map();
 
-new Resource({
-    name: "food"
+const food = new Resource({
+    name: "food",
+    value: 100
 });
+// keep 100 food in reserve for the player to work with
+// maybe this number should scale over time
+food.reserve(100);
 const slap = Technology.Get("slap");
 
 function checkPlayerInteraction() {

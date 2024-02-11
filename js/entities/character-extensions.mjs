@@ -234,7 +234,7 @@ export default class HiveMindCharacter extends Character {
             const healAmount = growthIncrement * this.maxHealth
             this.health += healAmount;
             // TODO: if food has been reserved?
-            food.unReserve(healAmount);
+            food.unReserve(healAmount, this);
 
             if(this.isGrown) {
                 // console.log(`Done growing ${this.name}`);

@@ -168,7 +168,7 @@ export default class NodeAI extends AI {
         // (we are, though, aren't we? just below?)
         console.log(`Node has chosen to build ${wantToBuild.name} at ${buildOptions.position}`);
         const building = new Building(buildOptions);
-        if(!food.reserve(building.maxHealth)) return;
+        if(!food.reserve(building.maxHealth), building) return;
 
         const healthDiff = building.health * .9;
         building.health = building.health * 0.1;
