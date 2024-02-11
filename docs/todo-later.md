@@ -11,7 +11,18 @@
 
 - (Visual) feedback for unlocks
 
+- hint system:
+    structured hint class
+    making new hints allows you to define a display prerequisite, as well as "goals" to complete it
+    player/session-level setting to dis/enable hints
+    Hints for:
+    - Use WADS to move
+    - space to attack
+    etc.
+
 - would be nice to make a UI (options?) that shows which keys are bound
+
+- some means of configuration...
 
 ---
 

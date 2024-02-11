@@ -1,3 +1,6 @@
+debug ui
+    show how many characters are and are not thinking right now
+
 maximum food reserve?
 variable to limit how quickly nodes can "act"
     research that allows more / faster
@@ -16,13 +19,10 @@ can we make this generic to all growing?
 
 when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
 
-We ideally want to leave the player some margin of food to work with, rather than running everything to 0 all the time
-
 buildings issues:
     - consumer slimes too quick
     - too easy to get stuck in not having enough food
         - if we don't have enough food, limit what's grown
-        - debugger when trying to take food when value < 100 ...
     - new nodes have a tendency to 'stack' position
 
 Are spawns having trouble moving when their y is 0?
@@ -34,8 +34,8 @@ Are spawns having trouble moving when their y is 0?
     Once 1 research, can research research and unlock research node which speeds up research
 
 Defense building should look tougher, more callous:
-Less opaque
-Thicker border
+    Less opaque
+    Thicker border
 
 Maybe spawner should look wide and short 
 
