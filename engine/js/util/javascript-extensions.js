@@ -88,6 +88,10 @@ Math.randomBool = function () {
   return Math.randomBetween(0, 1) > 0.5;
 }
 
+Number.prototype.clamp = function(min, max) {
+  return Math.min(Math.max(this, min), max);
+};
+
 /**
  * Returns an object with any public properties copied by value, rather than reference.
  * @param {Object} object 
