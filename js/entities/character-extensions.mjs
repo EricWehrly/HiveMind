@@ -228,12 +228,12 @@ export default class HiveMindCharacter extends Character {
 
         const food = Resource.Get("food");
         const growthAmount = (100 / this.growConfig.interval) * elapsed;
-        if (food.pay(growthAmount / 2)) {
+        growthAmount = growthAmount.clamp(0, 100 - this.growth);
+        if (food.pay(growthAmount / 2, this)) {
             this.growth += growthAmount;
             const growthIncrement = growthAmount / 100;
             const healAmount = growthIncrement * this.maxHealth
             this.health += healAmount;
-            // TODO: if food has been reserved?
             food.unReserve(healAmount, this);
 
             if(this.isGrown) {
