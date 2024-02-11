@@ -25,9 +25,9 @@ function createResourceUI(resource) {
 function resourceChanged(details) {
 
     if(RENDER_RESERVED) {
-        details.resource.UIElement.Element.innerHTML = `${details.resource.name}: ${Math.round(details.to)} (${Math.round(details.resource.reserved)})`;
+        details.resource.UIElement.setText(`${details.resource.name}: ${Math.round(details.to)} (${Math.round(details.resource.reserved)})`);
     } else {
-        details.resource.UIElement.Element.innerHTML = `${details.resource.name}: ${Math.round(details.to)}`;
+        details.resource.UIElement.setText(`${details.resource.name}: ${Math.round(details.to)}`);
     }
 }
 
