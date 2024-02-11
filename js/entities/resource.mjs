@@ -9,7 +9,7 @@ export default class Resource extends Listed {
     #value = 0;
     #reserved = 0;
 
-    #reservations = {};
+    #reservations = new WeakMap();
 
     get value() {
         return this.#value;
@@ -43,31 +43,40 @@ export default class Resource extends Listed {
         Events.RaiseEvent(Events.List.ResourceCreated, this);
     }
 
-    canAfford(amount, ignoreReserved) {
+    canAfford(amount, reservationBucket) {
 
-        if(ignoreReserved == true) {
-            return this.#value >= amount;
+        if(reservationBucket && 
+                this.#reservations.has(reservationBucket)) {
+            return this.available + this.#reservations.get(reservationBucket) >= amount;
         } else {
-            return this.#value - this.#reserved >= amount;
+            if(reservationBucket) {
+                // console.warn(`Reservation bucket does not exist.`);
+            }
+            return this.available >= amount;
         }
     }
 
-    pay(amount, ignoreReserved = false) {
+    pay(amount, reservationBucket) {
 
-        if(!this.canAfford(amount, ignoreReserved)) return false;
+        if(!this.canAfford(amount, reservationBucket)) return false;
 
         this.value -= amount;
+
+        if(reservationBucket && this.#reservations.has(reservationBucket)) {
+            this.unReserve(amount, reservationBucket);
+        }
 
         return true;
     }
 
     reserve(amount, object) {
 
-        if(!this.canAfford(amount)) return false;
+        if(!this.canAfford(amount, object)) return false;
 
         this.#reserved += amount;
         if(object) {
-            this.#reservations[object] = amount;
+            const currentReservation = this.#reservations.get(object) || 0;
+            this.#reservations.set(object, currentReservation + amount);
             // console.debug(`Reserved ${amount} ${this.name} for ${object?.name || object}`);
         }
 
@@ -80,9 +89,10 @@ export default class Resource extends Listed {
 
         if(object) {
             // console.debug(`Unreserving ${amount} ${this.name} for ${object?.name || object}`);
-            this.#reservations[object] -= amount;
-            if(this.#reservations[object] == 0) {
-                delete this.#reservations[object];
+            const currentReservation = this.#reservations.get(object) || 0;
+            this.#reservations.set(object, currentReservation - amount);
+            if(currentReservation - amount <= 0) {
+                this.#reservations.delete(object);
             }
         }
     }
