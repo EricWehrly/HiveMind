@@ -31,6 +31,6 @@ export default class BlackoutMap {
     isBlocked(x, y) {
 
         // reference the internal map to see if this position is available
-        return this.#internalMap[`${x},${y}`];
+        return this.#internalMap[`${x},${y}`] || false;
     }
 }
