@@ -1,5 +1,16 @@
+one seeder per node
+
+we have notes below on the whole mountain thing which seems like it should be more of a priority
+
 debug ui
     show how many characters are and are not thinking right now
+    need to be able to show/hide ui sections like the build queue
+
+debug click on character to get more info about them ...
+    last thought age (how many seconds ago)
+    current task, etc.
+
+nodes should take some time to grow when first placed (by player or by another node)
 
 maximum food reserve?
 variable to limit how quickly nodes can "act"
@@ -11,19 +22,19 @@ debug console command:
 list of everything currently growing
     need to find out why reservations + food threshold aren't keeping a steady minimum
 
-events like 'character created' fire in the base class but don't let the super classes finish
-    we need some kind of "post constructor" pattern to fire these events for classes that have derivatives
-
 dont start growing new food if cant reserve enough to grow it to completion
 can we make this generic to all growing?
-
-when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
 
 buildings issues:
     - consumer slimes too quick
     - too easy to get stuck in not having enough food
         - if we don't have enough food, limit what's grown
     - new nodes have a tendency to 'stack' position
+
+events like 'character created' fire in the base class but don't let the super classes finish
+    we need some kind of "post constructor" pattern to fire these events for classes that have derivatives
+
+when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
 
 Are spawns having trouble moving when their y is 0?
 
@@ -78,8 +89,8 @@ Should be able to switch to a new attack even if switch in progress is not compl
     (we kinda started with poison, but there's got to be cooler ways we can go with that)
     so the player can tech a build like hades ...
 
-- Combat Log "ignoreInput" menu property to allow open without stealing focus
-    ( basically rather than "collapsed" )
+- Combat Log:
+    add an "ignoreInput" menu property, to allow it to open without stealing focus
 
 - priorities for targets for player acquisition
     Animal > Native Flora > Player Spawns
