@@ -24,7 +24,13 @@ Want to do:
 
 ## Development
 
+Starting the server with docker:
+
 `docker build . -t hivemind && docker run --init -it -v /$(pwd):/hivemind -p 5000:5000 hivemind`
+
+Starting the tests with docker (probably <_<):
+
+`docker build . -t hivemind && docker run -v /$(pwd):/hivemind node --test`
 
 ---
 

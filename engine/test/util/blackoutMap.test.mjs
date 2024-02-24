@@ -18,8 +18,8 @@ describe('over here right now', () => {
         const map = new BlackoutMap();
 
         map.add({
-            x: 0,
-            y: 0,
+            x: 1,
+            y: 1,
             width: 1,
             height: 1
         });
