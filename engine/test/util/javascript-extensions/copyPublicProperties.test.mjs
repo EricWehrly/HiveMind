@@ -1,5 +1,5 @@
 import { describe, it } from 'node:test';
-import copyPublicProperties from '../../../js/util/javascript-extensions.js';
+import { copyPublicProperties } from '../../../js/util/javascript-extensions.mjs';
 
 // before you look, you should know that this doesn't work
 describe('copyPublicProperties', () => {
