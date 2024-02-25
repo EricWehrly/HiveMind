@@ -1,5 +1,5 @@
 import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
-import { AssignWithUnderscores, copyPublicProperties, generateId } from '../util/javascript-extensions.js'
+import { AssignWithUnderscores, copyPublicProperties, generateId } from '../util/javascript-extensions.mjs'
 import CharacterAttribute from './character-attribute.mjs';
 import Point from '../baseTypes/point.mjs';
 import Technology from '../technology.mjs';

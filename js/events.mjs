@@ -1,4 +1,4 @@
-import { generateId } from "./util/javascript-extensions.js";
+import { generateId } from "./util/javascript-extensions.mjs";
 import NetworkMessenger from './network/network-messenger.mjs';
 
 // TODO: extends Listed

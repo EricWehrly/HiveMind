@@ -1,4 +1,4 @@
-import { generateId } from "../util/javascript-extensions.js";
+import { generateId } from "../util/javascript-extensions.mjs";
 
 export default class Renderer {
 
