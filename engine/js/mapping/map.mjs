@@ -1,5 +1,4 @@
 import Seed from "../core/seed.mjs";
-import Game from "../engine.mjs";
 import Events from "../events.mjs";
 import Biome, { BiomeType } from "./biome.mjs";
 import Chunk from "./chunk.mjs";
@@ -39,10 +38,22 @@ export default class Map {
     // TODO: proper implementation (based on difficulty at generation time)
     get size() { return 100; }
 
-    constructor() {
+    /**
+     * 
+     * @param {Seed} seed 
+     */
+    constructor(seed) {
+
+        if((seed instanceof Seed) == false) {
+            const message = `Cannot construct map without seed.`;
+            console.error(message);
+            debugger;
+            throw message;
+        }
+
         if(Map.#map == null) window.map = Map.#map = this;
 
-        this.#seed = new Seed(Game.Seed.Random());
+        this.#seed = new Seed(seed.Random());
         
         Events.Subscribe(Events.List.CharacterCreated, this.#playerMoved.bind(this));
         Events.Subscribe(Events.List.PlayerMoved, this.#playerMoved.bind(this));

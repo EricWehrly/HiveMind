@@ -43,7 +43,7 @@ KeyboardController.AddDefaultBinding("consume", "f");
 // still 'interact' ... depends on what has focus right now ...
 KeyboardController.AddDefaultBinding("menu_interact", "f");
 
-Game.Map = new Map();
+Game.Map = new Map(Game.Seed);
 
 const food = new Resource({
     name: "food",
