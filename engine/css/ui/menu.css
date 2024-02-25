@@ -1,0 +1,25 @@
+
+.ui.menu {    
+    border: 1px dashed black;
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.ui.menu > *, .ui.menu .section > * {
+  flex: 1 100%;
+}
+  
+.ui.menu div, .ui.menu .section div { 
+    flex: 3 29%;
+}
+
+.ui.menu.vertical div, .ui.menu.vertical .section div {
+    flex: 1 100%;
+}
+
+.ui.menu .section {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 100%;
+}

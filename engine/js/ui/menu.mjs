@@ -137,6 +137,7 @@ export default class Menu extends UIElement {
         super(options);
 
         this.addClass("menu");
+        this.addClass(options.name);
 
         if(options.vertical) this.addClass("vertical");
 
@@ -184,7 +185,7 @@ export default class Menu extends UIElement {
         if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
         menuItem.Element = document.createElement('div');
         menuItem.Element.innerHTML = options.name;
-        this.Element.appendChild(menuItem.Element);
+        this.#addToDom(menuItem.Element, options);
 
         if(!this.#selected) {
             this.select(menuItem);
@@ -204,7 +205,7 @@ export default class Menu extends UIElement {
         Object.assign(menuItem.context, options);
         menuItem.Element = document.createElement('span');
         menuItem.Element.innerHTML = options.name;
-        this.Element.appendChild(menuItem.Element);
+        this.#addToDom(menuItem.Element, options);
 
         return menuItem;
     }
@@ -221,6 +222,41 @@ export default class Menu extends UIElement {
         const index = this.#items.indexOf(item);
         if(index > -1) {
             this.#items.splice(index, 1);
+        }
+    }
+
+    getSection(name, addIfMissing = false) {
+
+        if(!name) return this.Element;
+
+        let section = this.Element.getElementsByClassName(`section ${name}`);
+        if(section.length > 0) return section[0];
+
+        else if(addIfMissing) {
+            return this.addSection(name);
+        }
+
+        return this.Element;
+    }
+
+    // TODO: section header
+    addSection(name) {
+        
+        const section = document.createElement('div');
+        section.className = `section ${name}`;
+        this.Element.appendChild(section);
+
+        return section;
+    }
+
+    #addToDom(element, options) {
+
+        if(options.section) {
+
+            const section = this.getSection(options.section, true);
+            section.appendChild(element);
+        } else {
+            this.Element.appendChild(element);
         }
     }
 }

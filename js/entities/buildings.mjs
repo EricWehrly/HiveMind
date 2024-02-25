@@ -29,6 +29,7 @@ const Build = function (context) {
     return new Building(characterOpts);
 }
 
+// maybe it's time to extract a 'buildingMenu' file
 const UI_MENU_BUILDINGS = new Menu({
     screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
     name: "Build",
@@ -36,10 +37,19 @@ const UI_MENU_BUILDINGS = new Menu({
     menuAction: Build
 });
 
+const addBuildItem = function(itemType) {
+    
+    return UI_MENU_BUILDINGS.addItem({
+        ...itemType,
+        section: 'available'
+    });
+}
+
 Events.Subscribe(Events.List.BuildingDesired, function (desire) {
 
     desireLabels[desire] = UI_MENU_BUILDINGS.addLabel({
         name: `${desire.name} desired`,
+        section: 'desired'
     })
 });
 
@@ -54,9 +64,9 @@ Events.Subscribe(Events.List.BuildingDesireFulfilled, function (desire) {
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
 Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
 
-    const seeder = UI_MENU_BUILDINGS.addItem(CharacterType.Seeder);
+    const seeder = addBuildItem(CharacterType.Seeder);
     seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
-    const eater = UI_MENU_BUILDINGS.addItem(CharacterType.Eater);
+    const eater = addBuildItem(CharacterType.Eater);
     eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
 });
 
@@ -92,7 +102,7 @@ new CharacterType({
     health: 40,
     ai: NodeAI
 });
-UI_MENU_BUILDINGS.addItem(CharacterType.Node);
+addBuildItem(CharacterType.Node);
 
 new CharacterType({
     name: 'Hunter',
@@ -101,7 +111,8 @@ new CharacterType({
     _spawnPurposeKey: 'hunt',
     ai: null
 });
-const hunterMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Hunter);
+// TODO: TBH it doesn't feel "right" to put the 'desire' buildings with the actually 'available' ones
+const hunterMenuItem = addBuildItem(CharacterType.Hunter);
 hunterMenuItem.Element.innerHTML = `Desire ${CharacterType.Hunter.name}`;
 
 // TODO: Make these actually contribute to a research speed multiplier
@@ -111,7 +122,7 @@ new CharacterType({
     health: 50,
     ai: null
 });
-const researcherMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Researcher);
+const researcherMenuItem = addBuildItem(CharacterType.Researcher);
 researcherMenuItem.Element.innerHTML = `Desire ${CharacterType.Researcher.name}`;
 
 new CharacterType({
@@ -120,7 +131,7 @@ new CharacterType({
     _currentPurposeKey: 'heal',
     ai: null
 });
-const healerMenuItem = UI_MENU_BUILDINGS.addItem(CharacterType.Healer);
+const healerMenuItem = addBuildItem(CharacterType.Healer);
 healerMenuItem.Element.innerHTML = `Desire ${CharacterType.Healer.name}`;
 
 // rock driller
