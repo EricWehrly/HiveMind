@@ -1,4 +1,5 @@
 import './combatLog.mjs';
+// import './characterInfo.mjs';
 
 let uiContainer = null;
 let equippedDisplay = null;
