@@ -6,12 +6,17 @@
     flex-flow: row wrap;
 }
 
+.ui.menu > h3 {
+    margin: 0;
+}
+
 .ui.menu > *, .ui.menu .section > * {
   flex: 1 100%;
 }
   
 .ui.menu div, .ui.menu .section div { 
     flex: 3 29%;
+    padding: 1px;
 }
 
 .ui.menu.vertical div, .ui.menu.vertical .section div {
@@ -22,4 +27,12 @@
     display: flex;
     flex-flow: row wrap;
     flex: 1 100%;
+}
+
+.ui.menu .section:not(:first-child) {
+
+    margin-top: .5em;
+    border-top: 1px solid gray;
+    border-start-end-radius: 8px;
+    border-start-start-radius: 8px;
 }
