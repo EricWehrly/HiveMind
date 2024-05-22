@@ -1,3 +1,5 @@
+In Builds.mjs:Build, we should probably call grow()
+
 one seeder per node
 
 we have notes below on the whole mountain thing which seems like it should be more of a priority

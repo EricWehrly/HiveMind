@@ -118,6 +118,7 @@ const Purposes =
                     return;
                 }
                 newGrow.grow(character.growConfig.interval);
+                // TODO: need to instrument range, maybe growConfig.range?
                 newGrow.position = randomPositionOffset(character.position, 5);
                 character.growing.push(newGrow);
             }
