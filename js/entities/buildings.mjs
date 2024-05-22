@@ -85,6 +85,7 @@ new CharacterType({
         batchSize: 4,   // grow 4 at a time
         interval: 10000 // how long does it take to fully grow 1 food?
     },
+    overlapRange: 3,
     ai: null
 });
 
@@ -100,7 +101,8 @@ new CharacterType({
 new CharacterType({
     name: 'Node',
     health: 40,
-    ai: NodeAI
+    ai: NodeAI,
+    range: 4
 });
 addBuildItem(CharacterType.Node);
 

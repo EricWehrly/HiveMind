@@ -48,6 +48,54 @@ export default class NodeAI extends AI {
     // TODO: We should be able to get rid of this once it takes time to make a node
     static #lastThought = performance.now();
 
+    #nextConstructPositions = {};
+
+    /**
+     * 
+     * @param {Building} character 
+     */
+    constructor(character) {
+        super(character);
+
+        // this.#computeNextConstructPosition(character.characterType);
+        const that = this;
+        setTimeout(() => {
+            that.#computeNextConstructPosition(character.characterType)
+        }, 5);
+    
+        Events.Subscribe(Events.List.BuildingBuilt, this.#onBuildingBuilt.bind(this));
+    }
+
+    #onBuildingBuilt(details) {
+
+        if(details.characterType != this.character.characterType) return;
+
+        const characterType = CharacterType[details.characterType];
+        // if(characterType?.overlapRange > 0) {
+            this.#computeNextConstructPosition(characterType);
+        // }
+    }
+
+    // invoke this both on constructor
+    // and when buildings of that type are built
+    #computeNextConstructPosition(buildingType) {
+
+        // TODO: check if 'buildingType' is a proper definition
+
+        const point = this.character.getEligibleConstructionPosition(buildingType);
+
+        this.#nextConstructPositions[buildingType.name] = point;
+    }
+
+    #getNextConstructionPosition(buildingType) {
+
+        if(!this.#nextConstructPositions[buildingType.name]) {
+            this.computeNextConstructPosition(buildingType);
+        }
+
+        return this.#nextConstructPositions[buildingType.name];
+    }
+
     think(elapsed) {
         super.think(elapsed);
 
@@ -182,7 +230,8 @@ export default class NodeAI extends AI {
     #getDesiredBuildOptions(wantToBuild) {
 
         // this needs to be changed entirely
-        const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
+        // const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
+        const position = this.#getNextConstructionPosition(wantToBuild.characterType);
         if(position == null) {
             console.warn(`Couldn't get position for new building. Probably out of bounds.`);
             return;
