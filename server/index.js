@@ -2,6 +2,7 @@ const http = require("http");
 const PORT = process.env.PORT;
 const { serveFile } = require('./serve-file.js');
 const { playerJoined, offerMade, offerAnswered, heartbeat } = require('./player.js');
+// const { startWebSocketServer } = require('./signaling');
 
 const server = http.createServer(async (req, res) => {
 
@@ -43,6 +44,7 @@ const server = http.createServer(async (req, res) => {
     // path variables, basically:
     //     else if (req.url.match(/\/api\/todos\/([0-9]+)/) && req.method === "GET") {
 });
+// startWebSocketServer(server);
 
 server.listen(PORT, () => {
     console.log(`server started on port: ${PORT}`);
