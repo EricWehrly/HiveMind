@@ -5,6 +5,10 @@ ENV PORT 5000
 
 WORKDIR /hivemind
 
-# ADD . .
+ADD . /hivemind
 
-CMD ["node", "server/index.js"]
+RUN yarn install
+
+CMD ["yarn", "build"]
+
+# CMD ["node", "server/index.js"]
