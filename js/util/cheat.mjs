@@ -22,13 +22,7 @@ export default class Cheat {
         Cheat.Health;
     }
 
-    static get Beefcake() {
-
-        Cheat.Health;
-        Cheat.Food;
-        
-        const localPlayer = Character.LOCAL_PLAYER;
-        localPlayer.speed = 15;
+    static get Unlocks() {
         
         const thorns = Technology.Get("thorns");
         Character.LOCAL_PLAYER.AddTechnology(thorns);
@@ -41,6 +35,15 @@ export default class Cheat {
         seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
         const eater = buildMenu.addItem(CharacterType.Eater);
         eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
+    }
+
+    static get Beefcake() {
+
+        Cheat.Health;
+        Cheat.Food;
+        
+        const localPlayer = Character.LOCAL_PLAYER;
+        localPlayer.speed = 15;
     }
 }
 
