@@ -1,10 +1,12 @@
-const http = require("http");
+import { IncomingMessage, ServerResponse } from "http";
+
+import http from "http";
+import serveFile from './serve-file';
+import { playerJoined, offerMade, offerAnswered, heartbeat } from './player';
 const PORT = process.env.PORT;
-const { serveFile } = require('./serve-file.js');
-const { playerJoined, offerMade, offerAnswered, heartbeat } = require('./player.js');
 // const { startWebSocketServer } = require('./signaling');
 
-const server = http.createServer(async (req, res) => {
+const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
 
     // we should probably write a simple router class
     if (req.url === "/api" && req.method === "GET") {

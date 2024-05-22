@@ -1,12 +1,16 @@
-var fs = require('fs');
-var path = require('path');
+import { IncomingMessage, ServerResponse } from "http";
 
-function serveFile(request, response) {
+import fs from 'fs';
+import path from 'path';
+
+export default function serveFile(request: IncomingMessage, response: ServerResponse) {
 
     var filePath = '.' + request.url;
     if (filePath == './') {
         filePath = './index.html';
     }
+
+    console.log(`serving file: ${filePath}`);
 
     var extname = String(path.extname(filePath)).toLowerCase();
 
@@ -16,10 +20,10 @@ function serveFile(request, response) {
         console.error(`${filePath} doesn't exist!`);
         return false;
     }
-    fs.readFile(filePath, function (error, content) {
+    fs.readFile(filePath, function (error: NodeJS.ErrnoException | null, content: Buffer) {
         if (error) {
             if (error.code == 'ENOENT') {
-                fs.readFile('./404.html', function (error, content) {
+                fs.readFile('./404.html', function (error: NodeJS.ErrnoException | null, content: Buffer) {
                     response.writeHead(404, { 'Content-Type': 'text/html' });
                     response.end(content, 'utf-8');
                 });
@@ -38,7 +42,7 @@ function serveFile(request, response) {
     return true;
 }
 
-function checkFileExistsSync(filepath) {
+function checkFileExistsSync(filepath: string) {
     let flag = true;
     try {
         fs.accessSync(filepath, fs.constants.F_OK);
@@ -48,7 +52,8 @@ function checkFileExistsSync(filepath) {
     return flag;
 }
 
-var mimeTypes = {
+const mimeTypes: { [key: string]: string; } =
+ {
     '.html': 'text/html',
     '.js': 'text/javascript',
     '.mjs': 'text/javascript',
@@ -66,6 +71,3 @@ var mimeTypes = {
     '.otf': 'application/font-otf',
     '.wasm': 'application/wasm'
 };
-
-// export default serveFile;
-exports.serveFile = serveFile;

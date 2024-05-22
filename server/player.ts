@@ -1,12 +1,17 @@
-const { randomUUID } = require('crypto'); // Added in: node v14.17.0
+import { IncomingMessage, ServerResponse } from "http";
+import { randomUUID } from 'crypto';
 
-const PLAYER_LIST = {};
+interface PlayerSchema {
+    offer?: string;
+    answer?: string;
+}
+const PLAYER_LIST : { [key: string]: PlayerSchema } = {};
 
-function playerJoined(request, response) {
+export function playerJoined(request: IncomingMessage, response: ServerResponse) {
 
     console.log("Player joined");
     const playerId = randomUUID();
-    const responseObject = {
+    const responseObject: { playerId: any, offer?: string } = {
         playerId
     };
 
@@ -15,15 +20,16 @@ function playerJoined(request, response) {
     console.log(`Adding player ${playerId} to list`);
     // TODO: validate token
 
-    PLAYER_LIST[playerId] = {}
+    PLAYER_LIST[playerId] = {};
 
     responseObject.offer = getOpenoffer(playerId);
     response.end(JSON.stringify(responseObject));
 }
 
-function offerMade(request, response) {
+export function offerMade(request: IncomingMessage, response: ServerResponse) {
 
-    const playerId = request?.headers?.playerid;
+    // TODO: remove the tostring and try to fix
+    const playerId: string = request?.headers?.playerid.toString();
     console.log(`Received offer from player ${playerId}`);
     if (playerId && playerId in PLAYER_LIST) {
 
@@ -46,7 +52,7 @@ function offerMade(request, response) {
     }
 }
 
-function offerAnswered(request, response) {
+export function offerAnswered(request: IncomingMessage, response: ServerResponse) {
 
     console.log("Offer answered");
 
@@ -74,7 +80,7 @@ function offerAnswered(request, response) {
     });
 }
 
-function getOpenoffer(playerId) {
+function getOpenoffer(playerId: string) {
     for (var key in PLAYER_LIST) {
         if (key == playerId) continue;
         var player = PLAYER_LIST[key];
@@ -90,9 +96,9 @@ function getOpenoffer(playerId) {
     return undefined;
 }
 
-function heartbeat(request, response) {
+export function heartbeat(request: IncomingMessage, response: ServerResponse) {
 
-    const playerId = request?.headers?.playerid;
+    const playerId = request?.headers?.playerid.toString();
     if (playerHasAnswer(playerId)) {
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end(JSON.stringify(PLAYER_LIST[playerId].answer));
@@ -102,13 +108,8 @@ function heartbeat(request, response) {
     }
 }
 
-function playerHasAnswer(playerId) {
+function playerHasAnswer(playerId: string) {
     return playerId
         && playerId in PLAYER_LIST
         && PLAYER_LIST[playerId].answer != null;
 }
-
-exports.playerJoined = playerJoined;
-exports.offerMade = offerMade;
-exports.offerAnswered = offerAnswered;
-exports.heartbeat = heartbeat;
