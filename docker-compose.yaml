@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/hivemind
+
+  turnserver:
+    image: instrumentisto/coturn
+    environment:
+      - TURN_PORT=3478
+      - TURN_REALM=${HOSTNAME} # change to a domain name if preferred
+      - TURN_SECRET=${TURN_SECRET}
+    ports:
+      - "3478:3478"
+    command: 
+      - -n
+      - --log-file=stdout
+      - --min-port=49152
+      - --max-port=65535
+      - --realm=${TURN_REALM}
+      - --external-ip=$(detect-external-ip)
+      - --auth-secret
+      - --static-auth-secret=${TURN_SECRET}
+      
+  setup:
+    image: alpine
+    volumes:
+      - .:/hivemind
+    command: /bin/sh /hivemind/setup.sh
