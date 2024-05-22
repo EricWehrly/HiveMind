@@ -1,6 +1,5 @@
-version: '3'
 services:
-  app:
+  hivemind:
     build: .
     ports:
       - "5000:5000"
