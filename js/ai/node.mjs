@@ -90,7 +90,7 @@ export default class NodeAI extends AI {
     #getNextConstructionPosition(buildingType) {
 
         if(!this.#nextConstructPositions[buildingType.name]) {
-            this.computeNextConstructPosition(buildingType);
+            this.#computeNextConstructPosition(buildingType);
         }
 
         return this.#nextConstructPositions[buildingType.name];
