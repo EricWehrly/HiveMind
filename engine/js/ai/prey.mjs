@@ -9,14 +9,14 @@ export default class PreyAI extends AI {
             this.target = null;
         }
         
-        this.target = this.#character.getClosestEntity({ distance: 3 });
+        this.target = this.character.getClosestEntity({ distance: 3 });
 
         if(!this.target) {
             this.wander();
         } else { 
-            this.#character.pointAtTarget();
-            this.#character._velocity.x *= -1;
-            this.#character._velocity.y *= -1;
+            this.character.pointAtTarget();
+            this.character._velocity.x *= -1;
+            this.character._velocity.y *= -1;
         }
     }
 
