@@ -6,17 +6,17 @@ import Events from '../engine/js/events.mjs';
 import './data/biomeTypes.mjs'
 
 // Functionality
-import TileManager from '../engine/js/mapping/tile-manager.mjs';
+import '../engine/js/mapping/tile-manager.mjs';
 import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from './entities/character-extensions.mjs';
-import { RegisterLoopMethod } from '../engine/js/loop.mjs';
+// import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
-import Action from '../engine/js/action.mjs';
+// import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
-import Menu from '../engine/js/ui/menu.mjs';
-import UI from './ui/ui.mjs';
-import * as uiEquipment from '../engine/js/ui/ui-equipment.mjs';
-import * as uiResource from '../engine/js/ui/ui-resource.mjs';
+// import Menu from '../engine/js/ui/menu.mjs';
+import './ui/ui.mjs';
+import '../engine/js/ui/ui-equipment.mjs';
+import '../engine/js/ui/ui-resource.mjs';
 
 import Map from '../engine/js/mapping/map.mjs';
 import './entities/entities.mjs';
@@ -26,7 +26,10 @@ import './characterStats.mjs';
 
 import Cheat from './util/cheat.mjs';
 import MessageLog from '../engine/js/core/messageLog.mjs';
-import "./goal.mjs";
+import "./goal.ts";
+
+// hack, until we convert Actions to proper ts
+import './interaction.mjs';
 
 new MessageLog({
     name: "Combat",
@@ -45,6 +48,14 @@ KeyboardController.AddDefaultBinding("menu_interact", "f");
 
 Game.Map = new Map(Game.Seed);
 
+// TODO: figure out where to properly put this
+declare global {
+    interface Window {
+        LOCAL_PLAYER: Character;
+        Game: typeof Game
+    }
+}
+
 const food = new Resource({
     name: "food",
     value: 100
@@ -53,42 +64,6 @@ const food = new Resource({
 // maybe this number should scale over time
 food.reserve(100);
 const slap = Technology.Get("slap");
-
-function checkPlayerInteraction() {
-
-    if(Menu.anyOpen) {
-
-        localPlayer.toolTip.entity = null;
-        localPlayer.toolTip.visible = false;
-        // localPlayer.toolTip.message = '';
-        return;
-    }
-
-    const closest = localPlayer.target;
-
-    if(closest == null) return;
-    localPlayer.toolTip.entity = closest;
-
-    if(closest.canBeStudied == undefined) debugger;
-
-    // maybe actions could have a "check condition" ?
-    if(closest.canBeStudied(localPlayer)) {
-        // this only works with 1 local player cause actions will be local to this system ...
-        Action.List["study"].target = closest;
-        Action.List["study"].enabled = true;
-    } else {
-        Action.List["study"].enabled = false;
-    }
-
-    if(closest.canBeEaten(localPlayer)) {
-        Action.List["consume"].target = closest;
-        Action.List["consume"].enabled = true;
-    } else {        
-        Action.List["consume"].enabled = false;
-    }
-
-    localPlayer.toolTip.message = closest.toolTipMessage || '';
-}
 
 const localPlayer = new Character({
     name: "Local Player",
@@ -109,14 +84,16 @@ localPlayer.toolTip = new ToolTip({
     entity: localPlayer
 });
 
-const gameStartOptions = {finalFire: true };
+const gameStartOptions = {
+    finalFire: true,
+    // TODO: make these properly optional
+    removeAfterRaise: false,
+    isNetworkBoundEvent: false,
+    isNetworkOriginEvent: false
+};
 Events.RaiseEvent(Events.List.GameStart, null, gameStartOptions);
 
 Game.Camera.setTarget(localPlayer);
-
-// we can limit this to when local player moves
-// this implementation is lazy but should technically work fine
-RegisterLoopMethod(checkPlayerInteraction, false);
 
 window.Game = Game;
 

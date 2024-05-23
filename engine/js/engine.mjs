@@ -8,7 +8,8 @@ const Game = {
     Seed: new Seed(123456),
     Timings: {
         FirstLoad: performance.now()
-    }
+    },
+    Map: null,  // TODO: fix needing this...
 };
 
 export default Game;

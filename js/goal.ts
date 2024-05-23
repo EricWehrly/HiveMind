@@ -1,3 +1,4 @@
+import Game from "../engine/js/engine.mjs";
 import Character from "../engine/js/entities/character.mjs";
 import Events from "../engine/js/events.mjs";
 import UIElement from "../engine/js/ui/ui-element.mjs";
@@ -14,8 +15,8 @@ const UI_ELEMENT_PROGRESS = new UIElement({
 UI_ELEMENT_PROGRESS.Element.id = "objective-progress";
 UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress";
 
-
-Events.Subscribe(Events.List.BuildingBuilt, function(building) {
+// @ts-ignore
+Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt(building: any) {
 
     if(playerHasWon) return;
 
@@ -23,7 +24,7 @@ Events.Subscribe(Events.List.BuildingBuilt, function(building) {
         isBuilding: true
     });
     // do we want to do more than just 1 building = 1 point?
-    const progress = (buildings.length / map.size) * 100;
+    const progress = (buildings.length / Game.Map.size) * 100;
     // communicate more concisely to the player
     // UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress"
         // + `<br> ${buildings.length} / ${map.size} : ${progress}%`;

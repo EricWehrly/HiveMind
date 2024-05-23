@@ -95,6 +95,8 @@ export default class Character {
 
     #spawnPosition = {};
     #initialHealth;
+    toolTip;
+    controller; // inputdevice
 
     _target = null;
 
