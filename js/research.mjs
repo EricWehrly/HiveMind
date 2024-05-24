@@ -4,7 +4,7 @@ import UIElement from './ui/ui-element.mjs';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.mjs';
 import { Defer } from "./loop.mjs";
-import Character from './entities/character.mjs';
+import Character from './entities/character.ts';
 
 Events.List.ResearchEnabled = "ResearchEnabled";
 Events.List.ResearchFinished = "ResearchFinished";

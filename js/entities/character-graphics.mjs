@@ -1,4 +1,4 @@
-import Character from './character.mjs';
+import Character from './character.ts';
 import Events from '../events.mjs';
 import Renderer from '../rendering/renderer.mjs';
 

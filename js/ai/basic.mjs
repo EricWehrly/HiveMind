@@ -1,6 +1,6 @@
 // Most basic / default AI
 // TODO: Predator and prey supertypes above this
-import Character from "../entities/character.mjs";
+import Character from "../entities/character.ts";
 import { Defer } from '../loop.mjs';
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
