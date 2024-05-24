@@ -37,7 +37,7 @@ export default class Events {
      * @param {Boolean} options.isNetworkOriginEvent Did the event originate from a machine other than this one?
      * @param {Boolean} options.finalFire This is the last time the event will fire. All registrations after will fire immediately.
      */
-    static RaiseEvent(eventName, detail, options) {
+    static RaiseEvent(eventName, detail, options = {}) {
 
         if (options?.isNetworkBoundEvent) {
             NetworkMessenger.TransmitEvent(eventName, detail);

@@ -4,7 +4,7 @@ import Research from "../../engine/js/research.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 import Technology from "../../engine/js/technology.mjs";
-import Character from "../../engine/js/entities/character.mjs";
+import Character from "../../engine/js/entities/character.ts";
 import Resource from "../../engine/js/entities/resource.mjs";
 
 function randomPositionOffset(source, offsetAmountPerAxis) {

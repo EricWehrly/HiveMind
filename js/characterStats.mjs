@@ -2,7 +2,7 @@ import UIElement from "../engine/js/ui/ui-element.mjs";
 import Menu from "../engine/js/ui/menu.mjs";
 import KeyboardController from "./controls/keyboard-controller.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
-import Character from "../engine/js/entities/character.mjs";
+import Character from "../engine/js/entities/character.ts";
 import Events from "../engine/js/events.mjs";
 
 let strength = null,

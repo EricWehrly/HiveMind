@@ -1,5 +1,5 @@
 import Game from "../engine/js/engine.mjs";
-import Character from "../engine/js/entities/character.mjs";
+import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events.mjs";
 import UIElement from "../engine/js/ui/ui-element.mjs";
 

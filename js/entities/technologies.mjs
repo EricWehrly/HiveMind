@@ -1,4 +1,4 @@
-import Character from "../../engine/js/entities/character.mjs";
+import Character from "../../engine/js/entities/character.ts";
 import StatusEffect from "../../engine/js/status-effect.mjs";
 import Technology from "../../engine/js/technology.mjs";
 

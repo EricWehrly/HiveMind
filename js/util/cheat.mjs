@@ -1,4 +1,4 @@
-import Character from "../../engine/js/entities/character.mjs";
+import Character from "../../engine/js/entities/character.ts";
 import Resource from "../../engine/js/entities/resource.mjs";
 import Technology from "../../engine/js/technology.mjs";
 import Menu from "../../engine/js/ui/menu.mjs";

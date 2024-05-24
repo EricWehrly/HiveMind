@@ -1,5 +1,5 @@
 import AI from "./basic.mjs";
-import Character from "../entities/character.mjs";
+import Character from "../entities/character.ts";
 import Action from "../action.mjs";
 import Technology from "../technology.mjs";
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AddCharacterToList, RemoveCharacterFromList } from './characters.mjs';
 import { AssignWithUnderscores, copyPublicProperties, generateId } from '../util/javascript-extensions.mjs'
 import CharacterAttribute from './character-attribute.mjs';
@@ -11,12 +12,19 @@ import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
 import PredatorAI from '../ai/predator.mjs';
 import MessageLog from '../core/messageLog.mjs';
+import Tooltip from '../ui/tooltip.mjs';
 
+// @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
+// @ts-ignore
 Events.List.CharacterDied = "CharacterDied";
+// @ts-ignore
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
+// @ts-ignore
 Events.List.PlayerMoved = "PlayerMoved";
+// @ts-ignore
 Events.List.PlayerChunkChanged = "PlayerChunkChanged";
+// @ts-ignore
 Events.List.PlayerHealthChanged = "PlayerHealthChanged";
 
 // TODO: #private properties rather than _private
@@ -24,7 +32,7 @@ export default class Character {
 
     // maybe we can find a way around this (better than how we do in game.js)
     // but for now hack in some dumb reference stuff
-    static #LOCAL_PLAYER;
+    static #LOCAL_PLAYER: Character;
 
     static get LOCAL_PLAYER() {
         return Character.#LOCAL_PLAYER;
@@ -55,6 +63,7 @@ export default class Character {
 
         const oldValue = this._health;
         this._health = newValue;
+        // @ts-ignore
         Events.RaiseEvent(Events.List.PlayerHealthChanged, {
             character: this,
             from: oldValue,
@@ -73,7 +82,7 @@ export default class Character {
     }
 
     _position = new Point(0, 0);
-    #lastPosition = null;
+    #lastPosition: Point = null;
 
     _velocity = {
         x: 0,
@@ -86,7 +95,7 @@ export default class Character {
     }
 
     set speed(newValue) {        
-        return this.getAttribute("Speed").value = newValue;
+        this.getAttribute("Speed").value = newValue;
     }
 
     _technologies = [];
@@ -95,8 +104,8 @@ export default class Character {
 
     #spawnPosition = {};
     #initialHealth;
-    toolTip;
-    controller; // inputdevice
+    toolTip: Tooltip;
+    controller: any; // inputdevice
 
     _target = null;
 

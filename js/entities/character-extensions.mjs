@@ -1,5 +1,5 @@
 import CharacterAttribute from '../../engine/js/entities/character-attribute.mjs';
-import Character from '../../engine/js/entities/character.mjs';
+import Character from '../../engine/js/entities/character.ts';
 import Resource from '../../engine/js/entities/resource.mjs';
 import Events from '../../engine/js/events.mjs';
 import Purposes from './character-purposes.mjs';
