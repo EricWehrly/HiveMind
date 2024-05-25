@@ -1,6 +1,6 @@
 import UIElement from "./ui-element.mjs";
 import Events from '../events.mjs';
-import Technology from "../technology.mjs";
+import { TechnologyTypes } from "../TechnologyTypes.ts";
 
 const UI_ELEMENT_ATTACK = new UIElement({
     screenZone: UIElement.SCREEN_ZONE.BOTTOM_CENTER
@@ -8,7 +8,7 @@ const UI_ELEMENT_ATTACK = new UIElement({
 
 Events.Subscribe(Events.List.EquipmentChanged, function(details) {
 
-    if(details.type == Technology.Types.ATTACK && details.character.isPlayer == true) {
+    if(details.type == TechnologyTypes.ATTACK && details.character.isPlayer == true) {
         // TODO: get the bound key rather than using "magic strings"
         UI_ELEMENT_ATTACK.setText(`[ space ] - ${details.to.name}`);
     }

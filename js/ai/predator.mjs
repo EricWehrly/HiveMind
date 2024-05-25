@@ -1,7 +1,7 @@
 import AI from "./basic.mjs";
 import Character from "../entities/character.ts";
 import Action from "../action.mjs";
-import Technology from "../technology.mjs";
+import { TechnologyTypes } from "../TechnologyTypes.ts";
 
 export default class PredatorAI extends AI {
 
@@ -14,7 +14,7 @@ export default class PredatorAI extends AI {
         const equipment = this.character.equipment;
         if(equipment == null) return null;
 
-        const equipped = equipment[Technology.Types.ATTACK];
+        const equipped = equipment[TechnologyTypes.ATTACK];
 
         return equipped;
     }
