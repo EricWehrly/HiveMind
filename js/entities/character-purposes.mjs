@@ -4,6 +4,7 @@ import Research from "../../engine/js/research.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import CharacterType from "./characterType.mjs";
 import Technology from "../../engine/js/technology.mjs";
+import { TechnologyTypes } from "../../engine/js/TechnologyTypes.ts";
 import Character from "../../engine/js/entities/character.ts";
 import Resource from "../../engine/js/entities/resource.mjs";
 
@@ -52,7 +53,7 @@ const Purposes =
             if (character.target) {
                 character.pointAtTarget(character.target);
 
-                const attack = character.getEquipped(Technology.Types.ATTACK);
+                const attack = character.getEquipped(TechnologyTypes.ATTACK);
                 // if(attack == null) console.warn(`Attack is null.`);
                 if (character.target == null || character.target.dead) {
                     character.target = null;
@@ -68,7 +69,7 @@ const Purposes =
     "hunt": {
         name: "hunt",
         think: function (character, elapsed) {
-            const attack = character.getEquipped(Technology.Types.ATTACK);
+            const attack = character.getEquipped(TechnologyTypes.ATTACK);
             if (attack == null) console.warn(`Attack is null.`);
             Purposes["consume"].think(character, elapsed);
         }

@@ -14,13 +14,6 @@ export default class Technology extends Listed {
         return Technology.#sounds[name];
     }
 
-    static Types = {
-        ATTACK: "attack",
-        // maybe this should be called "buff"
-        ATTACK_MODIFIER: "attackModifier",
-        BUFF: "buff"
-    }
-
     #lastFired = performance.now();
     #lastPlayedSoundIndex = -1;
     #sound = [];
@@ -83,6 +76,9 @@ export default class Technology extends Listed {
             else this.#statusEffect = options.statusEffect;
         }
         this.#statusEffectDuration = options.statusEffectDuration;
+
+        // TODO: Probably stop doing this?
+        Object.seal(this);
     }
 
     checkDelay() {

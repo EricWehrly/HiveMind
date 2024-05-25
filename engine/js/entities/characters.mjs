@@ -1,6 +1,6 @@
 import { RegisterLoopMethod } from './../loop.mjs';
 
-const CHARACTER_LIST = [];
+export const CHARACTER_LIST = [];
 if(window) window.CHARACTER_LIST = CHARACTER_LIST;
 
 export function AddCharacterToList(character) {

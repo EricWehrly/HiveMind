@@ -1,6 +1,7 @@
 import Character from "../../engine/js/entities/character.ts";
 import StatusEffect from "../../engine/js/status-effect.mjs";
 import Technology from "../../engine/js/technology.mjs";
+import { TechnologyTypes } from "../../engine/js/TechnologyTypes.ts";
 
 const bleeding = new StatusEffect({
     name: "bleeding",
@@ -11,7 +12,7 @@ const bleeding = new StatusEffect({
 // these, at least, are easy to load from json ... until we maybe attach script ...
 new Technology({
     name: "slap",
-    type: Technology.Types.ATTACK,
+    type: TechnologyTypes.ATTACK,
     range: 10,
     damage: 1,     // this damage is actually supposed to be super low (1), but we wanted to test combat systems
     delay: 2200,
@@ -21,7 +22,7 @@ new Technology({
 // bleed?
 new Technology({
     name: "claws",
-    type: Technology.Types.ATTACK,
+    type: TechnologyTypes.ATTACK,
     range: 3,
     damage: 3,
     delay: 4200
@@ -29,7 +30,7 @@ new Technology({
 
 new Technology({
     name: "bite",
-    type: Technology.Types.ATTACK,
+    type: TechnologyTypes.ATTACK,
     range: 1,
     damage: 3,
     delay: 6000,
@@ -41,7 +42,7 @@ new Technology({
 /*
 new Technology({
     name: "poison",
-    type: Technology.Types.ATTACK_MODIFIER,
+    type: TechnologyTypes.ATTACK_MODIFIER,
     damage: 1,
     interval: 2000
 });
@@ -49,7 +50,7 @@ new Technology({
 
 new Technology({
     name: "projectile",
-    type: Technology.Types.ATTACK,
+    type: TechnologyTypes.ATTACK,
     range: 10,
     damage: 1,
     delay: 4200, // can we make it take longer based on how far away?
@@ -72,7 +73,7 @@ function makeThornier() {
 
 new Technology({
     name: "thorns",
-    type: Technology.Types.BUFF,
+    type: TechnologyTypes.BUFF,
     thorns: 1,
     delay: 2200,
     research: {

@@ -1,21 +1,32 @@
+import { TechnologyTypes } from "../TechnologyTypes";
 import Events from "../events.mjs";
 import Technology from "../technology.mjs";
+import Entity from "./character/Entity";
 
+// @ts-ignore
 Events.List.EquipmentChanged = "EquipmentChanged"
+
+type EquipmentCollection = { [K in TechnologyTypes]?: Technology };
 
 export default class Equipment {
 
     // should these somehow be generated from Technology.Type ...?
     // (since we tie them together anyway on line 36)
-    _attack = null;
+    _attack: any = null;
     // attackModifier isn't actually used
-    _attackModifier = null;
+    _attackModifier: any = null;
     #character;
 
-    #buff = null;
+    #buff: any = null;
+    
+    // private _equipment: { [key: typeof techTypes]: Technology } = {};;
+    private _equipment: EquipmentCollection = {};
 
-    constructor(character) {
+    constructor(character: Entity) {
 
+        // rather than doing as below, "Equipped" probably needs to be a partial class that gets &'d in ...
+
+        /*
         character.getEquipped = function (techType) {
             return this._equipment[techType];
         }
@@ -27,6 +38,7 @@ export default class Equipment {
         character.equip = function (technology) {
             this._equipment.equip(technology);
         }
+        */
 
         this.#character = character;
     }
@@ -52,23 +64,27 @@ export default class Equipment {
         this.#buff = newValue;
     }
 
-    equip(technology) {
-        if (this[technology.type] === undefined) {
-            console.warn(`Cannot equip type ${technology.type}`);
-            return;
-        }
+    equip(technology: Technology) {
 
         const details = {
             type: technology.type,
-            from: this[technology.type],
+            from: this.getEquipped(technology.type),
             to: technology,
             character: this.#character
         };
 
+        // @ts-ignore
         Events.RaiseEvent(Events.List.EquipmentChanged, details);
 
         // if we were to write a unit test here, it would say:
         // assigned must be a new instance, not a reference to an existing one
-        this[technology.type] = new Technology(technology);
+        // this[technology.type] = new Technology(technology);
+
+        // this._equipment[technology.type] = new Technology(technology);
+        this._equipment[technology.type as TechnologyTypes] = technology;
+    }
+    
+    getEquipped(techType: TechnologyTypes) {
+        return this._equipment[techType];
     }
 }
