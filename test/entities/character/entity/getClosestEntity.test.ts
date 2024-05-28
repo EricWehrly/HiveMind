@@ -46,7 +46,7 @@ describe('Entity.getClosestEntity', () => {
         expect(result).toBe(null);
     });
 
-    it('returns the closest entity based on the provided options', () => {
+    it('returns the other entity', () => {
 
         const secondEntity = new Entity({
             position: {
@@ -61,4 +61,6 @@ describe('Entity.getClosestEntity', () => {
 
         expect(result).toBe(secondEntity);
     });
+
+    // TODO: test for the different method options
 });
