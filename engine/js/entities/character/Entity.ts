@@ -1,5 +1,6 @@
 import CharacterType from "../../../../js/entities/characterType.mjs";
 import Point from "../../baseTypes/point.mjs";
+import Events from "../../events.mjs";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
 import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
@@ -9,7 +10,30 @@ interface SortingEntity {
     entity: CharacterType;
 }
 
+interface GetClosestEntityOptions {
+    distance?: number;
+    filterChildren?: boolean;
+    hostile?: boolean | null;
+    isPlayer?: boolean | null;
+    characterType?: CharacterType | null;
+    grown?: boolean | null;
+    exclude?: any[];
+    faction?: boolean | null;
+    priorities?: Entity[];
+    characterProperties?: Object;
+}
+
 export default class Entity {
+
+    static get(options: any) {
+
+        let charList = CHARACTER_LIST;
+        for(var key of Object.keys(options)) {
+            charList = charList.filter(x => x[key] == options[key]);
+        }
+
+        return charList;
+    }
 
     id: string;
     name: string;
@@ -92,6 +116,13 @@ export default class Entity {
             costFunction: this.logarithmicCost
         }));
 
+        // @ts-ignore
+        const characterCreated = Events.List.CharacterCreated;
+
+        Events.RaiseEvent(characterCreated, this, {
+            isNetworkBoundEvent: true
+        });
+
         AddCharacterToList(this);
     }
 
@@ -153,7 +184,7 @@ export default class Entity {
     // TODO: Also take into account directionality -- prioritize where the player is facing
     // TODO: Need to prioritize close hostile entities over closer non-hostile
     // this really needs a test now ...
-    getClosestEntity(options = {
+    getClosestEntity(options: GetClosestEntityOptions = {
         distance: 100,
         filterChildren: true,
         hostile: null as boolean | null,
@@ -167,9 +198,8 @@ export default class Entity {
         faction: null as boolean | null,
         // lowest to highest
         priorities: [] as Entity[],
-        characterProperties: {}
+        characterProperties: {} as any
     }) {
-
         const nearbyEntities = this.getNearbyEntities(options);
 
         // for now, we'll just do in order, but later we could add in Weights to priorities
@@ -179,7 +209,7 @@ export default class Entity {
             nearbyEntities.sort(this.#prioritizedNearestSort(options.priorities, distMargin));
         }
 
-        return nearbyEntities[0]?.entity;
+        return nearbyEntities[0]?.entity || null;
     }
 
     #prioritizedNearestSort(priorities: Entity[], margin: number) {
