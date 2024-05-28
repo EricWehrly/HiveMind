@@ -29,15 +29,36 @@ describe('Entity.getClosestEntity', () => {
     let entity: Entity;
 
     beforeAll(() => {
-        entity = new Entity({});
+        entity = new Entity({
+            position: {
+                x: 1,
+                y: 1
+            }
+        });
+    });
+
+    it('returns null if there are no other entities', () => {
+
+        let options = {};
+        expect(entity).toBeDefined();
+        const result = entity.getClosestEntity(options);
+
+        expect(result).toBe(null);
     });
 
     it('returns the closest entity based on the provided options', () => {
+
+        const secondEntity = new Entity({
+            position: {
+                x: 2,
+                y: 2
+            }
+        });
+
         let options = {};
         expect(entity).toBeDefined();
-        // const result = entity.getClosestEntity(options);
+        const result = entity.getClosestEntity(options);
 
-        // Make your assertions
-        // assert.equal(result, expectedEntity);
+        expect(result).toBe(secondEntity);
     });
 });
