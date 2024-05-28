@@ -24,7 +24,11 @@ export default class SentientLivingEntity extends LivingEntity {
         Events.Subscribe(Events.List.CharacterDied, this.sentientEntityDied.bind(this));
     }
 
-    setupAI(ai: typeof AI) {
+    think() {
+        if (this.ai) this.ai.think();
+    }
+
+    private setupAI(ai: new (...args: any[]) => AI) {
         // TODO: let's default to no AI at all unless prescribed ...
         if (ai === undefined) this.ai = new AI(this);
 
@@ -32,7 +36,7 @@ export default class SentientLivingEntity extends LivingEntity {
         else if (ai != null) this.ai = new ai(this);
     }
 
-    sentientEntityDied(entity: LivingEntity) {
+    private sentientEntityDied(entity: LivingEntity) {
 
         if(entity.equals(this)
             && entity instanceof SentientLivingEntity
