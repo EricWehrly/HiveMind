@@ -29,22 +29,22 @@ export default class Events {
 
     /**
      * 
-     * @param {String} eventName The enum name from Events.List
-     * @param {Object} detail The details of the event (usually the subject of the action). Varies by event type.
-     * @param {Object} options 
-     * @param {Boolean} options.removeAfterRaise Whether to de-register the event after the first time that it is raised, preventing subsequent calls from resulting in a raised event.
-     * @param {Boolean} options.isNetworkBoundEvent Whether the event should go to the network.
-     * @param {Boolean} options.isNetworkOriginEvent Did the event originate from a machine other than this one?
-     * @param {Boolean} options.finalFire This is the last time the event will fire. All registrations after will fire immediately.
-     */
+    * @param {String} eventName The enum name from Events.List
+    * @param {Object} detail The details of the event (usually the subject of the action). Varies by event type.
+    * @param {Object} [options] 
+    * @param {Boolean} [options.removeAfterRaise] Whether to de-register the event after the first time that it is raised, preventing subsequent calls from resulting in a raised event.
+    * @param {Boolean} [options.isNetworkBoundEvent] Whether the event should go to the network.
+    * @param {Boolean} [options.isNetworkOriginEvent] Did the event originate from a machine other than this one?
+    * @param {Boolean} [options.finalFire] This is the last time the event will fire. All registrations after will fire immediately.
+    */
     static RaiseEvent(eventName, detail, options = {}) {
 
         if (options?.isNetworkBoundEvent) {
             NetworkMessenger.TransmitEvent(eventName, detail);
         }
 
-        if(options?.finalFire == true) {
-            if(eventName in Events.#FiredEvents) {
+        if (options?.finalFire == true) {
+            if (eventName in Events.#FiredEvents) {
                 console.warn(`${eventName} already called finalFire`);
             }
 
@@ -89,7 +89,7 @@ export default class Events {
         try {
             callback(options.detail, callbackOptions);
         } catch (ex) {
-            if(options.eventName) console.error(`Issue firing subscription for event ${options.eventName}`);
+            if (options.eventName) console.error(`Issue firing subscription for event ${options.eventName}`);
             if (callback.name != "") {
                 console.log(callback.name);
             }
@@ -112,8 +112,8 @@ export default class Events {
      */
     static #subscribe(eventName, callback, options) {
 
-        if(eventName == undefined) debugger;
-        
+        if (eventName == undefined) debugger;
+
         if (eventName in Events.#FiredEvents) {
             console.debug(`Immediately firing subscription for already fired event ${eventName}.`);
             const firedEvent = Events.#FiredEvents[eventName];
@@ -154,4 +154,4 @@ export default class Events {
     }
 }
 
-if(window) window.Events = Events;
+if (window) window.Events = Events;
