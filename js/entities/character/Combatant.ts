@@ -4,11 +4,11 @@ import Point from "../../baseTypes/point.mjs";
 import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events.mjs";
 import Technology from "../../technology.mjs";
+import PlayableEntity from "../PlayableEntity";
 import Character from "../character";
 import Equipment from "../equipment";
-import SentientLivingEntity from "./SentientLivingEntity";
 
-export class Combatant extends SentientLivingEntity {
+export class Combatant extends PlayableEntity {
 
     _equipment: Equipment = new Equipment(this);
     private _technologies: any[] = [];
@@ -74,6 +74,17 @@ export class Combatant extends SentientLivingEntity {
             to: this._target
         });
         console.debug(`New target for ${this.name}: ${this?.target?.position?.x}, ${this?.target?.position?.y}`);
+    }
+
+    constructor(options: any) {
+        super(options);
+
+        if(options.technologies) {
+            for(var tech of options.technologies) {
+                this.AddTechnology(tech);
+            }
+            delete options.technologies;
+        }
     }
 
     getEquipped = function (techType: TechnologyTypes): Technology {
@@ -165,7 +176,7 @@ export class Combatant extends SentientLivingEntity {
             // compute volume based on distance
             // maybe every 10 pixels away = -1 volume?
             // (volume is between 0.0 and 1.0)
-            const distance = 100 - this.position.distance(Character.LOCAL_PLAYER.position);
+            const distance = 100 - this.position.distance(PlayableEntity.LOCAL_PLAYER.position);
             equipped.playSound({
                 volume: distance
             });
@@ -205,5 +216,33 @@ export class Combatant extends SentientLivingEntity {
         }
 
         return damage;
+    }
+
+    think(): void {
+        super.think();
+
+        if(this.isPlayer) {
+
+            // for now just target the closest thing. get more complicated later
+            let dist = 5;
+            const attack = this.getEquipped(TechnologyTypes.ATTACK);
+            if(attack && attack.range) dist = attack.range;
+            const closestOptions = {
+                distance: dist,
+                filterChildren: true,
+                // priorities: [CharacterType.]
+            };
+            this.target = this.getClosestEntity(closestOptions);
+
+            /*
+            if(this.shouldStopTargeting()) {
+                this.target = null;
+            }
+            // TODO: Use range of equipped attack?
+            if (!this.target || !this.target.isAlive) {
+                this.target = this.getClosestEntity({ distance: 5 });
+            }
+            */
+        }
     }
 }
