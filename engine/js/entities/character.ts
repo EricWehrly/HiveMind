@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { AssignWithUnderscores, copyPublicProperties } from '../util/javascript-extensions.mjs'
-import { TechnologyTypes } from '../TechnologyTypes';
 import Events from '../events.mjs';
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
@@ -25,28 +24,6 @@ Events.List.PlayerHealthChanged = "PlayerHealthChanged";
 // TODO: #private properties rather than _private
 export default class Character extends Combatant {
 
-    // maybe we can find a way around this (better than how we do in game.js)
-    // but for now hack in some dumb reference stuff
-    static #LOCAL_PLAYER: Character;
-
-    static get LOCAL_PLAYER() {
-        return Character.#LOCAL_PLAYER;
-    }
-
-    static set LOCAL_PLAYER(value) {
-        Character.#LOCAL_PLAYER = value;
-    }
-
-    static get(options) {
-
-        let charList = CHARACTER_LIST;
-        for(var key of Object.keys(options)) {
-            charList = charList.filter(x => x[key] == options[key]);
-        }
-
-        return charList;
-    }
-
     toolTip: Tooltip;
     controller: any; // inputdevice
 
@@ -61,13 +38,6 @@ export default class Character extends Combatant {
 
     constructor(options = {}) {
         super(options);
-
-        if(options.technologies) {
-            for(var tech of options.technologies) {
-                this.AddTechnology(tech);
-            }
-            delete options.technologies;
-        }
 
         if(options.faction) {
             this.#faction = options.faction;
@@ -94,40 +64,12 @@ export default class Character extends Combatant {
         }
 
         // @ts-ignore
-        Events.RaiseEvent(Events.List.CharacterCreated, this, {
-            isNetworkBoundEvent: true
-        });
-
-        // @ts-ignore
         // TODO: move to graphic class 
         Events.Subscribe(Events.List.CharacterDied, this.characterDied.bind(this));
     }
 
     think() {
-        if (this.ai) this.ai.think();
-        else if(this.isPlayer) {
-
-            // for now just target the closest thing. get more complicated later
-            let dist = 5;
-            const attack = this.getEquipped(TechnologyTypes.ATTACK);
-            if(attack && attack.range) dist = attack.range;
-            const closestOptions = {
-                distance: dist,
-                filterChildren: true,
-                // priorities: [CharacterType.]
-            };
-            this.target = this.getClosestEntity(closestOptions);
-
-            /*
-            if(this.shouldStopTargeting()) {
-                this.target = null;
-            }
-            // TODO: Use range of equipped attack?
-            if (!this.target || !this.target.isAlive) {
-                this.target = this.getClosestEntity({ distance: 5 });
-            }
-            */
-        }
+        super.think();
 
         this.statusEffectThink();
     }
