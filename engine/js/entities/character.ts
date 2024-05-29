@@ -27,20 +27,23 @@ export default class Character extends Combatant {
     toolTip: Tooltip;
     controller: any; // inputdevice
 
-    #faction = null;
+    private _faction = null;
     #research = {};
 
-    get faction() { return this.#faction; }
+    get faction() { return this._faction; }
+    set faction(value) { this._faction = value; }
 
-    #thornMultiplier = 1;
-    get thornMultiplier() { return this.#thornMultiplier; }
-    set thornMultiplier(newValue) { this.#thornMultiplier = newValue; }
+    private _thornMultiplier = 1;
+    get thornMultiplier() { return this._thornMultiplier; }
+    set thornMultiplier(newValue) { this._thornMultiplier = newValue; }
+
+    private _statusEffects = {};
 
     constructor(options = {}) {
         super(options);
 
         if(options.faction) {
-            this.#faction = options.faction;
+            this._faction = options.faction;
             delete options.faction;
         }
 
@@ -54,10 +57,9 @@ export default class Character extends Combatant {
         this.color = options.color;
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
-        // options.image
 
         if(options.isPlayer) {
-            this.#faction = new Faction({ 
+            this.faction = new Faction({ 
                 name: this.name,
                 color: this.color
             });
@@ -207,22 +209,20 @@ export default class Character extends Combatant {
         }
     }
 
-    #statusEffects = {};
-
     getStatusEffect(statusEffect) {
 
-        if(!(statusEffect in this.#statusEffects)) {
-            this.#statusEffects[statusEffect] = performance.now();
+        if(!(statusEffect in this._statusEffects)) {
+            this._statusEffects[statusEffect] = performance.now();
         }
         
-        return this.#statusEffects[statusEffect];
+        return this._statusEffects[statusEffect];
     }
 
     statusEffectThink() {
-        for(var key in Object.keys(this.#statusEffects)) {
-            const statusEffect = this.#statusEffects[key];
+        for(var key in Object.keys(this._statusEffects)) {
+            const statusEffect = this._statusEffects[key];
             if(statusEffect > performance.now()) {
-                delete this.#statusEffects[key];
+                delete this._statusEffects[key];
             }
         }
     }
@@ -234,7 +234,7 @@ export default class Character extends Combatant {
      */
     applyStatusEffect(statusEffect, duration) {
 
-        this.#statusEffects[statusEffect] = this.getStatusEffect(statusEffect) + duration;
+        this._statusEffects[statusEffect] = this.getStatusEffect(statusEffect) + duration;
 
         const now = performance.now();
         const options = {
