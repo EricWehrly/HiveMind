@@ -85,10 +85,18 @@ function redraw_loop(screenRect) {
     }
 }
 
+function characterDied(entity) {
+    if(entity.graphic) {
+        document.getElementById("playfield").removeChild(entity.graphic);
+        delete entity.graphic;
+    }
+}
+
 Events.Subscribe(Events.List.GameStart, function() {
     
     Events.Subscribe(Events.List.CharacterCreated, createGraphic);
     Events.Subscribe(Events.List.CharacterTargetChanged, updateTargetingClasses);
+    Events.Subscribe(Events.List.CharacterDied, characterDied);
 });
 
 Renderer.RegisterRenderMethod(10, redraw_loop);

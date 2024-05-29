@@ -64,32 +64,12 @@ export default class Character extends Combatant {
                 color: this.color
             });
         }
-
-        // @ts-ignore
-        // TODO: move to graphic class 
-        Events.Subscribe(Events.List.CharacterDied, this.characterDied.bind(this));
     }
 
     think() {
         super.think();
 
         this.statusEffectThink();
-    }
-
-    pointAtTarget(target) {
-
-        if (target) {
-            if (this.position.x != target.position.x
-                || this.position.y != target.position.y) {
-                if (this.position.x < target.position.x) this._velocity.x = 1;
-                else if (this.position.x > target.position.x) this._velocity.x = -1;
-                if (this.position.y < target.position.y) this._velocity.y = 1;
-                else if (this.position.y > target.position.y) this._velocity.y = -1;
-            }
-        } else {
-            this._velocity.x = 0;
-            this._velocity.y = 0;
-        }
     }
 
     shouldMoveToTarget() {
@@ -192,21 +172,6 @@ export default class Character extends Combatant {
         }
 
         return false;
-    }
-
-    removeGraphic() {
-
-        if(this.graphic) {
-            console.log('removing dying entity graphic');
-            document.getElementById("playfield").removeChild(this.graphic);
-            delete this.graphic;
-        }
-    }
-
-    characterDied(entity) {
-        if(entity.equals(this)) {
-            this.removeGraphic();
-        }
     }
 
     getStatusEffect(statusEffect) {

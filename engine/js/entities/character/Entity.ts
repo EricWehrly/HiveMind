@@ -249,6 +249,23 @@ export default class Entity {
         return false;
     }
 
+    // TODO: should we support a point as well?
+    pointAtTarget(target: Entity) {
+
+        if (target) {
+            if (this.position.x != target.position.x
+                || this.position.y != target.position.y) {
+                if (this.position.x < target.position.x) this._velocity.x = 1;
+                else if (this.position.x > target.position.x) this._velocity.x = -1;
+                if (this.position.y < target.position.y) this._velocity.y = 1;
+                else if (this.position.y > target.position.y) this._velocity.y = -1;
+            }
+        } else {
+            this._velocity.x = 0;
+            this._velocity.y = 0;
+        }
+    }
+
     equals(entity: Entity) {
         return entity.id == this.id;
     }
