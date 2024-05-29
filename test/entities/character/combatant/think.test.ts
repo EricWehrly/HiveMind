@@ -1,6 +1,7 @@
 import { expect } from '@jest/globals';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import Entity from '../../../../js/entities/character/Entity';
+import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
@@ -47,7 +48,13 @@ describe('Combatant.think', () => {
     });
 
     it('will super think', () => {
-        // combatant.think calls sentientlivingentity.think
+        const spy = jest.spyOn(SentientLivingEntity.prototype, 'think');
+
+        combatant.think();
+    
+        expect(spy).toHaveBeenCalled();
+    
+        spy.mockRestore();
     });
 
     it('if player, sets target to closest entity', () => {
