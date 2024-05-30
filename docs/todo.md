@@ -20,6 +20,9 @@ variable to limit how quickly nodes can "act"
 
 Need to instantiate nearby chunks on player spawn
 
+It would be nice to have an 
+    indicator of the number of 'pieces' intending to return to the player character
+
 debug console command:
 list of everything currently growing
     need to find out why reservations + food threshold aren't keeping a steady minimum

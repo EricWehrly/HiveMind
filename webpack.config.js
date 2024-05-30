@@ -52,6 +52,10 @@ module.exports = [
                     { from: 'js', to: 'js' },
                     { from: 'engine', to: 'engine' },
                     { from: 'css', to: 'css' },
+                    // this fixes audio not loading properly but
+                    // we don't fail gracefully if audio can't be found (I think)
+                    // and I want to try to fix that before checking this in and forgetting
+                    { from: 'audio', to: 'audio' },
                 ]
             }),
         ]
