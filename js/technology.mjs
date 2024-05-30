@@ -115,10 +115,16 @@ export default class Technology extends Listed {
                 while(options.volume > 1) options.volume = options.volume / 10;
                 sound.volume = options.volume;
             }
-            try {
-                sound.play();
-            } catch(ex) {
-                console.warn(ex);
+            // we may need to have a more robust way of checking
+            // if the file is properly loaded before playing it
+            if(sound.readyState > 0) {
+                try {
+                    sound.play();
+                } catch(ex) {
+                    console.warn(ex);
+                } 
+            } else {
+                console.warn(`Sound not ready for ${this.name}`, sound);
             }
         }
         else console.warn(`No sound for ${this.name}`);
