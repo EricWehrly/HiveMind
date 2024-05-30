@@ -8,6 +8,12 @@ import PlayableEntity from "../PlayableEntity";
 import Character from "../character";
 import Equipment from "../equipment";
 
+// @ts-ignore
+Events.List.CharacterTargetChanged = "CharacterTargetChanged";
+
+type Axis = 'x' | 'y';
+const axes: Axis[] = ['x', 'y'];
+
 export class Combatant extends PlayableEntity {
 
     _equipment: Equipment = new Equipment(this);
@@ -39,7 +45,6 @@ export class Combatant extends PlayableEntity {
     get hostile() {
 
         // TODO: faction calculation
-        // if ai is predator
         return this.ai instanceof PredatorAI;
     }
 
@@ -244,5 +249,36 @@ export class Combatant extends PlayableEntity {
             }
             */
         }
+    }
+
+    move(amount: number) {
+
+        if (this.shouldMoveToTarget()) {
+            for (const axis of axes) {
+                if (!this.atTarget(axis)) {
+                    if (this.shouldStopOnAxis(axis, amount)) {
+                        this.position[axis] = this.target.position[axis];
+                        this.velocity[axis] = 0;
+                    } else {
+                        this.position[axis] += this.velocity[axis] * this.speed * amount;
+                    }
+                }
+            }
+            this.afterMove();
+        } else {
+            super.move(amount);
+        }
+    }
+
+    shouldMoveToTarget() {
+        return this.ai != null && this.target != null;
+    }
+
+    shouldStopOnAxis(axis: Axis, amount: number) {
+        return Math.abs(this.position[axis] - this.target.position[axis]) < this.speed * amount;
+    }
+
+    atTarget(axis: Axis) {
+        return this.target && this.target.position[axis] == this.position[axis];
     }
 }
