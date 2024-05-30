@@ -48,6 +48,12 @@ export default class Point {
             + Math.abs(this.y - point.y);
     }
 
+    update(point) {
+        this.#x = point.x;
+        this.#y = point.y;
+        this.#chunk = point.chunk;
+    }
+
     toString() {
         return this.#x + ", " + this.#y;
     }

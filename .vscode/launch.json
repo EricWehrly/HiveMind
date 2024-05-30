@@ -2,9 +2,9 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "Jest All",
         "type": "node",
         "request": "launch",
-        "name": "Jest All",
         "program": "${workspaceFolder}/node_modules/.bin/jest",
         "args": ["--runInBand"],
         "console": "integratedTerminal",
@@ -18,13 +18,17 @@
         "name": "Debug Current Jest File",
         "type": "node",
         "request": "launch",
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+        "program": "${workspaceFolder}/node_modules/.bin/jest",
         "args": [
           "--runTestsByPath",
-          "${relativeFileDirname}/${fileBasename}"
+          "${file}"
+          // "${relativeFileDirname}/${fileBasename}"
         ],
         "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
+        "internalConsoleOptions": "neverOpen",
+        "windows": {
+          "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+        }
       }
     ]
   }
