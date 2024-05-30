@@ -1,25 +1,11 @@
 // @ts-nocheck
-import { AssignWithUnderscores, copyPublicProperties } from '../util/javascript-extensions.mjs'
-import Events from '../events.mjs';
+import { AssignWithUnderscores } from '../util/javascript-extensions.mjs'
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
 import Tooltip from '../ui/tooltip.mjs';
 import Entity from './character/Entity';
 import { Combatant } from './character/Combatant';
-
-// @ts-ignore
-Events.List.CharacterCreated = "CharacterCreated";
-// @ts-ignore
-Events.List.CharacterDied = "CharacterDied";
-// @ts-ignore
-Events.List.CharacterTargetChanged = "CharacterTargetChanged";
-// @ts-ignore
-Events.List.PlayerMoved = "PlayerMoved";
-// @ts-ignore
-Events.List.PlayerChunkChanged = "PlayerChunkChanged";
-// @ts-ignore
-Events.List.PlayerHealthChanged = "PlayerHealthChanged";
 
 // TODO: #private properties rather than _private
 export default class Character extends Combatant {
@@ -72,63 +58,7 @@ export default class Character extends Combatant {
         this.statusEffectThink();
     }
 
-    shouldMoveToTarget() {
-        return this.ai != null && this.target != null;
-    }
-
-    shouldStopOnAxis(axis: string, amount: number) {
-        return Math.abs(this._position[axis] - this.target.position[axis]) < this.speed * amount;
-    }
-
-    atTarget(axis: string) {
-        return this.target && this.target.position[axis] == this._position[axis];
-    }
-
-    move(amount: number) {
-
-        if (this.shouldMoveToTarget()) {
-            const axes = ['x', 'y'];
-            for (const axis of axes) {
-                if (!this.atTarget(axis)) {
-                    if (this.shouldStopOnAxis(axis, amount)) {
-                        this._position[axis] = this.target.position[axis];
-                        this._velocity[axis] = 0;
-                    } else {
-                        this._position[axis] += this._velocity[axis] * this.speed * amount;
-                    }
-                }
-            }
-        } else {
-            this._position.x += this._velocity.x * this.speed * amount;
-            this._position.y += this._velocity.y * this.speed * amount;
-        }
-
-        // TODO: We can probly extract to a method (#positionUpdated)
-        // and call from within the position setter
-        if(!this._position.equals(this.lastPosition)) {
-            if(this.isPlayer) {
-                Events.RaiseEvent(Events.List.PlayerMoved, {
-                    character: this,
-                    from: this.lastPosition,
-                    to: this._position
-                    }, {
-                    isNetworkBoundEvent: true
-                });
-                
-                if(!this._position.chunk.equals(this.lastPosition?.chunk)) {
-                    Events.RaiseEvent(Events.List.PlayerChunkChanged, {
-                        character: this,
-                        from: this.lastPosition?.chunk,
-                        to: this._position.chunk
-                    }, {
-                        isNetworkBoundEvent: true
-                    });
-                }
-            }
-            this.lastPosition = copyPublicProperties(this._position)
-        }
-    }
-
+    // this is unused ...
     getScreenPosition() {
 
         // TODO: get grid size constant from css

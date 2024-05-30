@@ -35,7 +35,7 @@ describe('Combatant.think', () => {
 
     let combatant: Combatant;
     let secondEntity: Entity;
-    beforeAll(() => {
+    beforeEach(() => {
         combatant = new Combatant({
             ai: null,
             isPlayer: true

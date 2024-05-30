@@ -2,6 +2,11 @@ import Events from "../../events.mjs";
 import { RemoveCharacterFromList } from "../characters.mjs";
 import Entity from "./Entity";
 
+// @ts-ignore
+Events.List.PlayerHealthChanged = "PlayerHealthChanged";
+// @ts-ignore
+Events.List.CharacterDied = "CharacterDied";
+
 export default class LivingEntity extends Entity {
 
     _health = 1;

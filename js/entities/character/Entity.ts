@@ -5,6 +5,9 @@ import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
 import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
 
+// @ts-ignore
+Events.List.CharacterCreated = "CharacterCreated";
+
 interface SortingEntity {
     distance: number;
     entity: CharacterType;
@@ -23,6 +26,8 @@ interface GetClosestEntityOptions {
     characterProperties?: Object;
 }
 
+type Velocity = { x: number, y: number };
+
 export default class Entity {
 
     static get(options: any) {
@@ -39,13 +44,11 @@ export default class Entity {
     name: string;
     
     #attributes: { [key: string]: CharacterAttribute } = {};
-    _position = new Point(0, 0);
-    // TODO: this was private. Make protected, rather than public
-    lastPosition: Point = null;
+    _position: Point = new Point(0, 0);
 
     // TODO: make private?
     // had to make "public" to make protected
-    _velocity: { x: number, y: number } = { x: 0, y: 0 };
+    _velocity: Velocity = { x: 0, y: 0 };
 
     // prevent trying to set x and y
     get x() { return this._position.x; }
@@ -65,11 +68,11 @@ export default class Entity {
         this.getAttribute("Speed").value = newValue;
     }
 
-    get position() {
+    get position(): Point {
         return this._position;
     }
 
-    set position(options) {
+    set position(options: { x: number, y: number }) {
         if (options.x) this._position.x = options.x;
         if (options.y) this._position.y = options.y;
     }
@@ -78,16 +81,9 @@ export default class Entity {
         return this._velocity;
     }
 
-    set velocity(options: string | { x: number, y: number }) {
-        if (typeof options === "string" && options.indexOf(",") > 0) {
-            console.log("yes string");
-            const split = options.split(",");
-            this._velocity.x = +split[0];
-            this._velocity.y = +split[1];
-        } else if (typeof options === "object") {
-            if (options.x != null) this._velocity.x = options.x;
-            if (options.y != null) this._velocity.y = options.y;
-        }
+    set velocity(options: Velocity) {
+        if (options.x != null) this._velocity.x = options.x;
+        if (options.y != null) this._velocity.y = options.y;
     }
 
     // TODO: not 'any'
@@ -117,13 +113,18 @@ export default class Entity {
         }));
 
         // @ts-ignore
-        const characterCreated = Events.List.CharacterCreated;
-
-        Events.RaiseEvent(characterCreated, this, {
+        Events.RaiseEvent(Events.List.CharacterCreated, this, {
             isNetworkBoundEvent: true
         });
 
         AddCharacterToList(this);
+    }
+
+    // TODO: some day, when typescript sucks less, combine with the above setter
+    setVelocityFromStrting(velocity: string) {
+        const split = velocity.split(",");
+        this._velocity.x = +split[0];
+        this._velocity.y = +split[1];
     }
 
     logarithmicCost(characterAttribute: CharacterAttribute) {
@@ -146,6 +147,11 @@ export default class Entity {
         // TODO: Bounding boxes rather than coordinates
         return Math.abs(this._position.x - entity._position.x)
             + Math.abs(this._position.y - entity._position.y);
+    }
+    
+    move(amount: number) {        
+        this._position.x += this._velocity.x * this.speed * amount;
+        this._position.y += this._velocity.y * this.speed * amount;
     }
 
     getNearbyEntities(options: { max?: number, distance?: number } = {}) {
