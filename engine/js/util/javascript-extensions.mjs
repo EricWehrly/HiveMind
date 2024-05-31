@@ -23,6 +23,15 @@ export function AssignWithUnderscores(target, source) {
   // Object.assign(target, source);
 }
 
+export function WarnUnassignedOptions(target, options) {
+  
+  for (var key of Object.keys(options)) {
+    if(target[key] == null && target["_" + key] == null) {
+      console.warn(`Unassigned option: ${key}`);
+    }
+  }
+}
+
 /**
  * Simple object check.
  * @param item

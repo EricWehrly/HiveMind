@@ -13,6 +13,7 @@ interface EntityOptions {
     id?: string;
     name?: string;
     speed?: number;
+    characterType?: CharacterType
 }
 
 interface SortingEntity {
@@ -52,6 +53,8 @@ export default class Entity {
     
     #attributes: { [key: string]: CharacterAttribute } = {};
     _position: Point = new Point(0, 0);
+
+    characterType: CharacterType;
 
     // TODO: make private?
     // had to make "public" to make protected
@@ -93,11 +96,13 @@ export default class Entity {
         if (options.y != null) this._velocity.y = options.y;
     }
 
-    constructor(options: EntityOptions) {
+    constructor(options: EntityOptions = {}) {
 
         this.id = options.id || generateId();
 
         this.name = options.name || "TODO";     // TODO :/
+
+        this.characterType = options.characterType;
         
         if(options.position) { 
             this._position = new Point(options.position.x, options.position.y);
