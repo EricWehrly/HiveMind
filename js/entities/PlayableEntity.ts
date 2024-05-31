@@ -14,4 +14,8 @@ export default class PlayableEntity extends SentientLivingEntity {
     static set LOCAL_PLAYER(value) {
         PlayableEntity.#LOCAL_PLAYER = value;
     }
+
+    constructor(options: any) {
+        super(options);
+    }
 }
