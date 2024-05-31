@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { AssignWithUnderscores } from '../util/javascript-extensions.mjs'
+import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
 import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
@@ -38,11 +38,15 @@ export default class Character extends Combatant {
             delete options.research;
         }
 
-        AssignWithUnderscores(this, options);
-
         this.color = options.color;
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
+
+        // what else do we need to delete?
+        delete options.ai;
+
+        // WarnUnassignedOptions(this, options);
+        // AssignWithUnderscores(this, options);
 
         if(options.isPlayer) {
             this.faction = new Faction({ 

@@ -12,14 +12,15 @@ export default class SentientLivingEntity extends LivingEntity {
 
     isPlayer: boolean = false;
 
-    ai: AI;
+    private _ai: AI;
     #spawnPosition: Point;
     private _lastPosition: Point = null;
     _maxWanderDistance = 10
 
-    get spawnPosition() {
-        return this.#spawnPosition;
-    }
+    get ai() { return this._ai; }
+    set ai(value) { console.warn(`something is trying to set ai, I'll deal with this later`, this); }
+
+    get spawnPosition() { return this.#spawnPosition; }
 
     constructor(options: any) {
         super(options);        
@@ -34,7 +35,7 @@ export default class SentientLivingEntity extends LivingEntity {
     }
 
     think() {
-        if (this.ai) this.ai.think();
+        if (this._ai) this._ai.think();
     }
 
     move(amount: number) {
@@ -83,10 +84,12 @@ export default class SentientLivingEntity extends LivingEntity {
 
     private setupAI(ai: new (...args: any[]) => AI) {
         // TODO: let's default to no AI at all unless prescribed ...
-        if (ai === undefined) this.ai = new AI(this);
+        if (ai === undefined) this._ai = new AI(this);
 
         // TODO: Would be better to type-validate aiType (but it's a class, not an instance)
-        else if (ai != null) this.ai = new ai(this);
+        else if (ai != null) {
+            this._ai = new ai(this);
+        }
     }
 
     private sentientEntityDied(entity: LivingEntity) {
