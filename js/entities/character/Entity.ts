@@ -8,6 +8,13 @@ import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
 // @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
 
+interface EntityOptions { 
+    position?: { x: number, y: number };
+    id?: string;
+    name?: string;
+    speed?: number;
+}
+
 interface SortingEntity {
     distance: number;
     entity: CharacterType;
@@ -86,8 +93,7 @@ export default class Entity {
         if (options.y != null) this._velocity.y = options.y;
     }
 
-    // TODO: not 'any'
-    constructor(options: any) {
+    constructor(options: EntityOptions) {
 
         this.id = options.id || generateId();
 
@@ -95,12 +101,11 @@ export default class Entity {
         
         if(options.position) { 
             this._position = new Point(options.position.x, options.position.y);
-            delete options.position;
+            delete options.position;    // we should remove this line
         };
 
         let speedVal = 1;
-        if(options.speed != undefined) {
-
+        if(options.speed != undefined) {    // 0 is a valid speed, so we need to check more explicitly
             speedVal = options.speed;
             delete options.speed;
         }
