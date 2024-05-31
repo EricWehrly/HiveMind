@@ -8,7 +8,7 @@ import Building from "../entities/building.mjs";
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
 
-const TIME_BETWEEN_THOUGHTS = 3000;
+const TIME_BETWEEN_THOUGHTS = 5000;
 const NEARBY_RANGE = 100;
 
 export default class NodeAI extends AI {

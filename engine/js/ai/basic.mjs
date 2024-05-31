@@ -1,5 +1,4 @@
 // Most basic / default AI
-// TODO: Predator and prey supertypes above this
 import Character from "../entities/character.ts";
 import { Defer } from '../loop.mjs';
 
@@ -30,12 +29,12 @@ export default class AI {
     get character() {
         return this.#character;
     }
-    
+
     // TODO: faction
 
     think() {
 
-        if(this.#leashing == false) {
+        if (this.#leashing == false) {
 
             // if i don't have a target
             this.wander();
@@ -48,10 +47,10 @@ export default class AI {
     }
 
     wander() {
-        if(this.#character.target instanceof Character) return;
+        if (this.#character.target instanceof Character) return;
 
-        if(performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
-            if(this?.character?.target?.position) {
+        if (performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
+            if (this?.character?.target?.position) {
                 console.debug(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
             }
             this.#lastDestinationPickedTime = performance.now();
@@ -60,11 +59,11 @@ export default class AI {
             }
 
             var randX = Math.random();
-            if(randX > 0.5) this.#character.target.position.x = (10 * randX);
+            if (randX > 0.5) this.#character.target.position.x = (10 * randX);
             else this.#character.target.position.x = (-10 * randX);
-            
+
             var randY = Math.random();
-            if(randY > 0.5) this.#character.target.position.y = (10 * randY);
+            if (randY > 0.5) this.#character.target.position.y = (10 * randY);
             else this.#character.target.position.y = (-10 * randY);
 
             console.debug(`New target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
@@ -77,7 +76,7 @@ export default class AI {
 
     leash(point, distance) {
         var dist = this.#character.position.distance(point);
-        if(dist > distance) {
+        if (dist > distance) {
             console.debug(`Wandered too far (${dist}), with speed ${this.#character.speed} leashing to ${point.x}, ${point.y}`);
             this.target = point;
 
