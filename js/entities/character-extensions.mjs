@@ -21,6 +21,8 @@ export default class HiveMindCharacter extends Character {
 
     constructor(options) {
         const key = options._currentPurposeKey || options.currentPurposeKey;
+        delete options._currentPurposeKey;
+        delete options.currentPurposeKey;
         super(options);
 
         this._currentPurposeKey = key;
