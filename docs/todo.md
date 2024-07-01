@@ -1,16 +1,30 @@
+dont start growing new food if cant reserve enough to grow it to completion
+can we make this generic to all growing?
+
+Maybe all buildings should be able to build other buildings
+    and nodes should just add 'thinking power' to the hivemind...
+
+- There should be one aggregate AI for the entire hivemind
+    (we went down this road before, we need to document why we do / don't)
+- Each player entity should have a volume (size) with a min and max
+    as well as 'stomach contents' for digestion
+    the volume should increase as contents are digested
+    the current volume should also dictate the maximum size of external objects that can be consumed for digestion
+- Each thing in the world should have an associated rate of digestion
+    which increases as player characters become more familiar with it
+- Things like 'eater' slimes should target the highest rate of digestion things first
+
+Are spawns having trouble moving when their y is 0?
+
+We should try creating an enemy ant colony to fight
+    and 'testing' how that interaction feels with current mechanics
+
 In Builds.mjs:Build, we should probably call grow()
 
 one seeder per node
 
 we have notes below on the whole mountain thing which seems like it should be more of a priority
-
-debug ui
-    show how many characters are and are not thinking right now
-    need to be able to show/hide ui sections like the build queue
-
-debug click on character to get more info about them ...
-    last thought age (how many seconds ago)
-    current task, etc.
+    for starters, a 'mountain' should just be a really 'tall' (high Y) tile
 
 nodes should take some time to grow when first placed (by player or by another node)
 
@@ -19,16 +33,6 @@ variable to limit how quickly nodes can "act"
     research that allows more / faster
 
 Need to instantiate nearby chunks on player spawn
-
-It would be nice to have an 
-    indicator of the number of 'pieces' intending to return to the player character
-
-debug console command:
-list of everything currently growing
-    need to find out why reservations + food threshold aren't keeping a steady minimum
-
-dont start growing new food if cant reserve enough to grow it to completion
-can we make this generic to all growing?
 
 buildings issues:
     - consumer slimes too quick
@@ -41,21 +45,37 @@ events like 'character created' fire in the base class but don't let the super c
 
 when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
 
-Are spawns having trouble moving when their y is 0?
+- after killing an enemy
+    they should leave behind a corpse
+    that needs to be dissolved / broken up
+    before being digested
+    (maybe eaters 'attach' to something like a corpse and slowly break it down)
 
 - we should reduce the interval for spawning for subdivide
 
 - buildings for: defending
     defense can later break out to either turrets or unit spawners
-    Once 1 research, can research research and unlock research node which speeds up research
-
 Defense building should look tougher, more callous:
     Less opaque
     Thicker border
 
-Maybe spawner should look wide and short 
+- Maybe spawner should look wide and short 
+
+- Once 1 research, can research research and unlock research node which speeds up research
 
 - need visual indicator for cooldown(s)
+
+- Hivemind should be gradually building 'towards' or in the direction of the player,
+    from wherever it is
+    'prioritizing' the nearest nodes, 
+    and expanding nodes towards player when nodes would be selected
+
+- player should slowly gain "influence" over the hive mind
+    it should start out very 'rough' at first -- sending commands and stuff should be difficult
+    the player's ability to interact with the hivemind,
+        as well as the hivemind's ability to function autonomously
+        should need to grow from a base state to where we have it now(ish)
+    these should work like passive upgrades (and we should ideally describe this very thing less generically)
 
 - Enemy technologies:
     - poison,
@@ -64,8 +84,6 @@ Maybe spawner should look wide and short
 - Building "find empty plot" method 
     (after a little physics / collision maybe?)
     we also probably need methods for comparing areas rather than points
-
-- need to finish implementing biomes
 
 - maybe some terrain variety? Mountains, valleys, water
     obstacles like trees, rocks
@@ -98,7 +116,7 @@ Should be able to switch to a new attack even if switch in progress is not compl
     add an "ignoreInput" menu property, to allow it to open without stealing focus
 
 - priorities for targets for player acquisition
-    Animal > Native Flora > Player Spawns
+    Animal > Native Flora > Player Spawns (maybe just use a "whose hostility property is highest"?)
 
 Rather than a broad Ai, each 'node' (or structure) should only be able to think about either 
     doings it's job, or building another node 
@@ -106,17 +124,11 @@ Rather than a broad Ai, each 'node' (or structure) should only be able to think 
 
 ---
 
-- I think starting a 2nd research screws up one already researching?
-
-- shouldn't be able to open a menu when another menu is already open
-
 - I think we need to have min and max aggression (and other things that get random)
 in part to be able to determine what % of max aggression a creature is
 (which will help us "paint it redder" to visually indicate)
 
-- time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
-
-- Upgrade that let's you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
+- Upgrade that lets you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
 
 - Research to be able to automatically absorb things X smaller than you
 
