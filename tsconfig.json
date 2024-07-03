@@ -6,6 +6,8 @@
       "target": "es6",
       "allowJs": true,
       "moduleResolution": "node",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
       "allowSyntheticDefaultImports": true
     }
   }
