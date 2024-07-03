@@ -4,6 +4,8 @@ import Events from "../../events.mjs";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
 import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
+import PostConstruct from "../../../ts/decorators/PostConstruct";
+import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 
 // @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
@@ -36,6 +38,7 @@ interface GetClosestEntityOptions {
 
 type Velocity = { x: number, y: number };
 
+@PostConstructClass
 export default class Entity {
 
     static get(options: any) {
@@ -122,12 +125,16 @@ export default class Entity {
             costFunction: this.logarithmicCost
         }));
 
+        AddCharacterToList(this);
+    }
+
+    @PostConstruct
+    postConstruct() {
+
         // @ts-ignore
         Events.RaiseEvent(Events.List.CharacterCreated, this, {
             isNetworkBoundEvent: true
         });
-
-        AddCharacterToList(this);
     }
 
     // TODO: some day, when typescript sucks less, combine with the above setter
