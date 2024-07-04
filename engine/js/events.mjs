@@ -4,6 +4,8 @@ import NetworkMessenger from './network/network-messenger.mjs';
 // TODO: extends Listed
 export default class Events {
 
+    // this will fix the list index issue that keeps requiring us to use ts-ignore
+    // static List: { [key: string]: string } = {
     static List = {
         "GameStart": "GameStart"
     }
