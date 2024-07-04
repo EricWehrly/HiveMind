@@ -1,7 +1,7 @@
 import Character from './character-extensions.mjs';
 import CharacterType from './characterType.mjs';
 import Events from '../../engine/js/events.mjs';
-import Chunk from '../../engine/js/mapping/chunk.mjs';
+import Chunk from '../../engine/js/mapping/chunk.ts';
 import Game from '../../engine/js/engine.mjs';
 
 const Seed = Game.Seed;

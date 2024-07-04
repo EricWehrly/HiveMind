@@ -18,7 +18,7 @@ import './ui/ui.mjs';
 import '../engine/js/ui/ui-equipment.mjs';
 import '../engine/js/ui/ui-resource.mjs';
 
-import Map from '../engine/js/mapping/map.mjs';
+import Map from '../engine/js/mapping/map';
 import './entities/entities.mjs';
 // TODO: We can restructure 'entities.js' to import and export this
 import Resource from '../engine/js/entities/resource.mjs';

@@ -1,9 +1,19 @@
 import Events from "../events.mjs";
-import Map from '../mapping/map.mjs';
+import Map from './map';
 import Seed from "../core/seed.mjs";
 import './chunk-graphic.mjs';
+import Biome from "./biome.mjs";
 
+// @ts-ignore
 Events.List.ChunkCreated = "ChunkCreated";
+
+interface ChunkOptions {
+    biome: Biome;
+    x: number;
+    y: number;
+    active: boolean;
+    map: Map;
+}
 
 export default class Chunk {
 
@@ -13,7 +23,7 @@ export default class Chunk {
     static get MIN_DANGER() { return 1; }
     static get MAX_DANGER() { return 100; }
 
-    static getChunkCoordinate(x, y) {
+    static getChunkCoordinate(x: number, y: number) {
 
         let chunkX = 0;
         let chunkY = 0;
@@ -102,7 +112,7 @@ export default class Chunk {
     #distance;
     get distance() { return this.#distance; }
 
-    constructor(options) {
+    constructor(options: ChunkOptions) {
 
         if(!options.biome) debugger;
 
@@ -119,15 +129,15 @@ export default class Chunk {
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this.#flora = seed.Random(1, 10);
 
-        console.log(`New chunk at ${this.x}, ${this.y}`);
-        Map.Map.addChunk(this);
+        options.map.addChunk(this);
+        // @ts-ignore
         Events.RaiseEvent(Events.List.ChunkCreated, this, {
             isNetworkBoundEvent: true
         });
         // console.log(`New chunk at ${options.x}, ${options.y}`);
     }
 
-    equals(chunk) {
+    equals(chunk: Chunk) {
 
         if(!(chunk instanceof Chunk)) return false;
 

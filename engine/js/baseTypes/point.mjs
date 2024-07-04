@@ -1,4 +1,4 @@
-import Map from '../mapping/map.mjs';
+import Map from '../mapping/map.ts';
 
 export default class Point {
 
