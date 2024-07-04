@@ -1,6 +1,6 @@
 import { TechnologyTypes } from "../../TechnologyTypes";
 import PredatorAI from "../../ai/predator.mjs";
-import Point from "../../baseTypes/point.mjs";
+import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events.mjs";
 import Technology from "../../technology.mjs";
@@ -66,7 +66,7 @@ export class Combatant extends PlayableEntity {
         if(newValue == this._target) return;
         var oldValue = this._target;
 
-        if(newValue instanceof Point) {
+        if(newValue instanceof WorldCoordinate) {
             this._target = {
                 position: newValue
             }

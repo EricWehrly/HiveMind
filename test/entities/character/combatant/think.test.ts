@@ -7,7 +7,7 @@ import SentientLivingEntity from '../../../../js/entities/character/SentientLivi
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/basic.mjs',  () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/predator.mjs',  () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/baseTypes/point.mjs', () => {
+jest.mock('@/engine/js/coordinates/point', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((x, y) => {})

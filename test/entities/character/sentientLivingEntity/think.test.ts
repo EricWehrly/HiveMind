@@ -15,12 +15,21 @@ jest.mock('../../../../js/ai/basic.mjs', () => {
         default: jest.fn(),
     };
 });
-jest.mock('@/engine/js/baseTypes/point.mjs', () => {
+jest.mock('@/engine/js/coordinates/point.ts', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((x, y) => {})
     }
 });
+jest.mock('@/engine/js/mapping/map.ts', () => ({
+    Map: {
+        getChunk: jest.fn().mockImplementation(() => {
+            return {
+                equals: () => { return false; }
+            };
+         }),
+    }
+}));
 jest.mock('@/engine/js/events.mjs', () => {
     return {
         __esModule: true, // this property makes it work

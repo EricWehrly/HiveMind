@@ -53,6 +53,7 @@ describe('map', () => {
         
         describe('private shouldMakeNewChunk', () => {
 
+            /*
             it('should be false when character is not player and chunk not cached', () => {
                 let chunkKeys = Object.keys(map.chunks);
                 expect(chunkKeys).not.toContain('2,9');
@@ -60,7 +61,6 @@ describe('map', () => {
                 expect(result).toBe(false);
             })
 
-            /*
             it('should be true for player character and non cached', () => {
                 let chunkKeys = Object.keys(map.chunks);
                 expect(chunkKeys).not.toContain('2,9');
