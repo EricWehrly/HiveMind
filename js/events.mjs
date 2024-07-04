@@ -16,6 +16,16 @@ export default class Events {
 
     static Context = {};
 
+    /**
+     * @param {String | Array<String>} eventNames The enum name from Events.List
+     * @param {Function} callback The callback method of the subscriber.
+     * @param {Object} options
+     * @param {Boolean} [options.oneTime] Whether the subscription should only be raised once.
+     * @param {Boolean} [options.onlyPlayerEvents] Whether the subscription should only be raised for player events.
+     * @param {Number} [options.priority] The priority of the subscription. Higher numbers are called first.
+     * @param {String} [options.before] The name of the function that this subscription should be called before.
+     * @returns the id of the subscription if successful
+     */
     static Subscribe(eventNames, callback, options) {
 
         // TODO: check inputs for bad values
@@ -61,6 +71,8 @@ export default class Events {
         subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
 
         for (var subscription of subscribedEvents) {
+            if(subscription.onlyPlayerEvents && detail?.character?.isPlayer != true) continue;
+
             Events.Context = detail;
             Events.#raiseSubscription(subscription.callback, {
                 detail,
