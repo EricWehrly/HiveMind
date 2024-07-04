@@ -26,7 +26,7 @@ export default class Events {
      * @param {String} [options.before] The name of the function that this subscription should be called before.
      * @returns the id of the subscription if successful
      */
-    static Subscribe(eventNames, callback, options) {
+    static Subscribe(eventNames, callback, options = {}) {
 
         // TODO: check inputs for bad values
 
