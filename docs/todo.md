@@ -1,3 +1,20 @@
+attributes of a biome:
+    how mountainous is this biome?
+        (expressed as a percentage, 50 is 'a normal amount', 100 is 'as many as possible')
+        initialize at 25
+        implemented as the chance (in 10000 square grid tiles) of there being a mountain
+    what is the biome's average height?
+        (expressed as a literal number, negatives will be beneath sea level)
+        defaults to 0
+    what is the average lake size?
+        for bodes of water in this biome, will they be small and numerous, or large and infrequent?
+        (expressed as a percentage from 0 to 100, 100 disables land, 0 disables water)
+
+when implementing mountains,
+    they're given a height upon creation
+        (random range from seed based on biome average height)
+    and should 'march down' (making tall tiles around), (also random ranged amounts based on seed)
+
 dont start growing new food if cant reserve enough to grow it to completion
 can we make this generic to all growing?
 
