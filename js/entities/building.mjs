@@ -2,7 +2,7 @@ import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "./characterType.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import Events from "../../engine/js/events.mjs";
-import Rectangle from "../../engine/js/baseTypes/rectangle.mjs";
+import Rectangle from "../../engine/js/baseTypes/rectangle.ts";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
