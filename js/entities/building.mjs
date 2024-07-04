@@ -3,7 +3,7 @@ import CharacterType from "./characterType.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
 import Events from "../../engine/js/events.mjs";
 import Rectangle from "../../engine/js/baseTypes/rectangle.mjs";
-import Point from "../../engine/js/baseTypes/point.mjs";
+import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
@@ -109,7 +109,7 @@ export default class Building extends HiveMindCharacter {
                 }
 
                 // console.debug(`Character ${characterType.name} zone position: ${x}, ${y}`);
-                return new Point(x, y);
+                return new WorldCoordinate(x, y);
             }
         }
     }
@@ -131,14 +131,14 @@ export default class Building extends HiveMindCharacter {
                     // if(!entity.blockingZone) debugger;
 
                     // if entity blocks this position
-                    if(entity?.blockingZone?.containsPoint(new Point(x, y))) {
+                    if(entity?.blockingZone?.containsPoint(new WorldCoordinate(x, y))) {
                         y = entity.blockingZone.y + entity.blockingZone.height;
                         continue;
                     }
                 }
                 
                 // console.debug(`Character ${characterType.name} position: ${x}, ${y}`);
-                return new Point(x, y);
+                return new WorldCoordinate(x, y);
             }
         }
     }

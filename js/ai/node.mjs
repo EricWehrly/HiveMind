@@ -2,8 +2,8 @@ import AI from "../../engine/js/ai/basic.mjs";
 import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "../entities/characterType.mjs";
 import Events from "../../engine/js/events.mjs";
-import Point from "../../engine/js/baseTypes/point.mjs";
 import Building from "../entities/building.mjs";
+import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -37,7 +37,7 @@ export default class NodeAI extends AI {
         let yOffset = seed.Random(0, offsetAmountPerAxis);
         if (seed.Random() < 0.5) yOffset *= -1;
     
-        return new Point(source.x + xOffset, source.y + yOffset);
+        return new WorldCoordinate(source.x + xOffset, source.y + yOffset);
     }
 
     static #wantDevelopNode() {

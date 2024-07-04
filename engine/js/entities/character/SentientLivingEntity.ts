@@ -1,5 +1,5 @@
 import AI from "../../ai/basic.mjs";
-import Point from "../../baseTypes/point.mjs";
+import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Events from "../../events.mjs";
 import LivingEntity from "./LivingEntity";
 
@@ -13,8 +13,8 @@ export default class SentientLivingEntity extends LivingEntity {
     isPlayer: boolean = false;
 
     private _ai: AI;
-    #spawnPosition: Point;
-    private _lastPosition: Point = null;
+    #spawnPosition: WorldCoordinate;
+    private _lastPosition: WorldCoordinate = null;
     _maxWanderDistance = 10
 
     get ai() { return this._ai; }
@@ -24,8 +24,8 @@ export default class SentientLivingEntity extends LivingEntity {
 
     constructor(options: any) {
         super(options);        
-        this.#spawnPosition = new Point(this.position.x, this.position.y);
-        this._lastPosition = new Point(this.position.x, this.position.y);
+        this.#spawnPosition = new WorldCoordinate(this.position.x, this.position.y);
+        this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
         this.setupAI(options?.ai);
 
         if(options.isPlayer) this.isPlayer = options.isPlayer;
@@ -75,7 +75,7 @@ export default class SentientLivingEntity extends LivingEntity {
         }
 
         if(this._lastPosition == null) { 
-            this._lastPosition = new Point(this._position.x, this._position.y);
+            this._lastPosition = new WorldCoordinate(this._position.x, this._position.y);
         }
         else if(!this._position.equals(this._lastPosition)) {
             this._lastPosition.update(this._position);

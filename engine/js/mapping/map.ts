@@ -1,4 +1,4 @@
-import Point from "../baseTypes/point.mjs";
+import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Seed from "../core/seed.mjs";
 import SentientLivingEntity from "../entities/character/SentientLivingEntity.js";
 import Events from "../events.mjs";
@@ -148,11 +148,11 @@ export default class Map {
         }
     }
 
-    getChunk(point: Point): Chunk;
+    getChunk(worldCoordinate: WorldCoordinate): Chunk;
     getChunk(x: number, y: number): Chunk;
     
-    getChunk(xOrPoint: number | Point, y?: number): Chunk {
-        if (xOrPoint instanceof Point) {
+    getChunk(xOrPoint: number | WorldCoordinate, y?: number): Chunk {
+        if (xOrPoint instanceof WorldCoordinate) {
             const chunkCoordinate = Chunk.getChunkCoordinate(xOrPoint.x, xOrPoint.y);
             return this.getChunk(chunkCoordinate.x, chunkCoordinate.y);
         } else if (typeof xOrPoint === 'number' && typeof y === 'number') {

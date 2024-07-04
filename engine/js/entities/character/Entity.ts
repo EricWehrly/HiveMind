@@ -1,11 +1,11 @@
 import CharacterType from "../../../../js/entities/characterType.mjs";
-import Point from "../../baseTypes/point.mjs";
 import Events from "../../events.mjs";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
 import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
 import PostConstructClass from "../../../ts/decorators/PostConstructClass";
+import WorldCoordinate from "../../coordinates/WorldCoordinate";
 
 // @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
@@ -55,7 +55,7 @@ export default class Entity {
     name: string;
     
     #attributes: { [key: string]: CharacterAttribute } = {};
-    _position: Point = new Point(0, 0);
+    _position: WorldCoordinate = new WorldCoordinate(0, 0);
 
     characterType: CharacterType;
 
@@ -81,7 +81,7 @@ export default class Entity {
         this.getAttribute("Speed").value = newValue;
     }
 
-    get position(): Point {
+    get position(): WorldCoordinate {
         return this._position;
     }
 
@@ -108,7 +108,7 @@ export default class Entity {
         this.characterType = options.characterType;
         
         if(options.position) { 
-            this._position = new Point(options.position.x, options.position.y);
+            this._position = new WorldCoordinate(options.position.x, options.position.y);
             delete options.position;    // we should remove this line
         };
 
@@ -166,9 +166,11 @@ export default class Entity {
             + Math.abs(this._position.y - entity._position.y);
     }
     
-    move(amount: number) {        
-        this._position.x += this._velocity.x * this.speed * amount;
-        this._position.y += this._velocity.y * this.speed * amount;
+    move(amount: number) {
+        if(this.speed != 0) {
+            if(this.velocity.x != 0) this._position.x += this._velocity.x * this.speed * amount;
+            if(this.velocity.y != 0) this._position.y += this._velocity.y * this.speed * amount;
+        }
     }
 
     getNearbyEntities(options: { max?: number, distance?: number } = {}) {

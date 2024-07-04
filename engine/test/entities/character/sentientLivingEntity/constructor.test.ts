@@ -9,7 +9,7 @@ jest.mock('../../../../js/ai/basic.mjs', () => {
         think: jest.fn()
     };
 });
-jest.mock('@/engine/js/baseTypes/point.mjs', () => {
+jest.mock('@/engine/js/coordinates/point.ts', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((x, y) => {})

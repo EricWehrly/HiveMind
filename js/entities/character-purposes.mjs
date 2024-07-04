@@ -1,4 +1,3 @@
-import Point from "../../engine/js/baseTypes/point.mjs";
 import Events from "../../engine/js/events.mjs";
 import Research from "../../engine/js/research.mjs";
 import HiveMindCharacter from "./character-extensions.mjs";
@@ -7,6 +6,7 @@ import Technology from "../../engine/js/technology.mjs";
 import { TechnologyTypes } from "../../engine/js/TechnologyTypes.ts";
 import Character from "../../engine/js/entities/character.ts";
 import Resource from "../../engine/js/entities/resource.mjs";
+import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
 
 function randomPositionOffset(source, offsetAmountPerAxis) {
 
@@ -15,7 +15,7 @@ function randomPositionOffset(source, offsetAmountPerAxis) {
     let yOffset = Math.randomBetween(0, offsetAmountPerAxis);
     if (Math.random() < 0.5) yOffset *= -1;
 
-    return new Point(source.x + xOffset, source.y + yOffset);
+    return new WorldCoordinate(source.x + xOffset, source.y + yOffset);
 }
 
 const Purposes =

@@ -15,7 +15,7 @@ jest.mock('../../../../js/ai/basic.mjs', () => {
     };
 });
 /*
-jest.mock('@/engine/js/baseTypes/point.mjs', () => {
+jest.mock('@/engine/js/coordinates/point.ts', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((x, y) => {
@@ -26,15 +26,27 @@ jest.mock('@/engine/js/baseTypes/point.mjs', () => {
     }
 });
 */
-jest.mock('@/engine/js/mapping/map.ts', () => ({
-    Map: {
-        getChunk: jest.fn().mockImplementation(() => {
-            return {
-                equals: () => { return false; }
-            };
-         }),
-    }
-}));
+jest.mock('@/engine/js/mapping/map', () => {
+    // Mock class
+    const mockMap = jest.fn().mockImplementation(() => {
+        console.log('soy mappo');
+      return {
+        equals: jest.fn() // Add your mock implementation if needed
+      };
+    });
+  
+    //@ts-ignore
+    mockMap.getChunk = jest.fn().mockImplementation(() => {
+      return {
+        equals: () => { return false; }
+      };
+    });
+  
+    return {
+      __esModule: true, // this property makes it work
+      default: mockMap,
+    };
+  });
 jest.mock('@/engine/js/events.mjs', () => {
     return {
         __esModule: true, // this property makes it work
