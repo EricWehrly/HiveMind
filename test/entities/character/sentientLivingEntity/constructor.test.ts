@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../../testHelpers/mockMap';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
 import AI from '../../../../js/ai/basic.mjs';
 
@@ -32,6 +33,7 @@ jest.mock('@/engine/js/events.mjs', () => {
         }
     };
 });
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
 describe('SentientLivingEntity.ctor', () => {
     it('should have no ai if null is passed', () => {

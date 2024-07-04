@@ -1,6 +1,7 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../../testHelpers/mockMap';
 import Entity from '../../../../js/entities/character/Entity';
-import Point from '../../../../js/baseTypes/point.mjs';
+import Point from '../../../../js/coordinates/point';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
 import Events from '../../../../js/events.mjs';
 import AI from '../../../../js/ai/basic.mjs';
@@ -34,15 +35,7 @@ jest.mock('../../../../js/events.mjs', () => {
         }
     };
 });
-jest.mock('@/engine/js/mapping/map.ts', () => ({
-    Map: {
-        getChunk: jest.fn().mockImplementation(() => {
-            return {
-                equals: () => { return false; }
-            };
-         }),
-    }
-}));
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
 describe('SentientLivingEntity.move', () => {
 

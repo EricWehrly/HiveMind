@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../../testHelpers/mockMap';
 import Entity from '../../../../js/entities/character/Entity';
 
 jest.mock('../../../../js/events.mjs', () => {
@@ -18,11 +19,7 @@ jest.mock('../../../../js/events.mjs', () => {
         }
     };
 });
-jest.mock('../../../../js/mapping/map.ts', () => ({
-    Map: {
-        getChunk: jest.fn().mockImplementation(() => { }),
-    }
-}));
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
 describe('Entity.getClosestEntity', () => {
 

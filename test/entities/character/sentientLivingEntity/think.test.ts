@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../../testHelpers/mockMap';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
 import AI from '../../../../js/ai/basic.mjs';
 
@@ -21,15 +22,6 @@ jest.mock('@/engine/js/coordinates/point.ts', () => {
         default: jest.fn().mockImplementation((x, y) => {})
     }
 });
-jest.mock('@/engine/js/mapping/map.ts', () => ({
-    Map: {
-        getChunk: jest.fn().mockImplementation(() => {
-            return {
-                equals: () => { return false; }
-            };
-         }),
-    }
-}));
 jest.mock('@/engine/js/events.mjs', () => {
     return {
         __esModule: true, // this property makes it work
@@ -47,6 +39,7 @@ jest.mock('@/engine/js/events.mjs', () => {
         }
     };
 });
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
 describe('SentientLivingEntity.think', () => {
 
