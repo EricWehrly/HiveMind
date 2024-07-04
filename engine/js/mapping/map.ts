@@ -171,7 +171,6 @@ export default class Map {
             const active = Object.keys(this._chunks).length == 0;
             const biome = this.getBiome({x, y});
             // if(Events.Context?.character?.isPlayer) ...
-            console.log(`making chunk at ${coordinate}`)
             new Chunk({
                 biome,
                 active,
@@ -184,8 +183,11 @@ export default class Map {
     }
 
     private shouldMakeNewChunk(coordinate: string) {
+
+        if(CHUNK_SOFT_LIMIT < Object.keys(this._chunks).length) {
+            console.warn(`Chunk limit reached (${Object.keys(this._chunks).length})`);
+        };
         
-        // TODO: Do we have to use Events.Context, rather than have character passed in?
         return (!(coordinate in this._chunks)) //@ts-ignore // Events.Context probly too hack for typescript
             && CHUNK_SOFT_LIMIT > Object.keys(this._chunks).length;
             // && (character?.isPlayer || coordinate == "0,0");
