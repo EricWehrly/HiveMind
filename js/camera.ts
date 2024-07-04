@@ -1,6 +1,6 @@
 import Renderer from "./rendering/renderer-dom.mjs";
-import { RegisterLoopMethod } from "./loop.mjs";
 import Events from "./events.mjs";
+import Entity from "./entities/character/Entity";
 
 // TODO: Global reference somewhere somehow
 const GRID_SIZE = 32;
@@ -16,15 +16,16 @@ const SCREEN_BORDER_PADDING = 4;
 
 export default class Camera {
 
-    static #instance;
-    static #target;
+    private static _instance: Camera;
+    static #target: Entity;
 
     static get() {
-        return Camera.#instance;
+        return Camera._instance;
     }
 
     constructor() {
-        Camera.#instance = this;
+        Camera._instance = this;
+        // @ts-ignore
         if(this?.window) window.Camera = this;
         
         Events.Subscribe(Events.List.GameStart, this.#renderloop.bind(this));
@@ -56,7 +57,7 @@ export default class Camera {
         }
     }
 
-    setTarget(target) {
+    setTarget(target: Entity) {
         Camera.#target = target;
     }
 

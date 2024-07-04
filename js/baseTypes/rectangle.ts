@@ -12,7 +12,7 @@ export default class Rectangle {
     get right() { return this.x + this.width; }
     get bottom() { return this.y + this.height; }
 
-    constructor(x, y, width, height) {
+    constructor(x: number, y: number, width: number, height: number) {
 
         this.#x = x;
         this.#y = y;
@@ -20,13 +20,13 @@ export default class Rectangle {
         this.#height = height;
     }
 
-    containsPoint(x, y) {
+    containsPoint(x: number, y: number) {
 
         return (x > this.#x || x < this.right)
             && (y > this.#y || y < this.bottom);
     }
 
-    containsRect(rectangle) {
+    containsRect(rectangle: Rectangle) {
 
         // ChatGPT spat this out and I don't think it's right but let's try it
         return this.x < rectangle.right
