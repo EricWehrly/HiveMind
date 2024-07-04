@@ -68,7 +68,6 @@ export default class Map {
     // should we have an option about whether to include the originating chunk?
     getNearbyChunks(
         startingChunk: Chunk,
-        character?: SentientLivingEntity,
         distance: number = 2)
         : Chunk[] {
 
@@ -97,17 +96,16 @@ export default class Map {
         if(event?.character?.isPlayer) {
             const toChunk = event.character.position.chunk;
             this._playerChunkChanged({
-                character: event.character,
                 from: toChunk,
                 to: toChunk
             })
         }
     }
 
-    private _playerChunkChanged(event: { character: SentientLivingEntity, from: Chunk, to: Chunk }) {
+    private _playerChunkChanged(event: { from: Chunk, to: Chunk }) {
 
-        const chunksNearFrom = this.getNearbyChunks(event.from, event.character);
-        const chunksNearTo = this.getNearbyChunks(event.to, event.character);
+        const chunksNearFrom = this.getNearbyChunks(event.from);
+        const chunksNearTo = this.getNearbyChunks(event.to);
         chunksNearFrom.forEach(chunk => {
 
             // console.log(`Chunk at ${chunk.coordinate} active: ${chunk.active}`);
