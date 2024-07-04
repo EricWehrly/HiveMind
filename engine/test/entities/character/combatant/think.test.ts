@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import Entity from '../../../../js/entities/character/Entity';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
@@ -7,6 +8,7 @@ import SentientLivingEntity from '../../../../js/entities/character/SentientLivi
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/basic.mjs',  () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/predator.mjs',  () => require('../../../testHelpers/helpers').createMock);
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 jest.mock('@/engine/js/coordinates/point', () => {
     return {
         __esModule: true, // this property makes it work

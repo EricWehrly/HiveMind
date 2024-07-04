@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../engine/test/testHelpers/mockMap';
 import HiveMindCharacter from '../../js/entities/character-extensions.mjs';
 import NodeAI from '../../js/ai/node.mjs';
 
@@ -7,15 +8,8 @@ jest.mock('@/engine/js/action.mjs', () => {
         List: {}
     }
 });
-jest.mock('@/engine/js/mapping/map.ts', () => ({
-    Map: {
-        getChunk: jest.fn().mockImplementation(() => {
-            return {
-                equals: () => { return false; }
-            };
-         }),
-    }
-}));
+
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
 jest.mock('@/engine/js/events.mjs', () => {
     return {

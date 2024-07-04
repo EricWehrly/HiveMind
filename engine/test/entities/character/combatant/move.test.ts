@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import Entity from '../../../../js/entities/character/Entity';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
@@ -14,39 +15,7 @@ jest.mock('../../../../js/ai/basic.mjs', () => {
         think: jest.fn()
     };
 });
-/*
-jest.mock('@/engine/js/coordinates/point.ts', () => {
-    return {
-        __esModule: true, // this property makes it work
-        default: jest.fn().mockImplementation((x, y) => {
-            return {
-                equals: jest.fn() // Add your mock implementation if needed
-            };
-        })
-    }
-});
-*/
-jest.mock('@/engine/js/mapping/map', () => {
-    // Mock class
-    const mockMap = jest.fn().mockImplementation(() => {
-        console.log('soy mappo');
-      return {
-        equals: jest.fn() // Add your mock implementation if needed
-      };
-    });
-  
-    //@ts-ignore
-    mockMap.getChunk = jest.fn().mockImplementation(() => {
-      return {
-        equals: () => { return false; }
-      };
-    });
-  
-    return {
-      __esModule: true, // this property makes it work
-      default: mockMap,
-    };
-  });
+jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 jest.mock('@/engine/js/events.mjs', () => {
     return {
         __esModule: true, // this property makes it work
