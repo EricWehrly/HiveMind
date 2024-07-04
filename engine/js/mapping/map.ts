@@ -122,59 +122,6 @@ export default class Map {
         event.to.active = true;
     }
 
-    private _playerMoved(event: { character: SentientLivingEntity } ) {
-        if(!event.character) debugger;
-        const character = event.character;
-        if(!character.isPlayer) return;
-
-        const chunk = character.position.chunk;
-
-        const edge = this._closeToChunkEdge(character.position);
-        
-        // if the player is approaching the edge of their chunk
-        // make sure there's another chunk next to it
-        if(edge == "left") this.getChunk(
-            chunk.x - 1,
-            chunk.y
-        );
-        
-        if(edge == "right") this.getChunk(
-            chunk.x + 1,
-            chunk.y
-        );
-        
-        if(edge == "top") this.getChunk(
-            chunk.x,
-            chunk.y - 1
-        );
-        
-        if(edge == "bottom") this.getChunk(
-            chunk.x,
-            chunk.y + 1
-        );
-    }
-
-    private _closeToChunkEdge(point: Point) {
-
-        const margin = 2;
-        let x = point.x;
-        let y = point.y;
-
-        while(x >= Chunk.CHUNK_SIZE) {
-            x -= Chunk.CHUNK_SIZE;
-        }
-        while(y >= Chunk.CHUNK_SIZE) {
-            y -= Chunk.CHUNK_SIZE;
-        }
-
-        // TODO: enum
-        if(x < margin) return "left";
-        if(10 - x < margin) return "right";
-        if(y < margin) return "top";
-        if(10 - y < margin) return "bottom";
-        return false;
-    }
-
     addBiome(biome: Biome) {
         this._biomes.push(biome);
     }
