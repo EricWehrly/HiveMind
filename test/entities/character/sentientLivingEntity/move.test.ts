@@ -34,7 +34,7 @@ jest.mock('../../../../js/events.mjs', () => {
         }
     };
 });
-jest.mock('@/engine/js/mapping/map.mjs', () => ({
+jest.mock('@/engine/js/mapping/map.ts', () => ({
     Map: {
         getChunk: jest.fn().mockImplementation(() => {
             return {

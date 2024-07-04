@@ -1,7 +1,6 @@
-import Events from '../events.mjs';
 import Renderer from '../rendering/renderer.mjs';
-import Chunk from './chunk.mjs';
-import Map from './map.mjs';
+import Chunk from './chunk.ts';
+import Map from './map.ts';
 
 // TODO: This playfield reference should probably be stored somewhere more globally referencable
 let playfield = null;
@@ -51,10 +50,5 @@ function redraw_loop(screenRect) {
         redraw(chunk, screenRect);
     }
 }
-
-Events.Subscribe(Events.List.GameStart, function() {
-
-    Events.Subscribe(Events.List.ChunkCreated, createGraphic);
-});
 
 Renderer.RegisterRenderMethod(10, redraw_loop);

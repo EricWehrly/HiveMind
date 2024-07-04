@@ -1,4 +1,4 @@
-import Chunk from "./chunk.mjs";
+import Chunk from "./chunk.ts";
 
 function expectCoordinate(input, expected) {
 
