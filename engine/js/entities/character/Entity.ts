@@ -132,7 +132,7 @@ export default class Entity {
     postConstruct() {
 
         // @ts-ignore
-        Events.RaiseEvent(Events.List.CharacterCreated, this, {
+        Events.RaiseEvent(Events.List.CharacterCreated, {character: this }, {
             isNetworkBoundEvent: true
         });
     }
