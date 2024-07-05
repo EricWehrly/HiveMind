@@ -42,10 +42,11 @@ export default class Character extends Combatant {
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
 
-        // what else do we need to delete?
         delete options.ai;
 
-        // WarnUnassignedOptions(this, options);
+        if(options.additionalClasses) this.additionalClasses = options.additionalClasses;
+
+        WarnUnassignedOptions(this, options);
         // AssignWithUnderscores(this, options);
 
         if(options.isPlayer) {
