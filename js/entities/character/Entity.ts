@@ -8,6 +8,7 @@ import PostConstruct from "../../../ts/decorators/PostConstruct";
 import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Rectangle from "../../baseTypes/rectangle";
+import EntityRenderingSettings from './EntityRenderingSettings';
 
 // @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
@@ -17,7 +18,8 @@ interface EntityOptions {
     id?: string;
     name?: string;
     speed?: number;
-    characterType?: CharacterType
+    characterType?: CharacterType,
+    entityRenderingSettings?: EntityRenderingSettings
 }
 
 interface SortingEntity {
@@ -68,6 +70,7 @@ export default class Entity {
     // TODO: make private?
     // had to make "public" to make protected
     _velocity: Velocity = { x: 0, y: 0 };
+    entityRenderingSettings: EntityRenderingSettings;
 
     // prevent trying to set x and y
     get x() { return this._position.x; }
@@ -127,6 +130,8 @@ export default class Entity {
             speedVal = options.speed;
             delete options.speed;
         }
+
+        if(options.entityRenderingSettings) this.entityRenderingSettings = options.entityRenderingSettings;
         
         this.addAttribute(new CharacterAttribute({
             name: 'Speed',
