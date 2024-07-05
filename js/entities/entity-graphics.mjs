@@ -11,6 +11,12 @@ function createGraphic(character) {
 
     if (character.additionalClasses) character.graphic.className += " " + character.additionalClasses;
 
+    if(character.entityRenderingSettings) {
+        if(character.entityRenderingSettings.renderedName) {
+            character.graphic.innerHTML = character.entityRenderingSettings.renderedName;
+        }
+    }
+
     // TODO: This playfield reference should probably be stored somewhere more globally referencable
     document.getElementById("playfield").appendChild(character.graphic);
 }
