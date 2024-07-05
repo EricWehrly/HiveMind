@@ -1,6 +1,7 @@
 import Renderer from "./rendering/renderer-dom.mjs";
 import Events from "./events.mjs";
 import Entity from "./entities/character/Entity";
+import Rectangle from "./baseTypes/rectangle";
 
 // TODO: Global reference somewhere somehow
 const GRID_SIZE = 32;
@@ -17,20 +18,29 @@ const SCREEN_BORDER_PADDING = 4;
 export default class Camera {
 
     private static _instance: Camera;
-    static #target: Entity;
+    private static _target: Entity;
 
     static get() {
         return Camera._instance;
     }
+
+    private _screenRect: Rectangle;
 
     constructor() {
         Camera._instance = this;
         // @ts-ignore
         if(this?.window) window.Camera = this;
         
-        Events.Subscribe(Events.List.GameStart, this.#renderloop.bind(this));
+        Events.Subscribe(Events.List.GameStart, this._renderloop.bind(this));
+        Events.Subscribe(Events.List.GameStart, () => {
+            //@ts-ignore
+            // TODO: if the target isn't a player, this won't work right
+            // (but that's how things are now, so its ok)
+            Events.Subscribe(Events.List.PlayerMoved, this.refreshScreenRect.bind(this));
+        });
     }
 
+    // TODO: Trap screen resize
     // pixels
     getViewPortSize() {
         return {
@@ -40,31 +50,39 @@ export default class Camera {
     }
 
     // game units
-    getScreenRect() {
+    get screenRect() {
+        return this._screenRect;
+    }
 
-        if(Camera.#target == null) return {};
+    private refreshScreenRect() {
+        if(Camera._target == null) {
+            this._screenRect = null;
+        }
 
-        const viewport = this.getViewPortSize();
-        const gridHalfWidth = (viewport.width / 2) / GRID_SIZE;
-        const gridHalfHeight = (viewport.height / 2) / GRID_SIZE;
-
-        // TODO: cache
-        return {
-            x: Camera.#target.position.x - gridHalfWidth,
-            y: Camera.#target.position.y - gridHalfHeight,
-            width: gridHalfWidth * 2,
-            height: gridHalfHeight * 2
+        else {
+            const viewport = this.getViewPortSize();
+            const gridHalfWidth = (viewport.width / 2) / GRID_SIZE;
+            const gridHalfHeight = (viewport.height / 2) / GRID_SIZE;
+    
+            this._screenRect = new Rectangle(
+                Camera._target.position.x - gridHalfWidth,
+                Camera._target.position.y - gridHalfHeight,
+                gridHalfWidth * 2,
+                gridHalfHeight * 2
+            );
         }
     }
 
-    setTarget(target: Entity) {
-        Camera.#target = target;
+    setTarget(target?: Entity) {
+        Camera._target = target;
+
+        this.refreshScreenRect();
     }
 
-    #renderloop() {
+    private _renderloop() {
         // we can expand this to encapsulate all renderers, later
-        Renderer.Render(this.getScreenRect());
+        Renderer.Render(this.screenRect);
 
-        window.requestAnimationFrame(this.#renderloop.bind(this));
+        window.requestAnimationFrame(this._renderloop.bind(this));
     }
 }

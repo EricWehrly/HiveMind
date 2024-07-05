@@ -6,6 +6,7 @@ import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
 import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
+import Rectangle from "../../baseTypes/rectangle";
 
 // @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
@@ -56,6 +57,10 @@ export default class Entity {
     
     #attributes: { [key: string]: CharacterAttribute } = {};
     _position: WorldCoordinate = new WorldCoordinate(0, 0);
+    private _area: Rectangle = new Rectangle(0, 0, 0, 0);
+
+    // one dimension, rather than height and width, for now
+    get size() { return 1 }
 
     characterType: CharacterType;
 
@@ -66,6 +71,8 @@ export default class Entity {
     // prevent trying to set x and y
     get x() { return this._position.x; }
     get y() { return this._position.y; }
+
+    get area() { return this._area; }
 
     // TODO: implement variable character attributes
     get vision() {
@@ -88,6 +95,7 @@ export default class Entity {
     set position(options: { x: number, y: number }) {
         if (options.x) this._position.x = options.x;
         if (options.y) this._position.y = options.y;
+        this._area.position = this._position;
     }
 
     get velocity() {
@@ -110,6 +118,7 @@ export default class Entity {
         if(options.position) { 
             this._position = new WorldCoordinate(options.position.x, options.position.y);
             delete options.position;    // we should remove this line
+            this._area.position = this._position;
         };
 
         let speedVal = 1;
