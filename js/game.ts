@@ -91,9 +91,9 @@ const gameStartOptions = {
     isNetworkBoundEvent: false,
     isNetworkOriginEvent: false
 };
+Game.Camera.setTarget(localPlayer);
 Events.RaiseEvent(Events.List.GameStart, null, gameStartOptions);
 
-Game.Camera.setTarget(localPlayer);
 
 window.Game = Game;
 

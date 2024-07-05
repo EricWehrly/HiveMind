@@ -1,29 +1,31 @@
+import Point from "../coordinates/point";
+
 export default class Rectangle {
 
-    #x;
-    #y;
-    #width;
-    #height;
+    private _position: Point;
+    private _width;
+    private _height;
 
-    get x() { return this.#x; }
-    get y() { return this.#y; }
-    get width() { return this.#width; }
-    get height() { return this.#height; }
+    get x() { return this._position.x; }
+    get y() { return this._position.y; }
+    get width() { return this._width; }
+    get height() { return this._height; }
     get right() { return this.x + this.width; }
     get bottom() { return this.y + this.height; }
 
+    set position(value: Point) { this._position = value; }
+
     constructor(x: number, y: number, width: number, height: number) {
 
-        this.#x = x;
-        this.#y = y;
-        this.#width = width;
-        this.#height = height;
+        this._position = new Point(x, y);
+        this._width = width;
+        this._height = height;
     }
 
     containsPoint(x: number, y: number) {
 
-        return (x > this.#x || x < this.right)
-            && (y > this.#y || y < this.bottom);
+        return (x > this.x || x < this.right)
+            && (y > this.y || y < this.bottom);
     }
 
     containsRect(rectangle: Rectangle) {

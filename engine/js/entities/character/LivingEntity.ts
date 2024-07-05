@@ -12,6 +12,11 @@ export default class LivingEntity extends Entity {
     _health = 1;
     #initialHealth: number;
 
+    get size() { 
+        // TODO: address this magic number
+        return this.health / 40;
+    }
+
     get health() {
         return this._health;
     }
