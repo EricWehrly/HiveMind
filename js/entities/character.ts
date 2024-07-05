@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
-import './character-graphics.mjs';
 import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
 import Tooltip from '../ui/tooltip.mjs';
