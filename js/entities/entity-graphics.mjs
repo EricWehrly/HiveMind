@@ -1,6 +1,6 @@
 import Events from '../events.mjs';
 import Renderer from '../rendering/renderer.mjs';
-import Entity from './character/Entity.js';
+import Entity from './character/Entity.ts';
 
 function createGraphic(character) {
 
