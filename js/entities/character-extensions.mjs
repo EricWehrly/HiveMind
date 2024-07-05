@@ -1,5 +1,6 @@
 import CharacterAttribute from '../../engine/js/entities/character-attribute.mjs';
 import Character from '../../engine/js/entities/character.ts';
+import EntityRenderingSettings from '../../engine/js/entities/character/EntityRenderingSettings.ts';
 import Resource from '../../engine/js/entities/resource.mjs';
 import Events from '../../engine/js/events.mjs';
 import Purposes from './character-purposes.mjs';
@@ -157,6 +158,9 @@ export default class HiveMindCharacter extends Character {
         this.health -= amount;
     
         const name = options.name || "Slime Worker";
+        const entityRenderingSettings = {
+            renderedName: purpose.name
+        };
         const spawnedCharacter = new HiveMindCharacter({
             name,
             health: amount,
@@ -164,12 +168,12 @@ export default class HiveMindCharacter extends Character {
             position: this.position,
             _currentPurposeKey: purpose.name.toLowerCase(),
             faction: this.faction,
-            technologies: options.technologies
+            technologies: options.technologies,
+            entityRenderingSettings
         });
         spawnedCharacter.parent = this;
         if (options.target) spawnedCharacter.target = options.target;
-        spawnedCharacter.graphic.innerHTML = spawnedCharacter.purpose.name;
-        console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);
+        console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);        
 
         return spawnedCharacter;
     }
