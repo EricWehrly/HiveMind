@@ -1,6 +1,6 @@
-import Character from './character.ts';
 import Events from '../events.mjs';
 import Renderer from '../rendering/renderer.mjs';
+import Entity from './character/Entity.js';
 
 function createGraphic(character) {
 
@@ -32,26 +32,28 @@ function updateTargetingClasses(event) {
 
     if(!event.character.isPlayer) return;
 
-    if(event.to instanceof Character) {
+    if(event.to instanceof Entity) {
         addClass(event.to, "targeted");
     }
 
-    if(event.from instanceof Character) {
+    if(event.from instanceof Entity) {
         removeClass(event.from, "targeted");
     }
 }
 
-function addClass(character, className) {
-    if(character.graphic) character.graphic.className += ` ${className}`;
+function addClass(entity, className) {
+    if(entity.graphic) entity.graphic.className += ` ${className}`;
 }
 
-function removeClass(character, className) {
-    if(character.graphic) character.graphic.className = character.graphic.className.replace(className, "").trim();
+function removeClass(entity, className) {
+    if(entity.graphic) entity.graphic.className = entity.graphic.className.replace(className, "").trim();
 }
 
-function redraw(character, screenRect) {
+function redraw(entity, screenRect) {
 
-    if(!character.graphic) createGraphic(character);
+    // how to check if the character is off screen?
+
+    if(!entity.graphic) createGraphic(entity);
 
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
     // but even static characters need to be redrawn when screenRect moves
@@ -63,22 +65,23 @@ function redraw(character, screenRect) {
     const MINIMUM_SIZE = gridSize / 2;
 
     const offsetPosition = {
-        x: character.position.x - screenRect.x,
-        y: character.position.y - screenRect.y
+        x: entity.position.x - screenRect.x,
+        y: entity.position.y - screenRect.y
     };
 
-    character.graphic.style.left = (gridSize * offsetPosition.x) + "px";
-    character.graphic.style.top = (gridSize * offsetPosition.y) + "px";
+    entity.graphic.style.left = (gridSize * offsetPosition.x) + "px";
+    entity.graphic.style.top = (gridSize * offsetPosition.y) + "px";
 
     // Find a different way to determine sizes ... or health proportions
-    let targetSize = (character.health / 40) * gridSize;
+    let targetSize = (entity.health / 40) * gridSize;
     if (targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
-    character.graphic.style.width = targetSize + "px";
-    character.graphic.style.height = targetSize + "px";
+    entity.graphic.style.width = targetSize + "px";
+    entity.graphic.style.height = targetSize + "px";
 }
 
 function redraw_loop(screenRect) {
 
+    // despite the name, these are entities
     for(var character of CHARACTER_LIST) {
         // if character in screenRect
         redraw(character, screenRect);
