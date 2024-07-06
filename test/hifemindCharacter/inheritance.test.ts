@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../engine/test/testHelpers/mockMap';
-import HiveMindCharacter from '../../js/entities/character-extensions.mjs';
+import HiveMindCharacter from '../../js/entities/character/HiveMindCharacter';
 import NodeAI from '../../js/ai/node.mjs';
 
 jest.mock('@/engine/js/action.mjs', () => {

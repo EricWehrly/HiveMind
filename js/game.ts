@@ -8,10 +8,10 @@ import './data/biomeTypes.mjs'
 // Functionality
 import '../engine/js/mapping/tile-manager.mjs';
 import KeyboardController from './controls/keyboard-controller.mjs';
-import Character from './entities/character-extensions.mjs';
+import Character from '../engine/js/entities/character';
+import SlimeCharacter from './entities/character/SlimeCharacter';
 // import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
-// import Action from '../engine/js/action.mjs';
 import Technology from '../engine/js/technology.mjs';
 // import Menu from '../engine/js/ui/menu.mjs';
 import './ui/ui.mjs';
@@ -29,7 +29,10 @@ import MessageLog from '../engine/js/core/messageLog.mjs';
 import "./goal.ts";
 
 // hack, until we convert Actions to proper ts
+import './actions';
 import './interaction.mjs';
+import './entities/purposes/slime-purposes';
+import './entities/purposes/growth-purposes';
 
 new MessageLog({
     name: "Combat",
@@ -51,7 +54,7 @@ Game.Map = new Map(Game.Seed);
 // TODO: figure out where to properly put this
 declare global {
     interface Window {
-        LOCAL_PLAYER: Character;
+        LOCAL_PLAYER: SlimeCharacter;
         Game: typeof Game
     }
 }
@@ -65,7 +68,7 @@ const food = new Resource({
 food.reserve(100);
 const slap = Technology.Get("slap");
 
-const localPlayer = new Character({
+const localPlayer = new SlimeCharacter({
     name: "Local Player",
     color: "blue",
     speed: 5,

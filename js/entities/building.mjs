@@ -1,13 +1,13 @@
 import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "./characterType.mjs";
-import HiveMindCharacter from "./character-extensions.mjs";
 import Events from "../../engine/js/events.mjs";
 import Rectangle from "../../engine/js/baseTypes/rectangle.ts";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
+import SlimeCharacter from "./character/SlimeCharacter.ts";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
-export default class Building extends HiveMindCharacter {
+export default class Building extends SlimeCharacter {
 
     static #blockingZones = {};
 
@@ -47,7 +47,6 @@ export default class Building extends HiveMindCharacter {
 
         super(options);
         this.isBuilding = true;
-        this.growing = [];
 
         if(characterType.overlapRange) {
             const halfRange = characterType.overlapRange / 2;
@@ -68,6 +67,11 @@ export default class Building extends HiveMindCharacter {
         Building.#addBlockingZone(characterType.name, this.#blockingZone);
         
         Events.RaiseEvent(Events.List.BuildingBuilt, this);
+    }
+
+    canBeEaten(byWhom) {
+
+        return false;
     }
 
     /**

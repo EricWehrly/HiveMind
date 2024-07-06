@@ -2,6 +2,13 @@ import Research from "../../engine/js/research.mjs";
 
 export default class CharacterType {
 
+    name;
+    // some of these properties might be ... odd, to have on here ...
+    // but then, this whole class is kinda murky javascript hack fun
+    _spawnPurposeKey;
+    _currentPurposeKey;
+    growConfig;
+
     #research;
     get research() { return this.#research; }
 

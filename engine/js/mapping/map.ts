@@ -1,6 +1,6 @@
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Seed from "../core/seed.mjs";
-import SentientLivingEntity from "../entities/character/SentientLivingEntity.js";
+import SentientLivingEntity from "../entities/character/SentientLivingEntity";
 import Events from "../events.mjs";
 import Biome, { BiomeType } from "./biome.mjs";
 import Chunk from "./chunk";
