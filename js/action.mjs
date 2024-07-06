@@ -1,10 +1,7 @@
-// these actions should really be in the game, not the engine
-import Character from '../../js/entities/character-extensions.mjs';
 import Listed from './baseTypes/listed.mjs';
 import Requirements from './requirements.mjs';
 import Events from './events.mjs';
 import Menu from './ui/menu.mjs';
-import Technology from './technology.mjs';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -86,53 +83,6 @@ export default class Action extends Listed {
                 }
 
                 return options.character.attack(options);
-            }
-        });
-
-        // maybe not allowed to do this at first
-        new Action({
-            name: 'subdivide',
-            isCharacterControl: true,
-            // TODO: Maybe we should just have "on press" vs "on held" ...
-            oncePerPress: true,
-            callback: function (options) {
-                options.character.Subdivide();
-            }
-        })
-
-        // TODO: unavailable if a subdivided piece is already studying the target
-        new Action({
-            name: 'study',
-            isCharacterControl: true,
-            enabled: false,
-            oncePerPress: true,
-            delay: 1000,
-            callback: function (options) {
-                
-                const piece = options.character.Subdivide({
-                    purpose: Character.Purposes["study"],
-                    target: Action.List["study"].target
-                });
-            }
-        });
-
-        // TODO: unavailable if a subdivided piece is already nomming the target
-        new Action({
-            name: 'consume',
-            isCharacterControl: true,
-            enabled: false,
-            oncePerPress: true,
-            delay: 250,    // do we even want this? maybe there should be a generic one
-            callback: function (options) {
-
-                // TODO: take this from the player eventually
-                const slap = Technology.Get("slap");
-
-                options.character.Subdivide({
-                    purpose: Character.Purposes["consume"],
-                    target: Action.List["consume"].target,
-                    technologies: [ slap ]
-                });
             }
         });
 
