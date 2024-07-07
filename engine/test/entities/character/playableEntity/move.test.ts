@@ -5,6 +5,7 @@ import Point from '../../../../js/coordinates/point';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
 import Events from '../../../../js/events.mjs';
 import AI from '../../../../js/ai/basic.mjs';
+import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
 
 jest.mock('../../../../js/ai/basic.mjs', () => {
     return {
@@ -16,7 +17,7 @@ jest.mock('../../../../js/ai/basic.mjs', () => {
 
 let manuallyTrackedMockCalls: string[] = [];
 // TODO: fix this mocking when we move events to ts
-jest.mock('../../../../js/events.mjs', () => {
+jest.mock('@/engine/js/events.mjs', () => {
     return {
         __esModule: true, // this property makes it work
         default: {
@@ -37,12 +38,12 @@ jest.mock('../../../../js/events.mjs', () => {
 });
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
-describe('SentientLivingEntity.move', () => {
+describe('PlayableEntity.move', () => {
 
-    let entity: SentientLivingEntity;
+    let entity: PlayableEntity;
 
     beforeEach(() => {
-        entity = new SentientLivingEntity({
+        entity = new PlayableEntity({
             isPlayer: true,
             position: {
                 x: 1,
