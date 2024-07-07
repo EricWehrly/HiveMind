@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import Entity from '../../../../js/entities/character/Entity';
-import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
 import AI from '../../../../js/ai/basic.mjs';
+import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
@@ -70,7 +70,7 @@ describe('Combatant.move', () => {
 
     it('should call afterMove if moving to target', () => {
         combatant.target = secondEntity;
-        const spy = jest.spyOn(SentientLivingEntity.prototype, 'afterMove');
+        const spy = jest.spyOn(Combatant.prototype, 'afterMove');
 
         expect(combatant.position.x).toEqual(0);
         combatant.move(2);
@@ -83,7 +83,7 @@ describe('Combatant.move', () => {
 
     it('should call super move if not moving to target', () => {
         combatant.target = null;
-        const spy = jest.spyOn(SentientLivingEntity.prototype, 'move');
+        const spy = jest.spyOn(Combatant.prototype, 'move');
 
         combatant.move(1);
     
@@ -94,7 +94,7 @@ describe('Combatant.move', () => {
 
     it('should not call super move if moving to target', () => {
         combatant.target = secondEntity;
-        const spy = jest.spyOn(SentientLivingEntity.prototype, 'move');
+        const spy = jest.spyOn(PlayableEntity.prototype, 'move');
 
         combatant.move(1);
     
