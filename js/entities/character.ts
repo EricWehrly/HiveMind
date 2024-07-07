@@ -45,7 +45,7 @@ export default class Character extends Combatant {
 
         if(options.additionalClasses) this.additionalClasses = options.additionalClasses;
 
-        WarnUnassignedOptions(this, options);
+        // WarnUnassignedOptions(this, options);
         // AssignWithUnderscores(this, options);
 
         if(options.isPlayer) {
