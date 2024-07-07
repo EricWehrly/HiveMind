@@ -4,7 +4,7 @@ import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events.mjs";
 import Technology from "../../technology.mjs";
-import PlayableEntity from "../PlayableEntity";
+import PlayableEntity from "./PlayableEntity";
 import Character from "../character";
 import Equipment from "../equipment";
 
