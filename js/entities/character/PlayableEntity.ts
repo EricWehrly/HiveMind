@@ -1,4 +1,4 @@
-import SentientLivingEntity from "./character/SentientLivingEntity";
+import SentientLivingEntity from "./SentientLivingEntity";
 
 // this starts getting into the territory of wanting to compose rather than extend ...
 export default class PlayableEntity extends SentientLivingEntity {
