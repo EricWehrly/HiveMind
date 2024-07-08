@@ -10,10 +10,11 @@ Purposes["return"] = {
         if (!character.target) {
             character.target = character.parent;
         }
-        character.pointAtTarget(character.target);
+        character.pointAtTarget(character.targetPosition);
 
         // TODO: if collision boxes overlap ..
-        if (character.position.equals(character.target.position)) {
+        // if(character.targetEntity.area.contains(character.position)) {
+        if (character.position.equals(character.targetPosition)) {
             character.Reabsorb();
         }
     }

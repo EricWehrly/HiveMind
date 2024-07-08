@@ -7,6 +7,7 @@ import Technology from "../../technology.mjs";
 import PlayableEntity from "./PlayableEntity";
 import Character from "../character";
 import Equipment from "../equipment";
+import LivingEntity from "./LivingEntity";
 
 // @ts-ignore
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
@@ -19,7 +20,7 @@ export class Combatant extends PlayableEntity {
     _equipment: Equipment = new Equipment(this);
     private _technologies: any[] = [];
     aggression = 0;
-    private _target: any;
+    private _target: LivingEntity | WorldCoordinate;
 
     // TODO: this is a HivemindCharacter construct, but is needed in the 'attack' method
     // until we (probably) provide some kind of hook or overwrite for the attack method...
@@ -60,16 +61,25 @@ export class Combatant extends PlayableEntity {
         return this._target;
     }
 
-    set target(newValue) {
+    get targetPosition() {
+        if(this.target instanceof LivingEntity) return this.target.position;
+        else if (this.target instanceof WorldCoordinate) return this.target;
+        else return null;
+    }
+
+    get targetEntity() {
+        if(this.target instanceof LivingEntity) return this.target;
+        else return null;
+    }
+
+    set target(newValue: LivingEntity | WorldCoordinate) {
         if (newValue === undefined || newValue == this._target) return;
 
         if(newValue == this._target) return;
         var oldValue = this._target;
 
         if(newValue instanceof WorldCoordinate) {
-            this._target = {
-                position: newValue
-            }
+            this._target = newValue
         } else this._target = newValue;
 
         // @ts-ignore
@@ -78,7 +88,7 @@ export class Combatant extends PlayableEntity {
             from: oldValue,
             to: this._target
         });
-        console.debug(`New target for ${this.name}: ${this?.target?.position?.x}, ${this?.target?.position?.y}`);
+        console.debug(`New target for ${this.name}: ${this?.target?.x}, ${this?.target?.y}`);
     }
 
     constructor(options: any) {
@@ -135,17 +145,10 @@ export class Combatant extends PlayableEntity {
         }
     }
 
-    shouldStopTargeting(distance = 6) {
-
-        return this.target
-            && (this.target.isAlive == false || 
-                this.target.getDistance(this) > distance);
-    }
-
     canAttack() {
 
         // eventually, we won't want this to be the case ...
-        if(!this.target) return false;
+        if(!(this.target instanceof LivingEntity)) return false;
         
         const equipment = this.equipment;
         if(equipment == null) return false;
@@ -170,11 +173,10 @@ export class Combatant extends PlayableEntity {
         if(!this.canAttack()) return 0;
 
         const equipped = this.getEquipped(TechnologyTypes.ATTACK);
+        let target = this.target as LivingEntity;
+        const strAttr = this.getAttribute("Strength");
 
         // TODO: visual and audio cues
-
-        const target = this.target;
-        const strAttr = this.getAttribute("Strength");
 
         // TODO: is there a better way to check whether to play sound?
         if(this._currentPurposeKey != "consume") {
@@ -186,6 +188,8 @@ export class Combatant extends PlayableEntity {
                 volume: distance
             });
         }
+
+        if(!(target instanceof LivingEntity)) return;
 
         const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
         const damage = (equipped.damage * strengthMultiplier);
@@ -200,12 +204,25 @@ export class Combatant extends PlayableEntity {
             damage
         });
 
+        if(target instanceof Character) {
+            this._attackCharacter(target as Character, equipped, damage);
+        }
+
+        return damage;
+    }
+
+    private _attackCharacter(target: Character, equipped: Technology, damage: number) {
+
+        const combatLog = MessageLog.Get("Combat");
+
         if(equipped.statusEffect) {
             target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
         }
 
         if(target.equipment) {
-            const buff = target.equipment[TechnologyTypes.BUFF];
+            const buffType = TechnologyTypes.BUFF;
+            // @ts-expect-error
+            const buff = target.equipment[buffType];
             if(buff) {                            
                 const thornDamage = buff.thorns * target.thornMultiplier;
                 this.health -= thornDamage;
@@ -219,8 +236,6 @@ export class Combatant extends PlayableEntity {
                 });
             }
         }
-
-        return damage;
     }
 
     think(): void {
@@ -257,7 +272,7 @@ export class Combatant extends PlayableEntity {
             for (const axis of axes) {
                 if (!this.atTarget(axis)) {
                     if (this.shouldStopOnAxis(axis, amount)) {
-                        this.position[axis] = this.target.position[axis];
+                        this.position[axis] = this.targetPosition[axis];
                         this.velocity[axis] = 0;
                     } else {
                         this.position[axis] += this.velocity[axis] * this.speed * amount;
@@ -275,10 +290,10 @@ export class Combatant extends PlayableEntity {
     }
 
     shouldStopOnAxis(axis: Axis, amount: number) {
-        return Math.abs(this.position[axis] - this.target.position[axis]) < this.speed * amount;
+        return Math.abs(this.position[axis] - this.targetPosition[axis]) < this.speed * amount;
     }
 
     atTarget(axis: Axis) {
-        return this.target && this.target.position[axis] == this.position[axis];
+        return this.target && this.targetPosition[axis] == this.position[axis];
     }
 }

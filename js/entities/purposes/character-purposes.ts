@@ -13,10 +13,10 @@ const Purposes: Record<string,any> =
     "study": {
         name: "Study",
         think: function (character: HiveMindCharacter, elapsed: number) {
-            if (character.target) {
-                character.pointAtTarget(character.target);
+            if (character.target && character.target instanceof Character) {
+                character.pointAtTarget(character.targetPosition);
 
-                if (character.position.equals(character.target.position)) {
+                if (character.position.equals(character.targetPosition)) {
                     if (character.target.dead == true) {
                         // TODO: contemplate
                         // TODO: support > 1 technology
@@ -42,8 +42,8 @@ const Purposes: Record<string,any> =
     "consume": {
         name: "consume",
         think: function (character: HiveMindCharacter, elapsed: number) {
-            if (character.target) {
-                character.pointAtTarget(character.target);
+            if (character.target && character.target instanceof Character) {
+                character.pointAtTarget(character.targetPosition);
 
                 const attack = character.getEquipped(TechnologyTypes.ATTACK);
                 // if(attack == null) console.warn(`Attack is null.`);

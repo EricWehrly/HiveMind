@@ -290,15 +290,15 @@ export default class Entity {
     }
 
     // TODO: should we support a point as well?
-    pointAtTarget(target: Entity) {
+    pointAtTarget(target: WorldCoordinate) {
 
         if (target) {
-            if (this.position.x != target.position.x
-                || this.position.y != target.position.y) {
-                if (this.position.x < target.position.x) this._velocity.x = 1;
-                else if (this.position.x > target.position.x) this._velocity.x = -1;
-                if (this.position.y < target.position.y) this._velocity.y = 1;
-                else if (this.position.y > target.position.y) this._velocity.y = -1;
+            if (this.position.x != target.x
+                || this.position.y != target.y) {
+                if (this.position.x < target.x) this._velocity.x = 1;
+                else if (this.position.x > target.x) this._velocity.x = -1;
+                if (this.position.y < target.y) this._velocity.y = 1;
+                else if (this.position.y > target.y) this._velocity.y = -1;
             }
         } else {
             this._velocity.x = 0;

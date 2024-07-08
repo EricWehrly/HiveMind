@@ -22,6 +22,21 @@ export default class Rectangle {
         this._height = height;
     }
 
+    contains(first: number | Point | Rectangle, second?: number) : boolean{
+            
+        if (first instanceof Point) {
+
+            return this.containsPoint(first.x, first.y);
+        }
+        else if (first instanceof Rectangle) {
+
+            return this.containsRect(first);
+        }
+        else {
+            return this.containsPoint(first, second);
+        }
+    }
+
     containsPoint(x: number, y: number) {
 
         return (x > this.x || x < this.right)

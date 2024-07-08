@@ -1,4 +1,5 @@
 // Most basic / default AI
+import WorldCoordinate from "../coordinates/WorldCoordinate.ts";
 import Character from "../entities/character.ts";
 import { Defer } from '../loop.mjs';
 
@@ -54,20 +55,25 @@ export default class AI {
                 console.debug(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
             }
             this.#lastDestinationPickedTime = performance.now();
-            this.#character.target = {
-                position: {}
-            }
+            this.#character.target = this.#randomTargetPosition();
 
-            var randX = Math.random();
-            if (randX > 0.5) this.#character.target.position.x = (10 * randX);
-            else this.#character.target.position.x = (-10 * randX);
-
-            var randY = Math.random();
-            if (randY > 0.5) this.#character.target.position.y = (10 * randY);
-            else this.#character.target.position.y = (-10 * randY);
-
-            console.debug(`New target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
+            console.debug(`New target: ${this.#character.targetPosition.x}, ${this.#character.targetPosition.y}`);
         }
+    }
+
+    #randomTargetPosition() {
+
+        let x, y;
+
+        var randX = Math.random();
+        if (randX > 0.5) x = (10 * randX);
+        else x = (-10 * randX);
+
+        var randY = Math.random();
+        if (randY > 0.5) y = (10 * randY);
+        else y = (-10 * randY);
+
+        return new WorldCoordinate(x, y);
     }
 
     #unleash() {

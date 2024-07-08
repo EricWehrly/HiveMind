@@ -2,8 +2,9 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import AI from '../../../../js/ai/basic.mjs';
-import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
+// import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
 import LivingEntity from '../../../../js/entities/character/LivingEntity';
+import WorldCoordinate from '../../../../js/coordinates/WorldCoordinate';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
@@ -34,7 +35,7 @@ jest.mock('@/engine/js/events.mjs', () => {
     };
 });
 
-describe('Combatant.move', () => {
+describe('Combatant.target', () => {
 
     let combatant: Combatant;
     let secondEntity: LivingEntity;
@@ -54,52 +55,25 @@ describe('Combatant.move', () => {
         });
     });
 
-    it('should move toward target', () => {
+    it('should set to target position', () => {
         expect(combatant.position.x).toEqual(0);
         combatant.target = secondEntity;
-        combatant.move(2);
-        expect(combatant.position.x).toEqual(1);
+        expect(combatant.target).toEqual(secondEntity);
     });
 
-    it('should not move past target', () => {
+    it('should set to target entity', () => {
+        expect(combatant.position.x).toEqual(0);
+        const position = new WorldCoordinate(1, 1);
+        combatant.target = position;
+        expect(combatant.target).toEqual(position);
+        expect(combatant.targetPosition).toEqual(position);
+    });
+
+    it('should follow moving target', () => {
         expect(combatant.position.x).toEqual(0);
         combatant.target = secondEntity;
-        combatant.move(5);
-        expect(combatant.position.x).toEqual(1);
-    });
-
-    it('should call afterMove if moving to target', () => {
-        combatant.target = secondEntity;
-        const spy = jest.spyOn(Combatant.prototype, 'afterMove');
-
-        expect(combatant.position.x).toEqual(0);
-        combatant.move(2);
-        expect(combatant.position.x).toEqual(1);
-    
-        expect(spy).toHaveBeenCalled();
-    
-        spy.mockRestore();
-    });
-
-    it('should call super move if not moving to target', () => {
-        combatant.target = null;
-        const spy = jest.spyOn(Combatant.prototype, 'move');
-
-        combatant.move(1);
-    
-        expect(spy).toHaveBeenCalled();
-    
-        spy.mockRestore();
-    });
-
-    it('should not call super move if moving to target', () => {
-        combatant.target = secondEntity;
-        const spy = jest.spyOn(PlayableEntity.prototype, 'move');
-
-        combatant.move(1);
-    
-        expect(spy).not.toHaveBeenCalled();
-    
-        spy.mockRestore();
+        secondEntity.move(2);
+        expect(combatant.target.x).toEqual(secondEntity.position.x);
+        expect(combatant.target.y).toEqual(secondEntity.position.y);
     });
 });
