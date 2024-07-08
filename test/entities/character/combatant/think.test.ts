@@ -3,6 +3,7 @@ import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import Entity from '../../../../js/entities/character/Entity';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
+import LivingEntity from '../../../../js/entities/character/LivingEntity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
@@ -36,13 +37,13 @@ jest.mock('@/engine/js/events.mjs', () => {
 describe('Combatant.think', () => {
 
     let combatant: Combatant;
-    let secondEntity: Entity;
+    let secondEntity: LivingEntity;
     beforeEach(() => {
         combatant = new Combatant({
             ai: null,
             isPlayer: true
         });
-        secondEntity = new Entity({});
+        secondEntity = new LivingEntity({});
     });
     
     Entity.prototype.getClosestEntity = jest.fn().mockImplementation((options) => {
