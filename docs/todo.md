@@ -1,3 +1,10 @@
+Creatures close to spawn origin should:
+    - have fewer 'points' overall
+    - have many of their 'points' allocated to health or armor (or something else?)
+    - not be very fast, so they cannot outrun the default player
+    - not be able to see (or sense) very far, to react to run from the player threat
+As you get further out, you should very quickly start seeing animals with some actual defense / survival
+
 attributes of a biome:
     how mountainous is this biome?
         (expressed as a percentage, 50 is 'a normal amount', 100 is 'as many as possible')
