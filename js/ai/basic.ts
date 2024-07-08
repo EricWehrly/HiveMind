@@ -10,7 +10,7 @@ const MS_LEASH_COOLDOWN = 3000;
 
 export default class AI {
 
-    private _character: Combatant = null;
+    private _character: SentientLivingEntity = null;
 
     #leashing = false;
     get leashing() { return this.#leashing; }
@@ -19,7 +19,7 @@ export default class AI {
 
     // TODO: should be SentientLivingEntity, but this was easier :/
     constructor(character: SentientLivingEntity) {
-        this._character = character as Combatant;
+        this._character = character;
     }
 
     get target() {

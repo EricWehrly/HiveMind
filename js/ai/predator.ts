@@ -6,6 +6,10 @@ import { Combatant } from "../entities/character/Combatant";
 
 export default class PredatorAI extends AI {
 
+    get character() {
+        return super.character as Combatant;
+    }
+
     constructor(character: Combatant) {
         super(character);
     }
