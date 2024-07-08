@@ -1,6 +1,5 @@
 import { TechnologyTypes } from "../../TechnologyTypes";
 import PredatorAI from "../../ai/predator";
-import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events.mjs";
 import Technology from "../../technology.mjs";
@@ -20,7 +19,6 @@ export class Combatant extends PlayableEntity {
     _equipment: Equipment = new Equipment(this);
     private _technologies: any[] = [];
     aggression = 0;
-    private _target: LivingEntity | WorldCoordinate;
 
     // TODO: this is a HivemindCharacter construct, but is needed in the 'attack' method
     // until we (probably) provide some kind of hook or overwrite for the attack method...
@@ -55,40 +53,6 @@ export class Combatant extends PlayableEntity {
 
     get technologies() {
         return this._technologies;
-    }
-
-    get target() {
-        return this._target;
-    }
-
-    get targetPosition() {
-        if(this.target instanceof LivingEntity) return this.target.position;
-        else if (this.target instanceof WorldCoordinate) return this.target;
-        else return null;
-    }
-
-    get targetEntity() {
-        if(this.target instanceof LivingEntity) return this.target;
-        else return null;
-    }
-
-    set target(newValue: LivingEntity | WorldCoordinate) {
-        if (newValue === undefined || newValue == this._target) return;
-
-        if(newValue == this._target) return;
-        var oldValue = this._target;
-
-        if(newValue instanceof WorldCoordinate) {
-            this._target = newValue
-        } else this._target = newValue;
-
-        // @ts-ignore
-        Events.RaiseEvent(Events.List.CharacterTargetChanged, {
-            character: this,
-            from: oldValue,
-            to: this._target
-        });
-        console.debug(`New target for ${this.name}: ${this?.target?.x}, ${this?.target?.y}`);
     }
 
     constructor(options: any) {
