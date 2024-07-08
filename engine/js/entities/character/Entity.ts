@@ -290,7 +290,7 @@ export default class Entity {
     }
 
     // TODO: should we support a point as well?
-    pointAtTarget(target: WorldCoordinate) {
+    pointAtTarget(target?: WorldCoordinate) {
 
         if (target) {
             if (this.position.x != target.x

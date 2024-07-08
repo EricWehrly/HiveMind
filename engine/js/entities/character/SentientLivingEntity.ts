@@ -1,4 +1,4 @@
-import AI from "../../ai/basic.mjs";
+import AI from "../../ai/basic";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Events from "../../events.mjs";
 import LivingEntity from "./LivingEntity";
@@ -20,6 +20,7 @@ export default class SentientLivingEntity extends LivingEntity {
     set ai(value) { console.warn(`something is trying to set ai, I'll deal with this later`, this); }
 
     get spawnPosition() { return this.#spawnPosition; }
+    get maxWanderDistance() { return this._maxWanderDistance; }
 
     constructor(options: any) {
         super(options);        

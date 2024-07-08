@@ -1,5 +1,5 @@
 import { TechnologyTypes } from "../../TechnologyTypes";
-import PredatorAI from "../../ai/predator.mjs";
+import PredatorAI from "../../ai/predator";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events.mjs";

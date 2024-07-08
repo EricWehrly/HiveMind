@@ -1,6 +1,8 @@
 // Most basic / default AI
-import WorldCoordinate from "../coordinates/WorldCoordinate.ts";
-import Character from "../entities/character.ts";
+import WorldCoordinate from "../coordinates/WorldCoordinate";
+import Character from "../entities/character";
+import { Combatant } from "../entities/character/Combatant";
+import SentientLivingEntity from "../entities/character/SentientLivingEntity";
 import { Defer } from '../loop.mjs';
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
@@ -8,27 +10,30 @@ const MS_LEASH_COOLDOWN = 3000;
 
 export default class AI {
 
-    #character = null;
+    private _character: Combatant = null;
 
     #leashing = false;
     get leashing() { return this.#leashing; }
 
     #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
-    constructor(character) {
-        this.#character = character;
+    // TODO: should be SentientLivingEntity, but this was easier :/
+    constructor(character: SentientLivingEntity) {
+        this._character = character as Combatant;
     }
 
     get target() {
-        return this.#character.target;
+        if(!(this._character instanceof Combatant)) return null;
+        return this._character.target;
     }
 
     set target(newVal) {
-        this.#character.target = newVal;
+        if(!(this._character instanceof Combatant)) return;
+        this._character.target = newVal;
     }
 
     get character() {
-        return this.#character;
+        return this._character;
     }
 
     // TODO: faction
@@ -41,23 +46,25 @@ export default class AI {
             this.wander();
 
             // this prevents the character chasing the player (too far) as well
-            this.leash(this.#character.spawnPosition, this.#character.maxWanderDistance);
+            this.leash(this._character.spawnPosition, this._character.maxWanderDistance);
         }
 
-        this.#character.pointAtTarget(this.#character.target);
+        this._character.pointAtTarget(this._character.targetPosition);
     }
 
     wander() {
-        if (this.#character.target instanceof Character) return;
+        if (this._character.target instanceof Character) return;
 
         if (performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
+            /*
             if (this?.character?.target?.position) {
-                console.debug(`Old target: ${this.#character.target.position.x}, ${this.#character.target.position.y}`);
+                console.debug(`Old target: ${this._character.target.position.x}, ${this._character.target.position.y}`);
             }
+            */
             this.#lastDestinationPickedTime = performance.now();
-            this.#character.target = this.#randomTargetPosition();
+            this._character.target = this.#randomTargetPosition();
 
-            console.debug(`New target: ${this.#character.targetPosition.x}, ${this.#character.targetPosition.y}`);
+            // console.debug(`New target: ${this._character.targetPosition.x}, ${this._character.targetPosition.y}`);
         }
     }
 
@@ -80,10 +87,10 @@ export default class AI {
         this.#leashing = false;
     }
 
-    leash(point, distance) {
-        var dist = this.#character.position.distance(point);
+    leash(point: WorldCoordinate, distance: number) {
+        var dist = this._character.position.distance(point);
         if (dist > distance) {
-            console.debug(`Wandered too far (${dist}), with speed ${this.#character.speed} leashing to ${point.x}, ${point.y}`);
+            console.debug(`Wandered too far (${dist}), with speed ${this._character.speed} leashing to ${point.x}, ${point.y}`);
             this.target = point;
 
             this.#leashing = true;

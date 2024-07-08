@@ -1,9 +1,9 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
-import AI from '../../../../js/ai/basic.mjs';
+import AI from '../../../../js/ai/basic';
 
-jest.mock('../../../../js/ai/basic.mjs', () => {
+jest.mock('@/engine/js/ai/basic', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((options) => {}),
