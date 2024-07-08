@@ -1,4 +1,5 @@
 import Listed from "./baseTypes/listed.mjs";
+import { Defer } from "./loop.mjs";
 import Research from "./research.mjs";
 
 export default class Technology extends Listed {
@@ -77,8 +78,18 @@ export default class Technology extends Listed {
         }
         this.#statusEffectDuration = options.statusEffectDuration;
 
+        this.#deferLoadingSounds();
         // TODO: Probably stop doing this?
         Object.seal(this);
+    }
+
+    #deferLoadingSounds() {
+        const that = this;
+        Defer(function deferLoadingSounds() {
+            for(var sound of that.sound) {
+                Technology.#getSound(sound);
+            }
+        }, 0);
     }
 
     checkDelay() {
@@ -124,7 +135,7 @@ export default class Technology extends Listed {
                     console.warn(ex);
                 } 
             } else {
-                console.warn(`Sound not ready for ${this.name}`, sound);
+                console.warn(`Sound ${sound.src} not ready for ${this.name}. State: ${sound.readyState}`, sound);
             }
         }
         else console.warn(`No sound for ${this.name}`);
