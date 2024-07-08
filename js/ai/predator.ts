@@ -1,19 +1,21 @@
-import AI from "./basic.mjs";
-import Character from "../entities/character.ts";
+import AI from "./basic";
+import Character from "../entities/character";
 import Action from "../action.mjs";
-import { TechnologyTypes } from "../TechnologyTypes.ts";
+import { TechnologyTypes } from "../TechnologyTypes";
+import { Combatant } from "../entities/character/Combatant";
 
 export default class PredatorAI extends AI {
 
-    constructor(character) {
+    constructor(character: Combatant) {
         super(character);
     }
 
     get equippedAttack() {
         
-        const equipment = this.character.equipment;
+        const equipment = (this.character as Combatant).equipment;
         if(equipment == null) return null;
 
+        //@ts-expect-error
         const equipped = equipment[TechnologyTypes.ATTACK];
 
         return equipped;
@@ -28,6 +30,7 @@ export default class PredatorAI extends AI {
                 // const wasTarget = this.#character.target;
                 const closest = this.character.getClosestEntity({
                     distance: this.character.aggressionRange,
+                    //@ts-expect-error
                     faction: Character.LOCAL_PLAYER.faction
                 });
                 if(closest != null) this.character.target = closest;
@@ -44,7 +47,7 @@ export default class PredatorAI extends AI {
         super.think();
 
         if(this.character.target && this.equippedAttack != null
-            && this.character.position.distance(this.character.target.position) < this.equippedAttack.range) {
+            && this.character.position.distance(this.character.targetPosition) < this.equippedAttack.range) {
             this.character.pointAtTarget(null);
         }
 
@@ -69,6 +72,7 @@ export default class PredatorAI extends AI {
 
     #attack() {
         
+        //@ts-expect-error
         Action.List['attack'].callback({
             character: this.character
         });

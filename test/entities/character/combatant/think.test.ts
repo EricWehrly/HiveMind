@@ -6,10 +6,10 @@ import SentientLivingEntity from '../../../../js/entities/character/SentientLivi
 import LivingEntity from '../../../../js/entities/character/LivingEntity';
 
 // https://stackoverflow.com/a/54475733/5450892
-jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/ai/basic.mjs',  () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/ai/predator.mjs',  () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/entities/character', () => require('../../../testHelpers/helpers').createMock);
+jest.mock('@/engine/js/ai/basic',  () => require('../../../testHelpers/helpers').createMock);
+jest.mock('@/engine/js/ai/predator',  () => require('../../../testHelpers/helpers').createMock);
+jest.mock('@/engine/js/mapping/map', () => mockMap);
 jest.mock('@/engine/js/coordinates/point', () => {
     return {
         __esModule: true, // this property makes it work

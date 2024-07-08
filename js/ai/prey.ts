@@ -1,4 +1,5 @@
-import AI from "./basic.mjs";
+import LivingEntity from "../entities/character/LivingEntity";
+import AI from "./basic";
 
 export default class PreyAI extends AI {
     
@@ -22,8 +23,10 @@ export default class PreyAI extends AI {
 
     shouldStopTargeting(distance = 4) {
 
-        return this.target
-            && (this.target.isAlive == false || 
-                this.target.getDistance(this) > distance);
+        const target = this.target as LivingEntity;
+
+        return target
+            && (target.isAlive == false || 
+                target.getDistance(this.character) > distance);
     }
 }

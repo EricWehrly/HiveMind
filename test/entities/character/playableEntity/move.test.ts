@@ -1,13 +1,8 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
-import Entity from '../../../../js/entities/character/Entity';
-import Point from '../../../../js/coordinates/point';
-import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
-import Events from '../../../../js/events.mjs';
-import AI from '../../../../js/ai/basic.mjs';
 import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
 
-jest.mock('../../../../js/ai/basic.mjs', () => {
+jest.mock('@/engine/js/ai/basic', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((options) => {}),

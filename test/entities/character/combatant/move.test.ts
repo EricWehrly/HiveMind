@@ -1,14 +1,14 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
-import AI from '../../../../js/ai/basic.mjs';
+import AI from '../../../../js/ai/basic';
 import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
 import LivingEntity from '../../../../js/entities/character/LivingEntity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/ai/predator.mjs',  () => require('../../../testHelpers/helpers').createMock);
-jest.mock('../../../../js/ai/basic.mjs', () => {
+jest.mock('@/engine/js/ai/predator',  () => require('../../../testHelpers/helpers').createMock);
+jest.mock('@/engine/js/ai/basic', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn().mockImplementation((options) => {}),
