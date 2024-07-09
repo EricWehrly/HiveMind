@@ -96,7 +96,6 @@ export default class GrowthCharacter extends HiveMindCharacter {
                 // console.log(`Done growing ${this.name}`);
                 this.growth = null;
 
-                // @ts-ignore
                 const characterType = this.characterType;
                 this.growConfig = characterType.growConfig;
                 if (this.name != characterType.name) {

@@ -26,7 +26,7 @@ const Purposes: Record<string,any> =
                         // TODO: When reabsorbed
                         if (character.target.characterType) {
                             // TODO: fix this typing issue ...
-                            //@ts-ignore
+                            //@ts-expect-error
                             CharacterType[character.target.characterType].isStudied = true;
                             const research = Research.Get(character.target.characterType);
                             research.enabled = true;

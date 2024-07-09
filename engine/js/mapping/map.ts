@@ -52,7 +52,7 @@ export default class Map {
             throw message;
         }
 
-        //@ts-ignore
+        //@ts-expect-error
         if(Map._map == null) window.map = Map._map = this;
 
         this._seed = new Seed(seed.Random());
@@ -185,7 +185,7 @@ export default class Map {
             console.warn(`Chunk limit reached (${Object.keys(this._chunks).length})`);
         };
         
-        return (!(coordinate in this._chunks)) //@ts-ignore // Events.Context probly too hack for typescript
+        return (!(coordinate in this._chunks))
             && CHUNK_SOFT_LIMIT > Object.keys(this._chunks).length;
             // && (character?.isPlayer || coordinate == "0,0");
             // && (Events.Context?.character?.isPlayer || coordinate == "0,0");
