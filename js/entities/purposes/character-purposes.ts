@@ -104,7 +104,6 @@ const Purposes: Record<string,any> =
 };
 
 // maybe "growing" should be made generic as "children" ...
-//@ts-ignore
 Events.Subscribe(Events.List.CharacterDied, (deadGuy: LivingEntity) => {
     for (var character of CHARACTER_LIST) {
         const index = character?.growing?.indexOf(deadGuy);

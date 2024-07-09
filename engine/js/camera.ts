@@ -33,7 +33,6 @@ export default class Camera {
         
         Events.Subscribe(Events.List.GameStart, this._renderloop.bind(this));
         Events.Subscribe(Events.List.GameStart, () => {
-            //@ts-ignore
             // TODO: if the target isn't a player, this won't work right
             // (but that's how things are now, so its ok)
             Events.Subscribe(Events.List.PlayerMoved, this.refreshScreenRect.bind(this));

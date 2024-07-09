@@ -2,9 +2,7 @@ import Events from "../../events";
 import { RemoveCharacterFromList } from "../characters.mjs";
 import Entity from "./Entity";
 
-// @ts-ignore
 Events.List.PlayerHealthChanged = "PlayerHealthChanged";
-// @ts-ignore
 Events.List.CharacterDied = "CharacterDied";
 
 export default class LivingEntity extends Entity {
@@ -26,7 +24,6 @@ export default class LivingEntity extends Entity {
 
         const oldValue = this._health;
         this._health = newValue;
-        // @ts-ignore
         Events.RaiseEvent(Events.List.PlayerHealthChanged, {
             character: this,
             from: oldValue,
@@ -67,8 +64,7 @@ export default class LivingEntity extends Entity {
 
     // private?
     // TODO: Should we just flag not alive and defer 'fading out' corpse?
-    die() {        
-        // @ts-ignore
+    die() {
         Events.RaiseEvent(Events.List.CharacterDied, this);
         
         RemoveCharacterFromList(this);

@@ -36,7 +36,6 @@ export default class HiveMindCharacter extends Character {
             costFunction: this.logarithmicCost
         }));
 
-        //@ts-ignore
         Events.Subscribe(Events.List.CharacterDied, this.removeSpawnTarget.bind(this));
     }
 

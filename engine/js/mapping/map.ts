@@ -18,7 +18,6 @@ export default class Map {
 
     static {
 
-        //@ts-ignore
         Events.Subscribe(Events.List.ChunkCreated, this._chunkCreated.bind(this));
     }
 
@@ -58,9 +57,7 @@ export default class Map {
 
         this._seed = new Seed(seed.Random());
         
-        //@ts-ignore
         Events.Subscribe(Events.List.CharacterCreated, this._characterCreated.bind(this));
-        //@ts-ignore
         Events.Subscribe(Events.List.PlayerChunkChanged, this._playerChunkChanged.bind(this));
     }
 

@@ -10,7 +10,6 @@ import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Rectangle from "../../baseTypes/rectangle";
 import EntityRenderingSettings from './EntityRenderingSettings';
 
-// @ts-ignore
 Events.List.CharacterCreated = "CharacterCreated";
 
 interface EntityOptions { 
@@ -146,7 +145,6 @@ export default class Entity {
     @PostConstruct
     postConstruct() {
 
-        // @ts-ignore
         Events.RaiseEvent(Events.List.CharacterCreated, {character: this }, {
             isNetworkBoundEvent: true
         });

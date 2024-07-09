@@ -8,7 +8,6 @@ import Character from "../character";
 import Equipment from "../equipment";
 import LivingEntity from "./LivingEntity";
 
-// @ts-ignore
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 
 type Axis = 'x' | 'y';
