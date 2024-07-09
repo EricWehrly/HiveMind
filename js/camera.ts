@@ -37,6 +37,7 @@ export default class Camera {
             // (but that's how things are now, so its ok)
             Events.Subscribe(Events.List.PlayerMoved, this.refreshScreenRect.bind(this));
         });
+        Events.Subscribe(Events.List.RendererResized, this.refreshScreenRect.bind(this));
     }
 
     // TODO: Trap screen resize
