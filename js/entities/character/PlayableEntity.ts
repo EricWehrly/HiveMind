@@ -39,7 +39,6 @@ export default class PlayableEntity extends SentientLivingEntity {
         // and call from within the position setter
         if(!this._position.equals(this._lastPosition)) {
             if(this.isPlayer) {
-                // @ts-ignore
                 Events.RaiseEvent(Events.List.PlayerMoved, {
                     character: this,
                     from: this._lastPosition,
@@ -49,7 +48,6 @@ export default class PlayableEntity extends SentientLivingEntity {
                 });
                 
                 if(!this._position.chunk.equals(this._lastPosition?.chunk)) {
-                    // @ts-ignore
                     Events.RaiseEvent(Events.List.PlayerChunkChanged, {
                         character: this,
                         from: this._lastPosition?.chunk,

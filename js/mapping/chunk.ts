@@ -4,7 +4,6 @@ import Seed from "../core/seed.mjs";
 import './chunk-graphic.mjs';
 import Biome from "./biome.mjs";
 
-// @ts-ignore
 Events.List.ChunkCreated = "ChunkCreated";
 
 interface ChunkOptions {
@@ -130,7 +129,6 @@ export default class Chunk {
         this.#flora = seed.Random(1, 10);
 
         options.map.addChunk(this);
-        // @ts-ignore
         Events.RaiseEvent(Events.List.ChunkCreated, this, {
             isNetworkBoundEvent: true
         });

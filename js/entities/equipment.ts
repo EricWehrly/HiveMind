@@ -3,7 +3,6 @@ import Events from "../events";
 import Technology from "../technology.mjs";
 import Entity from "./character/Entity";
 
-// @ts-ignore
 Events.List.EquipmentChanged = "EquipmentChanged"
 
 type EquipmentCollection = { [K in TechnologyTypes]?: Technology };
@@ -73,7 +72,6 @@ export default class Equipment {
             character: this.#character
         };
 
-        // @ts-ignore
         Events.RaiseEvent(Events.List.EquipmentChanged, details);
 
         // if we were to write a unit test here, it would say:

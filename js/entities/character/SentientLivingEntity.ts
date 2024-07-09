@@ -4,9 +4,7 @@ import Events from "../../events";
 import Entity from "./Entity";
 import LivingEntity from "./LivingEntity";
 
-// @ts-ignore
 Events.List.PlayerChunkChanged = "PlayerChunkChanged";
-// @ts-ignore
 Events.List.PlayerMoved = "PlayerMoved";
 
 export default class SentientLivingEntity extends LivingEntity {
@@ -44,7 +42,6 @@ export default class SentientLivingEntity extends LivingEntity {
             this._target = newValue
         } else this._target = newValue;
 
-        // @ts-ignore
         Events.RaiseEvent(Events.List.CharacterTargetChanged, {
             character: this,
             from: oldValue,
@@ -60,7 +57,6 @@ export default class SentientLivingEntity extends LivingEntity {
 
         if(options.isPlayer) this.isPlayer = options.isPlayer;
 
-        // @ts-ignore
         Events.Subscribe(Events.List.CharacterDied, this.sentientEntityDied.bind(this));
     }
 
