@@ -1,6 +1,6 @@
 // Core
 import Game from '../engine/js/engine.mjs';
-import Events from '../engine/js/events.mjs';
+import Events from '../engine/js/events';
 
 // Data
 import './data/biomeTypes.mjs'

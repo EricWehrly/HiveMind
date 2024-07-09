@@ -3,7 +3,7 @@ import Menu from "../engine/js/ui/menu.mjs";
 import KeyboardController from "./controls/keyboard-controller.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
 import Character from "../engine/js/entities/character.ts";
-import Events from "../engine/js/events.mjs";
+import Events from "../engine/js/events.ts";
 
 let strength = null,
 speed = null;

@@ -1,5 +1,5 @@
 import Listed from "../baseTypes/listed.mjs";
-import Events from "../events.mjs";
+import Events from "../events.ts";
 
 Events.List.ResourceCreated = "ResourceCreated";
 Events.List.ResourceValueChanged = "ResourceValueChanged";

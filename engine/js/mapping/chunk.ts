@@ -1,4 +1,4 @@
-import Events from "../events.mjs";
+import Events from "../events";
 import Map from './map';
 import Seed from "../core/seed.mjs";
 import './chunk-graphic.mjs';

@@ -1,4 +1,4 @@
-import Events from "../../events.mjs";
+import Events from "../../events";
 import { RemoveCharacterFromList } from "../characters.mjs";
 import Entity from "./Entity";
 

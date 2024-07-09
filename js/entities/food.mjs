@@ -1,5 +1,5 @@
 import CharacterType from './characterType.mjs';
-import Events from '../../engine/js/events.mjs';
+import Events from '../../engine/js/events.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import Game from '../../engine/js/engine.mjs';
 import HiveMindCharacter from './character/HiveMindCharacter.ts';

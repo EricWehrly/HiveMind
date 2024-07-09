@@ -1,6 +1,6 @@
 import UIElement from "./ui-element.mjs";
 import Resource from "../entities/resource.mjs";
-import Events from "../events.mjs";
+import Events from "../events.ts";
 
 // TODO: get this from some configuration ...
 // (and maybe allow us to configure per resource ... or override a default per resource ...)

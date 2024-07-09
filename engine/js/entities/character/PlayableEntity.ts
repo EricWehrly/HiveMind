@@ -1,6 +1,6 @@
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import SentientLivingEntity from "./SentientLivingEntity";
-import Events from "../../events.mjs";
+import Events from "../../events";
 
 // this starts getting into the territory of wanting to compose rather than extend ...
 export default class PlayableEntity extends SentientLivingEntity {

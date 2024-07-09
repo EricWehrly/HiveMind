@@ -1,5 +1,5 @@
 import Renderer from '../rendering/renderer.mjs';
-import Events from '../events.mjs';
+import Events from '../events.ts';
 
 export default class UIElement {
 

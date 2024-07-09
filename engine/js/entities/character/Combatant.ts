@@ -1,7 +1,7 @@
 import { TechnologyTypes } from "../../TechnologyTypes";
 import PredatorAI from "../../ai/predator";
 import MessageLog from "../../core/messageLog.mjs";
-import Events from "../../events.mjs";
+import Events from "../../events";
 import Technology from "../../technology.mjs";
 import PlayableEntity from "./PlayableEntity";
 import Character from "../character";

@@ -11,7 +11,7 @@ jest.mock('@/engine/js/action.mjs', () => {
 
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
-jest.mock('@/engine/js/events.mjs', () => {
+jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work
         default: {

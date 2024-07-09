@@ -1,5 +1,5 @@
 import Technology from '../../engine/js/technology.mjs';
-import Events from '../../engine/js/events.mjs';
+import Events from '../../engine/js/events.ts';
 import CharacterType from './characterType.mjs';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import PredatorAI from '../../engine/js/ai/predator.ts';

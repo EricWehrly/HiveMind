@@ -1,7 +1,7 @@
 import AI from "../../engine/js/ai/basic.ts";
 import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "../entities/characterType.mjs";
-import Events from "../../engine/js/events.mjs";
+import Events from "../../engine/js/events.ts";
 import Building from "../entities/building.mjs";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
 

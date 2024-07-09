@@ -1,4 +1,4 @@
-import Events from "../../../engine/js/events.mjs";
+import Events from "../../../engine/js/events";
 import Research from "../../../engine/js/research.mjs";
 import CharacterType from "../characterType.mjs";
 import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";

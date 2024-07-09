@@ -1,5 +1,5 @@
 import UIElement from "./ui-element.mjs";
-import Events from '../events.mjs';
+import Events from '../events.ts';
 import { TechnologyTypes } from "../TechnologyTypes.ts";
 
 const UI_ELEMENT_ATTACK = new UIElement({

@@ -1,6 +1,6 @@
 import Game from "../engine/js/engine.mjs";
 import Character from "../engine/js/entities/character";
-import Events from "../engine/js/events.mjs";
+import Events from "../engine/js/events";
 import UIElement from "../engine/js/ui/ui-element.mjs";
 
 // eventually this should problably translate into an adaptation 

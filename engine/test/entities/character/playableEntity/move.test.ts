@@ -12,7 +12,7 @@ jest.mock('@/engine/js/ai/basic', () => {
 
 let manuallyTrackedMockCalls: string[] = [];
 // TODO: fix this mocking when we move events to ts
-jest.mock('@/engine/js/events.mjs', () => {
+jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work
         default: {
