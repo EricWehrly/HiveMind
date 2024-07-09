@@ -185,5 +185,5 @@ export default class Events {
     }
 }
 
-//@ts-ignore
+//@ts-expect-error
 if (window) window.Events = Events;

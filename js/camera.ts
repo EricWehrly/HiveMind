@@ -28,7 +28,7 @@ export default class Camera {
 
     constructor() {
         Camera._instance = this;
-        // @ts-ignore
+        //@ts-expect-error
         if(this?.window) window.Camera = this;
         
         Events.Subscribe(Events.List.GameStart, this._renderloop.bind(this));
