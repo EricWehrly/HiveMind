@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import Entity from '../../../../js/entities/character/Entity';
 
-jest.mock('../../../../js/events.mjs', () => {
+jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work
         default: {

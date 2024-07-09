@@ -16,7 +16,7 @@ jest.mock('@/engine/js/coordinates/point.ts', () => {
         default: jest.fn().mockImplementation((x, y) => {})
     }
 });
-jest.mock('@/engine/js/events.mjs', () => {
+jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work
         default: {

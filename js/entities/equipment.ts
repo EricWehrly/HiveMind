@@ -1,5 +1,5 @@
 import { TechnologyTypes } from "../TechnologyTypes";
-import Events from "../events.mjs";
+import Events from "../events";
 import Technology from "../technology.mjs";
 import Entity from "./character/Entity";
 

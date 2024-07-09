@@ -1,6 +1,27 @@
 import { generateId } from "./util/javascript-extensions.mjs";
 import NetworkMessenger from './network/network-messenger.mjs';
 
+export interface SubscribeOptions {
+    callback?: Function;
+    oneTime?: boolean;
+    onlyPlayerEvents?: boolean;
+    priority?: number;
+    before?: string;
+}
+
+export interface RaiseEventOptions {
+    eventName?: string;
+    removeAfterRaise?: boolean;
+    isNetworkBoundEvent?: boolean;
+    isNetworkOriginEvent?: boolean;
+    finalFire?: boolean;
+    detail?: Object;
+}
+
+interface Subscription extends SubscribeOptions {
+    subscriptionId: string;
+}
+
 // TODO: extends Listed
 export default class Events {
 
@@ -10,9 +31,9 @@ export default class Events {
         "GameStart": "GameStart"
     }
 
-    static #Subscriptions = {};
+    static #Subscriptions: Record<string, Array<Subscription>> = {};
 
-    static #FiredEvents = {};
+    static #FiredEvents: Record<string, Object> = {};
 
     static Context = {};
 
@@ -26,16 +47,16 @@ export default class Events {
      * @param {String} [options.before] The name of the function that this subscription should be called before.
      * @returns the id of the subscription if successful
      */
-    static Subscribe(eventNames, callback, options = {}) {
+    static Subscribe(eventNames: string | Array<string>, callback: Function, options: SubscribeOptions = {}) {
 
         // TODO: check inputs for bad values
 
         if (Array.isArray(eventNames)) {
             eventNames.forEach(function (eventName) {
-                Events.#subscribe(eventName, callback, options);
+                Events._subscribe(eventName, callback, options);
             });
         } else {
-            return Events.#subscribe(eventNames, callback, options);
+            return Events._subscribe(eventNames, callback, options);
         }
     }
 
@@ -49,7 +70,7 @@ export default class Events {
     * @param {Boolean} [options.isNetworkOriginEvent] Did the event originate from a machine other than this one?
     * @param {Boolean} [options.finalFire] This is the last time the event will fire. All registrations after will fire immediately.
     */
-    static RaiseEvent(eventName, detail, options = {}) {
+    static RaiseEvent(eventName: string, detail: Object, options: RaiseEventOptions = {}) {
 
         if (options?.isNetworkBoundEvent) {
             NetworkMessenger.TransmitEvent(eventName, detail);
@@ -71,10 +92,11 @@ export default class Events {
         subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
 
         for (var subscription of subscribedEvents) {
+            //@ts-expect-error
             if(subscription.onlyPlayerEvents && detail?.character?.isPlayer != true) continue;
 
             Events.Context = detail;
-            Events.#raiseSubscription(subscription.callback, {
+            Events._raiseSubscription(subscription.callback, {
                 detail,
                 eventName
             });
@@ -92,7 +114,7 @@ export default class Events {
      * @param {Object} options.detail The details of the event (usually the subject of the action). Varies by event type.
      * @param {String} options.eventName From Events.List
      */
-    static #raiseSubscription(callback, options) {
+    private static _raiseSubscription(callback: Function, options: RaiseEventOptions) {
 
         // TODO: This is going to repeat instantiation inside the loop
         // but whatever that's like 20 calls tops? fix it later
@@ -117,21 +139,18 @@ export default class Events {
     // subscribeOnce
 
     /**
-     * @param {*} eventName 
-     * @param {*} callback 
-     * @param {*} options 
      * @returns the id of the subscription if successful
      * @returns null if the event has already fired for the last time
      * but in that case it fires the subscription immediately
      */
-    static #subscribe(eventName, callback, options) {
+    private static _subscribe(eventName: string, callback: Function, options: Object): string {
 
         if (eventName == undefined) debugger;
 
         if (eventName in Events.#FiredEvents) {
             console.debug(`Immediately firing subscription for already fired event ${eventName}.`);
             const firedEvent = Events.#FiredEvents[eventName];
-            Events.#raiseSubscription(callback, {
+            Events._raiseSubscription(callback, {
                 eventName,
                 ...firedEvent
             });
@@ -142,8 +161,8 @@ export default class Events {
 
         if (!(eventName in Events.#Subscriptions)) Events.#Subscriptions[eventName] = [];
         var length = Events.#Subscriptions[eventName].push({
-            "subscriptionId": subscriptionId,
-            "callback": callback
+            subscriptionId,
+            callback
         });
         // these options are not used
         if (options) Object.assign(Events.#Subscriptions[eventName][length - 1], options);
@@ -153,7 +172,7 @@ export default class Events {
         return subscriptionId;
     };
 
-    static #sortEventsArray(first, second) {
+    static #sortEventsArray(first: Subscription, second: Subscription) {
 
         if (first.before && second.callback.name && second.callback.name == first.before) {
             return -1;
@@ -168,4 +187,5 @@ export default class Events {
     }
 }
 
+//@ts-ignore
 if (window) window.Events = Events;

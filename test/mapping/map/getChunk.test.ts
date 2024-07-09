@@ -3,7 +3,7 @@ import Map from '../../../js/mapping/map';
 import SentientLivingEntity from '../../../js/entities/character/SentientLivingEntity';
 import Biome, { BiomeType } from '../../../js/mapping/biome.mjs';
 
-jest.mock('@/engine/js/events.mjs', () => {
+jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work
         default: {

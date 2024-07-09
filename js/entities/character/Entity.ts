@@ -1,6 +1,6 @@
 import '../entity-graphics.mjs';
 import CharacterType from "../../../../js/entities/characterType.mjs";
-import Events from "../../events.mjs";
+import Events from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
 import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";

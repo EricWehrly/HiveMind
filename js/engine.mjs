@@ -1,7 +1,7 @@
 import Camera from './camera.ts';
 import Seed from './core/seed.mjs';
 import Client from './network/client.mjs';
-import Events from './events.mjs';
+import Events from './events.ts';
 
 const Game = {
     Camera: new Camera(),

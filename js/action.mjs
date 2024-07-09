@@ -1,6 +1,6 @@
 import Listed from './baseTypes/listed.mjs';
 import Requirements from './requirements.mjs';
-import Events from './events.mjs';
+import Events from './events.ts';
 import Menu from './ui/menu.mjs';
 
 Events.List.ActionFired = "ActionFired";

@@ -1,4 +1,4 @@
-import Events from '../events.mjs';
+import Events from '../events.ts';
 import Renderer from '../rendering/renderer.mjs';
 import Entity from './character/Entity.ts';
 

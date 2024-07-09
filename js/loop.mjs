@@ -1,4 +1,4 @@
-import Events from "./events.mjs";
+import Events from "./events.ts";
 
 const LOOP_METHODS_SLOW = [];
 const LOOP_METHODS_FAST = [];

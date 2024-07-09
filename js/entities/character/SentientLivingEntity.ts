@@ -1,6 +1,6 @@
 import AI from "../../ai/basic";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
-import Events from "../../events.mjs";
+import Events from "../../events";
 import Entity from "./Entity";
 import LivingEntity from "./LivingEntity";
 
