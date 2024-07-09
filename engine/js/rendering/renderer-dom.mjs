@@ -1,4 +1,7 @@
+import Events from "../events.ts";
 import Renderer from "./renderer.mjs";
+
+Events.List.RendererResized = 'RendererResized';
 
 export default class DomRenderer extends Renderer {
 
@@ -13,5 +16,11 @@ export default class DomRenderer extends Renderer {
                 console.error(ex);
             }
         }        
-    }    
+    }
 }
+
+function onWindowResize() {
+    Events.RaiseEvent(Events.List.RendererResized);
+}
+
+window.addEventListener('resize', onWindowResize);
