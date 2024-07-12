@@ -1,9 +1,9 @@
-import AI from "../../engine/js/ai/basic.ts";
+import AI from "../../engine/js/ai/basic";
 import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "../entities/characterType.mjs";
-import Events from "../../engine/js/events.ts";
+import Events from "../../engine/js/events";
 import Building from "../entities/building.mjs";
-import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
+import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -16,9 +16,9 @@ export default class NodeAI extends AI {
     static #FOOD_THRESHOLD = 100;
     static #BUILDING_PADDING = 10;
     static #MAX_SPARE_NODES = 5;
-    static #desiredBuildingsQueue = [];
+    static #desiredBuildingsQueue: Building[] = [];
 
-    static QueueDesire(desire) {
+    static QueueDesire(desire: Building) {
 
         NodeAI.#desiredBuildingsQueue.push(desire);
         
@@ -27,7 +27,7 @@ export default class NodeAI extends AI {
     
     // "source" sometimes won't have a chunk.
     // Hopefully the early return accounts for that
-    static #randomPositionOffset(source, offsetAmountPerAxis) {
+    static #randomPositionOffset(source: WorldCoordinate, offsetAmountPerAxis: number) {
 
         const seed = source?.chunk?.seed;
         if(seed == null) return null;
@@ -48,14 +48,18 @@ export default class NodeAI extends AI {
     // TODO: We should be able to get rid of this once it takes time to make a node
     static #lastThought = performance.now();
 
-    #nextConstructPositions = {};
+    #nextConstructPositions: Record<string, WorldCoordinate> = {};
+    
+    private _building: Building;
 
-    /**
-     * 
-     * @param {Building} character 
-     */
-    constructor(character) {
+    get character() {
+        return this._building;
+    }
+
+    constructor(character: Building) {
         super(character);
+
+        this._building = character;
 
         // this.#computeNextConstructPosition(character.characterType);
         const that = this;
@@ -66,19 +70,18 @@ export default class NodeAI extends AI {
         Events.Subscribe(Events.List.BuildingBuilt, this.#onBuildingBuilt.bind(this));
     }
 
-    #onBuildingBuilt(details) {
+    #onBuildingBuilt(details: { characterType: CharacterType }) {
 
         if(details.characterType != this.character.characterType) return;
 
-        const characterType = CharacterType[details.characterType];
         // if(characterType?.overlapRange > 0) {
-            this.#computeNextConstructPosition(characterType);
+            this.#computeNextConstructPosition(details.characterType);
         // }
     }
 
     // invoke this both on constructor
     // and when buildings of that type are built
-    #computeNextConstructPosition(buildingType) {
+    #computeNextConstructPosition(buildingType: CharacterType) {
 
         // TODO: check if 'buildingType' is a proper definition
 
@@ -87,7 +90,7 @@ export default class NodeAI extends AI {
         this.#nextConstructPositions[buildingType.name] = point;
     }
 
-    #getNextConstructionPosition(buildingType) {
+    #getNextConstructionPosition(buildingType: CharacterType) {
 
         if(!this.#nextConstructPositions[buildingType.name]) {
             this.#computeNextConstructPosition(buildingType);
@@ -96,14 +99,14 @@ export default class NodeAI extends AI {
         return this.#nextConstructPositions[buildingType.name];
     }
 
-    think(elapsed) {
-        super.think(elapsed);
+    think() {
+        super.think();
 
         if(NodeAI.#lastThought + TIME_BETWEEN_THOUGHTS > performance.now()) {
             return;
         }
 
-        this.#nodeThink(elapsed);
+        this.#nodeThink();
 
         NodeAI.#lastThought = performance.now();
     }
@@ -114,11 +117,15 @@ export default class NodeAI extends AI {
 
         // because we won't be able to get "randomPositionOffset" further down
         if(this.character.position?.chunk == null) {
+            console.warn('We were hoping that chunk was not null');
+            debugger;
+            /*
             this.character.position.chunk = Map.Map.getChunk(this.character.position);
             if(this.character.position.chunk == null) {
                 console.warn(`Couldn't resolve chunk for position.`);
                 return true;
             }
+            */
         }
 
         // there HAS to be a cleaner way to do this
@@ -177,6 +184,8 @@ export default class NodeAI extends AI {
                 characterType: 'Node',
             });
             if(nearbyNodes.length == 0) {
+                // TODO
+                //@ts-expect-error
                 return CharacterType.Node;
             }
 
@@ -188,9 +197,11 @@ export default class NodeAI extends AI {
                 characterType: 'Eater'
             });
             if(nearbyEaters.length == 0) {
+                //@ts-expect-error
                 return CharacterType.Eater;
             }
 
+            //@ts-expect-error
             return CharacterType.Seeder;
 
             // defense and stuff tho
@@ -201,22 +212,30 @@ export default class NodeAI extends AI {
                 characterType: 'Seeder'
             });
             if(nearbySeeders.length == 0) {
+                //@ts-expect-error
                 return CharacterType.Seeder;
             }
     }
 
-    #buildDesired(wantToBuild) {
+    #buildDesired(wantToBuild: CharacterType) {
 
         const food = Resource.Get("food");
-        if (food.available < NodeAI.#FOOD_THRESHOLD + wantToBuild.health) return;
+        // TODO: We'll fix this next
+        //@ts-expect-error
+        const wantedHealth = wantToBuild.health;
+        if (food.available < NodeAI.#FOOD_THRESHOLD + wantedHealth) return;
 
         const buildOptions = this.#getDesiredBuildOptions(wantToBuild);
 
+        // TODO: fix with above
+        //@ts-expect-error
+        const buildPosition = buildOptions.position;
+
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
-        console.log(`Node has chosen to build ${wantToBuild.name} at ${buildOptions.position}`);
+        console.log(`Node has chosen to build ${wantToBuild.name} at ${buildPosition}`);
         const building = new Building(buildOptions);
-        if(!food.reserve(building.maxHealth), building) return;
+        if(!food.reserve(building.maxHealth, building)) return;
 
         const healthDiff = building.health * .9;
         building.health = building.health * 0.1;
@@ -227,7 +246,7 @@ export default class NodeAI extends AI {
         return building;
     }
 
-    #getDesiredBuildOptions(wantToBuild) {
+    #getDesiredBuildOptions(wantToBuild: CharacterType) {
 
         // this needs to be changed entirely
         // const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
@@ -239,8 +258,11 @@ export default class NodeAI extends AI {
         // console.log(`I'm at ${this.character.position}, making a new node at ${position}`);
 
         const options = Object.assign({}, wantToBuild);
+        //@ts-expect-error
         options.position = position;
+        //@ts-expect-error
         options.faction = this.character.faction;
+        //@ts-expect-error
         options.cost = wantToBuild.health;
 
         return options;

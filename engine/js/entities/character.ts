@@ -6,6 +6,13 @@ import Tooltip from '../ui/tooltip.mjs';
 import Entity from './character/Entity';
 import { Combatant } from './character/Combatant';
 
+interface GetNearbyEntitiesOptions {
+    max?: number;
+    distance?: number;
+    characterType: CharacterType;
+    faction?: Faction;
+}
+
 // TODO: #private properties rather than _private
 export default class Character extends Combatant {
 
@@ -60,6 +67,11 @@ export default class Character extends Combatant {
         super.think();
 
         this.statusEffectThink();
+    }
+    
+    getNearbyEntities(options: GetNearbyEntitiesOptions = {}) {
+
+        return super.getNearbyEntities(options);
     }
 
     // this is unused ...

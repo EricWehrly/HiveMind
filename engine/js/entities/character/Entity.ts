@@ -186,7 +186,7 @@ export default class Entity {
         }
     }
 
-    getNearbyEntities(options: { max?: number, distance?: number } = {}) {
+    getNearbyEntities(options: { max?: number, distance?: number, characterType?: CharacterType } = {}) {
         
         options.max = options.max || 10;
         options.distance = options.distance || 100;

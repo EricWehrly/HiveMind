@@ -5,6 +5,10 @@ Creatures close to spawn origin should:
     - not be able to see (or sense) very far, to react to run from the player threat
 As you get further out, you should very quickly start seeing animals with some actual defense / survival
 
+we want player to be able to travel "through" nodes to an edge,
+    and essentially excrete themselves a form
+    travel speed should be based on the "transfer rate" of nutrients within the hivemind
+
 attributes of a biome:
     how mountainous is this biome?
         (expressed as a percentage, 50 is 'a normal amount', 100 is 'as many as possible')

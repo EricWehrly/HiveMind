@@ -5,7 +5,7 @@ import UIElement from '../../engine/js/ui/ui-element.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.ts';
 import Building from './building.mjs';
-import NodeAI from '../ai/node.mjs';
+import NodeAI from '../ai/node.ts';
 
 const desireLabels = {};
 
