@@ -1,6 +1,6 @@
 import Events from "../../../engine/js/events";
 import Research from "../../../engine/js/research.mjs";
-import CharacterType from "../characterType.mjs";
+import CharacterType from "../CharacterType";
 import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
 import Character from "../../../engine/js/entities/character";
 import Resource from "../../../engine/js/entities/resource.mjs";
@@ -84,9 +84,9 @@ const Purposes: Record<string,any> =
                 // TODO: 'faction' has to be pushed further down the stack for this to work
                 //@ts-expect-error
                 faction: Character.LOCAL_PLAYER.faction
-            });
+            }) as LivingEntity;
 
-            if(closest) {
+            if(closest && closest instanceof LivingEntity) {
                 const maxHeal = closest.maxHealth - closest.health;
                 const amountToHeal = Math.min(maxHeal, this.amount);
                 if(amountToHeal < 1) return;

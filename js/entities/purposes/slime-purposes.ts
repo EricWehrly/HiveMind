@@ -1,7 +1,7 @@
 import Technology from "../../../engine/js/technology.mjs";
 import SlimeCharacter from "../character/SlimeCharacter";
 import Purposes from "./character-purposes";
-import CharacterType from "../characterType.mjs";
+import CharacterType from "../CharacterType";
 
 Purposes["return"] = {
     // do not show this one in menus!

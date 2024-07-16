@@ -1,5 +1,5 @@
 import Character from '../../engine/js/entities/character.ts';
-import CharacterType from './characterType.mjs';
+import CharacterType from './CharacterType.ts';
 import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';

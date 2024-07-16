@@ -1,5 +1,5 @@
 import '../entity-graphics.mjs';
-import CharacterType from "../../../../js/entities/characterType.mjs";
+import CharacterType from "../../../../js/entities/CharacterType";
 import Events from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
@@ -23,7 +23,7 @@ interface EntityOptions {
 
 interface SortingEntity {
     distance: number;
-    entity: CharacterType;
+    entity: Entity;
 }
 
 interface GetClosestEntityOptions {
@@ -35,7 +35,7 @@ interface GetClosestEntityOptions {
     grown?: boolean | null;
     exclude?: any[];
     faction?: boolean | null;
-    priorities?: Entity[];
+    priorities?: CharacterType[];
     characterProperties?: Object;
 }
 
@@ -186,7 +186,8 @@ export default class Entity {
         }
     }
 
-    getNearbyEntities(options: { max?: number, distance?: number, characterType?: CharacterType } = {}) {
+    getNearbyEntities(options: { max?: number, distance?: number, characterType?: CharacterType } = {}):
+    SortingEntity[] {
         
         options.max = options.max || 10;
         options.distance = options.distance || 100;
@@ -235,9 +236,9 @@ export default class Entity {
         exclude: [] as any,
         faction: null as boolean | null,
         // lowest to highest
-        priorities: [] as Entity[],
+        priorities: [] as CharacterType[],
         characterProperties: {} as any
-    }) {
+    }): Entity {
         const nearbyEntities = this.getNearbyEntities(options);
 
         // for now, we'll just do in order, but later we could add in Weights to priorities
@@ -250,7 +251,7 @@ export default class Entity {
         return nearbyEntities[0]?.entity || null;
     }
 
-    #prioritizedNearestSort(priorities: Entity[], margin: number) {
+    #prioritizedNearestSort(priorities: CharacterType[], margin: number) {
         return function(first: SortingEntity, second: SortingEntity) {
 
             // TODO: charactertype is a hivemind implementation, not an engine one ...

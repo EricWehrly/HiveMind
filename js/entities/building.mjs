@@ -1,5 +1,5 @@
 import Resource from "../../engine/js/entities/resource.mjs";
-import CharacterType from "./characterType.mjs";
+import CharacterType from "./CharacterType.ts";
 import Events from "../../engine/js/events.ts";
 import Rectangle from "../../engine/js/baseTypes/rectangle.ts";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";

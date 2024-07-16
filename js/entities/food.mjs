@@ -1,4 +1,4 @@
-import CharacterType from './characterType.mjs';
+import CharacterType from './CharacterType.ts';
 import Events from '../../engine/js/events.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import Game from '../../engine/js/engine.mjs';

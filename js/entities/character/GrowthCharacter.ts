@@ -2,7 +2,8 @@ import Resource from "../../../engine/js/entities/resource.mjs";
 import HiveMindCharacter from "./HiveMindCharacter";
 import '../purposes/growth-purposes';
 
-interface GrowConfig {
+// TODO: I'm not sure we wanted this exported from here ...
+export interface GrowConfig {
     interval: number;
     batchSize?: number;
     subject?: GrowthCharacter;

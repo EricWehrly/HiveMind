@@ -1,6 +1,6 @@
 import AI from "../../engine/js/ai/basic";
 import Resource from "../../engine/js/entities/resource.mjs";
-import CharacterType from "../entities/characterType.mjs";
+import CharacterType from "../entities/CharacterType";
 import Events from "../../engine/js/events";
 import Building from "../entities/building.mjs";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
@@ -250,7 +250,7 @@ export default class NodeAI extends AI {
 
         // this needs to be changed entirely
         // const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
-        const position = this.#getNextConstructionPosition(wantToBuild.characterType);
+        const position = this.#getNextConstructionPosition(wantToBuild);
         if(position == null) {
             console.warn(`Couldn't get position for new building. Probably out of bounds.`);
             return;

@@ -2,7 +2,7 @@ import Character from "../../engine/js/entities/character.ts";
 import Resource from "../../engine/js/entities/resource.mjs";
 import Technology from "../../engine/js/technology.mjs";
 import Menu from "../../engine/js/ui/menu.mjs";
-import CharacterType from "../entities/characterType.mjs";
+import CharacterType from "../entities/CharacterType.ts";
 
 export default class Cheat {
     static get Health() {

@@ -1,15 +1,18 @@
 import Research from "../../engine/js/research.mjs";
+import { GrowConfig } from "./character/GrowthCharacter";
 
 export default class CharacterType {
 
-    name;
+    static List: { [key: string]: object } = {}
+
+    name: string;
     // some of these properties might be ... odd, to have on here ...
     // but then, this whole class is kinda murky javascript hack fun
-    _spawnPurposeKey;
-    _currentPurposeKey;
-    growConfig;
+    _spawnPurposeKey: string;
+    _currentPurposeKey: string;
+    growConfig: GrowConfig;
 
-    #research;
+    #research: Research;
     get research() { return this.#research; }
 
     #isStudied = false;
@@ -18,20 +21,21 @@ export default class CharacterType {
         this.#isStudied = value;
     }
 
-    constructor(options) {
+    constructor(options: CharacterType) {
+
+        const { research, ...characterOptions } = options;
 
         if(options.research) {
             this.#research = new Research({
                 name: options.name,
                 ...options.research
             });
-            delete options.research;
         }
 
-        Object.assign(this, options);
-        this.characterType = this.name;
+        Object.assign(this, characterOptions);
 
-        CharacterType[this.name] = this;
+        CharacterType.List[this.name] = this;
+        // TODO: We probably don't need to do this
         Object.freeze(this);
     }
 }
