@@ -19,10 +19,7 @@ export default class PredatorAI extends AI {
         const equipment = (this.character as Combatant).equipment;
         if(equipment == null) return null;
 
-        //@ts-expect-error
-        const equipped = equipment[TechnologyTypes.ATTACK];
-
-        return equipped;
+        return equipment.getEquipped(TechnologyTypes.ATTACK);;
     }
     
     think() {
@@ -34,6 +31,8 @@ export default class PredatorAI extends AI {
                 // const wasTarget = this.#character.target;
                 const closest = this.character.getClosestEntity({
                     distance: this.character.aggressionRange,
+                    // TODO: Don't directly target the player.
+                    // Maybe we want to encourage attacking biggest threat first?
                     //@ts-expect-error
                     faction: Character.LOCAL_PLAYER.faction
                 });
