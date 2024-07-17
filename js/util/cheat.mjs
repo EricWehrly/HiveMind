@@ -31,10 +31,10 @@ export default class Cheat {
         Character.LOCAL_PLAYER.AddTechnology(claws);
 
         const buildMenu = Menu.Get("build");
-        const seeder = buildMenu.addItem(CharacterType.Seeder);
-        seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
-        const eater = buildMenu.addItem(CharacterType.Eater);
-        eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
+        const seeder = buildMenu.addItem(CharacterType.List['Seeder']);
+        seeder.Element.innerHTML = `Desire ${CharacterType.List['Seeder'].name}`;
+        const eater = buildMenu.addItem(CharacterType.List['Eater']);
+        eater.Element.innerHTML = `Desire ${CharacterType.List['Eater'].name}`;
     }
 
     static get Beefcake() {

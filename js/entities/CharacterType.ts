@@ -3,7 +3,7 @@ import { GrowConfig } from "./character/GrowthCharacter";
 
 export default class CharacterType {
 
-    static List: { [key: string]: object } = {}
+    static List: { [key: string]: CharacterType } = {}
 
     name: string;
     // some of these properties might be ... odd, to have on here ...

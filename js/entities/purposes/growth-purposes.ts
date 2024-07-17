@@ -27,10 +27,9 @@ Purposes["grow"] = {
 
             const food = Resource.Get("food");
             // Building.#FOOD_THRESHOLD ?
-            // TODO: CharacterType.Get, probably
+            // const characterType = CharacterType.List[];
             //@ts-expect-error
-            const characterType = CharacterType[subject.characterType];
-            if(food.available < characterType.health) {
+            if(food.available < subject.characterType.health) {
                 // console.debug(`${food.available} food < ${characterType.health}, can't build ${character.growConfig.subject.name}`);
                 return;
             }
@@ -39,7 +38,8 @@ Purposes["grow"] = {
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
             const newGrow = new GrowthCharacter(character.growConfig.subject);
-            if(!food.reserve(characterType.health, newGrow)) {
+            //@ts-expect-error
+            if(!food.reserve(subject.characterType.health, newGrow)) {
                 console.warn(`The food was available but isn't now?`);
                 return;
             }

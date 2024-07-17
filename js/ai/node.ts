@@ -172,7 +172,7 @@ export default class NodeAI extends AI {
         }
     }
 
-    #whatShouldBeBuilt() {
+    #whatShouldBeBuilt(): CharacterType {
 
             // at least 1 other node nearby (that can build other nodes ...)
             // we may want to allow non-nodes to build buildings?
@@ -184,9 +184,7 @@ export default class NodeAI extends AI {
                 characterType: 'Node',
             });
             if(nearbyNodes.length == 0) {
-                // TODO
-                //@ts-expect-error
-                return CharacterType.Node;
+                return CharacterType.List['Node'];
             }
 
             // TODO: We probably eventually want to balance seeders and eaters and not just have one ...
@@ -197,12 +195,10 @@ export default class NodeAI extends AI {
                 characterType: 'Eater'
             });
             if(nearbyEaters.length == 0) {
-                //@ts-expect-error
-                return CharacterType.Eater;
+                return CharacterType.List['Eater'];
             }
 
-            //@ts-expect-error
-            return CharacterType.Seeder;
+            return CharacterType.List['Seeder'];
 
             // defense and stuff tho
 
@@ -212,8 +208,7 @@ export default class NodeAI extends AI {
                 characterType: 'Seeder'
             });
             if(nearbySeeders.length == 0) {
-                //@ts-expect-error
-                return CharacterType.Seeder;
+                return CharacterType.List['Seeder'];
             }
     }
 

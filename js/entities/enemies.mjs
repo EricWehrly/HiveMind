@@ -31,7 +31,7 @@ function spawnFauna(chunk) {
 
     const techs = getFaunaTechs();
     // const claws = Technology.Get("claws");
-    const characterOpts = Object.assign({}, CharacterType.Animal);
+    const characterOpts = Object.assign({}, CharacterType.List['Animal']);
     // characterOpts.technologies = [claws];
     
     // later, we can use the remainder to make monsters stronger

@@ -64,10 +64,10 @@ Events.Subscribe(Events.List.BuildingDesireFulfilled, function (desire) {
 // TODO: get "Food" from its proper definition, or a constant somewhere ... 
 Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
 
-    const seeder = addBuildItem(CharacterType.Seeder);
-    seeder.Element.innerHTML = `Desire ${CharacterType.Seeder.name}`;
-    const eater = addBuildItem(CharacterType.Eater);
-    eater.Element.innerHTML = `Desire ${CharacterType.Eater.name}`;
+    const seeder = addBuildItem(CharacterType.List['Seeder']);
+    seeder.Element.innerHTML = `Desire ${CharacterType.List['Seeder'].name}`;
+    const eater = addBuildItem(CharacterType.List['Eater']);
+    eater.Element.innerHTML = `Desire ${CharacterType.List['Eater'].name}`;
 });
 
 KeyboardController.AddDefaultBinding("openMenu/build", "b");
@@ -80,7 +80,7 @@ new CharacterType({
     health: 15,
     _currentPurposeKey: 'grow',
     growConfig: {
-        subject: CharacterType.Food,
+        subject: CharacterType.List['Food'],
         max: 8, // once 8 are grown, don't start any more
         batchSize: 4,   // grow 4 at a time
         interval: 10000 // how long does it take to fully grow 1 food?
@@ -104,7 +104,7 @@ new CharacterType({
     ai: NodeAI,
     range: 4
 });
-addBuildItem(CharacterType.Node);
+addBuildItem(CharacterType.List['Node']);
 
 new CharacterType({
     name: 'Hunter',
@@ -114,8 +114,8 @@ new CharacterType({
     ai: null
 });
 // TODO: TBH it doesn't feel "right" to put the 'desire' buildings with the actually 'available' ones
-const hunterMenuItem = addBuildItem(CharacterType.Hunter);
-hunterMenuItem.Element.innerHTML = `Desire ${CharacterType.Hunter.name}`;
+const hunterMenuItem = addBuildItem(CharacterType.List['Hunter']);
+hunterMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Hunter'].name}`;
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
@@ -124,8 +124,8 @@ new CharacterType({
     health: 50,
     ai: null
 });
-const researcherMenuItem = addBuildItem(CharacterType.Researcher);
-researcherMenuItem.Element.innerHTML = `Desire ${CharacterType.Researcher.name}`;
+const researcherMenuItem = addBuildItem(CharacterType.List['Researcher']);
+researcherMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Researcher'].name}`;
 
 new CharacterType({
     name: 'Healer',
@@ -133,8 +133,8 @@ new CharacterType({
     _currentPurposeKey: 'heal',
     ai: null
 });
-const healerMenuItem = addBuildItem(CharacterType.Healer);
-healerMenuItem.Element.innerHTML = `Desire ${CharacterType.Healer.name}`;
+const healerMenuItem = addBuildItem(CharacterType.List['Healer']);
+healerMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Healer'].name}`;
 
 // rock driller
 
