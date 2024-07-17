@@ -25,9 +25,7 @@ const Purposes: Record<string,any> =
                         }
                         // TODO: When reabsorbed
                         if (character.target.characterType) {
-                            // TODO: fix this typing issue ...
-                            //@ts-expect-error
-                            CharacterType[character.target.characterType].isStudied = true;
+                            character.target.characterType.isStudied = true;
                             const research = Research.Get(character.target.characterType);
                             research.enabled = true;
                         }
@@ -82,8 +80,7 @@ const Purposes: Record<string,any> =
             const closest = character.getClosestEntity({
                 distance: this.range,
                 // TODO: 'faction' has to be pushed further down the stack for this to work
-                //@ts-expect-error
-                faction: Character.LOCAL_PLAYER.faction
+                faction: (Character.LOCAL_PLAYER as HiveMindCharacter).faction
             }) as LivingEntity;
 
             if(closest && closest instanceof LivingEntity) {

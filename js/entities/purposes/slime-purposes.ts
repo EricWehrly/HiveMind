@@ -42,8 +42,7 @@ Purposes["spawn"] = {
         else if (purpose == "hunt") targetType = "Animal";
 
         const target = character.getClosestEntity({
-            //@ts-expect-error
-            characterType: CharacterType[targetType],
+            characterType: CharacterType.List[targetType],
             exclude: character.spawnTargets,
             grown: true
         });

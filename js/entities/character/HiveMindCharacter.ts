@@ -62,8 +62,7 @@ export default class HiveMindCharacter extends Character {
 
     get toolTipMessage() {
 
-        //@ts-expect-error
-        const localPlayer: HiveMindCharacter = Character.LOCAL_PLAYER;
+        const localPlayer = Character.LOCAL_PLAYER as HiveMindCharacter;
 
         let toolTipMessage = "";
 
