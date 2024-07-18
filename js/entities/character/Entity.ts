@@ -116,7 +116,7 @@ export default class Entity {
 
         this.name = options.name || "TODO";     // TODO :/
 
-        this.characterType = options.characterType;
+        this.characterType = options.characterType || CharacterType.List[options.name];
         
         if(options.position) { 
             this._position = new WorldCoordinate(options.position.x, options.position.y);
