@@ -1,5 +1,6 @@
 import Events from "../../../events";
 import { RemoveCharacterFromList } from "../../characters.mjs";
+import Entity from "../Entity";
 
 Events.List.PlayerHealthChanged = "PlayerHealthChanged";
 Events.List.CharacterDied = "CharacterDied";
@@ -69,4 +70,8 @@ export function MakeLiving<T extends Constructor>(Base: T, health: number, maxHe
             RemoveCharacterFromList(this);
         }
     }
+}
+
+export function IsLiving(obj: Entity): obj is Entity & Living {
+    return (obj as Living).health !== undefined;
 }
