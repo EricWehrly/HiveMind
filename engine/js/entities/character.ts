@@ -1,10 +1,10 @@
 // @ts-nocheck
 import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
-import { Defer } from '../loop.mjs';
 import Faction from './faction.mjs';
 import Tooltip from '../ui/tooltip.mjs';
 import Entity from './character/Entity';
 import { Combatant } from './character/Combatant';
+import CharacterType from '../../../js/entities/CharacterType';
 
 interface GetNearbyEntitiesOptions {
     max?: number;
@@ -25,12 +25,6 @@ export default class Character extends Combatant {
     get faction() { return this._faction; }
     set faction(value) { this._faction = value; }
 
-    private _thornMultiplier = 1;
-    get thornMultiplier() { return this._thornMultiplier; }
-    set thornMultiplier(newValue) { this._thornMultiplier = newValue; }
-
-    private _statusEffects = {};
-
     constructor(options = {}) {
         super(options);
 
@@ -40,6 +34,7 @@ export default class Character extends Combatant {
         }
 
         if(options.research) {
+            console.log('research not supported right now');
             this.#research = options.research;
             delete options.research;
         }
@@ -118,47 +113,6 @@ export default class Character extends Combatant {
         }
 
         return false;
-    }
-
-    getStatusEffect(statusEffect) {
-
-        if(!(statusEffect in this._statusEffects)) {
-            this._statusEffects[statusEffect] = performance.now();
-        }
-        
-        return this._statusEffects[statusEffect];
-    }
-
-    statusEffectThink() {
-        for(var key in Object.keys(this._statusEffects)) {
-            const statusEffect = this._statusEffects[key];
-            if(statusEffect > performance.now()) {
-                delete this._statusEffects[key];
-            }
-        }
-    }
-
-    /**
-     * 
-     * @param {StatusEffect} statusEffect 
-     * @param {int} duration ms
-     */
-    applyStatusEffect(statusEffect, duration) {
-
-        this._statusEffects[statusEffect] = this.getStatusEffect(statusEffect) + duration;
-
-        const now = performance.now();
-        const options = {
-            startTime: now,
-            endTime: now + duration,
-            lastInterval: 0,
-            target: this.target,
-            duration
-        }
-        if(options.target == null) debugger;
-        Defer(function() {
-            statusEffect.callback(options)
-        }, statusEffect.interval + 1);
     }
 }
 
