@@ -28,7 +28,7 @@ export default class Building extends SlimeCharacter {
         // TODO: there are a LOT of undefined variables on these
         // 'name' is actually unset/undefined
         // but color and cost are getting assigned the VALUE of undefined
-        const characterType = CharacterType[options.characterType];
+        const characterType = CharacterType.List[options.characterType || options.name];
         const cost = options.cost || characterType.cost || characterType.health;
 
         if(cost) {
@@ -150,9 +150,9 @@ export default class Building extends SlimeCharacter {
     getEligibleConstructionPosition(characterType = this.characterType) {
 
         if((typeof characterType) == 'string') {
-            characterType = CharacterType[characterType];
+            characterType = CharacterType.List[characterType];
         }
-        const distance = (this.range || 0 + characterType?.overlapRange || 0) || 100;
+        const distance = (this.range || this.characterType.range || 0 + characterType?.overlapRange || 0) || 100;
 
         if(characterType.overlapRange) {
             return this.#getZonePosition(characterType, distance);

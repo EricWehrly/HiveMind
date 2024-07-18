@@ -21,6 +21,8 @@ export default class CharacterType {
         this.#isStudied = value;
     }
 
+    get characterType() { return this; }
+
     constructor(options: CharacterType) {
 
         const { research, ...characterOptions } = options;

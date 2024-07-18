@@ -21,7 +21,7 @@ const Build = function (context) {
 
     const player = Character.LOCAL_PLAYER;
 
-    const characterOpts = Object.assign({}, CharacterType[selectedBuilding.characterType]);
+    const characterOpts = Object.assign({}, CharacterType.List[selectedBuilding.characterType || selectedBuilding.name]);
     characterOpts.color = player.color;
     characterOpts.position = player.position;
     characterOpts.faction = player.faction;
