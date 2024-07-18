@@ -15,7 +15,7 @@ export interface Living {
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export function MakeLiving<T extends Constructor>(Base: T, health: number, maxHealth: number) {
+export function MakeLiving<T extends Constructor<Entity>>(Base: T, health: number, maxHealth: number) {
     return class extends Base implements Living {
 
         private _health = health;
