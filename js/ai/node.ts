@@ -4,12 +4,20 @@ import CharacterType from "../entities/CharacterType";
 import Events from "../../engine/js/events";
 import Building from "../entities/building.mjs";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
+import { Living } from "../../engine/js/entities/character/mixins/Living";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
 
 const TIME_BETWEEN_THOUGHTS = 5000;
 const NEARBY_RANGE = 100;
+
+// this is basically a temporary interface to use for position in entity definition
+// so that we don't have to consider an instance
+// we can probably get rid of this when we have a more comprehensive mixin setup
+interface Positioned { 
+    position: WorldCoordinate;
+}
 
 export default class NodeAI extends AI {
 
@@ -172,7 +180,7 @@ export default class NodeAI extends AI {
         }
     }
 
-    #whatShouldBeBuilt(): CharacterType {
+    #whatShouldBeBuilt(): CharacterType & Living {
 
             // at least 1 other node nearby (that can build other nodes ...)
             // we may want to allow non-nodes to build buildings?
@@ -184,7 +192,7 @@ export default class NodeAI extends AI {
                 characterType: 'Node',
             });
             if(nearbyNodes.length == 0) {
-                return CharacterType.List['Node'];
+                return CharacterType.List['Node'] as CharacterType & Living;;
             }
 
             // TODO: We probably eventually want to balance seeders and eaters and not just have one ...
@@ -195,10 +203,10 @@ export default class NodeAI extends AI {
                 characterType: 'Eater'
             });
             if(nearbyEaters.length == 0) {
-                return CharacterType.List['Eater'];
+                return CharacterType.List['Eater'] as CharacterType & Living;;
             }
 
-            return CharacterType.List['Seeder'];
+            return CharacterType.List['Seeder'] as CharacterType & Living;;
 
             // defense and stuff tho
 
@@ -208,22 +216,19 @@ export default class NodeAI extends AI {
                 characterType: 'Seeder'
             });
             if(nearbySeeders.length == 0) {
-                return CharacterType.List['Seeder'];
+                return CharacterType.List['Seeder'] as CharacterType & Living;;
             }
     }
 
-    #buildDesired(wantToBuild: CharacterType) {
+    #buildDesired(wantToBuild: CharacterType & Living) {
 
         const food = Resource.Get("food");
         // TODO: We'll fix this next
-        //@ts-expect-error
         const wantedHealth = wantToBuild.health;
         if (food.available < NodeAI.#FOOD_THRESHOLD + wantedHealth) return;
 
         const buildOptions = this.#getDesiredBuildOptions(wantToBuild);
 
-        // TODO: fix with above
-        //@ts-expect-error
         const buildPosition = buildOptions.position;
 
         // TODO: take some time to construct (grow)
@@ -241,7 +246,8 @@ export default class NodeAI extends AI {
         return building;
     }
 
-    #getDesiredBuildOptions(wantToBuild: CharacterType) {
+    #getDesiredBuildOptions(wantToBuild: CharacterType)
+        : CharacterType & Living & Positioned {
 
         // this needs to be changed entirely
         // const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
@@ -252,8 +258,7 @@ export default class NodeAI extends AI {
         }
         // console.log(`I'm at ${this.character.position}, making a new node at ${position}`);
 
-        const options = Object.assign({}, wantToBuild);
-        //@ts-expect-error
+        const options = Object.assign({}, wantToBuild) as CharacterType & Living & Positioned;
         options.position = position;
         //@ts-expect-error
         options.faction = this.character.faction;
