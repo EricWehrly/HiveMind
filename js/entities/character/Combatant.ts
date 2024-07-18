@@ -4,9 +4,11 @@ import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events";
 import Technology from "../../technology.mjs";
 import PlayableEntity from "./PlayableEntity";
-import Character from "../character";
 import Equipment from "../equipment";
-import LivingEntity from "./LivingEntity";
+import { IsLiving, Living } from "./mixins/Living";
+import Entity from "./Entity";
+import { Defer } from "../../loop.mjs";
+import StatusEffect from "../../status-effect.mjs";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 
@@ -17,11 +19,16 @@ export class Combatant extends PlayableEntity {
 
     _equipment: Equipment = new Equipment(this);
     private _technologies: any[] = [];
+    _statusEffects: Map<StatusEffect, number> = new Map();
     aggression = 0;
 
     // TODO: this is a HivemindCharacter construct, but is needed in the 'attack' method
     // until we (probably) provide some kind of hook or overwrite for the attack method...
     _currentPurposeKey: string;
+
+    private _thornMultiplier = 1;
+    get thornMultiplier() { return this._thornMultiplier; }
+    set thornMultiplier(newValue) { this._thornMultiplier = newValue; }
 
     get isHostile() {
 
@@ -110,8 +117,8 @@ export class Combatant extends PlayableEntity {
 
     canAttack() {
 
-        // eventually, we won't want this to be the case ...
-        if(!(this.target instanceof LivingEntity)) return false;
+        if(!(this.target instanceof Entity)
+            || !IsLiving(this.target)) return false;
         
         const equipment = this.equipment;
         if(equipment == null) return false;
@@ -124,7 +131,7 @@ export class Combatant extends PlayableEntity {
 
         if (!equipped.checkDelay()) return false;
 
-        if(!(this.target instanceof Character)) return false;
+        if(!(this.target instanceof Combatant)) return false;
 
         if (!equipped.checkRange(this)) return false;
 
@@ -136,7 +143,7 @@ export class Combatant extends PlayableEntity {
         if(!this.canAttack()) return 0;
 
         const equipped = this.getEquipped(TechnologyTypes.ATTACK);
-        let target = this.target as LivingEntity;
+        let target = this.target as Entity & Living;
         const strAttr = this.getAttribute("Strength");
 
         // TODO: visual and audio cues
@@ -152,7 +159,7 @@ export class Combatant extends PlayableEntity {
             });
         }
 
-        if(!(target instanceof LivingEntity)) return;
+        if(!IsLiving(target)) return;
 
         const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
         const damage = (equipped.damage * strengthMultiplier);
@@ -167,14 +174,55 @@ export class Combatant extends PlayableEntity {
             damage
         });
 
-        if(target instanceof Character) {
-            this._attackCharacter(target as Character, equipped, damage);
+        if(target instanceof Combatant) {
+            this._attackCharacter(target as Combatant, equipped, damage);
         }
 
         return damage;
     }
 
-    private _attackCharacter(target: Character, equipped: Technology, damage: number) {
+    // this whole 'status effect' stack could hopefully be a mixin
+    getStatusEffect(statusEffect: StatusEffect) {
+
+        if(!this._statusEffects.has(statusEffect)) {
+            this._statusEffects.set(statusEffect, performance.now());
+        }
+        
+        return this._statusEffects.get(statusEffect);
+    }
+
+    statusEffectThink() {
+        for (let [statusEffect, effectEnd] of this._statusEffects.entries()) {
+            if (effectEnd > performance.now()) {
+                this._statusEffects.delete(statusEffect);
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param {StatusEffect} statusEffect 
+     * @param {int} duration ms
+     */
+    applyStatusEffect(statusEffect: StatusEffect, duration: number) {
+
+        this._statusEffects.set(statusEffect, this.getStatusEffect(statusEffect) + duration);
+
+        const now = performance.now();
+        const options = {
+            startTime: now,
+            endTime: now + duration,
+            lastInterval: 0,
+            target: this.target,
+            duration
+        }
+        if(options.target == null) debugger;
+        Defer(function() {
+            statusEffect.callback(options)
+        }, statusEffect.interval + 1);
+    }
+
+    private _attackCharacter(target: Combatant, equipped: Technology, damage: number) {
 
         const combatLog = MessageLog.Get("Combat");
 
@@ -183,12 +231,11 @@ export class Combatant extends PlayableEntity {
         }
 
         if(target.equipment) {
-            const buffType = TechnologyTypes.BUFF;
-            // @ts-expect-error
-            const buff = target.equipment[buffType];
-            if(buff) {                            
+            // TODO: Is this working right?
+            const buff = target.equipment.buff;
+            if(buff) {
                 const thornDamage = buff.thorns * target.thornMultiplier;
-                this.health -= thornDamage;
+                (this as Living).health -= thornDamage;
 
                 const message = `${target.name} thorns ${this.name}`
                     + ` for ${buff.thorns} * ${target.thornMultiplier}.`;
