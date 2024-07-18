@@ -1,3 +1,12 @@
+We should be able to start 'compositing' all of the implementing Entity constructor types
+to be EntityOptions & ... whatever properties...
+dude, we need to get rid of the ts-nocheck in character...
+the next (obvious) mixin is probably 'Sentient' -- we just touched a bunch of stuff adjacent to it
+no, but first it has to be growth and slime
+
+- (fix) node position selection for stuff to build
+- visual indicators for (player equipped) attack readiness / cooldown
+
 Creatures close to spawn origin should:
     - have fewer 'points' overall
     - have many of their 'points' allocated to health or armor (or something else?)
