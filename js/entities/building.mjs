@@ -3,11 +3,11 @@ import CharacterType from "./CharacterType.ts";
 import Events from "../../engine/js/events.ts";
 import Rectangle from "../../engine/js/baseTypes/rectangle.ts";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
-import SlimeCharacter from "./character/SlimeCharacter.ts";
+import GrowthCharacter from "./character/GrowthCharacter.ts";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
-export default class Building extends SlimeCharacter {
+export default class Building extends GrowthCharacter {
 
     static #blockingZones = {};
 
