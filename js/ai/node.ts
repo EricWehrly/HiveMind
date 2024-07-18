@@ -189,7 +189,7 @@ export default class NodeAI extends AI {
             const nearbyNodes = this.character.getNearbyEntities({
                 distance: NEARBY_RANGE,
                 faction: this.character.faction,
-                characterType: 'Node',
+                characterType: CharacterType.List['Node'],
             });
             if(nearbyNodes.length == 0) {
                 return CharacterType.List['Node'] as CharacterType & Living;;
@@ -200,7 +200,7 @@ export default class NodeAI extends AI {
             const nearbyEaters = this.character.getNearbyEntities({
                 distance: NEARBY_RANGE,
                 faction: this.character.faction,
-                characterType: 'Eater'
+                characterType: CharacterType.List['Eater']
             });
             if(nearbyEaters.length == 0) {
                 return CharacterType.List['Eater'] as CharacterType & Living;;
@@ -213,7 +213,7 @@ export default class NodeAI extends AI {
             const nearbySeeders = this.character.getNearbyEntities({
                 distance: NEARBY_RANGE,
                 faction: this.character.faction,
-                characterType: 'Seeder'
+                characterType: CharacterType.List['Seeder']
             });
             if(nearbySeeders.length == 0) {
                 return CharacterType.List['Seeder'] as CharacterType & Living;;
