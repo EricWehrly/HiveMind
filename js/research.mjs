@@ -4,7 +4,7 @@ import UIElement from './ui/ui-element.mjs';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.ts';
 import { Defer } from "./loop.mjs";
-import Character from './entities/character.ts';
+import Entity from './entities/character/Entity.ts';
 
 Events.List.ResearchEnabled = "ResearchEnabled";
 Events.List.ResearchFinished = "ResearchFinished";
@@ -23,7 +23,7 @@ export default class Research extends Listed {
         context.menu.selected.enabled = false;
         context.menu.selected.Element.className += " disabled";
 
-        const researchers = Character.get({
+        const researchers = Entity.get({
             name: "Researcher"
         });
         const researchMultiplier = 1 + (researchers.length / 10);
