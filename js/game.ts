@@ -9,7 +9,9 @@ import './data/biomeTypes.mjs'
 import '../engine/js/mapping/tile-manager.mjs';
 import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from '../engine/js/entities/character';
-import SlimeCharacter from './entities/character/SlimeCharacter';
+import HiveMindCharacter from './entities/character/HiveMindCharacter';
+import { MakeSlimey } from './entities/character/mixins/Slimey';
+import { MakeHiveMindCharacter } from './entities/character/CharacterFactory';
 // import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip.mjs';
 import Technology from '../engine/js/technology.mjs';
@@ -54,7 +56,7 @@ Game.Map = new Map(Game.Seed);
 // TODO: figure out where to properly put this
 declare global {
     interface Window {
-        LOCAL_PLAYER: SlimeCharacter;
+        LOCAL_PLAYER: HiveMindCharacter;
         Game: typeof Game
     }
 }
@@ -68,7 +70,7 @@ const food = new Resource({
 food.reserve(100);
 const slap = Technology.Get("slap");
 
-const localPlayer = new SlimeCharacter({
+const localPlayer = MakeHiveMindCharacter([MakeSlimey], {
     name: "Local Player",
     color: "blue",
     speed: 5,

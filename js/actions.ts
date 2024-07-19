@@ -3,11 +3,12 @@
 import Purposes from "./entities/purposes/character-purposes";
 import Action from "../engine/js/action.mjs";
 import Technology from "../engine/js/technology.mjs";
-import SlimeCharacter from "./entities/character/SlimeCharacter";
+import Entity from "../engine/js/entities/character/Entity";
+import { Slimey } from "./entities/character/mixins/Slimey";
 
 // this should move down to the engine once we ts it
 interface ActionOptions {
-    character: SlimeCharacter
+    character: Entity & Slimey
 }
 
 //@ts-expect-error
@@ -20,7 +21,7 @@ new Action({
     // TODO: Maybe we should just have "on press" vs "on held" ...
     oncePerPress: true,
     callback: function (options: ActionOptions) {
-        options.character.Subdivide();
+        options.character.Subdivide({});
     }
 })
 

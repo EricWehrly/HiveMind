@@ -1,12 +1,14 @@
 import Technology from "../../../engine/js/technology.mjs";
-import SlimeCharacter from "../character/SlimeCharacter";
+import HiveMindCharacter from "../character/HiveMindCharacter";
 import Purposes from "./character-purposes";
 import CharacterType from "../CharacterType";
+import { Slimey } from "../character/mixins/Slimey";
+import GrowthCharacter from "../character/GrowthCharacter";
 
 Purposes["return"] = {
     // do not show this one in menus!
     name: "return",
-    think: function (character: SlimeCharacter, elapsed: number) {
+    think: function (character: HiveMindCharacter & Slimey, elapsed: number) {
 
         if (!character.target) {
             character.target = character.parent;
@@ -25,7 +27,7 @@ Purposes["return"] = {
 Purposes["spawn"] = {
     name: "spawn",
     interval: 3000,
-    think: function (character: SlimeCharacter, elapsed: number) {
+    think: function (character: GrowthCharacter & Slimey, elapsed: number) {
 
         // we could probably track "amount elapsed" in the character, 
         // rather than needing to call performance.now here
