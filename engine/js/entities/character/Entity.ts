@@ -57,7 +57,7 @@ export default class Entity {
     id: string;
     name: string;
     
-    #attributes: { [key: string]: CharacterAttribute } = {};
+    private _attributes: { [key: string]: CharacterAttribute } = {};
     _position: WorldCoordinate = new WorldCoordinate(0, 0);
     private _area: Rectangle = new Rectangle(0, 0, 0, 0);
 
@@ -165,12 +165,12 @@ export default class Entity {
 
     addAttribute(characterAttribute: CharacterAttribute) {
 
-        this.#attributes[characterAttribute.name] = characterAttribute;
+        this._attributes[characterAttribute.name] = characterAttribute;
     }
 
     getAttribute(name: string) {
 
-        return this.#attributes[name];
+        return this._attributes[name];
     }
 
     getDistance(entity: Entity) {
