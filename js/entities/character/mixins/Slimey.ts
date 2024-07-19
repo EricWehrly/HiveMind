@@ -1,5 +1,6 @@
 import Resource from "../../../../engine/js/entities/resource.mjs";
 import HiveMindCharacter from "../HiveMindCharacter";
+import { MakeHiveMindCharacter } from "../CharacterFactory";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -21,11 +22,6 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
 export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
     return class extends Base implements Slimey {
-
-        static create(options: any): HiveMindCharacter & Slimey {
-            const SlimeyCharacter = MakeSlimey(HiveMindCharacter, options.parent);
-            return new SlimeyCharacter(options);
-        }
 
         parent?: HiveMindCharacter = options.parent;
         
@@ -55,9 +51,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             const entityRenderingSettings = {
                 renderedName: purpose.name
             };
-            // this is a little sketchy but hopefully it'll work
-            // TODO: Call the factory
-            const spawnedCharacter = (this.constructor as any).create({
+            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey], {            
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
