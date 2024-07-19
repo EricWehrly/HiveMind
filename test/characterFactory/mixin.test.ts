@@ -1,4 +1,5 @@
 import mockMap from "../../engine/test/testHelpers/mockMap";
+import Building from "../../js/entities/building";
 import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFactory";
 import HiveMindCharacter from "../../js/entities/character/HiveMindCharacter";
 import { MakeSlimey, Slimey } from "../../js/entities/character/mixins/Slimey";
@@ -85,5 +86,12 @@ describe('ChacterFactory.MakeHiveMindCharacter', () => {
 
     describe('multiple mixins', () => {
         // TODO
+    });
+
+    describe('extended class', () => {
+        it('should instantiate as a class that extends the base', () => {
+            const character = MakeHiveMindCharacter([MakeSlimey], {}, Building);
+            expect(character instanceof Building).toBeTruthy();
+        })
     });
 });

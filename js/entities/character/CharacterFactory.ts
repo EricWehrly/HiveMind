@@ -3,11 +3,14 @@ import HiveMindCharacter from "./HiveMindCharacter";
 type Constructor<T = {}> = new (...args: any[]) => T;
 type Mixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
 
-export function MakeHiveMindCharacter(mixins: Mixin[], options: any): HiveMindCharacter {
-    let extended = HiveMindCharacter;
-    while (mixins.length) {
-        extended = mixins.pop()(extended, options);
+export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
+    mixins: Mixin[], 
+    options: any, 
+    SuperClass: new (...args: any[]) => T = HiveMindCharacter as any
+): T {
+    let ExtendedCharacter = SuperClass;
+    for (const mixin of mixins) {
+        ExtendedCharacter = mixin(ExtendedCharacter, options);
     }
-    const creature = new extended(options);
-    return creature;
+    return new ExtendedCharacter(options) as T;
 }
