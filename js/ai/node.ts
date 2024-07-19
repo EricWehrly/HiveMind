@@ -2,7 +2,7 @@ import AI from "../../engine/js/ai/basic";
 import Resource from "../../engine/js/entities/resource.mjs";
 import CharacterType from "../entities/CharacterType";
 import Events from "../../engine/js/events";
-import Building from "../entities/building.mjs";
+import Building from "../entities/building";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { Living } from "../../engine/js/entities/character/mixins/Living";
 

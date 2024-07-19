@@ -1,40 +1,49 @@
 import Resource from "../../engine/js/entities/resource.mjs";
-import CharacterType from "./CharacterType.ts";
-import Events from "../../engine/js/events.ts";
-import Rectangle from "../../engine/js/baseTypes/rectangle.ts";
-import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate.ts";
-import GrowthCharacter from "./character/GrowthCharacter.ts";
+import CharacterType from "./CharacterType";
+import Events from "../../engine/js/events";
+import Rectangle from "../../engine/js/baseTypes/rectangle";
+import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
+import GrowthCharacter from "./character/GrowthCharacter";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
+interface BuildingCharacterType extends CharacterType {
+    cost: number;
+    overlapRange: number;
+    range: number;
+}
+
 export default class Building extends GrowthCharacter {
 
-    static #blockingZones = {};
+    static #blockingZones: { [key: string]: Rectangle[] } = {};
 
-    static #addBlockingZone(buildingType, zone) {
+    static #addBlockingZone(buildingTypeName: string, zone: Rectangle) {
 
-        if(!Building.#blockingZones[buildingType]) {
-            Building.#blockingZones[buildingType] = [];
+        if(!Building.#blockingZones[buildingTypeName]) {
+            Building.#blockingZones[buildingTypeName] = [];
         }
-        Building.#blockingZones[buildingType].push(zone);
+        Building.#blockingZones[buildingTypeName].push(zone);
     }
 
     #blockingZone;
     get blockingZone() { return this.#blockingZone; }
 
+    isBuilding: boolean;
+    range: number;
+
     // we may be able to do all this in the base class
-    constructor(options) {
+    constructor(options: any) {
 
         // TODO: there are a LOT of undefined variables on these
         // 'name' is actually unset/undefined
         // but color and cost are getting assigned the VALUE of undefined
-        const characterType = CharacterType.List[options.characterType || options.name];
+        const characterType = (CharacterType.List[options.characterType || options.name]) as BuildingCharacterType;
         const cost = options.cost || characterType.cost || characterType.health;
 
         if(cost) {
             const food = Resource.Get("food");
             if(!food.pay(cost)) {
-                console.log(`You can't afford to build ${characterType.name} for ${amount}`);
+                console.log(`You can't afford to build ${characterType.name} for ${cost}`);
                 console.log(`You got ${food.value}, son.`);
                 return;
             }
@@ -69,8 +78,7 @@ export default class Building extends GrowthCharacter {
         Events.RaiseEvent(Events.List.BuildingBuilt, this);
     }
 
-    canBeEaten(byWhom) {
-
+    canBeEaten(byWhom: any) {
         return false;
     }
 
@@ -80,7 +88,7 @@ export default class Building extends GrowthCharacter {
      * @param {CharacterType} intent.characterType
      * @param {int} intent.health
      */
-    Develop(intent) {
+    Develop(intent: Building) {
 
         // TODO: check minimum food before doing this?
 
@@ -91,10 +99,10 @@ export default class Building extends GrowthCharacter {
         // TODO: Get this to stop producing negative numbers and drop the Math.abs
         const healthDiff = Math.abs(intent.health - this.health);
         this.grow(healthDiff * 500);
-        this.maxHealth = CharacterType[intent.characterType].health;
+        this.maxHealth = intent.characterType.health;
     }
 
-    #getZonePosition(characterType, distance) {
+    #getZonePosition(characterType: CharacterType, distance: number) {
 
         const blockingZones = Building.#blockingZones[characterType.name];
 
@@ -118,10 +126,10 @@ export default class Building extends GrowthCharacter {
         }
     }
 
-    #getCharacterPosition(characterType, distance) {
+    #getCharacterPosition(characterType: CharacterType, distance: number) {
 
         const entities = this.getNearbyEntities({
-            characterType: characterType.name,
+            characterType,
             distance
         });
 
@@ -129,13 +137,13 @@ export default class Building extends GrowthCharacter {
         for(var x = Math.floor(this.position.x - distance); x < Math.ceil(this.position.x + distance); x++) {
             for(var y = Math.floor(this.position.y - distance); y < Math.ceil(this.position.y + distance); y++) {
                 
-                for(var entity of entities) {
-                    entity = entity.entity;     // ugly, sorry, couldn't figure out how to unpack the object
+                for(var entityDistance of entities) {
+                    const entity = entityDistance.entity as Building;
 
-                    // if(!entity.blockingZone) debugger;
+                    if(!entity.blockingZone) debugger;
 
                     // if entity blocks this position
-                    if(entity?.blockingZone?.containsPoint(new WorldCoordinate(x, y))) {
+                    if(entity?.blockingZone?.containsPoint(x, y)) {
                         y = entity.blockingZone.y + entity.blockingZone.height;
                         continue;
                     }
@@ -149,15 +157,17 @@ export default class Building extends GrowthCharacter {
 
     getEligibleConstructionPosition(characterType = this.characterType) {
 
-        if((typeof characterType) == 'string') {
-            characterType = CharacterType.List[characterType];
-        }
-        const distance = (this.range || this.characterType.range || 0 + characterType?.overlapRange || 0) || 100;
+        const BuildingCharacterType = characterType as BuildingCharacterType;
 
-        if(characterType.overlapRange) {
-            return this.#getZonePosition(characterType, distance);
+        const distance = (this.range 
+                || (this.characterType as BuildingCharacterType).range 
+                || 0 + BuildingCharacterType?.overlapRange || 0)
+            || 100;
+
+        if(BuildingCharacterType.overlapRange) {
+            return this.#getZonePosition(BuildingCharacterType, distance);
         } else {
-            return this.#getCharacterPosition(characterType, distance);
+            return this.#getCharacterPosition(BuildingCharacterType, distance);
         }
     }
 }

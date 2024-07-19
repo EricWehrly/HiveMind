@@ -12,6 +12,9 @@ export default class CharacterType {
     _currentPurposeKey: string;
     growConfig: GrowConfig;
 
+    // expose commonly accessed character property
+    health?: number;
+
     #research: Research;
     get research() { return this.#research; }
 
