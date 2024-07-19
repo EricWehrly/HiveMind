@@ -30,20 +30,16 @@ export default class Character extends Combatant {
 
         if(options.faction) {
             this._faction = options.faction;
-            delete options.faction;
         }
 
         if(options.research) {
             console.log('research not supported right now');
             this.#research = options.research;
-            delete options.research;
         }
 
         this.color = options.color;
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
-
-        delete options.ai;
 
         if(options.additionalClasses) this.additionalClasses = options.additionalClasses;
 
