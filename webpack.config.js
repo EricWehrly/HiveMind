@@ -33,6 +33,7 @@ module.exports = [
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.mjs'],
         },
+        devtool: 'source-map',
         module: {
             rules: [
                 {
