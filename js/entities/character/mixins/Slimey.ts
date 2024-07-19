@@ -18,15 +18,16 @@ export interface Slimey {
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, mixinOptions: any) {
+// TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
+export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
     return class extends Base implements Slimey {
 
         static create(options: any): HiveMindCharacter & Slimey {
-            const SlimeyCharacter = MakeSlimey(HiveMindCharacter, mixinOptions.parent);
+            const SlimeyCharacter = MakeSlimey(HiveMindCharacter, options.parent);
             return new SlimeyCharacter(options);
         }
 
-        parent?: HiveMindCharacter = mixinOptions.parent;
+        parent?: HiveMindCharacter = options.parent;
         
         // TODO: set character current subdivision task/purpose
         Subdivide (options: SubdivideOptions = {}) {
@@ -55,6 +56,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, mi
                 renderedName: purpose.name
             };
             // this is a little sketchy but hopefully it'll work
+            // TODO: Call the factory
             const spawnedCharacter = (this.constructor as any).create({
                 name,
                 health: amount,
@@ -63,8 +65,9 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, mi
                 _currentPurposeKey: purpose.name.toLowerCase(),
                 faction: this.faction,
                 technologies: options.technologies,
-                entityRenderingSettings
-            }, this);
+                entityRenderingSettings,
+                parent: this
+            });
             if (options.target) spawnedCharacter.target = options.target;
             console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);        
     

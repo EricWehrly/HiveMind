@@ -27,12 +27,14 @@ interface CharacterOptions {
     ai: any;
     parent: HiveMindCharacter;
     speed: number;
+    name: string;
 }
 
 describe('ChacterFactory.MakeHiveMindCharacter', () => {
 
     const referenceEntity = MakeHiveMindCharacter([], {
-        ai: null
+        ai: null,
+        name: 'Reference'
     });
 
     describe('no mixins', () => {
@@ -54,7 +56,8 @@ describe('ChacterFactory.MakeHiveMindCharacter', () => {
         const characterOptions: CharacterOptions = {
             ai: null,
             parent: referenceEntity,
-            speed: 3
+            speed: 3,
+            name: 'Slimey'
         };
         const character = MakeHiveMindCharacter(slimeMixin, characterOptions);
         const slimey = character as HiveMindCharacter & Slimey;
