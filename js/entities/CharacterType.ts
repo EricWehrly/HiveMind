@@ -1,5 +1,6 @@
+import AI from "../../engine/js/ai/basic";
 import Research from "../../engine/js/research.mjs";
-import { GrowConfig } from "./character/GrowthCharacter";
+import { GrowerConfig } from "./character/GrowthCharacter";
 
 export default class CharacterType {
 
@@ -10,7 +11,8 @@ export default class CharacterType {
     // but then, this whole class is kinda murky javascript hack fun
     _spawnPurposeKey: string;
     _currentPurposeKey: string;
-    growConfig: GrowConfig;
+    growerConfig: GrowerConfig;
+    ai: AI;
 
     // expose commonly accessed character property
     health?: number;

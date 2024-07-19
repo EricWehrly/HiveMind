@@ -114,9 +114,9 @@ export default class Entity {
 
         this.id = options.id || generateId();
 
-        this.name = options.name || "TODO";     // TODO :/
-
         this.characterType = options.characterType || CharacterType.List[options.name];
+
+        this.name = options.name || this.characterType?.name || "TODO";     // TODO :/
         
         if(options.position) { 
             this._position = new WorldCoordinate(options.position.x, options.position.y);

@@ -53,7 +53,9 @@ export default class SentientLivingEntity extends LivingEntity {
     constructor(options: any) {
         super(options);        
         this.#spawnPosition = new WorldCoordinate(this.position.x, this.position.y);
-        this.setupAI(options?.ai);
+        // TODO: unit test this 'null' thing
+        const ai = options.ai !== undefined ? options.ai : options.characterType?.ai;
+        this.setupAI(ai);
 
         if(options.isPlayer) this.isPlayer = options.isPlayer;
 
