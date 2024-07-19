@@ -127,7 +127,6 @@ export default class Entity {
         let speedVal = 1;
         if(options.speed != undefined) {    // 0 is a valid speed, so we need to check more explicitly
             speedVal = options.speed;
-            delete options.speed;
         }
 
         if(options.entityRenderingSettings) this.entityRenderingSettings = options.entityRenderingSettings;
