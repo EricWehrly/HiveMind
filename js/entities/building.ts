@@ -30,6 +30,8 @@ export default class Building extends GrowthCharacter {
 
     isBuilding: boolean;
     range: number;
+    // TODO: Temporary property to appease mixin
+    grow: (amount: number) => void;
 
     // we may be able to do all this in the base class
     constructor(options: any) {
@@ -37,8 +39,8 @@ export default class Building extends GrowthCharacter {
         // TODO: there are a LOT of undefined variables on these
         // 'name' is actually unset/undefined
         // but color and cost are getting assigned the VALUE of undefined
-        const characterType = (CharacterType.List[options.characterType || options.name]) as BuildingCharacterType;
-        const cost = options.cost || characterType.cost || characterType.health;
+        const characterType = (options.characterType || CharacterType.List[options.characterType || options.name]) as BuildingCharacterType;
+        const cost = options.cost || characterType?.cost || characterType?.health;
 
         if(cost) {
             const food = Resource.Get("food");
@@ -57,7 +59,7 @@ export default class Building extends GrowthCharacter {
         super(options);
         this.isBuilding = true;
 
-        if(characterType.overlapRange) {
+        if(characterType?.overlapRange) {
             const halfRange = characterType.overlapRange / 2;
             this.#blockingZone = new Rectangle(
                 Math.floor(this.x - halfRange),
@@ -73,7 +75,9 @@ export default class Building extends GrowthCharacter {
                 1
             );
         }
-        Building.#addBlockingZone(characterType.name, this.#blockingZone);
+        if(characterType?.name) {
+            Building.#addBlockingZone(characterType.name, this.#blockingZone);
+        }
         
         Events.RaiseEvent(Events.List.BuildingBuilt, this);
     }

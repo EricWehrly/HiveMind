@@ -1,6 +1,9 @@
 import WorldCoordinate from "../../../engine/js/coordinates/WorldCoordinate";
 import Resource from "../../../engine/js/entities/resource.mjs";
+import { MakeHiveMindCharacter } from "../character/CharacterFactory";
 import GrowthCharacter from "../character/GrowthCharacter";
+import HiveMindCharacter from "../character/HiveMindCharacter";
+import { Growable, MakeGrowable } from "../character/mixins/Growable";
 import Purposes from "./character-purposes";
 
 function randomPositionOffset(source: WorldCoordinate, offsetAmountPerAxis: number) {
@@ -20,28 +23,28 @@ Purposes["grow"] = {
         if (!character.growing) character.growing = [];
         const growing = character.growing.filter(growing => growing.growth < 100)
             || [];
-        if (growing.length < character.growConfig.batchSize
-            && character.growing.length < character.growConfig.max) {
+        if (growing.length < character.growerConfig.batchSize
+            && character.growing.length < character.growerConfig.max) {
 
-            const subject = character.growConfig.subject;
+            const subject = character.growerConfig.subject;
 
             const food = Resource.Get("food");
             // Building.#FOOD_THRESHOLD ?
             // const characterType = CharacterType.List[];
             if(food.available < subject.characterType.health) {
-                // console.debug(`${food.available} food < ${characterType.health}, can't build ${character.growConfig.subject.name}`);
+                // console.debug(`${food.available} food < ${characterType.health}, can't build ${character.growerConfig.subject.name}`);
                 return;
             }
 
             // check if we have the food to do this
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
-            const newGrow = new GrowthCharacter(character.growConfig.subject);
+            const newGrow = MakeHiveMindCharacter([MakeGrowable], character.growerConfig.subject) as HiveMindCharacter & Growable;
             if(!food.reserve(subject.characterType.health, newGrow)) {
                 console.warn(`The food was available but isn't now?`);
                 return;
             }
-            newGrow.grow(character.growConfig.interval);
+            newGrow.grow(character.growerConfig.interval);
             // TODO: need to instrument range, maybe growConfig.range?
             newGrow.position = randomPositionOffset(character.position, 5);
             character.growing.push(newGrow);

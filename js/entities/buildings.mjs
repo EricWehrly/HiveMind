@@ -4,8 +4,10 @@ import Menu from '../../engine/js/ui/menu.mjs';
 import UIElement from '../../engine/js/ui/ui-element.mjs';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.ts';
-import Building from './building.ts';
 import NodeAI from '../ai/node.ts';
+import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
+import { MakeGrowable } from './character/mixins/Growable.ts';
+import Building from './building.ts';
 
 const desireLabels = {};
 
@@ -21,12 +23,16 @@ const Build = function (context) {
 
     const player = Character.LOCAL_PLAYER;
 
-    const characterOpts = Object.assign({}, CharacterType.List[selectedBuilding.characterType || selectedBuilding.name]);
-    characterOpts.color = player.color;
-    characterOpts.position = player.position;
-    characterOpts.faction = player.faction;
+    const characterType = CharacterType.List[selectedBuilding.characterType || selectedBuilding.name];
 
-    return new Building(characterOpts);
+    const options = {
+        characterType,
+        color: player.color,
+        position: player.position,
+        faction: player.faction
+    }
+
+    return MakeHiveMindCharacter([MakeGrowable], options, Building);
 }
 
 // maybe it's time to extract a 'buildingMenu' file
@@ -79,7 +85,7 @@ new CharacterType({
     name: 'Seeder',
     health: 15,
     _currentPurposeKey: 'grow',
-    growConfig: {
+    growerConfig: {
         subject: CharacterType.List['Food'],
         max: 8, // once 8 are grown, don't start any more
         batchSize: 4,   // grow 4 at a time

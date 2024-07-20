@@ -19,6 +19,8 @@ import Technology from '../engine/js/technology.mjs';
 import './ui/ui.mjs';
 import '../engine/js/ui/ui-equipment.mjs';
 import '../engine/js/ui/ui-resource.mjs';
+// weirdly we've removed any other imports for this ...
+import './entities/building';
 
 import Map from '../engine/js/mapping/map';
 import './entities/entities.mjs';

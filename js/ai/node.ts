@@ -5,6 +5,8 @@ import Events from "../../engine/js/events";
 import Building from "../entities/building";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { Living } from "../../engine/js/entities/character/mixins/Living";
+import { Growable, MakeGrowable } from "../entities/character/mixins/Growable";
+import { MakeHiveMindCharacter } from "../entities/character/CharacterFactory";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -58,13 +60,13 @@ export default class NodeAI extends AI {
 
     #nextConstructPositions: Record<string, WorldCoordinate> = {};
     
-    private _building: Building;
+    private _building: Building & Growable;
 
     get character() {
         return this._building;
     }
 
-    constructor(character: Building) {
+    constructor(character: Building & Growable) {
         super(character);
 
         this._building = character;
@@ -121,7 +123,7 @@ export default class NodeAI extends AI {
 
     #isNodeBusy() {
 
-        if(!this.character.isGrown) return true;
+        if(this.character.isGrown == false) return true;
 
         // because we won't be able to get "randomPositionOffset" further down
         if(this.character.position?.chunk == null) {
@@ -234,7 +236,7 @@ export default class NodeAI extends AI {
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
         console.log(`Node has chosen to build ${wantToBuild.name} at ${buildPosition}`);
-        const building = new Building(buildOptions);
+        const building = MakeHiveMindCharacter([MakeGrowable], buildOptions, Building) as Building & Growable;
         if(!food.reserve(building.maxHealth, building)) return;
 
         const healthDiff = building.health * .9;

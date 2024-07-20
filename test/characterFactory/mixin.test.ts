@@ -2,6 +2,7 @@ import mockMap from "../../engine/test/testHelpers/mockMap";
 import Building from "../../js/entities/building";
 import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFactory";
 import HiveMindCharacter from "../../js/entities/character/HiveMindCharacter";
+import { Growable, MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeSlimey, Slimey } from "../../js/entities/character/mixins/Slimey";
 
 jest.mock('@/engine/js/events', () => {
@@ -92,6 +93,26 @@ describe('ChacterFactory.MakeHiveMindCharacter', () => {
         it('should instantiate as a class that extends the base', () => {
             const character = MakeHiveMindCharacter([MakeSlimey], {}, Building);
             expect(character instanceof Building).toBeTruthy();
-        })
+        });
+
+        it('should call super methods for base class', () => {
+            const character = MakeHiveMindCharacter([MakeGrowable], {}) as HiveMindCharacter & Growable;
+            const spy = jest.spyOn(HiveMindCharacter.prototype, 'canBeEaten');
+
+            let canBeEaten = character.canBeEaten(referenceEntity);
+            let isGrown = character.isGrown;
+
+            expect(spy).toHaveBeenCalledWith(referenceEntity);
+
+            expect(canBeEaten && isGrown).toBe(true);
+
+            character.grow(1);
+            canBeEaten = character.canBeEaten(referenceEntity);
+            isGrown = character.isGrown;
+            expect(spy).toHaveBeenCalledWith(referenceEntity);
+            expect(canBeEaten && isGrown).toBe(false);
+        
+            spy.mockRestore();
+        });
     });
 });
