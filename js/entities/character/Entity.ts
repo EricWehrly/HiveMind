@@ -9,6 +9,7 @@ import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Rectangle from "../../baseTypes/rectangle";
 import EntityRenderingSettings from './EntityRenderingSettings';
+import Faction from '../faction.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 
@@ -34,7 +35,7 @@ interface GetClosestEntityOptions {
     characterType?: CharacterType | null;
     grown?: boolean | null;
     exclude?: any[];
-    faction?: boolean | null;
+    faction?: Faction | null;
     priorities?: CharacterType[];
     characterProperties?: Object;
 }
@@ -185,7 +186,7 @@ export default class Entity {
         }
     }
 
-    getNearbyEntities(options: { max?: number, distance?: number, characterType?: CharacterType } = {}):
+    getNearbyEntities(options: { max?: number, distance?: number, characterType?: CharacterType, faction?: Faction } = {}):
     SortingEntity[] {
         
         options.max = options.max || 10;
@@ -233,7 +234,7 @@ export default class Entity {
         grown: null as boolean | null,
         // TODO: this'll be broken if we start using exclude in ts...
         exclude: [] as any,
-        faction: null as boolean | null,
+        faction: null as Faction | null,
         // lowest to highest
         priorities: [] as CharacterType[],
         characterProperties: {} as any
@@ -283,7 +284,7 @@ export default class Entity {
     // and we basically just wired it for Character above to overwrite
     // since it needs to be called in this class ...
     shouldFilterCharacter(character: Entity, options: any) {
-        console.log('OH NO!');
+        console.warn('OH NO!');
         return false;
     }
 
