@@ -3,7 +3,7 @@ import HiveMindCharacter from "../character/HiveMindCharacter";
 import Purposes from "./character-purposes";
 import CharacterType from "../CharacterType";
 import { Slimey } from "../character/mixins/Slimey";
-import GrowthCharacter from "../character/GrowthCharacter";
+import { Grower } from "../character/mixins/Grower";
 
 Purposes["return"] = {
     // do not show this one in menus!
@@ -27,7 +27,7 @@ Purposes["return"] = {
 Purposes["spawn"] = {
     name: "spawn",
     interval: 3000,
-    think: function (character: GrowthCharacter & Slimey, elapsed: number) {
+    think: function (character: HiveMindCharacter & Slimey & Grower, elapsed: number) {
 
         // we could probably track "amount elapsed" in the character, 
         // rather than needing to call performance.now here

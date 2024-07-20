@@ -1,6 +1,6 @@
 import AI from "../../engine/js/ai/basic";
 import Research from "../../engine/js/research.mjs";
-import { GrowerConfig } from "./character/GrowthCharacter";
+import { GrowerConfig } from "./character/mixins/Grower";
 
 export default class CharacterType {
 

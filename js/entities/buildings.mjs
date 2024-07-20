@@ -8,6 +8,7 @@ import NodeAI from '../ai/node.ts';
 import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
 import { MakeGrowable } from './character/mixins/Growable.ts';
 import Building from './building.ts';
+import { MakeGrower } from './character/mixins/Grower.ts';
 
 const desireLabels = {};
 
@@ -32,7 +33,7 @@ const Build = function (context) {
         faction: player.faction
     }
 
-    return MakeHiveMindCharacter([MakeGrowable], options, Building);
+    return MakeHiveMindCharacter([MakeGrowable, MakeGrower], options, Building);
 }
 
 // maybe it's time to extract a 'buildingMenu' file

@@ -1,9 +1,10 @@
 import WorldCoordinate from "../../../engine/js/coordinates/WorldCoordinate";
+import Entity from "../../../engine/js/entities/character/Entity";
 import Resource from "../../../engine/js/entities/resource.mjs";
 import { MakeHiveMindCharacter } from "../character/CharacterFactory";
-import GrowthCharacter from "../character/GrowthCharacter";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { Growable, MakeGrowable } from "../character/mixins/Growable";
+import { Grower } from "../character/mixins/Grower";
 import Purposes from "./character-purposes";
 
 function randomPositionOffset(source: WorldCoordinate, offsetAmountPerAxis: number) {
@@ -18,7 +19,7 @@ function randomPositionOffset(source: WorldCoordinate, offsetAmountPerAxis: numb
 
 Purposes["grow"] = {
     name: "grow",
-    think: function (character: GrowthCharacter, elapsed: number) {
+    think: function (character: Entity & Grower, elapsed: number) {
 
         if (!character.growing) character.growing = [];
         const growing = character.growing.filter(growing => growing.growth < 100)

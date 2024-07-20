@@ -3,7 +3,7 @@ import CharacterType from "./CharacterType";
 import Events from "../../engine/js/events";
 import Rectangle from "../../engine/js/baseTypes/rectangle";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
-import GrowthCharacter from "./character/GrowthCharacter";
+import HiveMindCharacter from "./character/HiveMindCharacter";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
@@ -13,7 +13,7 @@ interface BuildingCharacterType extends CharacterType {
     range: number;
 }
 
-export default class Building extends GrowthCharacter {
+export default class Building extends HiveMindCharacter {
 
     static #blockingZones: { [key: string]: Rectangle[] } = {};
 
