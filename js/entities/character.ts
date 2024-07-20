@@ -2,14 +2,13 @@
 import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
 import Faction from './faction.mjs';
 import Tooltip from '../ui/tooltip.mjs';
-import Entity from './character/Entity';
 import { Combatant } from './character/Combatant';
 import CharacterType from '../../../js/entities/CharacterType';
 
 interface GetNearbyEntitiesOptions {
     max?: number;
     distance?: number;
-    characterType: CharacterType;
+    characterType?: CharacterType;
     faction?: Faction;
 }
 
@@ -19,13 +18,17 @@ export default class Character extends Combatant {
     toolTip: Tooltip;
     controller: any; // inputdevice
 
-    private _faction = null;
+    private _faction: Faction = null;
     #research = {};
 
     get faction() { return this._faction; }
     set faction(value) { this._faction = value; }
 
-    constructor(options = {}) {
+    // TODO: Make this ... better
+    color: string;
+    additionalClasses: string;
+
+    constructor(options: any = {}) {
         super(options);
 
         if(options.faction) {
@@ -77,8 +80,10 @@ export default class Character extends Combatant {
     }
 
     // TODO: Make private ... and push down?
-    shouldFilterCharacter(character: Entity, options) {
+    shouldFilterCharacter(character: Character, options: any) {
 
+        // parent is for growables, I think
+        // so the method needs to be extensible, which is a pattern we've already established
         if (options.filterChildren && character.parent == this) {
             return true;
         }
@@ -112,4 +117,5 @@ export default class Character extends Combatant {
     }
 }
 
+// @ts-ignore
 if(window) window.Character = Character;
