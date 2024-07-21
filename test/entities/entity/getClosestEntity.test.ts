@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
-import mockMap from '../../../testHelpers/mockMap';
-import Entity from '../../../../js/entities/character/Entity';
+import mockMap from '../../testHelpers/mockMap';
+import Entity from '../../../js/entities/character/Entity';
 
 jest.mock('@/engine/js/events', () => {
     return {
