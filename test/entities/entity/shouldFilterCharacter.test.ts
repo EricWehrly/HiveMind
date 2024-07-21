@@ -85,4 +85,34 @@ describe('Entity.shouldFilterCharacter', () => {
 
         expect(result).toBe(false);
     });
+
+    it('should filter unmatched characterProperty', () => {
+        const entity = new Entity({
+            id: 'testId'
+        });
+
+        const filterOptions = {
+            characterProperties: {
+                id: 'else'            
+            }
+        };
+        const result = referenceEntity.shouldFilterCharacter(entity, filterOptions);
+
+        expect(result).toBe(true);
+    });
+
+    it('should pass matching characterProperty', () => {
+        const entity = new Entity({
+            id: 'testId'
+        });
+
+        const filterOptions = {
+            characterProperties: {
+                id: 'testId'            
+            }
+        };
+        const result = referenceEntity.shouldFilterCharacter(entity, filterOptions);
+
+        expect(result).toBe(false);
+    });
 });

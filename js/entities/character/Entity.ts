@@ -299,7 +299,6 @@ export default class Entity {
         }
         if(options.characterProperties) {
             for(var key of Object.keys(options.characterProperties)) {
-                // TODO: Unit test the hack
                 // this 'character[key]' is a hack
                 // @ts-expect-error
                 if(character[key] != options.characterProperties[key]) {
