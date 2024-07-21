@@ -13,6 +13,12 @@ import Faction from '../faction.mjs';
 
 Events.List.CharacterCreated = "CharacterCreated";
 
+export interface CharacterFilterOptions {
+    exclude?: Entity[];
+    characterType?: CharacterType;
+    characterProperties?: { [key: string]: any };
+}
+
 interface EntityOptions { 
     position?: { x: number, y: number };
     id?: string;
@@ -283,8 +289,25 @@ export default class Entity {
     // it used to be private
     // and we basically just wired it for Character above to overwrite
     // since it needs to be called in this class ...
-    shouldFilterCharacter(character: Entity, options: any) {
-        console.warn('OH NO!');
+    shouldFilterCharacter(character: Entity, options: CharacterFilterOptions) {
+        
+        if(options.characterType != null && character.characterType != options.characterType) {
+            return true;
+        }
+        if(options.exclude && options.exclude.includes(character)) {
+            return true;
+        }
+        if(options.characterProperties) {
+            for(var key of Object.keys(options.characterProperties)) {
+                // TODO: Unit test the hack
+                // this 'character[key]' is a hack
+                // @ts-expect-error
+                if(character[key] != options.characterProperties[key]) {
+                    return true;
+                }
+            }
+        }
+        
         return false;
     }
 

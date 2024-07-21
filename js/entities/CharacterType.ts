@@ -9,10 +9,10 @@ export default class CharacterType {
     name: string;
     // some of these properties might be ... odd, to have on here ...
     // but then, this whole class is kinda murky javascript hack fun
-    _spawnPurposeKey: string;
-    _currentPurposeKey: string;
-    growerConfig: GrowerConfig;
-    ai: AI;
+    _spawnPurposeKey?: string;
+    _currentPurposeKey?: string;
+    growerConfig?: GrowerConfig;
+    ai?: AI;
 
     // expose commonly accessed character property
     health?: number;
