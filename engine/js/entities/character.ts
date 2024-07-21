@@ -3,16 +3,7 @@ import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript
 import Faction from './faction.mjs';
 import Tooltip from '../ui/tooltip.mjs';
 import { Combatant } from './character/Combatant';
-import CharacterType from '../../../js/entities/CharacterType';
 
-interface GetNearbyEntitiesOptions {
-    max?: number;
-    distance?: number;
-    characterType?: CharacterType;
-    faction?: Faction;
-}
-
-// TODO: #private properties rather than _private
 export default class Character extends Combatant {
 
     toolTip: Tooltip;
@@ -61,22 +52,6 @@ export default class Character extends Combatant {
         super.think();
 
         this.statusEffectThink();
-    }
-    
-    getNearbyEntities(options: GetNearbyEntitiesOptions = {}) {
-
-        return super.getNearbyEntities(options);
-    }
-
-    // this is unused ...
-    getScreenPosition() {
-
-        // TODO: get grid size constant from css
-        const gridSize = 32;
-        return {
-            x: this.position.x * gridSize,
-            y: this.position.y * gridSize
-        };
     }
 
     // TODO: Make private ... and push down?
