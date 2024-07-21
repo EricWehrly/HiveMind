@@ -68,27 +68,15 @@ export default class Character extends Combatant {
         if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
             return true;
         }
-        if(options.characterType != null && character.characterType != options.characterType) {
-            return true;
-        }
-        if(options.exclude && options.exclude.includes(character)) {
-            return true;
-        }
         if(options.grown != null && character.isGrown != options.grown) {
             return true;
         }
         if(options.faction && character.faction != options.faction) {
             return true;
         }
-        if(options.characterProperties) {
-            for(var key of Object.keys(options.characterProperties)) {
-                if(character[key] != options.characterProperties[key]) {
-                    return true;
-                }
-            }
-        }
 
-        return false;
+        // TODO: unit test this call to super
+        return super.shouldFilterCharacter(character, options);
     }
 }
 
