@@ -2,7 +2,7 @@
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Character from "../entities/character";
 import { Combatant } from "../entities/character/Combatant";
-import SentientLivingEntity from "../entities/character/SentientLivingEntity";
+import SentientEntity from "../entities/character/SentientEntity";
 import { Defer } from '../loop.mjs';
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
@@ -10,15 +10,14 @@ const MS_LEASH_COOLDOWN = 3000;
 
 export default class AI {
 
-    private _character: SentientLivingEntity = null;
+    private _character: SentientEntity = null;
 
     #leashing = false;
     get leashing() { return this.#leashing; }
 
     #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
-    // TODO: should be SentientLivingEntity, but this was easier :/
-    constructor(character: SentientLivingEntity) {
+    constructor(character: SentientEntity) {
         this._character = character;
     }
 

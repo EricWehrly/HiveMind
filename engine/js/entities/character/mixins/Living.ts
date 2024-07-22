@@ -15,11 +15,11 @@ export interface Living {
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export function MakeLiving<T extends Constructor<Entity>>(Base: T, health: number, maxHealth: number) {
+export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: any) {
     return class extends Base implements Living {
 
-        private _health = health;
-        private _initialHealth = maxHealth || health;
+        private _health = options.characterType?.health || options.health;
+        private _initialHealth = options.characterType?.maxHealth || options.maxHealth || this._health;
     
         get size() { 
             // TODO: address this magic number
@@ -35,6 +35,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, health: numbe
     
             const oldValue = this._health;
             this._health = newValue;
+            // this is deceptive. Player isn't character.
             Events.RaiseEvent(Events.List.PlayerHealthChanged, {
                 character: this,
                 from: oldValue,

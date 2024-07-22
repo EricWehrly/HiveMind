@@ -1,6 +1,6 @@
 import Seed from '../../../js/core/seed.mjs';
 import Map from '../../../js/mapping/map';
-import SentientLivingEntity from '../../../js/entities/character/SentientLivingEntity';
+import SentientEntity from '../../../js/entities/character/SentientEntity';
 import Biome, { BiomeType } from '../../../js/mapping/biome.mjs';
 
 jest.mock('@/engine/js/events', () => {
@@ -21,7 +21,7 @@ jest.mock('@/engine/js/events', () => {
     };
 });
 
-jest.mock('@/engine/js/entities/character/SentientLivingEntity', () => {
+jest.mock('@/engine/js/entities/character/SentientEntity', () => {
     return {
         __esModule: true, // this property makes it work
         default: jest.fn(),
@@ -31,11 +31,11 @@ jest.mock('@/engine/js/entities/character/SentientLivingEntity', () => {
 
 describe('map', () => {
     let map: Map;
-    let mockCharacter: SentientLivingEntity;
+    let mockCharacter: SentientEntity;
 
     beforeEach(() => {
         map = new Map(new Seed());
-        mockCharacter = new SentientLivingEntity({}); // replace with the actual constructor if it requires parameters
+        mockCharacter = new SentientEntity({}); // replace with the actual constructor if it requires parameters
         mockCharacter.isPlayer = true;
         const biomeType = new BiomeType({
             name: 'test'

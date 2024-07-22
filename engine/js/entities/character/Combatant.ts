@@ -149,6 +149,7 @@ export class Combatant extends PlayableEntity {
         // TODO: visual and audio cues
 
         // TODO: is there a better way to check whether to play sound?
+        // TODO: This needs a unit test for the volume level and entity difference
         if(this._currentPurposeKey != "consume") {
             // compute volume based on distance
             // maybe every 10 pixels away = -1 volume?

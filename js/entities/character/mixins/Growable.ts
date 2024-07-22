@@ -1,3 +1,4 @@
+import { Living } from "../../../../engine/js/entities/character/mixins/Living";
 import Resource from "../../../../engine/js/entities/resource.mjs";
 import HiveMindCharacter from "../HiveMindCharacter";
 
@@ -67,7 +68,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
         grow(interval: number) {
             this.growth = 0;
             // TODO: I hate this.
-            this.health = .0001;
+            (this as Living).health = .0001;
             // growConfig is being overwritten here
             this.growConfig = {
                 interval
@@ -89,8 +90,9 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             if (food.pay(growthAmount / 2, this)) {
                 this.growth += growthAmount;
                 const growthIncrement = growthAmount / 100;
-                const healAmount = growthIncrement * this.maxHealth
-                this.health += healAmount;
+                const maxHealth = (this as Living).maxHealth;
+                const healAmount = growthIncrement * maxHealth;
+                (this as Living).health += healAmount;
 
                 if (this.isGrown) {
                     // console.log(`Done growing ${this.name}`);

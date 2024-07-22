@@ -4,6 +4,7 @@ import Events from "../../engine/js/events";
 import Rectangle from "../../engine/js/baseTypes/rectangle";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import HiveMindCharacter from "./character/HiveMindCharacter";
+import { Living } from "../../engine/js/entities/character/mixins/Living";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
@@ -92,18 +93,19 @@ export default class Building extends HiveMindCharacter {
      * @param {CharacterType} intent.characterType
      * @param {int} intent.health
      */
-    Develop(intent: Building) {
+    Develop(intent: Building & Living) {
 
         // TODO: check minimum food before doing this?
 
+        const thisLiving = this as Building & Living;
         this.characterType = intent.characterType;
-        if (this.health > (0.2 * this.maxHealth)) {
-            this.health -= (0.2 * this.maxHealth);
+        if (thisLiving.health > (0.2 * thisLiving.maxHealth)) {
+            thisLiving.health -= (0.2 * thisLiving.maxHealth);
         }
         // TODO: Get this to stop producing negative numbers and drop the Math.abs
-        const healthDiff = Math.abs(intent.health - this.health);
+        const healthDiff = Math.abs(intent.health - thisLiving.health);
         this.grow(healthDiff * 500);
-        this.maxHealth = intent.characterType.health;
+        thisLiving.maxHealth = intent.characterType.health;
     }
 
     #getZonePosition(characterType: CharacterType, distance: number) {

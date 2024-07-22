@@ -4,7 +4,7 @@ import CharacterType from "../entities/CharacterType";
 import Events from "../../engine/js/events";
 import Building from "../entities/building";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
-import { Living } from "../../engine/js/entities/character/mixins/Living";
+import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import { Growable, MakeGrowable } from "../entities/character/mixins/Growable";
 import { MakeHiveMindCharacter } from "../entities/character/CharacterFactory";
 import { Grower, MakeGrower } from "../entities/character/mixins/Grower";
@@ -238,7 +238,7 @@ export default class NodeAI extends AI {
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
         console.log(`Node has chosen to build ${wantToBuild.name} at ${buildPosition}`);
-        const building = MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeSlimey], buildOptions, Building) as Building & Growable;
+        const building = MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeSlimey, MakeLiving], buildOptions, Building) as Building & Growable & Living;
         if(!food.reserve(building.maxHealth, building)) return;
 
         const healthDiff = building.health * .9;

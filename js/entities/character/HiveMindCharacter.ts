@@ -3,6 +3,7 @@ import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
 import Purposes from '../purposes/character-purposes';
 import Entity from '../../../engine/js/entities/character/Entity';
+import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/Living';
 
 export default class HiveMindCharacter extends Character {
 
@@ -22,6 +23,7 @@ export default class HiveMindCharacter extends Character {
     }
 
     constructor(options: any) {
+        if(!options.calledByFactory) console.warn(`HiveMindCharacter should be created by the factory.`);
         const key = options._currentPurposeKey || options.currentPurposeKey;
         delete options._currentPurposeKey;
         delete options.currentPurposeKey;
@@ -46,7 +48,10 @@ export default class HiveMindCharacter extends Character {
         // this is something that would probably automatically benefit from 
         // a magic function-level caching implementation
         if(this.isPlayer) return false;
-        if(this.ai != null && this.dead == false) return false;
+        // TODO: Is there a way we can streamline what will be these three repeating lines?
+        if(IsLiving(this)
+            && (this as Living).dead) return false;
+        if(this.ai != null) return false;
         if(byWhom?.faction != null && this.faction == byWhom.faction) return false;
         if(this.characterType && this.characterType.isStudied == true) return false;
 
@@ -115,7 +120,9 @@ export default class HiveMindCharacter extends Character {
 
     canAfford(amount: number) {
 
-        return this.health >= amount * 2;
+        if(!IsLiving(this)) return true;
+
+        return (this as Living).health >= amount * 2;
     }
 
     removeSpawnTarget(target: Entity) {

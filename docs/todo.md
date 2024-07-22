@@ -2,7 +2,6 @@ We should be able to start 'compositing' all of the implementing Entity construc
 to be EntityOptions & ... whatever properties...
 dude, we need to get rid of the ts-nocheck in character...
 the next (obvious) mixin is probably 'Sentient' -- we just touched a bunch of stuff adjacent to it
-no, but first it has to be growth and slime
 tooltip needs to re-compute on entity death (entity probably isn't properlying "dying" / de-registering)
 
 - (fix) node position selection for stuff to build

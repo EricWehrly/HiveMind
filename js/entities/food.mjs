@@ -2,7 +2,9 @@ import CharacterType from './CharacterType.ts';
 import Events from '../../engine/js/events.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import Game from '../../engine/js/engine.mjs';
-import HiveMindCharacter from './character/HiveMindCharacter.ts';
+import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
+import { MakeGrowable } from './character/mixins/Growable.ts';
+import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
 
 const Seed = Game.Seed;
 
@@ -61,7 +63,7 @@ export default class Food {
                 // Maybe we should have a "spawn item" shorthand function?
                 // or maybe "character type" should be an option we can pass into the character constructor?
                 Object.assign(opts, CharacterType.List['Food']);
-                new HiveMindCharacter(opts);
+                MakeHiveMindCharacter([MakeGrowable, MakeLiving], opts);
             }
         }
     }

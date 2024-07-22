@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
-import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
+import SentientEntity from '../../../../js/entities/character/SentientEntity';
 import AI from '../../../../js/ai/basic';
 
 jest.mock('@/engine/js/ai/basic', () => {
@@ -35,26 +35,26 @@ jest.mock('@/engine/js/events', () => {
 });
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
-describe('SentientLivingEntity.ctor', () => {
+describe('SentientEntity.ctor', () => {
     it('should have no ai if null is passed', () => {
-        const sentientLivingEntity = new SentientLivingEntity({
+        const sentientEntity = new SentientEntity({
             ai: null
         });
 
-        expect(sentientLivingEntity.ai).toBeUndefined();
+        expect(sentientEntity.ai).toBeUndefined();
     });
 
     it('should make a basic ai if undefined is passed', () => {
-        const sentientLivingEntity = new SentientLivingEntity({});
+        const sentientEntity = new SentientEntity({});
 
-        expect(sentientLivingEntity.ai instanceof AI).toBe(true);
+        expect(sentientEntity.ai instanceof AI).toBe(true);
     });
 
     it('should make a new ai instance if a type is passed', () => {
-        const sentientLivingEntity = new SentientLivingEntity({
+        const sentientEntity = new SentientEntity({
             ai: AI
         });
 
-        expect(sentientLivingEntity.ai instanceof AI).toBe(true);
+        expect(sentientEntity.ai instanceof AI).toBe(true);
     });
 });

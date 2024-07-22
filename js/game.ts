@@ -37,6 +37,7 @@ import './actions';
 import './interaction.mjs';
 import './entities/purposes/slime-purposes';
 import './entities/purposes/growth-purposes';
+import { MakeLiving } from '../engine/js/entities/character/mixins/Living';
 
 new MessageLog({
     name: "Combat",
@@ -72,7 +73,7 @@ const food = new Resource({
 food.reserve(100);
 const slap = Technology.Get("slap");
 
-const localPlayer = MakeHiveMindCharacter([MakeSlimey], {
+const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {
     name: "Local Player",
     color: "blue",
     speed: 5,

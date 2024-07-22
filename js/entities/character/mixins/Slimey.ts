@@ -1,6 +1,7 @@
 import Resource from "../../../../engine/js/entities/resource.mjs";
 import HiveMindCharacter from "../HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../CharacterFactory";
+import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -23,7 +24,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
     return class extends Base implements Slimey {
 
-        parent?: HiveMindCharacter = options.parent;
+        parent?: HiveMindCharacter & Living = options.parent;
         
         // TODO: set character current subdivision task/purpose
         Subdivide (options: SubdivideOptions = {}) {
@@ -45,13 +46,13 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 return;
             }
         
-            this.health -= amount;
+            (this as Living).health -= amount;
         
             const name = options.name || "Slime Worker";
             const entityRenderingSettings = {
                 renderedName: purpose.name
             };
-            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey], {            
+            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {            
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
@@ -70,21 +71,23 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
     
         // to be called on the child to be reabsorbed into the parent
         Reabsorb() {
+
+            const thisLiving = this as Living;
     
-            if(this.health == 0 || this.parent == null) debugger;
+            if(thisLiving.health == 0 || this.parent == null) debugger;
     
             const maxToGive = this.parent.maxHealth - this.parent.health;
-            const amountToGive = Math.min(this.health, maxToGive);
+            const amountToGive = Math.min(thisLiving.health, maxToGive);
     
-            if(this.health > amountToGive) {
+            if(thisLiving.health > amountToGive) {
                 const food = Resource.Get("food");
-                food.value += this.health - amountToGive;
+                food.value += thisLiving.health - amountToGive;
             }
     
             if(this.technologies && this.technologies.length > 0) {
                 this.parent.AddTechnology(this.technologies[0]);
             }
-            this.health = 0;
+            thisLiving.health = 0;
             this.parent.health += amountToGive;
         }
     }

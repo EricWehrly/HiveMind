@@ -2,8 +2,7 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import Entity from '../../../../js/entities/character/Entity';
-import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
-import LivingEntity from '../../../../js/entities/character/LivingEntity';
+import SentientEntity from '../../../../js/entities/character/SentientEntity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character', () => require('../../../testHelpers/helpers').createMock);
@@ -37,13 +36,13 @@ jest.mock('@/engine/js/events', () => {
 describe('Combatant.think', () => {
 
     let combatant: Combatant;
-    let secondEntity: LivingEntity;
+    let secondEntity: Entity;
     beforeEach(() => {
         combatant = new Combatant({
             ai: null,
             isPlayer: true
         });
-        secondEntity = new LivingEntity({});
+        secondEntity = new Entity({});
     });
     
     Entity.prototype.getClosestEntity = jest.fn().mockImplementation((options) => {
@@ -51,7 +50,7 @@ describe('Combatant.think', () => {
     });
 
     it('will super think', () => {
-        const spy = jest.spyOn(SentientLivingEntity.prototype, 'think');
+        const spy = jest.spyOn(SentientEntity.prototype, 'think');
 
         combatant.think();
     

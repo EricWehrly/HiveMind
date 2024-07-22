@@ -3,7 +3,8 @@ import Events from '../../engine/js/events.ts';
 import CharacterType from './CharacterType.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import PredatorAI from '../../engine/js/ai/predator.ts';
-import HiveMindCharacter from './character/HiveMindCharacter.ts';
+import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
+import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
 
 new CharacterType({
     name: "Animal",
@@ -72,7 +73,7 @@ function spawnFauna(chunk) {
             ai: PredatorAI
         };
         Object.assign(spawnOpts, characterOpts);
-        new HiveMindCharacter(spawnOpts);
+        MakeHiveMindCharacter([MakeLiving], spawnOpts);
     }
 }
 

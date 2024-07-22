@@ -1,4 +1,5 @@
-import LivingEntity from "../entities/character/LivingEntity";
+import Entity from "../entities/character/Entity";
+import { Living } from "../entities/character/mixins/Living";
 import AI from "./basic";
 
 export default class PreyAI extends AI {
@@ -23,7 +24,7 @@ export default class PreyAI extends AI {
 
     shouldStopTargeting(distance = 4) {
 
-        const target = this.target as LivingEntity;
+        const target = this.target as Entity & Living;
 
         return target
             && (target.isAlive == false || 
