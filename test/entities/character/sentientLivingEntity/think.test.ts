@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
-import SentientLivingEntity from '../../../../js/entities/character/SentientLivingEntity';
+import SentientEntity from '../../../../js/entities/character/SentientEntity';
 import AI from '../../../../js/ai/basic';
 
 let mockCalled = false;
@@ -41,25 +41,25 @@ jest.mock('@/engine/js/events', () => {
 });
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
-describe('SentientLivingEntity.think', () => {
+describe('SentientEntity.think', () => {
 
     it('will call think if it has ai', () => {
         
-        const sentientLivingEntity = new SentientLivingEntity({
+        const sentientEntity = new SentientEntity({
             ai: mockAI
         });
-        expect(sentientLivingEntity.ai).toBeDefined();
-        sentientLivingEntity.think();
+        expect(sentientEntity.ai).toBeDefined();
+        sentientEntity.think();
         expect(mockCalled).toBe(true);
     });
 
     it('no ai, no problems', () => {
 
-        const sentientLivingEntity = new SentientLivingEntity({
+        const sentientEntity = new SentientEntity({
             ai: null
         });
         try {
-            sentientLivingEntity.think();
+            sentientEntity.think();
         } catch (ex) {
             // fail the test if this is hit            
             expect(true).toBe(false);

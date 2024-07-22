@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import AI from '../../../../js/ai/basic';
-import LivingEntity from '../../../../js/entities/character/LivingEntity';
 import WorldCoordinate from '../../../../js/coordinates/WorldCoordinate';
+import Entity from '../../../../js/entities/character/Entity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
@@ -37,7 +37,7 @@ jest.mock('@/engine/js/events', () => {
 describe('Combatant.target', () => {
 
     let combatant: Combatant;
-    let secondEntity: LivingEntity;
+    let secondEntity: Entity;
     beforeEach(() => {
         combatant = new Combatant({
             ai: AI,
@@ -46,7 +46,7 @@ describe('Combatant.target', () => {
                 y: 0
             }
         });
-        secondEntity = new LivingEntity({
+        secondEntity = new Entity({
             position: {
                 x: 1,
                 y: 1

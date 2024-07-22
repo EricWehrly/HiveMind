@@ -3,7 +3,7 @@ import mockMap from '../../../testHelpers/mockMap';
 import { Combatant } from '../../../../js/entities/character/Combatant';
 import AI from '../../../../js/ai/basic';
 import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
-import LivingEntity from '../../../../js/entities/character/LivingEntity';
+import Entity from '../../../../js/entities/character/Entity';
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
@@ -37,7 +37,7 @@ jest.mock('@/engine/js/events', () => {
 describe('Combatant.move', () => {
 
     let combatant: Combatant;
-    let secondEntity: LivingEntity;
+    let secondEntity: Entity;
     beforeEach(() => {
         combatant = new Combatant({
             ai: AI,
@@ -46,7 +46,7 @@ describe('Combatant.move', () => {
                 y: 0
             }
         });
-        secondEntity = new LivingEntity({
+        secondEntity = new Entity({
             position: {
                 x: 1,
                 y: 1

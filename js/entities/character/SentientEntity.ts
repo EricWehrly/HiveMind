@@ -2,12 +2,11 @@ import AI from "../../ai/basic";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Events from "../../events";
 import Entity from "./Entity";
-import LivingEntity from "./LivingEntity";
 
 Events.List.PlayerChunkChanged = "PlayerChunkChanged";
 Events.List.PlayerMoved = "PlayerMoved";
 
-export default class SentientLivingEntity extends LivingEntity {
+export default class SentientEntity extends Entity {
 
     isPlayer: boolean = false;
 
@@ -47,7 +46,7 @@ export default class SentientLivingEntity extends LivingEntity {
             from: oldValue,
             to: this._target
         });
-        console.debug(`New target for ${this.name}: ${this?.target?.x}, ${this?.target?.y}`);
+        // console.debug(`New target for ${this.name}: ${this?.target?.x}, ${this?.target?.y}`);
     }
 
     constructor(options: any) {
@@ -76,10 +75,10 @@ export default class SentientLivingEntity extends LivingEntity {
         }
     }
 
-    private sentientEntityDied(entity: LivingEntity) {
+    private sentientEntityDied(entity: SentientEntity) {
 
         if(entity.equals(this)
-            && entity instanceof SentientLivingEntity
+            && entity instanceof SentientEntity
             && entity.isPlayer) {
             alert('So the player is dead now ... this is game over.');
         }

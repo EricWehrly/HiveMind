@@ -1,6 +1,6 @@
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Seed from "../core/seed.mjs";
-import SentientLivingEntity from "../entities/character/SentientLivingEntity";
+import SentientEntity from "../entities/character/SentientEntity";
 import Events from "../events";
 import Biome, { BiomeType } from "./biome.mjs";
 import Chunk from "./chunk";
@@ -88,7 +88,7 @@ export default class Map {
         return nearbyChunks;
     }
 
-    private _characterCreated(event: { character: SentientLivingEntity}) {
+    private _characterCreated(event: { character: SentientEntity}) {
 
         if(event?.character?.isPlayer) {
             const toChunk = event.character.position.chunk;

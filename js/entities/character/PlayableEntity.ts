@@ -1,9 +1,9 @@
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
-import SentientLivingEntity from "./SentientLivingEntity";
+import SentientEntity from "./SentientEntity";
 import Events from "../../events";
 
 // this starts getting into the territory of wanting to compose rather than extend ...
-export default class PlayableEntity extends SentientLivingEntity {
+export default class PlayableEntity extends SentientEntity {
 
     // maybe we can find a way around this (better than how we do in game.js)
     // but for now hack in some dumb reference stuff
