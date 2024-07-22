@@ -2,7 +2,6 @@ import Events from "../../../events";
 import { RemoveCharacterFromList } from "../../characters.mjs";
 import Entity from "../Entity";
 
-Events.List.PlayerHealthChanged = "PlayerHealthChanged";
 Events.List.CharacterDied = "CharacterDied";
 
 export interface Living {
@@ -35,12 +34,6 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: any)
     
             const oldValue = this._health;
             this._health = newValue;
-            // this is deceptive. Player isn't character.
-            Events.RaiseEvent(Events.List.PlayerHealthChanged, {
-                character: this,
-                from: oldValue,
-                to: newValue
-            });
             if (this._health <= 0) this.die();
         }
     
