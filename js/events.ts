@@ -71,6 +71,8 @@ export default class Events {
     */
     static RaiseEvent(eventName: string, detail: Object, options: RaiseEventOptions = {}) {
 
+        if(!detail) detail = {};    // because null is allowed
+
         // @ts-expect-error
         detail.eventId = generateId();
 
