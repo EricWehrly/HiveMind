@@ -41,7 +41,8 @@ Purposes["grow"] = {
             // check if we have the food to do this
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
-            const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving], character.growerConfig.subject) as HiveMindCharacter & Growable;
+            const options = Object.assign({}, character.growerConfig.subject);
+            const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving], options) as HiveMindCharacter & Growable;
             if(!food.reserve(subject.characterType.health, newGrow)) {
                 console.warn(`The food was available but isn't now?`);
                 return;
