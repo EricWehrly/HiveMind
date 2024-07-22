@@ -22,6 +22,20 @@ jest.mock('@/engine/js/events', () => {
         }
     };
 });
+jest.mock('@/engine/js/entities/resource.mjs', () => {
+    return {
+        __esModule: true, // this property makes it work
+        default: {
+            Get: jest.fn().mockImplementation(() => {
+                return {
+                    available: 100,
+                    pay: jest.fn().mockImplementation(() => true),
+                    reserve: jest.fn().mockImplementation(() => true)
+                };
+            })
+        }
+    }
+});
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
 // we can get rid of this when we move to a structured type for the Entity constructor ...
@@ -91,7 +105,9 @@ describe('ChacterFactory.MakeHiveMindCharacter', () => {
 
     describe('extended class', () => {
         it('should instantiate as a class that extends the base', () => {
-            const character = MakeHiveMindCharacter([MakeSlimey], {}, Building);
+            const character = MakeHiveMindCharacter([MakeSlimey], {
+                cost: 1
+            }, Building);
             expect(character instanceof Building).toBeTruthy();
         });
 
