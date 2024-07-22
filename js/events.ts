@@ -10,6 +10,7 @@ export interface SubscribeOptions {
 }
 
 export interface RaiseEventOptions {
+    eventId?: string;
     eventName?: string;
     removeAfterRaise?: boolean;
     isNetworkBoundEvent?: boolean;
@@ -69,6 +70,9 @@ export default class Events {
     * @param {Boolean} [options.finalFire] This is the last time the event will fire. All registrations after will fire immediately.
     */
     static RaiseEvent(eventName: string, detail: Object, options: RaiseEventOptions = {}) {
+
+        // @ts-expect-error
+        detail.eventId = generateId();
 
         if (options?.isNetworkBoundEvent) {
             NetworkMessenger.TransmitEvent(eventName, detail);
