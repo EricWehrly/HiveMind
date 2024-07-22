@@ -34,6 +34,8 @@ describe('HivemindCharacter.ctor', () => {
     it('should support ai constructor argument', () => {
         const character = new HiveMindCharacter({
             ai: NodeAI
+            // this is a hack, and will change if we private the constructor ...
+            ,calledByFactory: true
         });
         expect(character.ai).toBeDefined();
         if (!(character.ai instanceof NodeAI)) {            

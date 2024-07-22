@@ -22,6 +22,8 @@ export default class HiveMindCharacter extends Character {
         return this.#spawnTargets;
     }
 
+    // TODO: Mark this private and use a static create (makes the class not extensible)
+    // once we've turned Building into a mixin ... maybe?
     constructor(options: any) {
         if(!options.calledByFactory) console.warn(`HiveMindCharacter should be created by the factory.`);
         const key = options._currentPurposeKey || options.currentPurposeKey;
