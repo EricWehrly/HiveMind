@@ -2,6 +2,7 @@ import Events from "../../../events";
 import { RemoveCharacterFromList } from "../../characters.mjs";
 import Entity from "../Entity";
 
+Events.List.CharacterDamaged = "CharacterDamaged";
 Events.List.CharacterDied = "CharacterDied";
 
 export interface Living {
@@ -10,6 +11,13 @@ export interface Living {
     dead?: boolean;
     // TODO: change to 'alive' to be consistent
     isAlive?: boolean;
+    damage?(amount: number, source: Entity): void;
+}
+
+export interface CharacterDamagedEvent {
+    character: Entity & Living;
+    amount: number;
+    attacker: Entity;
 }
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -31,8 +39,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: any)
     
         set health(newValue) {
             if(this.dead) return;
-    
-            const oldValue = this._health;
+
             this._health = newValue;
             if (this._health <= 0) this.die();
         }
@@ -52,8 +59,17 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: any)
     
         get isAlive() {
             return !this.dead
-            // this was the old way of describing "living". We have a class now
-            //  && (this.isPlayer || this.ai != null);
+        }
+
+        damage(amount: number, attacker: Entity) {
+            this.health -= amount;
+
+            const event : CharacterDamagedEvent = {
+                character: this,
+                amount,
+                attacker: attacker
+            };
+            Events.RaiseEvent(Events.List.CharacterDamaged, event);
         }
     
         // private?

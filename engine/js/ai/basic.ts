@@ -2,7 +2,10 @@
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Character from "../entities/character";
 import { Combatant } from "../entities/character/Combatant";
+import Entity from "../entities/character/Entity";
 import SentientEntity from "../entities/character/SentientEntity";
+import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
+import Events from "../events";
 import { Defer } from '../loop.mjs';
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
@@ -13,12 +16,15 @@ export default class AI {
     private _character: SentientEntity = null;
 
     #leashing = false;
+    private _fleeing = false;
     get leashing() { return this.#leashing; }
 
     #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
     constructor(character: SentientEntity) {
         this._character = character;
+
+        Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
     }
 
     get target() {
@@ -27,6 +33,7 @@ export default class AI {
     }
 
     set target(newVal) {
+        // I'm not sure this is right. Why wouldn't entity be acceptable?
         if(!(this._character instanceof Combatant)) return;
         this._character.target = newVal;
     }
@@ -39,7 +46,13 @@ export default class AI {
 
     think() {
 
-        if (this.#leashing == false) {
+        if(this._fleeing) {
+            if(this._character.position.distance(this._character.targetPosition) < 1
+                || this._character.position.distance(this._character.spawnPosition) > this._character.maxWanderDistance) {
+                this._fleeing = false;
+            }
+        }
+        if (!this._fleeing && this.#leashing == false) {
 
             // if i don't have a target
             this.wander();
@@ -79,7 +92,15 @@ export default class AI {
         if (randY > 0.5) y = (10 * randY);
         else y = (-10 * randY);
 
-        return new WorldCoordinate(x, y);
+        return new WorldCoordinate(
+            this.character.position.x + x,
+            this.character.position.y + y);
+    }
+
+    // ideally protected
+    onCharacterDamaged(details: CharacterDamagedEvent) {
+        if(details.character != this.character) return;
+        this.flee(details.attacker);
     }
 
     #unleash() {
@@ -95,5 +116,23 @@ export default class AI {
             this.#leashing = true;
             Defer(this.#unleash.bind(this), MS_LEASH_COOLDOWN);
         }
+    }
+
+    flee(from: Entity) {
+        
+        let x, y;
+
+        const randX = Math.random();
+        if (randX > 0.5) x = 10;
+        else x = -10;
+        x += from.position.x;
+        
+        const randy = Math.random();
+        if (randy > 0.5) y = 10;
+        else y = -10;
+        y += from.position.y;
+
+        this._fleeing = true;
+        this._character.target = new WorldCoordinate(x, y);
     }
 }

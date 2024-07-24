@@ -10,8 +10,6 @@ tooltip needs to re-compute on entity death (entity probably isn't properlying "
 we need the stuff the player builds directly to grow
     just like what is built by the 'ai'
 
-prey ai need to run when they are hit
-
 Creatures close to spawn origin should:
     - have fewer 'points' overall
     - have many of their 'points' allocated to health or armor (or something else?)

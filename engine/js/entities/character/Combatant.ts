@@ -165,7 +165,7 @@ export class Combatant extends PlayableEntity {
         const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
         const damage = (equipped.damage * strengthMultiplier);
         const combatLog = MessageLog.Get("Combat");
-        target.health -= damage;
+        target.damage(damage, this);
 
         const message = `${this.name} attacked ${target.name}`
             + ` for ${equipped.damage} * ${strengthMultiplier}.`;
