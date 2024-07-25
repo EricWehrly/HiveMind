@@ -1,4 +1,3 @@
-import '../entity-graphics.mjs';
 import CharacterType from "../../../../js/entities/CharacterType";
 import Events from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
