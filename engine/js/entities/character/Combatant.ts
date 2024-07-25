@@ -9,6 +9,7 @@ import { IsLiving, Living } from "./mixins/Living";
 import Entity from "./Entity";
 import { Defer } from "../../loop.mjs";
 import StatusEffect from "../../status-effect.mjs";
+import WorldCoordinate from "../../coordinates/WorldCoordinate";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 
@@ -59,6 +60,14 @@ export class Combatant extends PlayableEntity {
 
     get technologies() {
         return this._technologies;
+    }
+
+    get target(): Entity | WorldCoordinate {
+        return null;
+    }
+
+    set target(newVal) {
+        return;
     }
 
     constructor(options: any) {

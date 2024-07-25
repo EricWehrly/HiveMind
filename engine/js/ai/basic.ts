@@ -1,7 +1,6 @@
 // Most basic / default AI
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Character from "../entities/character";
-import { Combatant } from "../entities/character/Combatant";
 import Entity from "../entities/character/Entity";
 import SentientEntity from "../entities/character/SentientEntity";
 import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
@@ -28,13 +27,10 @@ export default class AI {
     }
 
     get target() {
-        if(!(this._character instanceof Combatant)) return null;
         return this._character.target;
     }
 
     set target(newVal) {
-        // I'm not sure this is right. Why wouldn't entity be acceptable?
-        if(!(this._character instanceof Combatant)) return;
         this._character.target = newVal;
     }
 
