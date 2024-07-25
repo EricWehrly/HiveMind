@@ -31,6 +31,7 @@ import './characterStats.mjs';
 import Cheat from './util/cheat.mjs';
 import MessageLog from '../engine/js/core/messageLog.mjs';
 import "./goal.ts";
+import '../engine/js/entities/entity-graphics.mjs';
 
 // hack, until we convert Actions to proper ts
 import './actions';
