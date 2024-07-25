@@ -9,11 +9,24 @@ import { Defer } from '../loop.mjs';
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
 const MS_LEASH_COOLDOWN = 3000;
 
+export enum EntityRelationshipType {
+    Friendly,
+    Neutral,
+    Hostile,
+    Afraid
+};
+
+export interface EntityRelationship {
+    type: EntityRelationshipType,
+    amount: number
+};
+
 export default class AI {
 
     private _character: SentientEntity = null;
     private _leashing = false;
     private _fleeing = false;
+    private _relationships: Map<Entity, EntityRelationship> = new Map();
 
     get leashing() { return this._leashing; }
     get character() { return this._character; }
@@ -35,6 +48,14 @@ export default class AI {
     }
 
     // TODO: faction
+
+    setRelationship(entity: Entity, relationship: EntityRelationship) {
+        this._relationships.set(entity, relationship);
+    }
+
+    relationship(entity: Entity) {
+        return this._relationships.get(entity);
+    }
 
     think() {
 
@@ -100,6 +121,7 @@ export default class AI {
     onCharacterDamaged(details: CharacterDamagedEvent) {
         if(details.character != this.character) return;
         this.flee(details.attacker);
+        this.setRelationship(details.attacker, { type: EntityRelationshipType.Afraid, amount: 1 });
     }
 
     #unleash() {
