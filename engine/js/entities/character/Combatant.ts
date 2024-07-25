@@ -62,14 +62,6 @@ export class Combatant extends PlayableEntity {
         return this._technologies;
     }
 
-    get target(): Entity | WorldCoordinate {
-        return null;
-    }
-
-    set target(newVal) {
-        return;
-    }
-
     constructor(options: any) {
         super(options);
 
