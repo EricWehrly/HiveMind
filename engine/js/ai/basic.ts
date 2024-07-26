@@ -1,4 +1,5 @@
 // Most basic / default AI
+import Vector from "../baseTypes/Vector";
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Entity from "../entities/character/Entity";
 import SentientEntity from "../entities/character/SentientEntity";
@@ -94,10 +95,33 @@ export default class AI {
             }
             */
             this.#lastDestinationPickedTime = performance.now();
+            // we need to influence this to avoid anything we're afraid of
+            // loop through our relationships and determine how 'strongly' we want to move in each direction
             this._character.target = this.#randomTargetPosition();
 
             // console.debug(`New target: ${this._character.targetPosition.x}, ${this._character.targetPosition.y}`);
         }
+    }
+
+    // TODO: mark private
+    // (and update the tests)
+    get _desiredMovementVector() {
+        const vector = new Vector(0, 0);
+
+        this._relationships.forEach((relationship, entity) => {
+            // determine the normalized direction between this._character and entity
+            const xDiff = entity.position.x - this._character.position.x;
+            const yDiff = entity.position.y - this._character.position.y;
+            const slope = new Vector(xDiff, yDiff).normalized;
+            if(relationship.type == EntityRelationshipType.Afraid) {
+                slope.multiply(-1 * relationship.amount);
+            } else {
+                slope.multiply(relationship.amount);
+            }
+            vector.add(slope);
+        });
+
+        return vector.normalized;
     }
 
     #randomTargetPosition() {
