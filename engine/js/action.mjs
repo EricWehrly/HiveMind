@@ -18,8 +18,8 @@ export default class Action extends Listed {
             name: 'move_up',
             isCharacterControl: true,
             callback: function (options) {
-                if (options?.character?.velocity?.y != null) {
-                    options.character.velocity.y = -1;
+                if (options?.character?.desiredMovementVector?.y != null) {
+                    options.character.desiredMovementVector.y = -1;
                 }
             }
         });
@@ -28,8 +28,8 @@ export default class Action extends Listed {
             name: 'move_down',
             isCharacterControl: true,
             callback: function (options) {
-                if (options?.character?.velocity?.y != null) {
-                    options.character.velocity.y = 1;
+                if (options?.character?.desiredMovementVector?.y != null) {
+                    options.character.desiredMovementVector.y = 1;
                 }
             }
         });
@@ -38,8 +38,8 @@ export default class Action extends Listed {
             name: 'move_left',
             isCharacterControl: true,
             callback: function (options) {
-                if (options?.character?.velocity?.x != null) {
-                    options.character.velocity.x = -1;
+                if (options?.character?.desiredMovementVector?.x != null) {
+                    options.character.desiredMovementVector.x = -1;
                 }
             }
         });
@@ -48,8 +48,8 @@ export default class Action extends Listed {
             name: 'move_right',
             isCharacterControl: true,
             callback: function (options) {
-                if (options?.character?.velocity?.x != null) {
-                    options.character.velocity.x = 1;
+                if (options?.character?.desiredMovementVector?.x != null) {
+                    options.character.desiredMovementVector.x = 1;
                 }
             }
         });

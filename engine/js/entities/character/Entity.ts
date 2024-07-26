@@ -9,6 +9,7 @@ import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Rectangle from "../../baseTypes/rectangle";
 import EntityRenderingSettings from './EntityRenderingSettings';
 import Faction from '../faction.mjs';
+import Vector from "../../baseTypes/Vector";
 
 Events.List.CharacterCreated = "CharacterCreated";
 
@@ -44,9 +45,6 @@ interface GetClosestEntityOptions {
     priorities?: CharacterType[];
     characterProperties?: Object;
 }
-
-type Velocity = { x: number, y: number };
-
 @PostConstructClass
 export default class Entity {
 
@@ -66,6 +64,8 @@ export default class Entity {
     
     private _attributes: { [key: string]: CharacterAttribute } = {};
     _position: WorldCoordinate = new WorldCoordinate(0, 0);
+    private _desiredMovementVector: Vector = new Vector(0, 0);
+    private _rotation: number = 0;
     private _area: Rectangle = new Rectangle(0, 0, 0, 0);
 
     // one dimension, rather than height and width, for now
@@ -73,9 +73,6 @@ export default class Entity {
 
     characterType: CharacterType;
 
-    // TODO: make private?
-    // had to make "public" to make protected
-    _velocity: Velocity = { x: 0, y: 0 };
     entityRenderingSettings: EntityRenderingSettings;
 
     // prevent trying to set x and y
@@ -108,14 +105,17 @@ export default class Entity {
         this._area.position = this._position;
     }
 
-    get velocity() {
-        return this._velocity;
+    get desiredMovementVector() {
+        return this._desiredMovementVector;
     }
 
-    set velocity(options: Velocity) {
-        if (options.x != null) this._velocity.x = options.x;
-        if (options.y != null) this._velocity.y = options.y;
+    set desiredMovementVector(newVal: Vector) {
+        this._desiredMovementVector = newVal;
     }
+
+    get rotation() { return this._rotation; }
+
+    set rotation(newValue) { this._rotation = newValue; }
 
     constructor(options: EntityOptions = {}) {
 
@@ -156,13 +156,6 @@ export default class Entity {
         });
     }
 
-    // TODO: some day, when typescript sucks less, combine with the above setter
-    setVelocityFromStrting(velocity: string) {
-        const split = velocity.split(",");
-        this._velocity.x = +split[0];
-        this._velocity.y = +split[1];
-    }
-
     logarithmicCost(characterAttribute: CharacterAttribute) {
         
         const baseCost = characterAttribute.baseCost || 1;
@@ -187,8 +180,8 @@ export default class Entity {
     
     move(amount: number) {
         if(this.speed != 0) {
-            if(this.velocity.x != 0) this._position.x += this._velocity.x * this.speed * amount;
-            if(this.velocity.y != 0) this._position.y += this._velocity.y * this.speed * amount;
+            if(this._desiredMovementVector.x != 0) this._position.x += this._desiredMovementVector.x * this.speed * amount;
+            if(this._desiredMovementVector.y != 0) this._position.y += this._desiredMovementVector.y * this.speed * amount;
         }
     }
 
@@ -316,14 +309,14 @@ export default class Entity {
         if (target) {
             if (this.position.x != target.x
                 || this.position.y != target.y) {
-                if (this.position.x < target.x) this._velocity.x = 1;
-                else if (this.position.x > target.x) this._velocity.x = -1;
-                if (this.position.y < target.y) this._velocity.y = 1;
-                else if (this.position.y > target.y) this._velocity.y = -1;
+                if (this.position.x < target.x) this._desiredMovementVector.x = 1;
+                else if (this.position.x > target.x) this._desiredMovementVector.x = -1;
+                if (this.position.y < target.y) this._desiredMovementVector.y = 1;
+                else if (this.position.y > target.y) this._desiredMovementVector.y = -1;
             }
         } else {
-            this._velocity.x = 0;
-            this._velocity.y = 0;
+            this._desiredMovementVector.x = 0;
+            this._desiredMovementVector.y = 0;
         }
     }
 

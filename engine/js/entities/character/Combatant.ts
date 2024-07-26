@@ -285,9 +285,9 @@ export class Combatant extends PlayableEntity {
                 if (!this.atTarget(axis)) {
                     if (this.shouldStopOnAxis(axis, amount)) {
                         this.position[axis] = this.targetPosition[axis];
-                        this.velocity[axis] = 0;
+                        this.desiredMovementVector[axis] = 0;
                     } else {
-                        this.position[axis] += this.velocity[axis] * this.speed * amount;
+                        this.position[axis] += this.desiredMovementVector[axis] * this.speed * amount;
                     }
                 }
             }

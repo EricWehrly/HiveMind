@@ -103,8 +103,8 @@ export default class KeyboardController {
 
     loopMethod() {
 
-        this.character.velocity.x = 0;
-        this.character.velocity.y = 0;
+        this.character.desiredMovementVector.x = 0;
+        this.character.desiredMovementVector.y = 0;
 
         for (var action of Object.keys(Actions)) {
             if (Actions[action].enabled !== false

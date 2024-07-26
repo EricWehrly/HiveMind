@@ -21,6 +21,10 @@ we want player to be able to travel "through" nodes to an edge,
     and essentially excrete themselves a form
     travel speed should be based on the "transfer rate" of nutrients within the hivemind
 
+- incorporate 'rotation' into the renderer
+    step 1 is going to be actually assigning it
+    starting with when we're turning to face our target ...
+
 attributes of a biome:
     how mountainous is this biome?
         (expressed as a percentage, 50 is 'a normal amount', 100 is 'as many as possible')

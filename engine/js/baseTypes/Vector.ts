@@ -3,7 +3,9 @@ export default class Vector {
     private _y: number;
 
     get x() { return this._x; }
+    set x(value: number) { this._x = value; }
     get y () { return this._y; }
+    set y(value: number) { this._y = value; }
 
     constructor(x: number, y: number) {
         this._x = x;
