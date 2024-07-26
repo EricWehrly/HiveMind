@@ -1,4 +1,4 @@
-import UIElement from "./ui-element.mjs";
+import UIElement from "./ui-element.ts";
 import Resource from "../entities/resource.mjs";
 import Events from "../events.ts";
 
