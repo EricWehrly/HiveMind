@@ -54,6 +54,9 @@ export default class UIElement {
         if(this._element && !this._visible) this._element.style.display = "none";
     }
 
+    get entity() { return this._entity; }
+    set entity(value) { this._entity = value; }
+
     get Element() { return this._element; }
 
     constructor(options: UIElementOptions = {}) {
@@ -111,7 +114,7 @@ export default class UIElement {
         
         // TODO: fix this later
         // @ts-expect-error
-        const entityGraphic = this?._entity?.graphic;
+        const entityGraphic = this?.entity?.graphic;
 
         if(entityGraphic) {
 
