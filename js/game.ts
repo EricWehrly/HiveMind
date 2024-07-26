@@ -17,7 +17,7 @@ import ToolTip from '../engine/js/ui/tooltip';
 import Technology from '../engine/js/technology.mjs';
 // import Menu from '../engine/js/ui/menu.mjs';
 import './ui/ui.mjs';
-import '../engine/js/ui/ui-equipment.mjs';
+import '../engine/js/ui/ui-equipment';
 import '../engine/js/ui/ui-resource.mjs';
 // weirdly we've removed any other imports for this ...
 import './entities/building';
