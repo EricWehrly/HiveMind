@@ -13,7 +13,7 @@ import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import { MakeSlimey } from './entities/character/mixins/Slimey';
 import { MakeHiveMindCharacter } from './entities/character/CharacterFactory';
 // import { RegisterLoopMethod } from '../engine/js/loop.mjs';
-import ToolTip from '../engine/js/ui/tooltip.mjs';
+import ToolTip from '../engine/js/ui/tooltip';
 import Technology from '../engine/js/technology.mjs';
 // import Menu from '../engine/js/ui/menu.mjs';
 import './ui/ui.mjs';
@@ -28,7 +28,7 @@ import './entities/entities.mjs';
 import Resource from '../engine/js/entities/resource.mjs';
 import './characterStats.mjs';
 
-import Cheat from './util/cheat.mjs';
+import Cheat from './util/cheat';
 import MessageLog from '../engine/js/core/messageLog.mjs';
 import "./goal.ts";
 import '../engine/js/entities/entity-graphics.mjs';

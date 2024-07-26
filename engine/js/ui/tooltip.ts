@@ -1,11 +1,18 @@
-import UIElement from "./ui-element.ts";
+import Entity from "../entities/character/Entity";
+import UIElement, { UIElementOptions } from "./ui-element";
+
+export interface TooltipOptions extends UIElementOptions {
+    position?: {x: number, y: number};
+    entity?: Entity;
+    message?: string;
+}
 
 // TODO: timeout / hide
 export default class Tooltip extends UIElement {
 
-    #message;
+    private _message: string;
 
-    constructor(options = {}) {
+    constructor(options: TooltipOptions = {}) {
 
         super(options);
 
@@ -23,13 +30,13 @@ export default class Tooltip extends UIElement {
     }
 
     get message() {
-        return this.#message;
+        return this._message;
     }
 
     set message(newValue) {
-        if(newValue == this.#message) return;
+        if(newValue == this._message) return;
 
-        this.#message = newValue;
+        this._message = newValue;
         this.Element.innerHTML = this.message;
         
         this.visible = this.message != "";
