@@ -1,4 +1,4 @@
-import UIElement from "../engine/js/ui/ui-element.mjs";
+import UIElement from "../engine/js/ui/ui-element.ts";
 import Menu from "../engine/js/ui/menu.mjs";
 import KeyboardController from "./controls/keyboard-controller.mjs";
 import Resource from "../engine/js/entities/resource.mjs";

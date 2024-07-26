@@ -1,4 +1,4 @@
-import UIElement from "./ui-element.mjs";
+import UIElement from "./ui-element.ts";
 
 // TODO: timeout / hide
 export default class Tooltip extends UIElement {

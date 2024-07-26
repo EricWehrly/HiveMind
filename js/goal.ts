@@ -1,7 +1,7 @@
 import Game from "../engine/js/engine.mjs";
 import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events";
-import UIElement from "../engine/js/ui/ui-element.mjs";
+import UIElement from "../engine/js/ui/ui-element";
 
 // eventually this should problably translate into an adaptation 
 // of Engine-level Objective definitions

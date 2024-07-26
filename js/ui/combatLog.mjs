@@ -2,7 +2,7 @@
 
 import MessageLog from "../../engine/js/core/messageLog.mjs";
 import { RegisterLoopMethod } from "../../engine/js/loop.mjs";
-import UIElement from "../../engine/js/ui/ui-element.mjs";
+import UIElement from "../../engine/js/ui/ui-element.ts";
 import Menu from "../../engine/js/ui/menu.mjs";
 
 const UI_MENU_COMABT_LOG = new Menu({
