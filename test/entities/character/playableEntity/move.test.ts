@@ -1,6 +1,7 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
+import Vector from '../../../../js/baseTypes/Vector';
 
 jest.mock('@/engine/js/ai/basic', () => {
     return {
@@ -45,7 +46,7 @@ describe('PlayableEntity.move', () => {
                 y: 1
             }
         });
-        entity.velocity = { x: 1, y: 1 };
+        entity.desiredMovementVector = new Vector(1, 1);
         entity.isPlayer = true;
     });
 
