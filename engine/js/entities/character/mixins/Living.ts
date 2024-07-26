@@ -1,5 +1,5 @@
 import Events from "../../../events";
-import { RemoveCharacterFromList } from "../../characters.mjs";
+import { RemoveCharacterFromList } from "../../characters";
 import Entity from "../Entity";
 
 Events.List.CharacterDamaged = "CharacterDamaged";

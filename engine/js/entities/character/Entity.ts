@@ -2,7 +2,7 @@ import CharacterType from "../../../../js/entities/CharacterType";
 import Events from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute.mjs";
-import { AddCharacterToList, CHARACTER_LIST } from "../characters.mjs";
+import { AddCharacterToList, CHARACTER_LIST } from "../characters";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
 import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
@@ -54,6 +54,7 @@ export default class Entity {
 
         let charList = CHARACTER_LIST;
         for(var key of Object.keys(options)) {
+            // @ts-expect-error
             charList = charList.filter(x => x[key] == options[key]);
         }
 

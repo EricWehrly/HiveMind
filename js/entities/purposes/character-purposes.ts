@@ -4,9 +4,11 @@ import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
 import Character from "../../../engine/js/entities/character";
 import Resource from "../../../engine/js/entities/resource.mjs";
 import HiveMindCharacter from "../character/HiveMindCharacter";
-import { CHARACTER_LIST } from "../../../engine/js/entities/characters.mjs";
+import { CHARACTER_LIST } from "../../../engine/js/entities/characters";
 import { IsLiving, Living } from "../../../engine/js/entities/character/mixins/Living";
 import Entity from "../../../engine/js/entities/character/Entity";
+import { Grower } from "../character/mixins/Grower";
+import { Growable } from "../character/mixins/Growable";
 
 const Purposes: Record<string,any> =
 {
@@ -105,8 +107,9 @@ const Purposes: Record<string,any> =
 // maybe "growing" should be made generic as "children" ...
 // TODO: deadguy should be grower tho
 // I think we need to unit test this
-Events.Subscribe(Events.List.CharacterDied, (deadGuy: Entity & Living) => {
-    for (var character of CHARACTER_LIST) {
+Events.Subscribe(Events.List.CharacterDied, (deadGuy: HiveMindCharacter & Growable) => {
+    for (var char of CHARACTER_LIST) {
+        const character = char as HiveMindCharacter & Grower;
         const index = character?.growing?.indexOf(deadGuy);
         if (index > -1) character.growing.splice(index, 1);
     }
