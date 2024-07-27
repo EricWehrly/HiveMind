@@ -233,7 +233,7 @@ export class Combatant extends PlayableEntity {
 
         if(target.equipment) {
             // TODO: Is this working right?
-            const buff = target.equipment.buff;
+            const buff = target.equipment.buff as Technology;
             if(buff) {
                 const thornDamage = buff.thorns * target.thornMultiplier;
                 (this as Living).health -= thornDamage;
