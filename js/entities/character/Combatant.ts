@@ -8,7 +8,7 @@ import Equipment from "../equipment";
 import { IsLiving, Living } from "./mixins/Living";
 import Entity from "./Entity";
 import { Defer } from "../../loop.mjs";
-import StatusEffect from "../../status-effect.mjs";
+import StatusEffect, { StatusEffectCallbackOptions } from "../../StatusEffect";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 
@@ -210,11 +210,11 @@ export class Combatant extends PlayableEntity {
         this._statusEffects.set(statusEffect, this.getStatusEffect(statusEffect) + duration);
 
         const now = performance.now();
-        const options = {
+        const options: StatusEffectCallbackOptions = {
             startTime: now,
             endTime: now + duration,
             lastInterval: 0,
-            target: this.target,
+            target: this.target as Living,
             duration
         }
         if(options.target == null) debugger;
