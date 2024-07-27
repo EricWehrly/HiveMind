@@ -14,7 +14,7 @@ import { MakeSlimey } from './entities/character/mixins/Slimey';
 import { MakeHiveMindCharacter } from './entities/character/CharacterFactory';
 // import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip';
-import Technology from '../engine/js/technology.mjs';
+import Technology from '../engine/js/technology';
 // import Menu from '../engine/js/ui/menu.mjs';
 import './ui/ui.mjs';
 import '../engine/js/ui/ui-equipment';

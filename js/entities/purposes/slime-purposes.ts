@@ -1,4 +1,4 @@
-import Technology from "../../../engine/js/technology.mjs";
+import Technology from "../../../engine/js/technology";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import Purposes from "./character-purposes";
 import CharacterType from "../CharacterType";

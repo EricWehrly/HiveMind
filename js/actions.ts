@@ -2,7 +2,7 @@
 
 import Purposes from "./entities/purposes/character-purposes";
 import Action from "../engine/js/action.mjs";
-import Technology from "../engine/js/technology.mjs";
+import Technology from "../engine/js/technology";
 import Entity from "../engine/js/entities/character/Entity";
 import { Slimey } from "./entities/character/mixins/Slimey";
 

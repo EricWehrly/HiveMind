@@ -1,12 +1,29 @@
 import Listed from "./baseTypes/listed.mjs";
+import { Combatant } from "./entities/character/Combatant";
 import { Defer } from "./loop.mjs";
 import Research from "./research.mjs";
+import StatusEffect from "./status-effect.mjs";
+
+export interface TechnologyOptions {
+    statusEffectDuration?: any;
+    statusEffect?: StatusEffect;
+    thorns?: any;
+    delay?: number;
+    damage?: number;
+    range?: number;
+    sound?: any;
+    research?: Research;
+    name?: string;
+    type?: any;
+}
 
 export default class Technology extends Listed {
 
-    static #sounds = {};
+    static #sounds: Record<string, HTMLAudioElement> = {};
+    type: any;
+    thorns: any;
 
-    static #getSound(name) {
+    static #getSound(name: string) {
 
         if(!(name in Technology.#sounds)) {
             Technology.#sounds[name] = new Audio(name);
@@ -15,9 +32,17 @@ export default class Technology extends Listed {
         return Technology.#sounds[name];
     }
 
+    private _damage: number;
+    private _delay: number;
+    private _range: number;
     #lastFired = performance.now();
     #lastPlayedSoundIndex = -1;
-    #sound = [];
+    #sound:string[] = [];
+
+    get range() { return this._range; }
+    get damage() { return this._damage; }
+    get delay() { return this._delay; }
+
     get sound() {
         return this.#sound;
     }
@@ -33,12 +58,12 @@ export default class Technology extends Listed {
 
     get danger() {
 
-        return (this.damage || 1) // should this be || 0 because no damage = no danger ... ?
-            / ((this.delay || 1000) / 1000)
-            * ((this.range || 1) * 1.5);    // give a little extra 'weight' to range, as it conveys an advantage
+        return (this._damage || 1) // should this be || 0 because no damage = no danger ... ?
+            / ((this._delay || 1000) / 1000)
+            * ((this._range || 1) * 1.5);    // give a little extra 'weight' to range, as it conveys an advantage
     }
 
-    constructor(options = {}) {
+    constructor(options: TechnologyOptions = {}) {
 
         // TODO: reject if missing required options
         if(!options.name) throw `Technology needs name!`;
@@ -65,9 +90,9 @@ export default class Technology extends Listed {
 
         // TODO: proper private members and getters
         this.type = options.type;
-        this.range = options.range;
-        this.damage = options.damage;
-        this.delay = options.delay;
+        this._range = options.range;
+        this._damage = options.damage;
+        this._delay = options.delay;
         this.thorns = options.thorns;
 
         if(options.statusEffect) {
@@ -94,25 +119,29 @@ export default class Technology extends Listed {
 
     checkDelay() {
 
-        if (this.delay && this.#lastFired &&
-            performance.now() - this.#lastFired < this.delay) return false;
-        else if (this.delay) this.#lastFired = performance.now();
+        if (this._delay && this.#lastFired &&
+            performance.now() - this.#lastFired < this._delay) return false;
+        else if (this._delay) this.#lastFired = performance.now();
 
         return true;
     }
 
-    checkRange(character) {
+    checkRange(character: Combatant) {
 
-        if (this.range) {
+        if (this._range) {
             if (!character?.target) return false;
 
-            if (character.getDistance(character.target) > this.range) return false;
+            // TODO: fix later, this is weird
+            // @ts-expect-error
+            if (character.getDistance(character.target) > this._range) return false;
         }
 
         return true;
     }
 
-    playSound(options) {
+    playSound(options: {
+        volume?: number;
+    }) {
 
         // it would be desirable to make this random instead of cyclical, eventually
         if(this.#sound.length > 0) {

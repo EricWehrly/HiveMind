@@ -1,6 +1,6 @@
 import { TechnologyTypes } from "../TechnologyTypes";
 import Events from "../events";
-import Technology from "../technology.mjs";
+import Technology from "../technology";
 import Entity from "./character/Entity";
 
 Events.List.EquipmentChanged = "EquipmentChanged"

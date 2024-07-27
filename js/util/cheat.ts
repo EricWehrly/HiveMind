@@ -3,7 +3,7 @@ import { Combatant } from "../../engine/js/entities/character/Combatant";
 import Entity from "../../engine/js/entities/character/Entity.js";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Resource from "../../engine/js/entities/resource.mjs";
-import Technology from "../../engine/js/technology.mjs";
+import Technology from "../../engine/js/technology";
 import Menu from "../../engine/js/ui/menu.mjs";
 import CharacterType from "../entities/CharacterType";
 import Building from "../entities/building";

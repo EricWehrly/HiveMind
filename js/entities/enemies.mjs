@@ -1,4 +1,4 @@
-import Technology from '../../engine/js/technology.mjs';
+import Technology from '../../engine/js/technology.ts';
 import Events from '../../engine/js/events.ts';
 import CharacterType from './CharacterType.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
