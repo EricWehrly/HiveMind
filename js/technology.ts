@@ -19,42 +19,38 @@ export interface TechnologyOptions {
 
 export default class Technology extends Listed {
 
-    static #sounds: Record<string, HTMLAudioElement> = {};
-    type: any;
-    thorns: any;
+    private static _sounds: Record<string, HTMLAudioElement> = {};
+    private _type: any;
+    private _thorns: any;
 
     static #getSound(name: string) {
 
-        if(!(name in Technology.#sounds)) {
-            Technology.#sounds[name] = new Audio(name);
+        if(!(name in Technology._sounds)) {
+            Technology._sounds[name] = new Audio(name);
         }
 
-        return Technology.#sounds[name];
+        return Technology._sounds[name];
     }
 
     private _damage: number;
     private _delay: number;
     private _range: number;
-    #lastFired = performance.now();
-    #lastPlayedSoundIndex = -1;
-    #sound:string[] = [];
+    private _lastFired = performance.now();
+    private _lastPlayedSoundIndex = -1;
+    private _sound:string[] = [];
+    private _statusEffect;
+    private _statusEffectDuration;
+    private _research;
 
     get range() { return this._range; }
     get damage() { return this._damage; }
     get delay() { return this._delay; }
-
-    get sound() {
-        return this.#sound;
-    }
-
-    #statusEffect;
-    get statusEffect() { return this.#statusEffect; }
-
-    #statusEffectDuration;
-    get statusEffectDuration() { return this.#statusEffectDuration; }
-
-    #research;
-    get research() { return this.#research; }
+    get sound() { return this._sound; }
+    get statusEffect() { return this._statusEffect; }
+    get statusEffectDuration() { return this._statusEffectDuration; }
+    get research() { return this._research; }
+    get type() { return this._type; }
+    get thorns() { return this._thorns; }
 
     get danger() {
 
@@ -71,7 +67,7 @@ export default class Technology extends Listed {
         super(options);
 
         if(options.research) {
-            this.#research = new Research({
+            this._research = new Research({
                 name: options.name,
                 ...options.research
             });
@@ -81,27 +77,27 @@ export default class Technology extends Listed {
             if (Array.isArray(options.sound)) {
                 const that = this;
                 options.sound.forEach(function (sound) {
-                    that.#sound.push(sound);
+                    that._sound.push(sound);
                 });
             } else {
-                this.#sound.push(options.sound);
+                this._sound.push(options.sound);
             }
         }
 
         // TODO: proper private members and getters
-        this.type = options.type;
+        this._type = options.type;
         this._range = options.range;
         this._damage = options.damage;
         this._delay = options.delay;
-        this.thorns = options.thorns;
+        this._thorns = options.thorns;
 
         if(options.statusEffect) {
             if(Number.isNaN(options.statusEffect.duration)) {
                 console.warn("You can't (currently) apply a status effect without a duration.");
             }
-            else this.#statusEffect = options.statusEffect;
+            else this._statusEffect = options.statusEffect;
         }
-        this.#statusEffectDuration = options.statusEffectDuration;
+        this._statusEffectDuration = options.statusEffectDuration;
 
         this.#deferLoadingSounds();
         // TODO: Probably stop doing this?
@@ -119,9 +115,9 @@ export default class Technology extends Listed {
 
     checkDelay() {
 
-        if (this._delay && this.#lastFired &&
-            performance.now() - this.#lastFired < this._delay) return false;
-        else if (this._delay) this.#lastFired = performance.now();
+        if (this._delay && this._lastFired &&
+            performance.now() - this._lastFired < this._delay) return false;
+        else if (this._delay) this._lastFired = performance.now();
 
         return true;
     }
@@ -144,12 +140,12 @@ export default class Technology extends Listed {
     }) {
 
         // it would be desirable to make this random instead of cyclical, eventually
-        if(this.#sound.length > 0) {
-            if(this.#lastPlayedSoundIndex > this.#sound.length - 2) {
-                this.#lastPlayedSoundIndex = -1;
+        if(this._sound.length > 0) {
+            if(this._lastPlayedSoundIndex > this._sound.length - 2) {
+                this._lastPlayedSoundIndex = -1;
             }
-            this.#lastPlayedSoundIndex += 1;
-            const soundName = this.#sound[this.#lastPlayedSoundIndex];
+            this._lastPlayedSoundIndex += 1;
+            const soundName = this._sound[this._lastPlayedSoundIndex];
             const sound = Technology.#getSound(soundName);
             if(options.volume) {
                 while(options.volume > 1) options.volume = options.volume / 10;
