@@ -32,6 +32,7 @@ export class EquippedTechnology {
     get technology() { return this._technology; }
     get ready() { return this._ready; }
     get readyAt() { return this._readyAt; }
+    get lastFired() { return this._lastFired; }
 
     set lastFired(newValue: number) {
         this._lastFired = newValue;

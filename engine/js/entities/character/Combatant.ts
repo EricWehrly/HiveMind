@@ -11,6 +11,13 @@ import { Defer } from "../../loop.mjs";
 import StatusEffect, { StatusEffectCallbackOptions } from "../../StatusEffect";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
+Events.List.CharacterAttacked = "CharacterAttacked";
+
+export interface CharacterAttackedEvent {
+    attacker: Entity;
+    attacked: Entity;
+    equipped?: EquippedTechnology;
+}
 
 type Axis = 'x' | 'y';
 const axes: Axis[] = ['x', 'y'];
@@ -250,6 +257,13 @@ export class Combatant extends PlayableEntity {
                 });
             }
         }
+
+        const event: CharacterAttackedEvent = {
+            attacker: this,
+            attacked: target,
+            equipped
+        };
+        Events.RaiseEvent(Events.List.CharacterAttacked, event);
     }
 
     think(): void {
