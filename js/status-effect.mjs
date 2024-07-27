@@ -8,6 +8,7 @@ export default class StatusEffect extends Listed {
     #interval = 0;
     #damageOnHit = 0;   // this will be for thorns
     #knockback = 0;
+    #duration = 0;
     // icon
 
     // should this have duration? or would that be "instance"d?
@@ -45,12 +46,17 @@ export default class StatusEffect extends Listed {
         this.#knockback = value;
     }
 
+    get duration() {
+        return this.#duration;
+    }
+
     constructor(options) {
         
         super(options);
 
         if(options.damage) this.#damage = options.damage;
         if(options.interval) this.#interval = options.interval;
+        if(options.duration) this.#duration = options.duration;
     }
 
     #intervalMethod(target) {

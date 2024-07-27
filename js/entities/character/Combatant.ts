@@ -2,7 +2,7 @@ import { TechnologyTypes } from "../../TechnologyTypes";
 import PredatorAI from "../../ai/predator";
 import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events";
-import Technology from "../../technology.mjs";
+import Technology from "../../technology";
 import PlayableEntity from "./PlayableEntity";
 import Equipment from "../equipment";
 import { IsLiving, Living } from "./mixins/Living";
