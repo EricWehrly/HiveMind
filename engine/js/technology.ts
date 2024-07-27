@@ -2,7 +2,7 @@ import Listed from "./baseTypes/listed.mjs";
 import { Combatant } from "./entities/character/Combatant";
 import { Defer } from "./loop.mjs";
 import Research from "./research.mjs";
-import StatusEffect from "./status-effect.mjs";
+import StatusEffect from "./StatusEffect";
 
 export interface TechnologyOptions {
     statusEffectDuration?: any;

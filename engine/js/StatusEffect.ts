@@ -1,5 +1,14 @@
 import Listed from "./baseTypes/listed.mjs";
+import { Living } from "./entities/character/mixins/Living";
 import { Defer } from "./loop.mjs";
+
+export interface StatusEffectCallbackOptions {
+    startTime: number;
+    endTime: number;
+    lastInterval: number;
+    duration: number;
+    target: Living;
+}
 
 // should this extend Technology?
 export default class StatusEffect extends Listed {
@@ -50,7 +59,7 @@ export default class StatusEffect extends Listed {
         return this.#duration;
     }
 
-    constructor(options) {
+    constructor(options: any = {}) {
         
         super(options);
 
@@ -59,11 +68,11 @@ export default class StatusEffect extends Listed {
         if(options.duration) this.#duration = options.duration;
     }
 
-    #intervalMethod(target) {
+    #intervalMethod(target: Living) {
         target.health -= this.damage;
     }
 
-    callback(options) {
+    callback(options: StatusEffectCallbackOptions) {
 
         if(Number.isNaN(options.startTime)
             || Number.isNaN(options.endTime)

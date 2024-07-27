@@ -1,5 +1,5 @@
 import Character from "../../engine/js/entities/character.ts";
-import StatusEffect from "../../engine/js/status-effect.mjs";
+import StatusEffect from "../../engine/js/StatusEffect.ts";
 import Technology from "../../engine/js/technology.ts";
 import { TechnologyTypes } from "../../engine/js/TechnologyTypes.ts";
 
