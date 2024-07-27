@@ -1,10 +1,15 @@
 import Character from "../../engine/js/entities/character";
 import { Combatant } from "../../engine/js/entities/character/Combatant";
-import { Living } from "../../engine/js/entities/character/mixins/Living";
+import Entity from "../../engine/js/entities/character/Entity.js";
+import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Resource from "../../engine/js/entities/resource.mjs";
 import Technology from "../../engine/js/technology.mjs";
 import Menu from "../../engine/js/ui/menu.mjs";
 import CharacterType from "../entities/CharacterType";
+import Building from "../entities/building";
+import { MakeHiveMindCharacter } from "../entities/character/CharacterFactory";
+import { MakeGrower } from "../entities/character/mixins/Grower";
+import { MakeSlimey } from "../entities/character/mixins/Slimey";
 
 export default class Cheat {
     static get Health(): any {
@@ -56,6 +61,29 @@ export default class Cheat {
         
         const localPlayer = Character.LOCAL_PLAYER;
         localPlayer.speed = 15;
+
+        return null;
+    }
+
+    static get Nodes(): any {
+
+        // @ts-expect-error
+        const playerFaction = Character.LOCAL_PLAYER.faction;
+        const nodeCount = 10;
+        const characterType = CharacterType.List['Node'];
+        const nodes: Entity[] = [];
+        let lastPosition = Character.LOCAL_PLAYER.position;
+        for(let i = 0; i < nodeCount; i++) {
+            nodes.push(MakeHiveMindCharacter([MakeGrower, MakeLiving, MakeSlimey], {
+                characterType,
+                faction: playerFaction
+            }, Building));
+            nodes[i].position = {
+                x: lastPosition.x + 1,
+                y: lastPosition.y + 9
+            };
+            lastPosition = nodes[i].position;
+        }
 
         return null;
     }
