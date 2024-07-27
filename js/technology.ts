@@ -35,12 +35,11 @@ export default class Technology extends Listed {
     private _damage: number;
     private _delay: number;
     private _range: number;
-    private _lastFired = performance.now();
     private _lastPlayedSoundIndex = -1;
     private _sound:string[] = [];
     private _statusEffect;
     private _statusEffectDuration;
-    private _research;
+    private _research: Research;
 
     get range() { return this._range; }
     get damage() { return this._damage; }
@@ -111,15 +110,6 @@ export default class Technology extends Listed {
                 Technology.#getSound(sound);
             }
         }, 0);
-    }
-
-    checkDelay() {
-
-        if (this._delay && this._lastFired &&
-            performance.now() - this._lastFired < this._delay) return false;
-        else if (this._delay) this._lastFired = performance.now();
-
-        return true;
     }
 
     checkRange(character: Combatant) {

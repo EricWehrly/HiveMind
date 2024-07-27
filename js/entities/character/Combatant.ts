@@ -4,7 +4,7 @@ import MessageLog from "../../core/messageLog.mjs";
 import Events from "../../events";
 import Technology from "../../technology";
 import PlayableEntity from "./PlayableEntity";
-import Equipment from "../equipment";
+import Equipment, { EquippedTechnology } from "../equipment";
 import { IsLiving, Living } from "./mixins/Living";
 import Entity from "./Entity";
 import { Defer } from "../../loop.mjs";
@@ -72,7 +72,7 @@ export class Combatant extends PlayableEntity {
         }
     }
 
-    getEquipped = function (techType: TechnologyTypes): Technology {
+    getEquipped = function (techType: TechnologyTypes): EquippedTechnology {
         return this._equipment.getEquipped(techType);
     }
 
@@ -129,11 +129,11 @@ export class Combatant extends PlayableEntity {
             return false;
         }
 
-        if (!equipped.checkDelay()) return false;
+        if (!equipped.ready) return false;
 
         if(!(this.target instanceof Combatant)) return false;
 
-        if (!equipped.checkRange(this)) return false;
+        if (!equipped.technology.checkRange(this)) return false;
 
         return true;
     }
@@ -155,10 +155,12 @@ export class Combatant extends PlayableEntity {
             // maybe every 10 pixels away = -1 volume?
             // (volume is between 0.0 and 1.0)
             const distance = 100 - this.position.distance(PlayableEntity.LOCAL_PLAYER.position);
-            equipped.playSound({
+            equipped.technology.playSound({
                 volume: distance
             });
         }
+
+        equipped.lastFired = performance.now();
 
         if(!IsLiving(target)) return;
 
@@ -223,12 +225,13 @@ export class Combatant extends PlayableEntity {
         }, statusEffect.interval + 1);
     }
 
-    private _attackCharacter(target: Combatant, equipped: Technology, damage: number) {
+    private _attackCharacter(target: Combatant, equipped: EquippedTechnology, damage: number) {
 
         const combatLog = MessageLog.Get("Combat");
+        const technology = equipped.technology;
 
-        if(equipped.statusEffect) {
-            target.applyStatusEffect(equipped.statusEffect, equipped.statusEffectDuration);
+        if(technology.statusEffect) {
+            target.applyStatusEffect(technology.statusEffect, technology.statusEffectDuration);
         }
 
         if(target.equipment) {
