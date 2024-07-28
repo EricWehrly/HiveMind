@@ -9,7 +9,7 @@ function checkPlayerInteraction() {
     const localPlayer = window.LOCAL_PLAYER;
     const closest = localPlayer.target as HiveMindCharacter & Living;
 
-    if(Menu.anyOpen || (closest != null && !closest.isAlive)) {
+    if(Menu.anyOpen || closest == null || !closest.isAlive) {
 
         localPlayer.toolTip.entity = null;
         localPlayer.toolTip.visible = false;
@@ -17,7 +17,6 @@ function checkPlayerInteraction() {
         return;
     }
 
-    if(closest == null) return;
     localPlayer.toolTip.entity = closest;
 
     if(closest.canBeStudied == undefined) debugger;

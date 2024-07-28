@@ -1,5 +1,3 @@
-tooltip needs to re-compute on entity death (entity probably isn't properlying "dying" / de-registering)
-
 - (fix) node position selection for stuff to build
 
 we need the stuff the player builds directly to grow
