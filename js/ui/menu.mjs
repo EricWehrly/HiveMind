@@ -1,6 +1,6 @@
 import UIElement from './ui-element.ts';
 import Events from '../events.ts';
-import Action from '../action.mjs';
+import Action from '../action.ts';
 
 Events.List.MenuOpened = "MenuOpened";
 Events.List.MenuClosed = "MenuClosed";
