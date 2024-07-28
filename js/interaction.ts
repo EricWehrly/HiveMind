@@ -2,20 +2,20 @@ import Menu from '../engine/js/ui/menu.mjs';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import Action from '../engine/js/action';
+import { Living } from '../engine/js/entities/character/mixins/Living';
 
 function checkPlayerInteraction() {
 
     const localPlayer = window.LOCAL_PLAYER;
+    const closest = localPlayer.target as HiveMindCharacter & Living;
 
-    if(Menu.anyOpen) {
+    if(Menu.anyOpen || (closest != null && !closest.isAlive)) {
 
         localPlayer.toolTip.entity = null;
         localPlayer.toolTip.visible = false;
         // localPlayer.toolTip.message = '';
         return;
     }
-
-    const closest = localPlayer.target as HiveMindCharacter;
 
     if(closest == null) return;
     localPlayer.toolTip.entity = closest;
