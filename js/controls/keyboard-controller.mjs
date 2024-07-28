@@ -1,6 +1,6 @@
 import { RegisterLoopMethod } from '../../engine/js/loop.mjs';
 
-import Action from '../../engine/js/action.mjs';
+import Action from '../../engine/js/action.ts';
 const Actions = Action.List;
 
 // we can use extends and a base class to share common methods

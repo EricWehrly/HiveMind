@@ -1,7 +1,7 @@
 // TODO: Can we figure out a way to import these from 'data' better?
 
 import Purposes from "./entities/purposes/character-purposes";
-import Action from "../engine/js/action.mjs";
+import Action from "../engine/js/action";
 import Technology from "../engine/js/technology";
 import Entity from "../engine/js/entities/character/Entity";
 import { Slimey } from "./entities/character/mixins/Slimey";
@@ -11,7 +11,6 @@ interface ActionOptions {
     character: Entity & Slimey
 }
 
-//@ts-expect-error
 const ActionList = Action.List;
 
 // maybe not allowed to do this at first

@@ -3,7 +3,7 @@ import mockMap from '../../engine/test/testHelpers/mockMap';
 import HiveMindCharacter from '../../js/entities/character/HiveMindCharacter';
 import NodeAI from '../../js/ai/node';
 
-jest.mock('@/engine/js/action.mjs', () => {
+jest.mock('@/engine/js/action.ts', () => {
     return {
         List: {}
     }

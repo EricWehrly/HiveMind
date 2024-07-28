@@ -1,6 +1,6 @@
 import AI from "./basic";
 import Character from "../entities/character";
-import Action from "../action.mjs";
+import Action from "../action";
 import { TechnologyTypes } from "../TechnologyTypes";
 import { Combatant } from "../entities/character/Combatant";
 
@@ -75,7 +75,6 @@ export default class PredatorAI extends AI {
 
     #attack() {
         
-        //@ts-expect-error
         Action.List['attack'].callback({
             character: this.character
         });
