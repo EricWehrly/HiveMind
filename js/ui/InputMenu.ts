@@ -1,6 +1,6 @@
 // when hit escape
 
-import Menu from "../../engine/js/ui/menu.mjs";
+import Menu from "../../engine/js/ui/menu";
 import UIElement from "../../engine/js/ui/ui-element";
 import KeyboardController from "../controls/keyboard-controller.mjs";
 
@@ -14,5 +14,6 @@ const characterMenu = new Menu({
     visible: false,
 });
 
-
 KeyboardController.AddDefaultBinding("openMenu/key bindings", "Escape");
+
+// characterMenu.addItem()

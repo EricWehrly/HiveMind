@@ -3,7 +3,7 @@
 import MessageLog from "../../engine/js/core/messageLog.mjs";
 import { RegisterLoopMethod } from "../../engine/js/loop.mjs";
 import UIElement from "../../engine/js/ui/ui-element.ts";
-import Menu from "../../engine/js/ui/menu.mjs";
+import Menu from "../../engine/js/ui/menu.ts";
 
 const UI_MENU_COMABT_LOG = new Menu({
     screenZone: UIElement.SCREEN_ZONE.BOTTOM_LEFT,

@@ -1,30 +1,45 @@
-import UIElement from './ui-element.ts';
-import Events from '../events.ts';
-import Action from '../action.ts';
+import UIElement, { UIElementOptions } from './ui-element';
+import Events from '../events';
+import Action from '../action';
 
 Events.List.MenuOpened = "MenuOpened";
 Events.List.MenuClosed = "MenuClosed";
+
+export interface MenuOptions {
+    name?: string;
+    vertical?: boolean;
+    collapsible?: boolean;
+    collapsed?: boolean;
+    menuAction?: Function;
+}
+
+interface MenuItem {
+    Element?: HTMLElement;
+    context?: Record<string, any>;
+    name?: string;
+    cost?: number;
+}
 
 export default class Menu extends UIElement {
     
     static #isAnyMenuOpen = false;
     static #MENU_LIST_COUNT = 0;
     // Menu class should "be" (extend) Listed, but can't extend 2, so...
-    static #MENU_LIST = {}
+    static #MENU_LIST: Record<string, Menu> = {}
     static get MENU_LIST() {
         return Menu.#MENU_LIST;
     }
 
-    static #current = null;
+    static #current: Menu = null;
     static get Current() {
         return Menu.#current;
     }
 
-    static Get(name) {
+    static Get(name: string) {
         return Menu.#MENU_LIST[name.toLowerCase()];
     }
 
-    static #addMenu(menu) {
+    static #addMenu(menu: Menu) {
         
         Menu.#MENU_LIST[Menu.#MENU_LIST_COUNT++] = menu;
         Menu.#MENU_LIST[menu.name.toLowerCase()] = menu;
@@ -43,8 +58,8 @@ export default class Menu extends UIElement {
     }
 
     #name;
-    #items = [];
-    #selected;
+    #items: MenuItem[] = [];
+    #selected: MenuItem;
     #menuAction;
 
     get name() {
@@ -82,7 +97,7 @@ export default class Menu extends UIElement {
         }
     }
 
-    #collapsed;
+    #collapsed: boolean;
     get collapsed() { return this.#collapsed; }
     set collapsed(newValue) {
         this.#collapsed = newValue;
@@ -96,7 +111,7 @@ export default class Menu extends UIElement {
 
     // raise events when visible changes, and subscribe to those?
 
-    select(menuItem) {
+    select(menuItem: MenuItem) {
 
         // we'd have access to these functions
         // if it was a uiElement instead of a dom element
@@ -132,16 +147,20 @@ export default class Menu extends UIElement {
         }
     }
 
-    constructor(options = {}) {
+    private _collapseHandle: HTMLElement;
+
+    constructor(options: MenuOptions & UIElementOptions = {}) {
 
         super(options);
 
         this.addClass("menu");
-        this.addClass(options.name);
 
         if(options.vertical) this.addClass("vertical");
 
-        if(options.name) this.#name = options.name;
+        if(options.name) {
+            this.#name = options.name;
+            this.addClass(options.name);
+        }
         const title = document.createElement('h3');
         title.innerHTML = this.#name;
         this.Element.appendChild(title);
@@ -155,9 +174,9 @@ export default class Menu extends UIElement {
 
         // TODO: Handle input situations without mouse
         if(options.collapsible) {
-            this.collapse = document.createElement("span");
-            this.collapse.className = "collapse-handler";
-            this.Element.appendChild(this.collapse);
+            this._collapseHandle = document.createElement("span");
+            this._collapseHandle.className = "collapse-handler";
+            this.Element.appendChild(this._collapseHandle);
             this.Element.addEventListener("click", this.collapseClicked.bind(this), false); //where func is your function name
         }
 
@@ -170,10 +189,10 @@ export default class Menu extends UIElement {
         Menu.#computeAnyMenuOpen();
     }
 
-    addItem(options) {
+    addItem(options: MenuItem) {
         
         // should menuItem be a ui element?
-        let menuItem = {
+        let menuItem: MenuItem = {
             context: {},
             name: options.name
         };
@@ -185,7 +204,7 @@ export default class Menu extends UIElement {
         if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
         menuItem.Element = document.createElement('div');
         menuItem.Element.innerHTML = options.name;
-        this.#addToDom(menuItem.Element, options);
+        this.#addToDom(menuItem.Element);
 
         if(!this.#selected) {
             this.select(menuItem);
@@ -196,10 +215,10 @@ export default class Menu extends UIElement {
         return menuItem;
     }
 
-    addLabel(options) {
+    addLabel(options: any) {
         
         // should menuItem be a ui element?
-        const menuItem = {
+        const menuItem: MenuItem = {
             context: {}
         };
         Object.assign(menuItem.context, options);
@@ -210,7 +229,7 @@ export default class Menu extends UIElement {
         return menuItem;
     }
 
-    removeItem(item) {
+    removeItem(item: MenuItem) {
 
         if(item?.Element == null) {
             console.warn("Invalid item for removal.");
@@ -225,7 +244,7 @@ export default class Menu extends UIElement {
         }
     }
 
-    getSection(name, addIfMissing = false) {
+    getSection(name: string, addIfMissing = false) {
 
         if(!name) return this.Element;
 
@@ -240,7 +259,7 @@ export default class Menu extends UIElement {
     }
 
     // TODO: section header
-    addSection(name) {
+    addSection(name: string) {
         
         const section = document.createElement('div');
         section.className = `section ${name}`;
@@ -249,9 +268,9 @@ export default class Menu extends UIElement {
         return section;
     }
 
-    #addToDom(element, options) {
+    #addToDom(element: HTMLElement, options?: { section?: string }) {
 
-        if(options.section) {
+        if(options?.section) {
 
             const section = this.getSection(options.section, true);
             section.appendChild(element);
@@ -261,4 +280,5 @@ export default class Menu extends UIElement {
     }
 }
 
+// @ts-expect-error
 if(window) window.Menu = Menu;

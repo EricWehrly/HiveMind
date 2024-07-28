@@ -1,5 +1,5 @@
 import UIElement from "../engine/js/ui/ui-element.ts";
-import Menu from "../engine/js/ui/menu.mjs";
+import Menu from "../engine/js/ui/menu.ts";
 import KeyboardController from "./controls/keyboard-controller.mjs";
 import Resource from "../engine/js/entities/resource.mjs";
 import Character from "../engine/js/entities/character.ts";

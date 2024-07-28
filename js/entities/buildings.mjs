@@ -1,6 +1,6 @@
 import Character from '../../engine/js/entities/character.ts';
 import CharacterType from './CharacterType.ts';
-import Menu from '../../engine/js/ui/menu.mjs';
+import Menu from '../../engine/js/ui/menu.ts';
 import UIElement from '../../engine/js/ui/ui-element.ts';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.ts';

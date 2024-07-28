@@ -1,4 +1,4 @@
-import Menu from '../engine/js/ui/menu.mjs';
+import Menu from '../engine/js/ui/menu';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import Action from '../engine/js/action';
