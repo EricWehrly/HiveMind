@@ -2,7 +2,7 @@ import Listed from './baseTypes/listed.mjs';
 import Requirements from './requirements.mjs';
 import Events from './events';
 import Entity from './entities/character/Entity.js';
-import Menu from './ui/menu.mjs';
+import Menu from './ui/menu';
 
 Events.List.ActionFired = "ActionFired";
 

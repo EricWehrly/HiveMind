@@ -1,5 +1,5 @@
 import Listed from './baseTypes/listed.mjs';
-import Menu from './ui/menu.mjs';
+import Menu from './ui/menu.ts';
 import UIElement from './ui/ui-element.ts';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.ts';
