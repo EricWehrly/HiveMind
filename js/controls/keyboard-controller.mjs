@@ -46,13 +46,10 @@ export default class KeyboardController {
             console.warn(`Action ${name} might already be bound?`);
         }
 
-        KeyboardController.Default_Bindings[name] = button
-
-        // I think this isn't currently used, so log to debug
-        // console.log(`I think there are currently ${KeyboardController.#List.length} keyboard controllers ...`);
-        for(var controller of KeyboardController.#List) {
-            controller.Bindings[name] = button;
+        if(!Object.keys(KeyboardController.Default_Bindings).includes(name)) {
+            KeyboardController.Default_Bindings[name] = [];
         }
+        KeyboardController.Default_Bindings[name].push(button);
     }
 
     Bindings = {}
@@ -136,6 +133,7 @@ export default class KeyboardController {
                     });
                 }
             }
+            // else console.log(key);
         }
     }
 }
