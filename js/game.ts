@@ -35,7 +35,7 @@ import '../engine/js/entities/entity-graphics.mjs';
 
 // hack, until we convert Actions to proper ts
 import './actions';
-import './interaction.mjs';
+import './interaction';
 import './entities/purposes/slime-purposes';
 import './entities/purposes/growth-purposes';
 import { MakeLiving } from '../engine/js/entities/character/mixins/Living';

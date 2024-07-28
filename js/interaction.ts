@@ -1,5 +1,7 @@
 import Menu from '../engine/js/ui/menu.mjs';
 import { RegisterLoopMethod } from '../engine/js/loop.mjs';
+import HiveMindCharacter from './entities/character/HiveMindCharacter';
+import Action from '../engine/js/action';
 
 function checkPlayerInteraction() {
 
@@ -13,7 +15,7 @@ function checkPlayerInteraction() {
         return;
     }
 
-    const closest = localPlayer.target;
+    const closest = localPlayer.target as HiveMindCharacter;
 
     if(closest == null) return;
     localPlayer.toolTip.entity = closest;
