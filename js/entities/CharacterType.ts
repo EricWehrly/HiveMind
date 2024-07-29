@@ -6,7 +6,8 @@ export default class CharacterType {
 
     static List: { [key: string]: CharacterType } = {}
 
-    name: string;
+    _name: string;
+    get name() { return this._name; }
     // some of these properties might be ... odd, to have on here ...
     // but then, this whole class is kinda murky javascript hack fun
     _spawnPurposeKey?: string;
@@ -17,8 +18,8 @@ export default class CharacterType {
     // expose commonly accessed character property
     health?: number;
 
-    #research: Research;
-    get research() { return this.#research; }
+    private _research: Research;
+    get research() { return this._research; }
 
     #isStudied = false;
     get isStudied() { return this.#isStudied; }
@@ -33,7 +34,7 @@ export default class CharacterType {
         const { research, ...characterOptions } = options;
 
         if(options.research) {
-            this.#research = new Research({
+            this._research = new Research({
                 name: options.name,
                 ...options.research
             });
