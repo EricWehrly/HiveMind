@@ -12,6 +12,7 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     for (const mixin of mixins) {
         ExtendedCharacter = mixin(ExtendedCharacter, options);
     }
+    if(!options) options = {};
     options.calledByFactory = true;
     return new ExtendedCharacter(options) as T;
 }
