@@ -21,7 +21,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
     return class extends Base implements Growable {
 
         growth: number = null;
-        growConfig: GrowableConfig = options.growConfig || {};
+        growConfig: GrowableConfig = options?.growConfig || {};
 
         get isGrown() {
 
