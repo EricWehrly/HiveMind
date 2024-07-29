@@ -31,14 +31,15 @@ export default class CharacterType {
 
     constructor(options: CharacterType) {
 
-        const { research, ...characterOptions } = options;
+        const { name, research, ...characterOptions } = options;
 
         if(options.research) {
             this._research = new Research({
-                name: options.name,
+                name,
                 ...options.research
             });
         }
+        this._name = name;
 
         Object.assign(this, characterOptions);
 
