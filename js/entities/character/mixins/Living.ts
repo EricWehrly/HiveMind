@@ -25,8 +25,9 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: any) {
     return class extends Base implements Living {
 
-        private _health = options.characterType?.health || options.health;
-        private _initialHealth = options.characterType?.maxHealth || options.maxHealth || this._health;
+        // TODO: value of health when options is null
+        private _health = options?.characterType?.health || options?.health;
+        private _initialHealth = options?.characterType?.maxHealth || options?.maxHealth || this._health;
     
         get size() { 
             // TODO: address this magic number
