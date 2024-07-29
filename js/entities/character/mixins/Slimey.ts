@@ -24,7 +24,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
     return class extends Base implements Slimey {
 
-        parent?: HiveMindCharacter & Living = options.parent;
+        parent?: HiveMindCharacter & Living = options?.parent;
         
         // TODO: set character current subdivision task/purpose
         Subdivide (options: SubdivideOptions = {}) {
