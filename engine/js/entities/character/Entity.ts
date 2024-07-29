@@ -71,7 +71,8 @@ export default class Entity {
     // one dimension, rather than height and width, for now
     get size() { return 1 }
 
-    characterType: CharacterType;
+    private _characterType: CharacterType;
+    get characterType() { return this._characterType; }
 
     entityRenderingSettings: EntityRenderingSettings;
 
@@ -121,7 +122,7 @@ export default class Entity {
 
         this.id = options.id || generateId();
 
-        this.characterType = options.characterType || CharacterType.List[options.name];
+        this._characterType = options.characterType || CharacterType.List[options.name];
 
         this.name = options.name || this.characterType?.name || "TODO";     // TODO :/
         
