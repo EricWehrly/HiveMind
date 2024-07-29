@@ -22,6 +22,6 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, op
     return class extends Base implements Grower {
         growing: (HiveMindCharacter & Growable)[] = [];
         lastSpawn: number;
-        growerConfig: GrowerConfig = options.growerConfig || {};
+        growerConfig: GrowerConfig = options?.growerConfig || {};
     }
 }
