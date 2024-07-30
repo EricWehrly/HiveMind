@@ -3,8 +3,19 @@ import Events from '../events';
 import Rectangle from '../baseTypes/rectangle';
 import Entity from '../entities/character/Entity';
 
+export enum SCREEN_ZONE {
+    NONE = "",
+    BOTTOM_LEFT = "bottom left",
+    BOTTOM_CENTER = "bottom center",
+    BOTTOM_RIGHT = "bottom right",
+    TOP_RIGHT = "top right",
+    TOP_CENTER = "top center",
+    TOP_LEFT = "top left",
+    MIDDLE_RIGHT = "middle right"
+};
+
 export interface UIElementOptions {
-    screenZone?: any;
+    screenZone?: SCREEN_ZONE;
     visible?: boolean;
     classes?: string[];
 }
@@ -12,15 +23,8 @@ export interface UIElementOptions {
 export default class UIElement {
 
     // css classes to apply
-    static SCREEN_ZONE = {
-        NONE: "",
-        BOTTOM_LEFT: "bottom left",
-        BOTTOM_CENTER: "bottom center",
-        BOTTOM_RIGHT: "bottom right",
-        TOP_RIGHT: "top right",
-        TOP_CENTER: "top center",
-        TOP_LEFT: "top left",
-        MIDDLE_RIGHT: "middle right"
+    static get SCREEN_ZONE() {
+        return SCREEN_ZONE;
     }
 
     static #UI_ELEMENTS: UIElement[] = [];

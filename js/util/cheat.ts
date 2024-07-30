@@ -12,7 +12,7 @@ import { MakeGrower } from "../entities/character/mixins/Grower";
 import { MakeSlimey } from "../entities/character/mixins/Slimey";
 
 export default class Cheat {
-    static get Health(): any {
+    static get Health(): void {
         const localPlayer = Character.LOCAL_PLAYER as Living;
 
         localPlayer.health *= 3;
@@ -21,21 +21,21 @@ export default class Cheat {
         return null;
     }
 
-    static get Food(): any {
+    static get Food(): void {
         Resource.Get("food").value = 1000;
 
         return null;
     }
 
     // alias :shrug:
-    static get Gains(): any {
+    static get Gains(): void {
 
         Cheat.Health;
 
         return null;
     }
 
-    static get Unlocks(): any {
+    static get Unlocks(): void {
 
         const localPlayer = Character.LOCAL_PLAYER as Combatant;
         
@@ -54,7 +54,7 @@ export default class Cheat {
         return null;
     }
 
-    static get Beefcake(): any {
+    static get Beefcake(): void {
 
         Cheat.Health;
         Cheat.Food;
@@ -65,7 +65,7 @@ export default class Cheat {
         return null;
     }
 
-    static get Nodes(): any {
+    static get Nodes(): void {
 
         // @ts-expect-error
         const playerFaction = Character.LOCAL_PLAYER.faction;

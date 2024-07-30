@@ -10,6 +10,13 @@ export interface StatusEffectCallbackOptions {
     target: Living;
 }
 
+export interface StatusEffectOptions {
+    name: string;
+    damage?: number;
+    interval?: number;
+    duration?: number;
+}
+
 // should this extend Technology?
 export default class StatusEffect extends Listed {
 
@@ -59,7 +66,7 @@ export default class StatusEffect extends Listed {
         return this.#duration;
     }
 
-    constructor(options: any = {}) {
+    constructor(options: StatusEffectOptions) {
         
         super(options);
 

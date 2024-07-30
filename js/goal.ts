@@ -15,7 +15,7 @@ const UI_ELEMENT_PROGRESS = new UIElement({
 UI_ELEMENT_PROGRESS.Element.id = "objective-progress";
 UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress";
 
-Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt(building: any) {
+Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt() {
 
     if(playerHasWon) return;
 
