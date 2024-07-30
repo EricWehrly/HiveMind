@@ -63,6 +63,7 @@ export default class Food {
                 // Maybe we should have a "spawn item" shorthand function?
                 // or maybe "character type" should be an option we can pass into the character constructor?
                 Object.assign(opts, CharacterType.List['Food']);
+                opts.characterType = CharacterType.List['Food'];
                 MakeHiveMindCharacter([MakeGrowable, MakeLiving], opts);
             }
         }

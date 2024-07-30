@@ -5,36 +5,31 @@ import UIElement from '../../engine/js/ui/ui-element.ts';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.ts';
 import NodeAI from '../ai/node.ts';
-import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
-import { MakeGrowable } from './character/mixins/Growable.ts';
 import Building from './building.ts';
-import { MakeGrower } from './character/mixins/Grower.ts';
-import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
 
 const desireLabels = {};
 
-const Build = function (context) {
+const BuildFromMenu = function (context) {
 
     const selectedBuilding = context?.menu?.selected?.context;
 
-    if (selectedBuilding.name != "Node") {
+    const characterType = selectedBuilding.characterType 
+        || CharacterType.List[selectedBuilding.characterTypeName || selectedBuilding.name];
 
-        NodeAI.QueueDesire(selectedBuilding);
+    if (characterType.name != "Node") {
+
+        NodeAI.QueueDesire(characterType);
         return;
     }
 
     const player = Character.LOCAL_PLAYER;
 
-    const characterType = CharacterType.List[selectedBuilding.characterType || selectedBuilding.name];
-
     const options = {
-        characterType,
-        color: player.color,
         position: player.position,
         faction: player.faction
     }
 
-    return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving], options, Building);
+    Building.Build(characterType, options);
 }
 
 // maybe it's time to extract a 'buildingMenu' file
@@ -42,13 +37,13 @@ const UI_MENU_BUILDINGS = new Menu({
     screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
     name: "Build",
     visible: false,
-    menuAction: Build
+    menuAction: BuildFromMenu
 });
 
 const addBuildItem = function(itemType) {
     
     return UI_MENU_BUILDINGS.addItem({
-        ...itemType,
+        characterTypeName: itemType.characterType.name,
         section: 'available'
     });
 }

@@ -4,11 +4,9 @@ import CharacterType from "../entities/CharacterType";
 import Events from "../../engine/js/events";
 import Building from "../entities/building";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
-import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
-import { Growable, MakeGrowable } from "../entities/character/mixins/Growable";
-import { MakeHiveMindCharacter } from "../entities/character/CharacterFactory";
-import { Grower, MakeGrower } from "../entities/character/mixins/Grower";
-import { MakeSlimey } from "../entities/character/mixins/Slimey";
+import { Living } from "../../engine/js/entities/character/mixins/Living";
+import { Growable } from "../entities/character/mixins/Growable";
+import { Grower } from "../entities/character/mixins/Grower";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -28,9 +26,9 @@ export default class NodeAI extends AI {
     static #FOOD_THRESHOLD = 100;
     static #BUILDING_PADDING = 10;
     static #MAX_SPARE_NODES = 5;
-    static #desiredBuildingsQueue: Building[] = [];
+    static #desiredBuildingsQueue: CharacterType[] = [];
 
-    static QueueDesire(desire: Building) {
+    static QueueDesire(desire: CharacterType) {
 
         NodeAI.#desiredBuildingsQueue.push(desire);
         
@@ -99,16 +97,16 @@ export default class NodeAI extends AI {
 
         const point = this.character.getEligibleConstructionPosition(buildingType);
 
-        this.#nextConstructPositions[buildingType.name] = point;
+        this.#nextConstructPositions[buildingType._name] = point;
     }
 
     #getNextConstructionPosition(buildingType: CharacterType) {
 
-        if(!this.#nextConstructPositions[buildingType.name]) {
+        if(!this.#nextConstructPositions[buildingType._name]) {
             this.#computeNextConstructPosition(buildingType);
         }
 
-        return this.#nextConstructPositions[buildingType.name];
+        return this.#nextConstructPositions[buildingType._name];
     }
 
     think() {
@@ -175,7 +173,7 @@ export default class NodeAI extends AI {
 
         const intent = NodeAI.#desiredBuildingsQueue[0];
         if (intent) {
-            this.character.Develop(intent);
+            this.#buildDesired(intent.characterType);
             Events.RaiseEvent(Events.List.BuildingDesireFulfilled, intent);
             // we could probably slice it off instead?
             NodeAI.#desiredBuildingsQueue.splice(0, 1);
@@ -226,7 +224,7 @@ export default class NodeAI extends AI {
 
     #buildDesired(wantToBuild: CharacterType & Living) {
 
-        const food = Resource.Get("food");
+        const food = Resource.Get("food") as Resource;
         // TODO: We'll fix this next
         const wantedHealth = wantToBuild.health;
         if (food.available < NodeAI.#FOOD_THRESHOLD + wantedHealth) return;
@@ -237,8 +235,10 @@ export default class NodeAI extends AI {
 
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
-        console.log(`Node has chosen to build ${wantToBuild.name} at ${buildPosition}`);
-        const building = MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeSlimey, MakeLiving], buildOptions, Building) as Building & Growable & Living;
+        console.log(`Node has chosen to build ${wantToBuild._name} at ${buildPosition}`);
+        const building = Building.Build(wantToBuild, buildOptions) as Building & Growable & Living;
+        // TODO: this should be BEFORE we instantiate, right? or, even, just, a part of?
+        // also this is an over-reserve since we're already paying the (initial) health ...
         if(!food.reserve(building.maxHealth, building)) return;
 
         const healthDiff = building.health * .9;

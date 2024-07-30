@@ -73,6 +73,7 @@ function spawnFauna(chunk) {
             ai: PredatorAI
         };
         Object.assign(spawnOpts, characterOpts);
+        spawnOpts.characterType = CharacterType.List['Animal'];
         MakeHiveMindCharacter([MakeLiving], spawnOpts);
     }
 }

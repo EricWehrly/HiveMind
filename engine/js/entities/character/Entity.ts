@@ -72,7 +72,12 @@ export default class Entity {
     get size() { return 1 }
 
     private _characterType: CharacterType;
-    get characterType() { return this._characterType; }
+    get characterType() { 
+        if(this._characterType == null) {
+            this._characterType = CharacterType.List[this.name];
+        }
+        return this._characterType;
+    }
 
     entityRenderingSettings: EntityRenderingSettings;
 
