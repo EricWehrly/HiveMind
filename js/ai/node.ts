@@ -97,16 +97,16 @@ export default class NodeAI extends AI {
 
         const point = this.character.getEligibleConstructionPosition(buildingType);
 
-        this.#nextConstructPositions[buildingType._name] = point;
+        this.#nextConstructPositions[buildingType.name] = point;
     }
 
     #getNextConstructionPosition(buildingType: CharacterType) {
 
-        if(!this.#nextConstructPositions[buildingType._name]) {
+        if(!this.#nextConstructPositions[buildingType.name]) {
             this.#computeNextConstructPosition(buildingType);
         }
 
-        return this.#nextConstructPositions[buildingType._name];
+        return this.#nextConstructPositions[buildingType.name];
     }
 
     think() {
@@ -235,7 +235,7 @@ export default class NodeAI extends AI {
 
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
-        console.log(`Node has chosen to build ${wantToBuild._name} at ${buildPosition}`);
+        console.log(`Node has chosen to build ${wantToBuild.name} at ${buildPosition}`);
         const building = Building.Build(wantToBuild, buildOptions) as Building & Growable & Living;
         // TODO: this should be BEFORE we instantiate, right? or, even, just, a part of?
         // also this is an over-reserve since we're already paying the (initial) health ...
