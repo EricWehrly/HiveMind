@@ -13,11 +13,12 @@ export interface MenuOptions {
     menuAction?: Function;
 }
 
-interface MenuItem {
+export interface MenuItem {
     Element?: HTMLElement;
     context?: Record<string, any>;
     name?: string;
     cost?: number;
+    characterTypeName?: string;
 }
 
 export default class Menu extends UIElement {
@@ -194,7 +195,8 @@ export default class Menu extends UIElement {
         // should menuItem be a ui element?
         let menuItem: MenuItem = {
             context: {},
-            name: options.name
+            name: options.name || options.characterTypeName,
+            characterTypeName: options.characterTypeName || options.name    // this isn't the best, but it should be fine for now
         };
         if(options.cost) {
             menuItem.cost = options.cost;
@@ -203,7 +205,7 @@ export default class Menu extends UIElement {
         Object.assign(menuItem.context, options);
         if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
         menuItem.Element = document.createElement('div');
-        menuItem.Element.innerHTML = options.name;
+        menuItem.Element.innerHTML = options.name || options.characterTypeName;
         this.#addToDom(menuItem.Element);
 
         if(!this.#selected) {
