@@ -1,4 +1,4 @@
-import Listed from "../baseTypes/listed.mjs";
+import Listed from "../baseTypes/listed.ts";
 import Events from "../events.ts";
 
 Events.List.ResourceCreated = "ResourceCreated";

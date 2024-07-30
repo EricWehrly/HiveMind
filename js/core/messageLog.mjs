@@ -1,4 +1,4 @@
-import Listed from "../baseTypes/listed.mjs";
+import Listed from "../baseTypes/listed.ts";
 
 export default class MessageLog extends Listed {
 

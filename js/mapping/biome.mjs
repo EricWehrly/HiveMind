@@ -1,4 +1,4 @@
-import Listed from "../baseTypes/listed.mjs";
+import Listed from "../baseTypes/listed.ts";
 import Map from './map.ts';
 
 export class BiomeType extends Listed {

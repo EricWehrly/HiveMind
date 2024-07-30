@@ -1,4 +1,4 @@
-import Listed from "./baseTypes/listed.mjs";
+import Listed from "./baseTypes/listed";
 import { Combatant } from "./entities/character/Combatant";
 import { Defer } from "./loop.mjs";
 import Research from "./research.mjs";
@@ -13,7 +13,7 @@ export interface TechnologyOptions {
     range?: number;
     sound?: any;
     research?: Research;
-    name?: string;
+    name: string;
     type?: any;
 }
 
@@ -58,7 +58,7 @@ export default class Technology extends Listed {
             * ((this._range || 1) * 1.5);    // give a little extra 'weight' to range, as it conveys an advantage
     }
 
-    constructor(options: TechnologyOptions = {}) {
+    constructor(options: TechnologyOptions) {
 
         // TODO: reject if missing required options
         if(!options.name) throw `Technology needs name!`;

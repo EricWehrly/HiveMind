@@ -1,4 +1,4 @@
-import Listed from './baseTypes/listed.mjs';
+import Listed from './baseTypes/listed.ts';
 import Menu from './ui/menu.ts';
 import UIElement from './ui/ui-element.ts';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';

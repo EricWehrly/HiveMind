@@ -93,9 +93,6 @@ export class Combatant extends PlayableEntity {
 
     hasTechnology(technology: Technology) {
 
-        if (typeof technology == "string") {
-            technology = Technology.Get(technology);
-        } // else warn?
         return this._technologies.includes(technology);
     }
 

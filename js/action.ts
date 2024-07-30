@@ -1,4 +1,4 @@
-import Listed from './baseTypes/listed.mjs';
+import Listed from './baseTypes/listed';
 import Requirements from './requirements.mjs';
 import Events from './events';
 import Entity from './entities/character/Entity.js';
@@ -13,7 +13,7 @@ export interface ActionOptions {
     isCharacterControl?: boolean;
     isMenuAction?: boolean;
     callback?: Function;
-    name?: string;
+    name: string;
 }
 
 // todo: I think we need to "fix" this by implementing "ActionType"s.
@@ -78,7 +78,7 @@ export default class Action extends Listed {
     get isMenuAction() { return this.#isMenuAction; }
     get callback() { return this._callback; }
 
-    constructor(options: ActionOptions = {}) {
+    constructor(options: ActionOptions) {
 
         super(options);
 
