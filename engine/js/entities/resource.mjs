@@ -6,6 +6,8 @@ Events.List.ResourceValueChanged = "ResourceValueChanged";
 
 export default class Resource extends Listed {
 
+    UIElement;  // for now, because it's not extensible ...
+
     #value = 0;
     #reserved = 0;
 
