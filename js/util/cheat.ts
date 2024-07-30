@@ -3,7 +3,6 @@ import { Combatant } from "../../engine/js/entities/character/Combatant";
 import Entity from "../../engine/js/entities/character/Entity.js";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Resource from "../../engine/js/entities/resource.mjs";
-import Technology from "../../engine/js/technology";
 import Menu from "../../engine/js/ui/menu";
 import CharacterType from "../entities/CharacterType";
 import Building from "../entities/building";
@@ -39,11 +38,9 @@ export default class Cheat {
 
         const localPlayer = Character.LOCAL_PLAYER as Combatant;
         
-        const thorns = Technology.Get("thorns");
-        localPlayer.AddTechnology(thorns);
+        localPlayer.AddTechnology("thorns");
         
-        const claws = Technology.Get("claws");
-        localPlayer.AddTechnology(claws);
+        localPlayer.AddTechnology("claws");
 
         const buildMenu = Menu.Get("build");
         const seeder = buildMenu.addItem(CharacterType.List['Seeder']);

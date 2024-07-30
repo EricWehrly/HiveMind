@@ -1,4 +1,4 @@
-import Listed from "./baseTypes/listed.mjs";
+import Listed from "./baseTypes/listed";
 import { Living } from "./entities/character/mixins/Living";
 import { Defer } from "./loop.mjs";
 

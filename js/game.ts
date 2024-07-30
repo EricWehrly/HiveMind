@@ -72,7 +72,6 @@ const food = new Resource({
 // keep 100 food in reserve for the player to work with
 // maybe this number should scale over time
 food.reserve(100);
-const slap = Technology.Get("slap");
 
 const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {
     name: "Local Player",
@@ -87,7 +86,7 @@ localPlayer.controller = new KeyboardController({ character: localPlayer });
 Character.LOCAL_PLAYER = localPlayer;
 window.LOCAL_PLAYER = localPlayer;
 
-localPlayer.AddTechnology(slap);
+localPlayer.AddTechnology("slap");
 
 localPlayer.toolTip = new ToolTip({
     entity: localPlayer
