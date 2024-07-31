@@ -8,6 +8,7 @@ import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFact
 import { MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeGrower } from "../../js/entities/character/mixins/Grower";
 import { MakeSlimey } from "../../js/entities/character/mixins/Slimey";
+import Resource from "../../engine/js/entities/resource.mjs";
 
 jest.mock('@/engine/js/events', () => {
     return {
@@ -34,15 +35,37 @@ jest.mock('@/js/entities/character/CharacterFactory', () => ({
 
 describe('Building', () => {
     describe('Build', () => {
+        
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
 
         // @ts-expect-error
         const dummyCharacterType = new CharacterType({
             name: 'dummy',
         });
 
+        const food = new Resource({
+            name: 'food',
+        });
+
+        it('should return a valid object', () => {
+
+            const mockReturnValue = { 
+                name: 'DummyBuilding',
+                unusedProperty: 'unused'
+            };
+            (MakeHiveMindCharacter as jest.Mock).mockReturnValue(mockReturnValue);          
+
+            const result = Building.Build(dummyCharacterType, {});
+            
+            expect(result).toBe(mockReturnValue);
+        });
+
         it('should call the factory method with the correct arguments', () => {
 
             const dummyFaction = new Faction({ name: 'dummy' });
+            food.value = 5;
 
             const buildingOptions = {
                 position: new WorldCoordinate(10, -11),
@@ -66,6 +89,16 @@ describe('Building', () => {
         });
 
         it('should return null if resource cost is higher than available', () => {
+
+            food.value = 100;
+
+            const buildingOptions = {
+                cost: 105
+            };      
+
+            const result = Building.Build(dummyCharacterType, buildingOptions);
+
+            expect(result).toBeNull();
         });
 
         it('should handle food reservation', () => {

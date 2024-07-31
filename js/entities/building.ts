@@ -27,14 +27,27 @@ export interface BuildingOptions {
 
 export default class Building extends HiveMindCharacter {
 
-    static Build(charactereType: BuildingCharacterType, options?: BuildingOptions) {
+    static Build(characterType: BuildingCharacterType, options?: BuildingOptions) {
 
         // TODO: food reserve?
         // TODO: placement, collision ... "walk" desired position until nearest non-colliding?
         const characterOptions = {
-            name: charactereType.name,
-            ...charactereType,
+            name: characterType.name,
+            ...characterType,
             ...options
+        }
+
+        const cost = options.cost || characterType.cost || characterType?.health;
+
+        if(cost) {
+            const food = Resource.Get("food");
+            if(!food.pay(cost)) {
+                console.log(`You can't afford to build ${characterType.name} for ${cost}`);
+                console.log(`You got ${food.value}, son.`);
+                return null;
+            }
+        } else {
+            console.warn(`No cost!`);
         }
         
         return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey], characterOptions, Building);
@@ -65,18 +78,6 @@ export default class Building extends HiveMindCharacter {
         // 'name' is actually unset/undefined
         // but color and cost are getting assigned the VALUE of undefined
         const characterType = (options.characterType || CharacterType.List[options.characterType || options.name]) as BuildingCharacterType;
-        const cost = options.cost || characterType?.cost || characterType?.health;
-
-        if(cost) {
-            const food = Resource.Get("food");
-            if(!food.pay(cost)) {
-                console.log(`You can't afford to build ${characterType.name} for ${cost}`);
-                console.log(`You got ${food.value}, son.`);
-                return;
-            }
-        } else {
-            console.warn(`No cost!`);
-        }
 
         // does this fix it moving?
         options.speed = 0;
