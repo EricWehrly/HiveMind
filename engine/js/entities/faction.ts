@@ -1,11 +1,16 @@
-import Listed from "../baseTypes/listed.ts";
+import Listed from "../baseTypes/listed";
+
+export interface FactionOptions {
+    name: string;
+    color?: string;
+}
 
 export default class Faction extends Listed {
 
     #color;
     get color() { return this.#color; }
 
-    constructor(options) {
+    constructor(options: FactionOptions) {
 
         super(options);
 

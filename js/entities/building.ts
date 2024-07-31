@@ -9,7 +9,7 @@ import { MakeHiveMindCharacter } from "./character/CharacterFactory";
 import { MakeGrowable } from "./character/mixins/Growable";
 import { MakeGrower } from "./character/mixins/Grower";
 import { MakeSlimey } from "./character/mixins/Slimey";
-import Faction from "../../engine/js/entities/faction.mjs";
+import Faction from "../../engine/js/entities/faction";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 

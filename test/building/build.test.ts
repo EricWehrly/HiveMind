@@ -1,7 +1,7 @@
 import mockMap from "../../engine/test/testHelpers/mockMap";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
-import Faction from "../../engine/js/entities/faction.mjs";
+import Faction from "../../engine/js/entities/faction";
 import CharacterType from "../../js/entities/CharacterType";
 import Building from "../../js/entities/building";
 import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFactory";
