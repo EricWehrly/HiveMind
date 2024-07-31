@@ -1,5 +1,7 @@
-import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import mockMap from "../../engine/test/testHelpers/mockMap";
+import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
+import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
+import Faction from "../../engine/js/entities/faction.mjs";
 import CharacterType from "../../js/entities/CharacterType";
 import Building from "../../js/entities/building";
 import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFactory";
@@ -38,10 +40,13 @@ describe('Building', () => {
             name: 'dummy',
         });
 
-        // TODO: correct arguments
         it('should call the factory method with the correct arguments', () => {
 
+            const dummyFaction = new Faction({ name: 'dummy' });
+
             const buildingOptions = {
+                position: new WorldCoordinate(10, -11),
+                faction: dummyFaction,
                 cost: 2
             };
 
@@ -55,7 +60,6 @@ describe('Building', () => {
 
             expect(MakeHiveMindCharacter).toHaveBeenCalledTimes(1);
             const callArgs = (MakeHiveMindCharacter as jest.Mock).mock.calls[0];
-            console.log(callArgs);
             expect(callArgs[0]).toEqual([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey]);
             expect(callArgs[1]).toEqual(aggregateOptions);
             expect(callArgs[2]).toEqual(Building);
