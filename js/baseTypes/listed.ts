@@ -22,9 +22,7 @@ export default class Listed {
         list[options.name] = this;
         const constructorName = String(this.constructor.name);
 
-        // @ts-expect-error
         if (!window[constructorName]) {
-            // @ts-expect-error
             window[constructorName] = {
                 List: list
             }

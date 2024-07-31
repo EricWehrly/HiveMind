@@ -2,7 +2,6 @@ import { RegisterLoopMethod } from '../loop.mjs';
 import Entity from './character/Entity';
 
 export const CHARACTER_LIST: Entity[] = [];
-//@ts-expect-error (window)
 if(window) window.CHARACTER_LIST = CHARACTER_LIST;
 
 export function AddCharacterToList(character: Entity) {
