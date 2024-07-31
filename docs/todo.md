@@ -1,3 +1,16 @@
+we really should convert resource to ts
+
+we're in the middle of reworking the way things get built
+grown could use some love
+then we also started on character movement -_-
+
+menu items should have a padding when not selected
+    so that they don't adjust their vertical position when selected
+
+allow 'down' and 'up' on menu (but don't need to enable by default)
+    wanted on for input menu
+    off for build menu
+
 - (fix) node position selection for stuff to build
 
 we need the stuff the player builds directly to grow
@@ -14,9 +27,8 @@ we want player to be able to travel "through" nodes to an edge,
     and essentially excrete themselves a form
     travel speed should be based on the "transfer rate" of nutrients within the hivemind
 
-- incorporate 'rotation' into the renderer
-    step 1 is going to be actually assigning it
-    starting with when we're turning to face our target ...
+We should try creating an enemy ant colony to fight
+    and 'testing' how that interaction feels with current mechanics
 
 attributes of a biome:
     how mountainous is this biome?
@@ -52,9 +64,6 @@ Maybe all buildings should be able to build other buildings
 - Things like 'eater' slimes should target the highest rate of digestion things first
 
 Are spawns having trouble moving when their y is 0?
-
-We should try creating an enemy ant colony to fight
-    and 'testing' how that interaction feels with current mechanics
 
 In Builds.mjs:Build, we should probably call grow()
 

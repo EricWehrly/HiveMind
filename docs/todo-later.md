@@ -1,3 +1,7 @@
+- incorporate 'rotation' into the renderer
+    step 1 is going to be actually assigning it
+    starting with when we're turning to face our target ...
+
 - debug console command:
     - list of everything currently growing
         need to find out why reservations + food threshold aren't keeping a steady minimum
