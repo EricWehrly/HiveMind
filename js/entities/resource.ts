@@ -1,12 +1,17 @@
-import Listed from "../baseTypes/listed.ts";
-import Events from "../events.ts";
+import Listed from "../baseTypes/listed";
+import Events from "../events";
 
 Events.List.ResourceCreated = "ResourceCreated";
 Events.List.ResourceValueChanged = "ResourceValueChanged";
 
+export interface ResourceOptions {
+    name: string;
+    value?: number;
+}
+
 export default class Resource extends Listed {
 
-    UIElement;  // for now, because it's not extensible ...
+    UIElement: HTMLElement;  // for now, because it's not extensible ...
 
     #value = 0;
     #reserved = 0;
@@ -36,7 +41,7 @@ export default class Resource extends Listed {
         return this.#value - this.#reserved;
     }
 
-    constructor(options) {
+    constructor(options: ResourceOptions) {
 
         super(options);
 
@@ -45,20 +50,20 @@ export default class Resource extends Listed {
         Events.RaiseEvent(Events.List.ResourceCreated, this);
     }
 
-    canAfford(amount, reservationBucket) {
+    canAfford(amount: number, reservationBucket?: Object) {
 
         if(reservationBucket && 
                 this.#reservations.has(reservationBucket)) {
             return this.available + this.#reservations.get(reservationBucket) >= amount;
         } else {
             if(reservationBucket) {
-                // console.warn(`Reservation bucket does not exist.`);
+                console.warn(`Reservation bucket does not exist.`);
             }
             return this.available >= amount;
         }
     }
 
-    pay(amount, reservationBucket) {
+    pay(amount: number, reservationBucket?: Object) {
 
         if(!this.canAfford(amount, reservationBucket)) return false;
 
@@ -71,30 +76,30 @@ export default class Resource extends Listed {
         return true;
     }
 
-    reserve(amount, object) {
+    reserve(amount: number, reservationBucket: Object) {
 
-        if(!this.canAfford(amount, object)) return false;
+        if(!this.canAfford(amount, reservationBucket)) return false;
 
         this.#reserved += amount;
-        if(object) {
-            const currentReservation = this.#reservations.get(object) || 0;
-            this.#reservations.set(object, currentReservation + amount);
+        if(reservationBucket) {
+            const currentReservation = this.#reservations.get(reservationBucket) || 0;
+            this.#reservations.set(reservationBucket, currentReservation + amount);
             // console.debug(`Reserved ${amount} ${this.name} for ${object?.name || object}`);
         }
 
         return true;
     }
 
-    unReserve(amount, object) {
+    unReserve(amount: number, reservationBucket: Object) {
 
         this.#reserved -= amount;
 
-        if(object) {
+        if(reservationBucket) {
             // console.debug(`Unreserving ${amount} ${this.name} for ${object?.name || object}`);
-            const currentReservation = this.#reservations.get(object) || 0;
-            this.#reservations.set(object, currentReservation - amount);
+            const currentReservation = this.#reservations.get(reservationBucket) || 0;
+            this.#reservations.set(reservationBucket, currentReservation - amount);
             if(currentReservation - amount <= 0) {
-                this.#reservations.delete(object);
+                this.#reservations.delete(reservationBucket);
             }
         }
     }

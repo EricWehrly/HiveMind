@@ -1,5 +1,5 @@
 import UIElement from "./ui-element.ts";
-import Resource from "../entities/resource.mjs";
+import Resource from "../entities/resource.ts";
 import Events from "../events.ts";
 
 // TODO: get this from some configuration ...
