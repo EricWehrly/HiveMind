@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
-import Faction from './faction.mjs';
+import Faction from './faction';
 import Tooltip from '../ui/tooltip';
 import { Combatant } from './character/Combatant';
 

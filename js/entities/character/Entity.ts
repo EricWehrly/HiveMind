@@ -8,7 +8,7 @@ import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Rectangle from "../../baseTypes/rectangle";
 import EntityRenderingSettings from './EntityRenderingSettings';
-import Faction from '../faction.mjs';
+import Faction from '../faction';
 import Vector from "../../baseTypes/Vector";
 
 Events.List.CharacterCreated = "CharacterCreated";
