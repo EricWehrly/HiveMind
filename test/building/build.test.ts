@@ -8,7 +8,7 @@ import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFact
 import { MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeGrower } from "../../js/entities/character/mixins/Grower";
 import { MakeSlimey } from "../../js/entities/character/mixins/Slimey";
-import Resource from "../../engine/js/entities/resource.mjs";
+import Resource from "../../engine/js/entities/resource";
 
 jest.mock('@/engine/js/events', () => {
     return {

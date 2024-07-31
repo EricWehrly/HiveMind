@@ -1,7 +1,7 @@
 import WorldCoordinate from "../../../engine/js/coordinates/WorldCoordinate";
 import Entity from "../../../engine/js/entities/character/Entity";
 import { MakeLiving } from "../../../engine/js/entities/character/mixins/Living";
-import Resource from "../../../engine/js/entities/resource.mjs";
+import Resource from "../../../engine/js/entities/resource";
 import { MakeHiveMindCharacter } from "../character/CharacterFactory";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { Growable, MakeGrowable } from "../character/mixins/Growable";

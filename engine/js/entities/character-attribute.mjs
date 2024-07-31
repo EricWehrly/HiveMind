@@ -1,5 +1,5 @@
 import Events from "../events.ts";
-import Resource from './resource.mjs';
+import Resource from './resource.ts';
 
 Events.List.CharacterAttributeChanged = "CharacterAttributeChanged";
 

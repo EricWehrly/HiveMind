@@ -1,5 +1,5 @@
 import { Living } from "../../../../engine/js/entities/character/mixins/Living";
-import Resource from "../../../../engine/js/entities/resource.mjs";
+import Resource from "../../../../engine/js/entities/resource";
 import HiveMindCharacter from "../HiveMindCharacter";
 
 // TODO: I'm not sure we wanted this exported from here ...

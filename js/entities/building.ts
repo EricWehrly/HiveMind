@@ -1,4 +1,4 @@
-import Resource from "../../engine/js/entities/resource.mjs";
+import Resource from "../../engine/js/entities/resource";
 import CharacterType from "./CharacterType";
 import Events from "../../engine/js/events";
 import Rectangle from "../../engine/js/baseTypes/rectangle";

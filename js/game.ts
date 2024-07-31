@@ -25,7 +25,7 @@ import './entities/building';
 import Map from '../engine/js/mapping/map';
 import './entities/entities.mjs';
 // TODO: We can restructure 'entities.js' to import and export this
-import Resource from '../engine/js/entities/resource.mjs';
+import Resource from '../engine/js/entities/resource';
 import './characterStats.mjs';
 
 import Cheat from './util/cheat';
@@ -72,7 +72,7 @@ const food = new Resource({
 });
 // keep 100 food in reserve for the player to work with
 // maybe this number should scale over time
-food.reserve(100);
+food.reserve(100, {});
 
 const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {
     name: "Local Player",

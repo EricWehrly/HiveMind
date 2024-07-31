@@ -2,7 +2,7 @@ import Events from "../../../engine/js/events";
 import Research from "../../../engine/js/research.mjs";
 import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
 import Character from "../../../engine/js/entities/character";
-import Resource from "../../../engine/js/entities/resource.mjs";
+import Resource from "../../../engine/js/entities/resource";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { CHARACTER_LIST } from "../../../engine/js/entities/characters";
 import { IsLiving, Living } from "../../../engine/js/entities/character/mixins/Living";

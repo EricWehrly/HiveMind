@@ -1,4 +1,4 @@
-import Resource from "../../../../engine/js/entities/resource.mjs";
+import Resource from "../../../../engine/js/entities/resource";
 import HiveMindCharacter from "../HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../CharacterFactory";
 import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";

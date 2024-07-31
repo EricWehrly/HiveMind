@@ -22,7 +22,7 @@ jest.mock('@/engine/js/events', () => {
         }
     };
 });
-jest.mock('@/engine/js/entities/resource.mjs', () => {
+jest.mock('@/engine/js/entities/resource.ts', () => {
     return {
         __esModule: true, // this property makes it work
         default: {

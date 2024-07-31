@@ -1,5 +1,3 @@
-we really should convert resource to ts
-
 we're in the middle of reworking the way things get built
 grown could use some love
 then we also started on character movement -_-

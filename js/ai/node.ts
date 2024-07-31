@@ -1,5 +1,5 @@
 import AI from "../../engine/js/ai/basic";
-import Resource from "../../engine/js/entities/resource.mjs";
+import Resource from "../../engine/js/entities/resource";
 import CharacterType from "../entities/CharacterType";
 import Events from "../../engine/js/events";
 import Building from "../entities/building";
