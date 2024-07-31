@@ -282,5 +282,4 @@ export default class Menu extends UIElement {
     }
 }
 
-// @ts-expect-error
 if(window) window.Menu = Menu;

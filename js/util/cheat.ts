@@ -86,5 +86,4 @@ export default class Cheat {
     }
 }
 
-// @ts-expect-error
 if(window) window.Cheat = Cheat;

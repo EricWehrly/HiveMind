@@ -60,8 +60,9 @@ Game.Map = new Map(Game.Seed);
 // TODO: figure out where to properly put this
 declare global {
     interface Window {
+        [key: string]: any;
         LOCAL_PLAYER: HiveMindCharacter;
-        Game: typeof Game
+        Game: typeof Game;
     }
 }
 

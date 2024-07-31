@@ -80,5 +80,4 @@ export default class Character extends Combatant {
     }
 }
 
-// @ts-ignore
 if(window) window.Character = Character;

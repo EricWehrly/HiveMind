@@ -218,5 +218,4 @@ new Action({
     }
 });
 
-// @ts-expect-error
 if(window) window.Action = Action;

@@ -52,7 +52,6 @@ export default class Map {
             throw message;
         }
 
-        //@ts-expect-error
         if(Map._map == null) window.map = Map._map = this;
 
         this._seed = new Seed(seed.Random());
