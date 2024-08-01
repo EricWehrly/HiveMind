@@ -19,8 +19,8 @@ export default class Point {
     }
 
     constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
     }
 
     equals(point: Point) {
