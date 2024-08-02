@@ -1,4 +1,4 @@
-import { BiomeType } from "../../engine/js/mapping/biome.mjs";
+import { BiomeType } from "../../engine/js/mapping/biome";
 
 new BiomeType({
     name: "Grasslands",

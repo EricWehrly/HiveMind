@@ -3,7 +3,7 @@ import Game from '../engine/js/engine.mjs';
 import Events from '../engine/js/events';
 
 // Data
-import './data/biomeTypes.mjs'
+import './data/biomeTypes'
 
 // Functionality
 import '../engine/js/mapping/tile-manager.mjs';
