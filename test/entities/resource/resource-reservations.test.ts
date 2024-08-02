@@ -41,6 +41,31 @@ describe('Resource', () => {
         });
     });
 
+    // pay 
+    // should take from reservation bucket if specified
+    // (how are we going to verify that ... ?)
+    describe('pay', () => {
+        it('should take from reservation bucket if specified', () => {
+    
+            const fakeEntity = {
+                name: 'fakey'
+            };
+            const resource = new Resource({
+                name: 'test',
+                value: 30
+            });
+            resource.reserve(20, fakeEntity);
+            expect(resource.reserved).toBe(20);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(20);
+
+            resource.pay(10, fakeEntity);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(10);
+            expect(resource.reserved).toBe(10);
+
+            expect(resource.value).toBe(20);
+        });
+    });
+
     describe('reserve', () => {
         it('should return false if the player cannot afford the amount', () => {
             const resource = new Resource({
@@ -63,6 +88,36 @@ describe('Resource', () => {
             resource.reserve(5, {});
             expect(resource.reserved).toBe(5);
         });
+
+        it('should create a bucket to store reservation', () => {
+
+            const fakeEntity = {
+                name: 'fakey'
+            };
+            const resource = new Resource({
+                name: 'test',
+                value: 9
+            });
+            resource.reserve(5, fakeEntity);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(5);
+        });
+
+        it('should add to existing reservation bucket if specified', () => {
+
+            const fakeEntity = {
+                name: 'fakey'
+            };
+            const resource = new Resource({
+                name: 'test',
+                value: 99
+            });
+            // these tests might get weird, going around the total reservation variable
+            resource['_reservations'].set(fakeEntity, 5);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(5);
+
+            resource.reserve(20, fakeEntity);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(25);
+        });
     });
 
     describe('unReserve', () => {
@@ -76,6 +131,23 @@ describe('Resource', () => {
             resource.unReserve(3, {});
             expect(resource.reserved).toBe(2);
             expect(resource.value).toBe(9);
+        });
+
+        it('should subtract from specified reservation bucket', () => {
+
+            const fakeEntity = {
+                name: 'fakey'
+            };
+            const resource = new Resource({
+                name: 'test',
+                value: 50
+            });
+            // these tests might get weird, going around the total reservation variable
+            resource['_reservations'].set(fakeEntity, 20);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(20);
+
+            resource.unReserve(10, fakeEntity);
+            expect(resource['_reservations'].get(fakeEntity)).toBe(10);
         });
     });
 });
