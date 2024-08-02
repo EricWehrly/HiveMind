@@ -119,7 +119,7 @@ export default class Chunk {
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
         if(options.active) this.active = options.active;
-        this.#seed = new Seed(Map.Map.Seed.Random());
+        this.#seed = new Seed(Map.Instance.Seed.Random());
         const seed = this.#seed;
 
         this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
