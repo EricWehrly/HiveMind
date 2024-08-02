@@ -45,7 +45,7 @@ function redraw(chunk, screenRect) {
 
 function redraw_loop(screenRect) {
 
-    for(var chunk of Object.values(Map.Map.chunks)) {
+    for(var chunk of Object.values(Map.Instance.chunks)) {
         // if chunk in screenRect
         redraw(chunk, screenRect);
     }

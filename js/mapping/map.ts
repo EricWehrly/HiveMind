@@ -11,9 +11,9 @@ const CHUNK_SOFT_LIMIT = 5000;
 // TODO: export the instance, not the class
 export default class Map {
 
-    private static _map: Map;
-    static get Map() {
-        return this._map;
+    private static _instance: Map;
+    static get Instance() {
+        return this._instance;
     };
 
     static {
@@ -52,7 +52,10 @@ export default class Map {
             throw message;
         }
 
-        if(Map._map == null) window.map = Map._map = this;
+        if(Map._instance == null) {
+            Map._instance = this;
+            window.map = this;
+        }
 
         this._seed = new Seed(seed.Random());
         

@@ -51,7 +51,7 @@ export default class Biome {
         this.#width = options.width;
         this.#height = options.height;
         
-        Map.Map.addBiome(this);
+        Map.Instance.addBiome(this);
     }
 
     contains(coordinates) {
