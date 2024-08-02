@@ -16,7 +16,7 @@ export default class Resource extends Listed {
     #value = 0;
     #reserved = 0;
 
-    #reservations = new WeakMap();
+    private _reservations = new WeakMap();
 
     get value() {
         return this.#value;
@@ -53,8 +53,8 @@ export default class Resource extends Listed {
     canAfford(amount: number, reservationBucket?: Object) {
 
         if(reservationBucket && 
-                this.#reservations.has(reservationBucket)) {
-            return this.available + this.#reservations.get(reservationBucket) >= amount;
+                this._reservations.has(reservationBucket)) {
+            return this.available + this._reservations.get(reservationBucket) >= amount;
         } else {
             if(reservationBucket) {
                 console.warn(`Reservation bucket does not exist.`);
@@ -69,7 +69,7 @@ export default class Resource extends Listed {
 
         this.value -= amount;
 
-        if(reservationBucket && this.#reservations.has(reservationBucket)) {
+        if(reservationBucket && this._reservations.has(reservationBucket)) {
             this.unReserve(amount, reservationBucket);
         }
 
@@ -82,8 +82,8 @@ export default class Resource extends Listed {
 
         this.#reserved += amount;
         if(reservationBucket) {
-            const currentReservation = this.#reservations.get(reservationBucket) || 0;
-            this.#reservations.set(reservationBucket, currentReservation + amount);
+            const currentReservation = this._reservations.get(reservationBucket) || 0;
+            this._reservations.set(reservationBucket, currentReservation + amount);
             // console.debug(`Reserved ${amount} ${this.name} for ${object?.name || object}`);
         }
 
@@ -96,10 +96,10 @@ export default class Resource extends Listed {
 
         if(reservationBucket) {
             // console.debug(`Unreserving ${amount} ${this.name} for ${object?.name || object}`);
-            const currentReservation = this.#reservations.get(reservationBucket) || 0;
-            this.#reservations.set(reservationBucket, currentReservation - amount);
+            const currentReservation = this._reservations.get(reservationBucket) || 0;
+            this._reservations.set(reservationBucket, currentReservation - amount);
             if(currentReservation - amount <= 0) {
-                this.#reservations.delete(reservationBucket);
+                this._reservations.delete(reservationBucket);
             }
         }
     }
