@@ -56,9 +56,6 @@ export default class Resource extends Listed {
                 this._reservations.has(reservationBucket)) {
             return this.available + this._reservations.get(reservationBucket) >= amount;
         } else {
-            if(reservationBucket) {
-                console.warn(`Reservation bucket does not exist.`);
-            }
             return this.available >= amount;
         }
     }
