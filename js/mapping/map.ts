@@ -1,8 +1,9 @@
 import WorldCoordinate from "../coordinates/WorldCoordinate";
+import Point from "../coordinates/point";
 import Seed from "../core/seed.mjs";
 import SentientEntity from "../entities/character/SentientEntity";
 import Events from "../events";
-import Biome, { BiomeType } from "./biome.mjs";
+import Biome, { BiomeType } from "./biome";
 import Chunk from "./chunk";
 
 // TODO: test this at very low numbers so that we can know what happens when we approach it (and deal with that)
@@ -77,9 +78,11 @@ export default class Map {
         for(var deltaX = distance * -1; deltaX <= distance; deltaX++) {
             for(var deltaY = distance * -1; deltaY <= distance; deltaY++) {
                 if(deltaX == 0 && deltaY == 0) continue;
-                const x = startingChunk.x + deltaX;
-                const y = startingChunk.y + deltaY;
-                const chunk = this.getChunk(x, y);
+                const chunkCoordinate = new Point(
+                    startingChunk.x + deltaX,
+                    startingChunk.y + deltaY
+                );
+                const chunk = this.getChunkFromCoordinate(chunkCoordinate);
                 if(chunk && nearbyChunks.indexOf(chunk) == -1) {
                     nearbyChunks.push(chunk);
                 }
@@ -123,59 +126,45 @@ export default class Map {
         this._biomes.push(biome);
     }
 
-    getBiome(options: { x: number, y: number }) {
+    getBiome(point: Point) {
 
-        if(options.x != null && options.y != null) {
-
-            for(var biome of this._biomes) {
-                if(biome.contains(options)) {
-                    return biome;
-                }
+        for(var biome of this._biomes) {
+            if(biome.contains(point)) {
+                return biome;
             }
-            // TODO: determine BiomeType to use based on adjacent biomes
-            const biomeType = BiomeType.Get("Grasslands");
-            const width = Math.round(this.Seed.Random(biomeType.minWidth, biomeType.maxWidth));
-            const height = Math.round(this.Seed.Random(biomeType.minHeight, biomeType.maxHeight));
-            return new Biome({
-                biomeType,
-                width,
-                height,
-                ...options
-            });
-        } else {
-            console.error(`Don't know how to look up biome for ${options}`);
         }
+        // TODO: determine BiomeType to use based on adjacent biomes
+        const biomeType = BiomeType.Get("Grasslands");
+        const width = Math.round(this.Seed.Random(biomeType.minWidth, biomeType.maxWidth));
+        const height = Math.round(this.Seed.Random(biomeType.minHeight, biomeType.maxHeight));
+        return new Biome({
+            biomeType,
+            width,
+            height,
+            x: point.x,
+            y: point.y
+        });
     }
-
-    getChunk(worldCoordinate: WorldCoordinate): Chunk;
-    getChunk(x: number, y: number): Chunk;
     
-    getChunk(xOrPoint: number | WorldCoordinate, y?: number): Chunk {
-        if (xOrPoint instanceof WorldCoordinate) {
-            const chunkCoordinate = Chunk.getChunkCoordinate(xOrPoint.x, xOrPoint.y);
-            return this.getChunk(chunkCoordinate.x, chunkCoordinate.y);
-        } else if (typeof xOrPoint === 'number' && typeof y === 'number') {
-            return this.getChunkFromCoordinate(xOrPoint, y);
-        } else {
-            throw new Error('Invalid arguments');
-        }
+    getChunk(point: Point): Chunk {
+        const chunkCoordinate = Chunk.getChunkCoordinate(point);
+        return this.getChunkFromCoordinate(chunkCoordinate);
     }
 
-    private getChunkFromCoordinate(x: number, y: number) {
+    private getChunkFromCoordinate(point: Point) {
         // TODO: ensure X an Y are not point coordinates ...
 
-        // can this just be chunkCoordinate.toString?
-        const coordinate = x + "," + y;
+        const coordinate = point.toString();
         if(this.shouldMakeNewChunk(coordinate)) {
             const active = Object.keys(this._chunks).length == 0;
-            const biome = this.getBiome({x, y});
+            const biome = this.getBiome(point);
             // if(Events.Context?.character?.isPlayer) ...
             new Chunk({
                 biome,
                 active,
                 map: this,
-                x,
-                y
+                x: point.x,
+                y: point.y
             });
         }
         return this._chunks[coordinate];

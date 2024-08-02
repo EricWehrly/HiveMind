@@ -1,5 +1,21 @@
-import Listed from "../baseTypes/listed.ts";
-import Map from './map.ts';
+import Listed from "../baseTypes/listed";
+import Point from "../coordinates/point";
+import Map from "./map";
+
+export interface BiomeOptions {
+    biomeType: BiomeType;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface BiomeTypeOptions {
+    name: string;
+    color?: string;
+    minSize: number;
+    maxSize: number;
+}
 
 export class BiomeType extends Listed {
 
@@ -12,7 +28,7 @@ export class BiomeType extends Listed {
     #maxHeight = 10;
     get maxHeight() { return this.#maxHeight; }
 
-    constructor(options) {
+    constructor(options: BiomeTypeOptions) {
 
         super(options);
     }
@@ -39,7 +55,7 @@ export default class Biome {
      * @param {Integer} options.width
      * @param {Integer} options.height
      */
-    constructor(options) {
+    constructor(options: BiomeOptions) {
 
         if(!options.biomeType) throw "Expected biomeType to create biome.";
         // console.assert(typeof options.biomeType == BiomeType);
@@ -54,7 +70,7 @@ export default class Biome {
         Map.Instance.addBiome(this);
     }
 
-    contains(coordinates) {
+    contains(coordinates: Point) {
 
         return false;
     }

@@ -2,7 +2,8 @@ import Events from "../events";
 import Map from './map';
 import Seed from "../core/seed.mjs";
 import './chunk-graphic.mjs';
-import Biome from "./biome.mjs";
+import Biome from "./biome";
+import Point from "../coordinates/point";
 
 Events.List.ChunkCreated = "ChunkCreated";
 
@@ -22,7 +23,9 @@ export default class Chunk {
     static get MIN_DANGER() { return 1; }
     static get MAX_DANGER() { return 100; }
 
-    static getChunkCoordinate(x: number, y: number) {
+    static getChunkCoordinate(worldCoordinate: Point): Point {
+
+        let { x, y } = worldCoordinate;
 
         let chunkX = 0;
         let chunkY = 0;
@@ -55,14 +58,15 @@ export default class Chunk {
             }
         }
 
-        return {
-            x: chunkX,
-            y: chunkY
-        }
+        return new Point(
+            chunkX,
+            chunkY
+        );
     }
 
     get coordinate() {
-        return this.x + "," + this.y;
+        // TODO: This now needs to align with Point.toString and that sucks
+        return this.x + ", " + this.y;
     }
 
     #biome

@@ -1,7 +1,7 @@
 import Seed from '../../../js/core/seed.mjs';
 import Map from '../../../js/mapping/map';
 import SentientEntity from '../../../js/entities/character/SentientEntity';
-import Biome, { BiomeType } from '../../../js/mapping/biome.mjs';
+import Biome, { BiomeType } from '../../../js/mapping/biome';
 
 jest.mock('@/engine/js/events', () => {
     return {
@@ -38,15 +38,18 @@ describe('map', () => {
         mockCharacter = new SentientEntity({}); // replace with the actual constructor if it requires parameters
         mockCharacter.isPlayer = true;
         const biomeType = new BiomeType({
-            name: 'test'
+            name: 'test',
+            minSize: 0,
+            maxSize: 0
         });
         const mockBiome = new Biome({
             biomeType,
             width: 1,
-            height: 1
+            height: 1,
+            x: 0,
+            y: 0
         });
         jest.spyOn(map, 'getBiome').mockReturnValue(mockBiome);
-        // mockCharacter.isPlayer = true;
     });
 
     describe('getChunk', () => {
@@ -93,7 +96,7 @@ describe('map', () => {
             
             // this is a bad hack
             const GRID_SIZE = 25;
-            map.getChunk({ x: 3 * GRID_SIZE, y: 4 * GRID_SIZE, character: mockCharacter });
+            map.getChunk({ x: 3 * GRID_SIZE, y: 4 * GRID_SIZE});
 
             const chunkKeys = Object.keys(map.chunks);
             expect(chunkKeys).toContain('3,4');
