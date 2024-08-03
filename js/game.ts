@@ -93,17 +93,23 @@ localPlayer.toolTip = new ToolTip({
     entity: localPlayer
 });
 
-const gameStartOptions = {
-    finalFire: true,
-    // TODO: make these properly optional
-    removeAfterRaise: false,
-    isNetworkBoundEvent: false,
-    isNetworkOriginEvent: false
-};
 Game.Camera.setTarget(localPlayer);
-Events.RaiseEvent(Events.List.GameStart, null, gameStartOptions);
 
+function startGame() {
+    const gameStartOptions = {
+        finalFire: true,
+        // TODO: make these properly optional
+        removeAfterRaise: false,
+        isNetworkBoundEvent: false,
+        isNetworkOriginEvent: false
+    };
+    Events.RaiseEvent(Events.List.GameStart, null, gameStartOptions);
+    Cheat.Beefcake;
+}
+Events.Subscribe(Events.List.DataLoaded, startGame);
+
+Events.RaiseEvent(Events.List.ScriptsLoaded, null);
+// TODO: establish proper data loading
+Events.RaiseEvent(Events.List.DataLoaded, null);
 
 window.Game = Game;
-
-Cheat.Beefcake;
