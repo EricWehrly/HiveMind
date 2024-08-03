@@ -27,6 +27,8 @@ interface Subscription extends SubscribeOptions {
 export default class Events {
 
     static List: { [key: string]: string } = {
+        "ScriptsLoaded": "ScriptsLoaded",
+        "DataLoaded": "DataLoaded",
         "GameStart": "GameStart"
     }
 
