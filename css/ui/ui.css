@@ -46,19 +46,15 @@
 
 .ui.center {    
     /* align-self: center; */
+    position: absolute;
     left: 50%;                  
     transform: translateX(-50%);
 }
 
-.ui.bottom.center {
-    position: absolute;
-    bottom: 5px;                
-}
-
-.ui.middle.right {
-    position: absolute;        
-    top: 50%;                  
+.ui.middle {
     transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
 }
 
 .ui.h3 {
