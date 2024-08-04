@@ -11,7 +11,8 @@ export enum SCREEN_ZONE {
     TOP_RIGHT = "top right",
     TOP_CENTER = "top center",
     TOP_LEFT = "top left",
-    MIDDLE_RIGHT = "middle right"
+    MIDDLE_RIGHT = "middle right",
+    MIDDLE_CENTER = "middle center"
 };
 
 export interface UIElementOptions {
@@ -28,7 +29,6 @@ export default class UIElement {
     }
 
     static #UI_ELEMENTS: UIElement[] = [];
-    static #initialDisplay = "none";
     screenZone;
 
     static {
@@ -42,9 +42,11 @@ export default class UIElement {
         }
     }
 
+    private _initialized = false;
     private _element;
     private _visible = true
     private _entity: Entity;
+    private _initialDisplay = "none";
 
     get visible() {
         return this._visible;
@@ -54,8 +56,10 @@ export default class UIElement {
         if(this._visible == value) return;
         
         this._visible = value;
-        if(this._element && this._visible) this._element.style.display = UIElement.#initialDisplay;
-        if(this._element && !this._visible) this._element.style.display = "none";
+        if(this._initialized) {
+            if(this._element && this._visible) this._element.style.display = this._initialDisplay;
+            if(this._element && !this._visible) this._element.style.display = "none";
+        }
     }
 
     get entity() { return this._entity; }
@@ -75,15 +79,17 @@ export default class UIElement {
         for(var uiClass of options?.classes || []) {
             this.addClass(uiClass);
         }
-        UIElement.#initialDisplay = this._element.style.display;
         if('visible' in options) this.visible = options.visible;
 
         UIElement.#UI_ELEMENTS.push(this);
 
-        const that = this;
-        Events.Subscribe(Events.List.GameStart, function appendUIElement() {
-            document.getElementById("ui-container").appendChild(that._element);
-        });
+        Events.Subscribe(Events.List.DataLoaded, this.appendUIElement.bind(this));
+    }
+
+    private appendUIElement() {
+        document.getElementById("ui-container").appendChild(this.Element);
+        this._initialDisplay = this._element.style.display;
+        this.initialize();
     }
 
     addClass(className: string) {
@@ -139,5 +145,13 @@ export default class UIElement {
             this._element.style.left = (gridSize * offsetPosition.x) + "px";
             this._element.style.top = targetY + "px";
         }
+    }
+
+    initialize() {
+        if(this._initialized) console.warn("Already initialized.");
+        else this._initialized = true;
+        // toggle visibility on/off now that we're initialized ...
+        this.visible = !this.visible;
+        this.visible = !this.visible;
     }
 }
