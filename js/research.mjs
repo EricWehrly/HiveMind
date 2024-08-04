@@ -42,7 +42,7 @@ export default class Research extends Listed {
     static {
 
         // we shouldn't have to do this but there's a whole ugly call stack down to UIElement if we don't
-        Events.Subscribe(Events.List.GameStart, function () {
+        Events.Subscribe(Events.List.ScriptsLoaded, function () {
             Research.#UI_MENU_RESEARCH = new Menu({
                 screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
                 name: "Research",
