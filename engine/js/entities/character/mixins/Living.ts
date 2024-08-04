@@ -14,6 +14,15 @@ export interface Living {
     damage?(amount: number, source: Entity): void;
 }
 
+export interface LivingOptions {
+    health?: number;
+    maxHealth?: number;
+    characterType?: {
+        health?: number;
+        maxHealth?: number;
+    }
+}
+
 export interface CharacterDamagedEvent {
     character: Entity & Living;
     amount: number;
@@ -22,7 +31,7 @@ export interface CharacterDamagedEvent {
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: any) {
+export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: LivingOptions) {
     return class extends Base implements Living {
 
         // TODO: value of health when options is null
