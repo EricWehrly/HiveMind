@@ -17,10 +17,6 @@ export interface Living {
 export interface LivingOptions {
     health?: number;
     maxHealth?: number;
-    characterType?: {
-        health?: number;
-        maxHealth?: number;
-    }
 }
 
 export interface CharacterDamagedEvent {
@@ -35,8 +31,8 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
     return class extends Base implements Living {
 
         // TODO: value of health when options is null
-        private _health = options?.characterType?.health || options?.health;
-        private _initialHealth = options?.characterType?.maxHealth || options?.maxHealth || this._health;
+        private _health = options?.health;
+        private _initialHealth = options?.maxHealth || this._health;
     
         get size() { 
             // TODO: address this magic number
