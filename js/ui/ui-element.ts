@@ -88,7 +88,7 @@ export default class UIElement {
 
     private appendUIElement() {
         document.getElementById("ui-container").appendChild(this.Element);
-        this._initialDisplay = this._element.style.display;
+        this._initialDisplay = window.getComputedStyle(this.Element).display;
         this.initialize();
     }
 
