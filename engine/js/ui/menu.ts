@@ -196,7 +196,7 @@ export default class Menu extends UIElement {
         
         // should menuItem be a ui element?
         let menuItem: MenuItem = {
-            context: {},
+            context: options.context || {},
             name: options.name || options.characterTypeName,
             characterTypeName: options.characterTypeName || options.name    // this isn't the best, but it should be fine for now
         };
@@ -204,7 +204,6 @@ export default class Menu extends UIElement {
             menuItem.cost = options.cost;
             delete options.cost;
         }
-        Object.assign(menuItem.context, options);
         if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
         menuItem.Element = document.createElement('div');
         menuItem.Element.innerHTML = options.name || options.characterTypeName;

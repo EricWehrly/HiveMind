@@ -10,13 +10,10 @@ function reBindKey(action: string, key: string) {
 }
 
 const characterMenu = new Menu({
-    screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
+    screenZone: UIElement.SCREEN_ZONE.MIDDLE_CENTER,
     name: "Key Bindings",
-    visible: false,
     menuAction: reBindKey
 });
-
-KeyboardController.AddDefaultBinding("openMenu/key bindings", "Escape");
 
 Events.Subscribe(Events.List.GameStart, function() {
     for(const [action, key] of Object.entries(KeyboardController.Default_Bindings)) {

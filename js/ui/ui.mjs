@@ -1,6 +1,7 @@
 import './combatLog.mjs';
 // import './characterInfo.mjs';
 import './InputMenu.ts';
+import './PauseMenu.ts';
 
 let uiContainer = null;
 let equippedDisplay = null;
