@@ -1,5 +1,6 @@
 import Listed from "./baseTypes/listed";
-import { Combatant } from "./entities/character/Combatant";
+import Entity from "./entities/character/Entity";
+import { Combative } from "./entities/character/mixins/Combative";
 import { Defer } from "./loop.mjs";
 import Research from "./research.mjs";
 import StatusEffect from "./StatusEffect";
@@ -112,13 +113,11 @@ export default class Technology extends Listed {
         }, 0);
     }
 
-    checkRange(character: Combatant) {
+    checkRange(character: Entity & Combative) {
 
         if (this._range) {
             if (!character?.target) return false;
 
-            // TODO: fix later, this is weird
-            // @ts-expect-error
             if (character.getDistance(character.target) > this._range) return false;
         }
 

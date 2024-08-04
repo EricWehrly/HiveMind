@@ -9,6 +9,7 @@ import { IsLiving, Living } from "./mixins/Living";
 import Entity from "./Entity";
 import { Defer } from "../../loop.mjs";
 import StatusEffect, { StatusEffectCallbackOptions } from "../../StatusEffect";
+import { Combative } from "./mixins/Combative";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.CharacterAttacked = "CharacterAttacked";
@@ -137,7 +138,9 @@ export class Combatant extends PlayableEntity {
 
         if(!(this.target instanceof Combatant)) return false;
 
-        if (!equipped.technology.checkRange(this)) return false;
+        const combative = this as Entity & Combative;
+
+        if (!equipped.technology.checkRange(combative)) return false;
 
         return true;
     }
