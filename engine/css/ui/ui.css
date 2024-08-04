@@ -57,6 +57,10 @@
     top: 50%;
 }
 
+.ui.middle.center {
+    transform: translate(-50%, -50%);
+}
+
 .ui.h3 {
     padding: 0 .4em;
 }
