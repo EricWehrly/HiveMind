@@ -152,6 +152,8 @@ export default class Menu extends UIElement {
 
     constructor(options: MenuOptions & UIElementOptions = {}) {
 
+        options.visible = options.visible || false;     // new menus are hidden by default, unlike ui elements
+
         super(options);
 
         this.addClass("menu");
@@ -268,6 +270,14 @@ export default class Menu extends UIElement {
         this.Element.appendChild(section);
 
         return section;
+    }
+
+    open() {
+        this.visible = true;
+    }
+
+    close() {
+        this.visible = false;
     }
 
     #addToDom(element: HTMLElement, options?: { section?: string }) {
