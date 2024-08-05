@@ -111,8 +111,8 @@ function startGame() {
 }
 Events.Subscribe(Events.List.DataLoaded, startGame);
 
-Events.RaiseEvent(Events.List.ScriptsLoaded, null);
+Events.RaiseEvent(Events.List.ScriptsLoaded, null, { finalFire: true });
 // TODO: establish proper data loading
-Events.RaiseEvent(Events.List.DataLoaded, null);
+Events.RaiseEvent(Events.List.DataLoaded, null, { finalFire: true });
 
 window.Game = Game;
