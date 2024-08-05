@@ -1,6 +1,17 @@
+where did the food resource counter go?
+
+why are food starting with 0 health?
+    (constructor seems to provide health ...)
+
+get player and other slimes to "mark" the ground
+    later, let player travel through any slimed ground
+    travel ability should have a cooldown after doing it before starting again
+    (later) also have a stamina affect duration
+
 we're in the middle of reworking the way things get built
 grown could use some love
 then we also started on character movement -_-
+    we should add a unit test that characters will stop moving when they arrive at their destination with extra time elapsed
 
 menu items should have a padding when not selected
     so that they don't adjust their vertical position when selected
