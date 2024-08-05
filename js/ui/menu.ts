@@ -27,14 +27,10 @@ export default class Menu extends UIElement {
     static #MENU_LIST_COUNT = 0;
     // Menu class should "be" (extend) Listed, but can't extend 2, so...
     static #MENU_LIST: Record<string, Menu> = {}
-    static get MENU_LIST() {
-        return Menu.#MENU_LIST;
-    }
+    static get MENU_LIST() { return Menu.#MENU_LIST; }
 
     static #current: Menu = null;
-    static get Current() {
-        return Menu.#current;
-    }
+    static get Current() { return Menu.#current; }
 
     static Get(name: string) {
         return Menu.#MENU_LIST[name.toLowerCase()];
@@ -62,24 +58,13 @@ export default class Menu extends UIElement {
     #items: MenuItem[] = [];
     #selected: MenuItem;
     #menuAction;
-
-    get name() {
-        return this.#name;
-    }
-
-    get selected() {
-        return this.#selected;
-    }
-
-    get menuAction() {
-        return this.#menuAction;
-    }
-
-    get visible() {
-        return super.visible;
-    }
-
+    #collapsed: boolean;
+    get name() { return this.#name; }
+    get selected() { return this.#selected; }
+    get menuAction() { return this.#menuAction; }
+    get visible() { return super.visible; }
     get items() { return this.#items; }
+    get collapsed() { return this.#collapsed; }
 
     // when I become visibile, I want to enable "menu_interact" from Action
     set visible(value) {
@@ -98,8 +83,6 @@ export default class Menu extends UIElement {
         }
     }
 
-    #collapsed: boolean;
-    get collapsed() { return this.#collapsed; }
     set collapsed(newValue) {
         this.#collapsed = newValue;
         if(this.#collapsed) this.addClass("collapse");
@@ -117,10 +100,10 @@ export default class Menu extends UIElement {
         // we'd have access to these functions
         // if it was a uiElement instead of a dom element
         const selected = this.Element.querySelector(".selected");
-        if(selected) selected.className = selected.className.replace("selected", "").trim();
+        if(selected) selected.classList.remove("selected");
 
         // the ideal would probably still be for these classes to be enums
-        menuItem.Element.className += " selected";
+        menuItem.Element.classList.add("selected");
         this.#selected = menuItem;
     }
 
@@ -128,7 +111,7 @@ export default class Menu extends UIElement {
 
         if(this.#items.length < 2) return;
 
-        const selectedIndex = this.#items.indexOf(this.selected);
+        const selectedIndex = this.#items.findIndex(item => item === this.selected);
         if(this.#items.length - 1 > selectedIndex) {
             this.select(this.#items[selectedIndex + 1]);
         } else {
