@@ -28,7 +28,7 @@ export default class UIElement {
         return SCREEN_ZONE;
     }
 
-    static #UI_ELEMENTS: UIElement[] = [];
+    private static _UI_ELEMENTS: UIElement[] = [];
     screenZone;
 
     static {
@@ -37,7 +37,7 @@ export default class UIElement {
 
     static #ui_loop(screenRect: Rectangle) {
     
-        for(var element of UIElement.#UI_ELEMENTS) {
+        for(var element of UIElement._UI_ELEMENTS) {
             element.redraw(screenRect);
         }
     }
@@ -81,7 +81,7 @@ export default class UIElement {
         }
         if('visible' in options) this.visible = options.visible;
 
-        UIElement.#UI_ELEMENTS.push(this);
+        UIElement._UI_ELEMENTS.push(this);
 
         Events.Subscribe(Events.List.DataLoaded, this.appendUIElement.bind(this));
     }
