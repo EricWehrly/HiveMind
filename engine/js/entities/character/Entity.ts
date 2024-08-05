@@ -19,7 +19,7 @@ export interface CharacterFilterOptions {
     characterProperties?: { [key: string]: any };
 }
 
-interface EntityOptions { 
+export interface EntityOptions { 
     position?: { x: number, y: number };
     id?: string;
     name?: string;

@@ -5,6 +5,8 @@ import Rectangle from "../baseTypes/rectangle";
 import { CooldownCompleteEvent, EquipmentChangedEvent, EquippedTechnology } from "../entities/equipment";
 import Character from "../entities/character";
 import { CharacterAttackedEvent } from "../entities/character/Combatant";
+import Entity from "../entities/character/Entity";
+import HiveMindCharacter from "../../../js/entities/character/HiveMindCharacter";
 
 let playerAttack: EquippedTechnology;
 
@@ -14,7 +16,9 @@ const UI_ELEMENT_ATTACK = new UIElement({
 
 Events.Subscribe(Events.List.EquipmentChanged, function(details: EquipmentChangedEvent) {
 
-    if(details.type == TechnologyTypes.ATTACK && details.character.isPlayer == true) {
+    // kind of a temp fix
+    const hiveMindCharacter = details.character as unknown as HiveMindCharacter;
+    if(details.type == TechnologyTypes.ATTACK && hiveMindCharacter.isPlayer == true) {
         // TODO: get the bound key rather than using "magic strings"
         UI_ELEMENT_ATTACK.setText(`[ space ] - ${details.to.name}`);
         playerAttack = details.equipped;
@@ -35,7 +39,7 @@ UI_ELEMENT_ATTACK.redraw = function(screenRect: Rectangle) {
 function onCooldownComplete(details: CooldownCompleteEvent) {
 
     const character = details.character;
-    if(character && character.id == Character.LOCAL_PLAYER.id) {
+    if(character && (character as unknown as Entity).id == Character.LOCAL_PLAYER.id) {
         UI_ELEMENT_ATTACK.Element.style.background = "";
         UI_ELEMENT_ATTACK.removeClass('cooldown');
     }

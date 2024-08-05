@@ -29,6 +29,10 @@ export default class Point {
         return this.x == point.x && this.y == point.y;
     }
 
+    near(point: Point, tolerance: number = 1) {
+        return this.distance(point) <= tolerance;
+    }
+
     distance(point: Point) {
         return Math.abs(this.x - point.x)
             + Math.abs(this.y - point.y);

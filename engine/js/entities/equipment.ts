@@ -2,7 +2,7 @@ import { TechnologyTypes } from "../TechnologyTypes";
 import Events from "../events";
 import { Defer } from "../loop.mjs";
 import Technology from "../technology";
-import { Combatant } from "./character/Combatant";
+import { Equipped } from "./character/mixins/Equipped";
 
 Events.List.EquipmentChanged = "EquipmentChanged"
 Events.List.CooldownComplete = "CooldownComplete";
@@ -12,12 +12,12 @@ export interface EquipmentChangedEvent {
     to: Technology;
     equipped: EquippedTechnology;
     type: TechnologyTypes;
-    character: Combatant;
+    character: Equipped;
 }
 
 export interface CooldownCompleteEvent {
     equippedTechnology: EquippedTechnology;
-    character: Combatant;
+    character: Equipped;
 }
 
 type EquipmentCollection = { [K in TechnologyTypes]?: EquippedTechnology };
@@ -75,7 +75,7 @@ export default class Equipment {
     
     private _equipment: EquipmentCollection = {};
 
-    constructor(character: Combatant) {
+    constructor(character: Equipped) {
         this.#character = character;
     }
 

@@ -17,7 +17,7 @@ Purposes["return"] = {
 
         // TODO: if collision boxes overlap ..
         // if(character.targetEntity.area.contains(character.position)) {
-        if (character.position.equals(character.targetPosition)) {
+        if (character.position.near(character.targetPosition)) {
             character.Reabsorb();
         }
     }

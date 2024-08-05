@@ -4,6 +4,8 @@ import Events from '../../../engine/js/events';
 import Purposes from '../purposes/character-purposes';
 import Entity from '../../../engine/js/entities/character/Entity';
 import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/Living';
+import { IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
+import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equipped';
 
 export default class HiveMindCharacter extends Character {
 
@@ -76,13 +78,17 @@ export default class HiveMindCharacter extends Character {
         if(this.name) {
             toolTipMessage = this.name + '<br />';
         }
-    
-        if(this.equipment?.attack != null) {
-            toolTipMessage += `Equipped: ${this.equipment.attack.name}<br />`;
+
+        if(IsEquipped(this)) {    
+            if(this.equipment?.attack != null) {
+                toolTipMessage += `Equipped: ${this.equipment.attack.name}<br />`;
+            }
         }
-    
-        if(this.aggression != null) {
-            toolTipMessage += `Aggression Range: ${Math.round(this.aggressionRange)}<br />`;
+        
+        if(IsCombative(this)) {
+            if(this.aggression != null) {
+                toolTipMessage += `Aggression Range: ${Math.round(this.aggressionRange)}<br />`;
+            }
         }
 
         if(this.canBeStudied(localPlayer)) {            

@@ -5,6 +5,8 @@ import Chunk from '../../engine/js/mapping/chunk.ts';
 import PredatorAI from '../../engine/js/ai/predator.ts';
 import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
+import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative.ts';
+import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped.ts';
 
 new CharacterType({
     name: "Animal",
@@ -74,7 +76,7 @@ function spawnFauna(chunk) {
         };
         Object.assign(spawnOpts, characterOpts);
         spawnOpts.characterType = CharacterType.List['Animal'];
-        MakeHiveMindCharacter([MakeLiving], spawnOpts);
+        MakeHiveMindCharacter([MakeLiving, MakeCombative, MakeEquipped], spawnOpts);
     }
 }
 

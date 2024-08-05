@@ -9,6 +9,8 @@ import { IsLiving, Living } from "../../../engine/js/entities/character/mixins/L
 import Entity from "../../../engine/js/entities/character/Entity";
 import { Grower } from "../character/mixins/Grower";
 import { Growable } from "../character/mixins/Growable";
+import { IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
+import { IsEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 
 const Purposes: Record<string,any> =
 {
@@ -18,14 +20,16 @@ const Purposes: Record<string,any> =
             if (character.target && character.target instanceof Character) {
                 character.pointAtTarget(character.targetPosition);
 
-                if (character.position.equals(character.targetPosition)) {
+                if (character.position.near(character.targetPosition)) {
                     if ((character.target as Living).dead == true) {
                         // TODO: contemplate
                         // TODO: support > 1 technology
-                        if (character.target.technologies && character.target.technologies.length > 0) {
-                            character.AddTechnology(character.target.technologies[0]);
+                        if(IsEquipped(character) && IsEquipped(character.target)) {
+                            if (character.target.technologies && character.target.technologies.length > 0) {
+                                character.AddTechnology(character.target.technologies[0]);
+                            }
                         }
-                        // TODO: When reabsorbed
+                        // TODO: not until reabsorbed (after 'return')
                         if (character.target.characterType) {
                             character.target.characterType.isStudied = true;
                             const research = Research.Get(character.target.characterType);
@@ -47,15 +51,17 @@ const Purposes: Record<string,any> =
             if (character.target && character.target instanceof Character) {
                 character.pointAtTarget(character.targetPosition);
 
-                const attack = character.getEquipped(TechnologyTypes.ATTACK);
-                // if(attack == null) console.warn(`Attack is null.`);
-                if (character.target == null || (character.target as Living).dead) {
-                    character.target = null;
-                    character.SetCurrentPurpose("return");
-                } else if (attack && character.position.distance(character.target.position) < attack.range
-                    && (character.target as Living).dead != true) {
-                    const attackAmount = character.attack();
-                    character.health += 2 * attackAmount;
+                if(IsEquipped(character) && IsCombative(character)) {
+                    const attack = character.getEquipped(TechnologyTypes.ATTACK);
+                    // if(attack == null) console.warn(`Attack is null.`);
+                    if (character.target == null || (character.target as Living).dead) {
+                        character.target = null;
+                        character.SetCurrentPurpose("return");
+                    } else if (attack && character.position.distance(character.target.position) < attack.range
+                        && (character.target as Living).dead != true) {
+                        const attackAmount = character.attack();
+                        character.health += 2 * attackAmount;
+                    }
                 }
             }
         }
@@ -63,9 +69,11 @@ const Purposes: Record<string,any> =
     "hunt": {
         name: "hunt",
         think: function (character: HiveMindCharacter, elapsed: number) {
-            const attack = character.getEquipped(TechnologyTypes.ATTACK);
-            if (attack == null) console.warn(`Attack is null.`);
-            Purposes["consume"].think(character, elapsed);
+            if(IsEquipped(character)) {
+                const attack = character.getEquipped(TechnologyTypes.ATTACK);
+                if (attack == null) console.warn(`Attack is null.`);
+                Purposes["consume"].think(character, elapsed);
+            }
         }
     },
     "heal": {

@@ -1,3 +1,5 @@
+import { HivemindCharacterFilterOptions } from "../../../../engine/js/entities/character";
+import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
 import { Living } from "../../../../engine/js/entities/character/mixins/Living";
 import Resource from "../../../../engine/js/entities/resource";
 import HiveMindCharacter from "../HiveMindCharacter";
@@ -114,6 +116,14 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
                     }
                 }
             }
+        }
+
+        shouldFilterCharacter(character: HiveMindCharacter & Growable, options: CharacterFilterOptions & HivemindCharacterFilterOptions & { grown: boolean}): boolean {            
+            if(options.grown != null && character.isGrown != options.grown) {
+                return true;
+            }
+
+            return super.shouldFilterCharacter(character, options);
         }
     }
 };

@@ -1,10 +1,16 @@
-// @ts-nocheck
 import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
 import Faction from './faction';
 import Tooltip from '../ui/tooltip';
-import { Combatant } from './character/Combatant';
+import PlayableEntity from './character/PlayableEntity';
+import { CharacterFilterOptions } from './character/Entity';
 
-export default class Character extends Combatant {
+// these will need to get broken up, but it can wait
+export interface HivemindCharacterFilterOptions {
+    isPlayer: boolean,
+    faction: Faction
+}
+
+export default class Character extends PlayableEntity {
 
     toolTip: Tooltip;
     controller: any; // inputdevice
@@ -48,34 +54,15 @@ export default class Character extends Combatant {
         }
     }
 
-    think() {
-        super.think();
+    shouldFilterCharacter(character: Character, options: CharacterFilterOptions & HivemindCharacterFilterOptions): boolean {
 
-        this.statusEffectThink();
-    }
-
-    // TODO: Make private ... and push down?
-    shouldFilterCharacter(character: Character, options: any) {
-
-        // parent is for growables, I think
-        // so the method needs to be extensible, which is a pattern we've already established
-        if (options.filterChildren && character.parent == this) {
-            return true;
-        }
-        if (options.hostile != null && character.isHostile != options.hostile) {
-            return true;
-        }
         if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
-            return true;
-        }
-        if(options.grown != null && character.isGrown != options.grown) {
             return true;
         }
         if(options.faction && character.faction != options.faction) {
             return true;
         }
 
-        // TODO: unit test this call to super
         return super.shouldFilterCharacter(character, options);
     }
 }

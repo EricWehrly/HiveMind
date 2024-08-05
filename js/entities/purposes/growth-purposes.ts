@@ -1,5 +1,7 @@
 import WorldCoordinate from "../../../engine/js/coordinates/WorldCoordinate";
 import Entity from "../../../engine/js/entities/character/Entity";
+import { MakeCombative } from "../../../engine/js/entities/character/mixins/Combative";
+import { MakeEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 import { MakeLiving } from "../../../engine/js/entities/character/mixins/Living";
 import Resource from "../../../engine/js/entities/resource";
 import { MakeHiveMindCharacter } from "../character/CharacterFactory";
@@ -45,7 +47,7 @@ Purposes["grow"] = {
                 characterType: character.growerConfig.subject,
                 ...character.growerConfig.subject
             };
-            const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving], options) as HiveMindCharacter & Growable;
+            const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving, MakeCombative, MakeEquipped], options) as HiveMindCharacter & Growable;
             if(!food.reserve(subject.characterType.health, newGrow)) {
                 console.warn(`The food was available but isn't now?`);
                 return;

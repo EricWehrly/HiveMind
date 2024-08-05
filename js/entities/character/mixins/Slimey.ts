@@ -2,6 +2,10 @@ import Resource from "../../../../engine/js/entities/resource";
 import HiveMindCharacter from "../HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../CharacterFactory";
 import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
+import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
+import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
+import { HivemindCharacterFilterOptions } from "../../../../engine/js/entities/character";
+import { MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -52,7 +56,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             const entityRenderingSettings = {
                 renderedName: purpose.name
             };
-            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {            
+            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped], {            
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
@@ -84,11 +88,21 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 food.value += thisLiving.health - amountToGive;
             }
     
-            if(this.technologies && this.technologies.length > 0) {
-                this.parent.AddTechnology(this.technologies[0]);
+            if(IsEquipped(this) && IsEquipped(this.parent)) {
+                if(this.technologies && this.technologies.length > 0) {
+                    this.parent.AddTechnology(this.technologies[0]);
+                }
             }
             thisLiving.health = 0;
             this.parent.health += amountToGive;
+        }
+
+        shouldFilterCharacter(character: HiveMindCharacter & Slimey, options: CharacterFilterOptions & HivemindCharacterFilterOptions & { filterChildren: boolean }): boolean {
+            if (options.filterChildren && character.parent == this) {
+                return true;
+            }
+            
+            return super.shouldFilterCharacter(character, options);
         }
     }
 }

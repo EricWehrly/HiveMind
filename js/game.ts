@@ -39,6 +39,9 @@ import './interaction';
 import './entities/purposes/slime-purposes';
 import './entities/purposes/growth-purposes';
 import { MakeLiving } from '../engine/js/entities/character/mixins/Living';
+import { Equipped, MakeEquipped } from '../engine/js/entities/character/mixins/Equipped';
+import { MakeCombative } from '../engine/js/entities/character/mixins/Combative';
+import { MakeGrower } from './entities/character/mixins/Grower';
 
 new MessageLog({
     name: "Combat",
@@ -74,7 +77,7 @@ const food = new Resource({
 // maybe this number should scale over time
 food.reserve(100, {});
 
-const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {
+const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative], {
     name: "Local Player",
     color: "blue",
     speed: 5,
@@ -82,7 +85,7 @@ const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeLiving], {
     additionalClasses: "player",
     ai: null,
     isPlayer: true
-});
+}) as HiveMindCharacter & Equipped;
 localPlayer.controller = new KeyboardController({ character: localPlayer });
 Character.LOCAL_PLAYER = localPlayer;
 window.LOCAL_PLAYER = localPlayer;
