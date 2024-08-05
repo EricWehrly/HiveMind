@@ -11,10 +11,10 @@ const desireLabels = {};
 
 const BuildFromMenu = function (context) {
 
-    const selectedBuilding = context?.menu?.selected?.context;
+    const menuItem = context?.menu?.selected;
 
-    const characterType = selectedBuilding.characterType 
-        || CharacterType.List[selectedBuilding.characterTypeName || selectedBuilding.name];
+    const characterType = menuItem.characterType 
+        || CharacterType.List[menuItem.characterTypeName || menuItem.name];
 
     if (characterType.name != "Node") {
 
