@@ -4,20 +4,21 @@ import Action from "../action";
 import { TechnologyTypes } from "../TechnologyTypes";
 import { Combative } from "../entities/character/mixins/Combative";
 import SentientEntity from "../entities/character/SentientEntity";
+import { Equipped } from "../entities/character/mixins/Equipped";
 
 export default class PredatorAI extends AI {
 
     get character() {
-        return super.character as SentientEntity & Combative;
+        return super.character as SentientEntity & Equipped & Combative;
     }
 
-    constructor(character: SentientEntity & Combative) {
+    constructor(character: SentientEntity & Equipped & Combative) {
         super(character);
     }
 
     get equippedAttack() {
         
-        const equipment = (this.character as Combative).equipment;
+        const equipment = (this.character as Equipped).equipment;
         if(equipment == null) return null;
 
         return equipment.getEquipped(TechnologyTypes.ATTACK);;

@@ -9,7 +9,7 @@ import { IsLiving, Living } from "./mixins/Living";
 import Entity from "./Entity";
 import { Defer } from "../../loop.mjs";
 import StatusEffect, { StatusEffectCallbackOptions } from "../../StatusEffect";
-import { Combative } from "./mixins/Combative";
+import { IsCombative } from "./mixins/Combative";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.CharacterAttacked = "CharacterAttacked";
@@ -69,15 +69,9 @@ export class Combatant extends PlayableEntity {
         return this._technologies;
     }
 
-    constructor(options: any) {
-        super(options);
-
-        if(options.technologies) {
-            for(var tech of options.technologies) {
-                this.AddTechnology(tech);
-            }
-            delete options.technologies;
-        }
+    getAttackRange(): number {
+        const attack = this.getEquipped(TechnologyTypes.ATTACK);
+        if(attack && attack.range) return attack.range;
     }
 
     getEquipped = function (techType: TechnologyTypes): EquippedTechnology {
@@ -138,9 +132,9 @@ export class Combatant extends PlayableEntity {
 
         if(!(this.target instanceof Combatant)) return false;
 
-        const combative = this as Entity & Combative;
-
-        if (!equipped.technology.checkRange(combative)) return false;
+        if(IsCombative(this)) {
+            if (!equipped.technology.checkRange(this)) return false;
+        }
 
         return true;
     }
