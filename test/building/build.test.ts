@@ -4,7 +4,7 @@ import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Faction from "../../engine/js/entities/faction";
 import CharacterType from "../../js/entities/CharacterType";
 import Building from "../../js/entities/building";
-import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFactory";
+import { MakeHiveMindCharacter } from "../../js/entities/character/HivemindCharacterFactory";
 import { MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeGrower } from "../../js/entities/character/mixins/Grower";
 import { MakeSlimey } from "../../js/entities/character/mixins/Slimey";

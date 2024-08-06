@@ -1,6 +1,6 @@
 import Resource from "../../../../engine/js/entities/resource";
 import HiveMindCharacter from "../HiveMindCharacter";
-import { MakeHiveMindCharacter } from "../CharacterFactory";
+import { MakeHiveMindCharacter } from "../HivemindCharacterFactory";
 import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
 import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
 import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";

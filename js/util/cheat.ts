@@ -6,7 +6,7 @@ import Resource from "../../engine/js/entities/resource";
 import Menu from "../../engine/js/ui/menu";
 import CharacterType from "../entities/CharacterType";
 import Building from "../entities/building";
-import { MakeHiveMindCharacter } from "../entities/character/CharacterFactory";
+import { MakeHiveMindCharacter } from "../entities/character/HivemindCharacterFactory";
 import { MakeGrower } from "../entities/character/mixins/Grower";
 import { MakeSlimey } from "../entities/character/mixins/Slimey";
 

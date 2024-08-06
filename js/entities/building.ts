@@ -5,7 +5,7 @@ import Rectangle from "../../engine/js/baseTypes/rectangle";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import HiveMindCharacter from "./character/HiveMindCharacter";
 import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
-import { MakeHiveMindCharacter } from "./character/CharacterFactory";
+import { MakeHiveMindCharacter } from "./character/HivemindCharacterFactory";
 import { MakeGrowable } from "./character/mixins/Growable";
 import { MakeGrower } from "./character/mixins/Grower";
 import { MakeSlimey } from "./character/mixins/Slimey";

@@ -4,7 +4,7 @@ import { MakeCombative } from "../../../engine/js/entities/character/mixins/Comb
 import { MakeEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 import { MakeLiving } from "../../../engine/js/entities/character/mixins/Living";
 import Resource from "../../../engine/js/entities/resource";
-import { MakeHiveMindCharacter } from "../character/CharacterFactory";
+import { MakeHiveMindCharacter } from "../character/HivemindCharacterFactory";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { Growable, MakeGrowable } from "../character/mixins/Growable";
 import { Grower } from "../character/mixins/Grower";

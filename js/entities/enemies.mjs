@@ -3,7 +3,7 @@ import Events from '../../engine/js/events.ts';
 import CharacterType from './CharacterType.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import PredatorAI from '../../engine/js/ai/predator.ts';
-import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
+import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.js';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
 import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative.ts';
 import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped.ts';

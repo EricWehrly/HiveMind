@@ -2,7 +2,7 @@ import CharacterType from './CharacterType.ts';
 import Events from '../../engine/js/events.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
 import Game from '../../engine/js/engine.mjs';
-import { MakeHiveMindCharacter } from './character/CharacterFactory.ts';
+import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.js';
 import { MakeGrowable } from './character/mixins/Growable.ts';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
 

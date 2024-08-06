@@ -11,7 +11,7 @@ import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from '../engine/js/entities/character';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import { MakeSlimey } from './entities/character/mixins/Slimey';
-import { MakeHiveMindCharacter } from './entities/character/CharacterFactory';
+import { MakeHiveMindCharacter } from './entities/character/HivemindCharacterFactory';
 // import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip';
 import Technology from '../engine/js/technology';

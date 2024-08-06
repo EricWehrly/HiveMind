@@ -1,6 +1,6 @@
 import mockMap from "../../engine/test/testHelpers/mockMap";
 import Building from "../../js/entities/building";
-import { MakeHiveMindCharacter } from "../../js/entities/character/CharacterFactory";
+import { MakeHiveMindCharacter } from "../../js/entities/character/HivemindCharacterFactory";
 import HiveMindCharacter from "../../js/entities/character/HiveMindCharacter";
 import { Growable, MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeSlimey, Slimey } from "../../js/entities/character/mixins/Slimey";
