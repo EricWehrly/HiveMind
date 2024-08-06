@@ -85,7 +85,6 @@ export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
     }
 }
 
-export function IsEquipped(obj: Entity): obj is Entity & Equipped {    
-    // TODO: return (obj as Equipped).equipment !== undefined;
-    return (obj as unknown) as Equipped !== undefined;
+export function IsEquipped(obj: Entity): obj is Entity & Equipped {
+    return (obj as unknown as Equipped).equipment !== undefined;
 }
