@@ -1,12 +1,12 @@
-import HiveMindCharacter from "./HiveMindCharacter";
+import Entity from "./Entity";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
+type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any) => any;
 
-export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
+export function MakeHiveMindCharacter<T extends Entity>(
     mixins: EntityMixin[], 
     options: any, 
-    SuperClass: new (...args: any[]) => T = HiveMindCharacter as any
+    SuperClass: new (...args: any[]) => T = Entity as any
 ): T {
     let ExtendedCharacter = SuperClass;
     for (const mixin of mixins) {
