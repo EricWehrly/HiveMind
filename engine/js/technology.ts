@@ -1,6 +1,8 @@
 import Listed from "./baseTypes/listed";
+import WorldCoordinate from "./coordinates/WorldCoordinate";
 import Entity from "./entities/character/Entity";
 import { Combative } from "./entities/character/mixins/Combative";
+import SentientEntity from "./entities/character/SentientEntity";
 import { Defer } from "./loop.mjs";
 import Research from "./research.mjs";
 import StatusEffect from "./StatusEffect";
@@ -113,12 +115,17 @@ export default class Technology extends Listed {
         }, 0);
     }
 
-    checkRange(character: Entity & Combative) {
+    checkRange(character: SentientEntity & Combative) {
 
         if (this._range) {
             if (!character?.target) return false;
 
-            if (character.getDistance(character.target) > this._range) return false;
+            if(character.target instanceof Entity) {
+                return character.getDistance(character.target) <= this._range;
+            }
+            else if (character.target instanceof WorldCoordinate) {
+                return character.position.distance(character.target) <= this._range;
+            }
         }
 
         return true;
