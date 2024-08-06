@@ -70,25 +70,26 @@ export default class Chunk {
     }
 
     #biome
-    #seed
+    private _seed
     get seed() {
-        return this.#seed;
+        return this._seed;
     }
-    #danger
+    private _danger
     get danger() {
-        return this.#danger;
+        return this._danger;
     }
-    #hostility
+    private _hostility
     get hostility() {
-        return this.#hostility;
+        return this._hostility;
     }
-    #flora
+    private _flora
     get flora() {
-        return this.#flora;
+        return this._flora;
     }
 
+    // TODO: remove reundant
     get Seed() {
-        return this.#seed;
+        return this._seed;
     }
 
     #x = 0
@@ -123,14 +124,14 @@ export default class Chunk {
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
         if(options.active) this.active = options.active;
-        this.#seed = new Seed(Map.Instance.Seed.Random());
-        const seed = this.#seed;
+        this._seed = new Seed(Map.Instance.Seed.Random());
+        const seed = this._seed;
 
         this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
-        this.#danger = seed.Random(Math.max(this.#distance - 1, 0), this.#distance + 1) + 1;
-        this.#hostility = seed.Random(1, this.#danger);
+        this._danger = seed.Random(Math.max(this.#distance - 1, 0), this.#distance + 1) + 1;
+        this._hostility = seed.Random(1, this._danger);
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
-        this.#flora = seed.Random(1, 10);
+        this._flora = seed.Random(1, 10);
 
         options.map.addChunk(this);
         Events.RaiseEvent(Events.List.ChunkCreated, this, {
