@@ -1,7 +1,7 @@
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import Technology from "../../../technology";
 import Equipment, { EquippedTechnology } from "../../equipment";
-import Entity, { EntityOptions } from "../Entity";
+import Entity from "../Entity";
 
 export interface Equipped {
     technologies: Technology[];

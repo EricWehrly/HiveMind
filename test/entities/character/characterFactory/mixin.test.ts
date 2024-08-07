@@ -1,9 +1,8 @@
 import mockMap from "../../../testHelpers/mockMap";
-import Building from "../../../../../js/entities/building";
-import { MakeHiveMindCharacter } from "../../../../../js/entities/character/HivemindCharacterFactory";
-import HiveMindCharacter from "../../../../../js/entities/character/HiveMindCharacter";
-import { Growable, MakeGrowable } from "../../../../../js/entities/character/mixins/Growable";
-import { MakeSlimey, Slimey } from "../../../../../js/entities/character/mixins/Slimey";
+import { Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
+import SentientEntity from "../../../../js/entities/character/SentientEntity";
+import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
+import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
 
 jest.mock('@/engine/js/events', () => {
     return {
@@ -38,17 +37,9 @@ jest.mock('@/engine/js/entities/resource.ts', () => {
 });
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
 
-// we can get rid of this when we move to a structured type for the Entity constructor ...
-interface CharacterOptions {
-    ai: any;
-    parent: HiveMindCharacter;
-    speed: number;
-    name: string;
-}
+describe('ChacterFactory.MakeCharacter', () => {
 
-describe('ChacterFactory.MakeHiveMindCharacter', () => {
-
-    const referenceEntity = MakeHiveMindCharacter([], {
+    const referenceEntity = MakeCharacter([], {
         ai: null,
         name: 'Reference'
     });
@@ -56,46 +47,43 @@ describe('ChacterFactory.MakeHiveMindCharacter', () => {
     describe('no mixins', () => {
         it('should construct a valid entity', () => {
             expect(referenceEntity).not.toBeNull();
-            // we're going to need to rewrite this when we private HiveMindCharacter
-            expect(referenceEntity instanceof HiveMindCharacter).toBeTruthy();
+            expect(referenceEntity instanceof Entity).toBeTruthy();
         });
 
         it('should have constructor-assigned properties', () => {
-            const strength = referenceEntity.getAttribute('Strength')?.value;
-            expect(strength).toBe(1);
+            expect(referenceEntity.id).toBeDefined();
+            expect(referenceEntity.id).not.toBeNull();
         });
     });
 
     describe('one mixin', () => {
-        const slimeMixin = [MakeSlimey];
+        const livingMixin = [MakeLiving];
 
-        const characterOptions: CharacterOptions = {
-            ai: null,
-            parent: referenceEntity,
-            speed: 3,
-            name: 'Slimey'
+        const characterOptions: EntityOptions = {
+            speed: 3
         };
-        const character = MakeHiveMindCharacter(slimeMixin, characterOptions);
-        const slimey = character as HiveMindCharacter & Slimey;
+        const character = MakeCharacter(livingMixin, characterOptions);
+        const livin = character as Entity & Living;
     
         it('should construct valid base type', () => {
             expect(character).not.toBeNull();
-            // we're going to need to rewrite this when we private HiveMindCharacter
-            expect(character instanceof HiveMindCharacter).toBeTruthy();
-            expect(slimey.canBeStudied).toBeDefined();
+            expect(character instanceof Entity).toBeTruthy();
+            expect(livin.addAttribute).toBeDefined();
         });
     
         it('should apply parameters to base entity', () => {
-            const Speed = slimey.getAttribute('Speed')?.value;
+            const Speed = livin.getAttribute('Speed')?.value;
             expect(Speed).toBe(characterOptions.speed);
         });
     
         it('should apply mixin parameters to mixed entity', () => {
-            expect(slimey.parent).toBe(referenceEntity);
+            // this was better when we had references to pass for the test
+            // so it's kind of duplicated in the game tests for now
+            expect(livin.isAlive).toBe(true);
         });
     
         it('should apply functionality from mixin to entity', () => {
-            expect(slimey.Subdivide).toBeDefined();
+            expect(livin.damage).toBeDefined();
         });
     });
 
@@ -105,30 +93,10 @@ describe('ChacterFactory.MakeHiveMindCharacter', () => {
 
     describe('extended class', () => {
         it('should instantiate as a class that extends the base', () => {
-            const character = MakeHiveMindCharacter([MakeSlimey], {
+            const character = MakeCharacter([MakeLiving], {
                 cost: 1
-            }, Building);
-            expect(character instanceof Building).toBeTruthy();
-        });
-
-        it('should call super methods for base class', () => {
-            const character = MakeHiveMindCharacter([MakeGrowable], {}) as HiveMindCharacter & Growable;
-            const spy = jest.spyOn(HiveMindCharacter.prototype, 'canBeEaten');
-
-            let canBeEaten = character.canBeEaten(referenceEntity);
-            let isGrown = character.isGrown;
-
-            expect(spy).toHaveBeenCalledWith(referenceEntity);
-
-            expect(canBeEaten && isGrown).toBe(true);
-
-            character.grow(1);
-            canBeEaten = character.canBeEaten(referenceEntity);
-            isGrown = character.isGrown;
-            expect(spy).toHaveBeenCalledWith(referenceEntity);
-            expect(canBeEaten && isGrown).toBe(false);
-        
-            spy.mockRestore();
+            }, SentientEntity);
+            expect(character instanceof SentientEntity).toBeTruthy();
         });
     });
 });
