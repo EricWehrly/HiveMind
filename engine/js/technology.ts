@@ -118,12 +118,12 @@ export default class Technology extends Listed {
     checkRange(character: SentientEntity & Combative) {
 
         if (this._range) {
-            if (!character?.target) return false;
+            if (!character?.target || character.target == null) return false;
 
             if(character.target instanceof Entity) {
                 return character.getDistance(character.target) <= this._range;
             }
-            else if (character.target instanceof WorldCoordinate) {
+            else if (character.target as any instanceof WorldCoordinate) {
                 return character.position.distance(character.target) <= this._range;
             }
         }

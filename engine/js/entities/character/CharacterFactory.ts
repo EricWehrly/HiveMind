@@ -1,7 +1,7 @@
 import Entity from "./Entity";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any) => any;
+export type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any) => any;
 
 export function MakeCharacter<T extends Entity>(
     mixins: EntityMixin[], 
