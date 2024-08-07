@@ -3,7 +3,7 @@ import Entity from "./Entity";
 type Constructor<T = {}> = new (...args: any[]) => T;
 type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any) => any;
 
-export function MakeHiveMindCharacter<T extends Entity>(
+export function MakeCharacter<T extends Entity>(
     mixins: EntityMixin[], 
     options: any, 
     SuperClass: new (...args: any[]) => T = Entity as any
