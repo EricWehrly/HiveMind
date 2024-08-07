@@ -26,8 +26,8 @@ export default class SentientEntity extends Entity {
     }
 
     get targetPosition() {
-        if(this.target instanceof Entity) return this.target.position;
-        else if (this.target instanceof WorldCoordinate) return this.target;
+        if(this._target instanceof Entity) return this._target.position;
+        else if (this._target instanceof WorldCoordinate) return this._target;
         else return null;
     }
 

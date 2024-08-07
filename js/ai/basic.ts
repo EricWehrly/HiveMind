@@ -28,11 +28,11 @@ export default class AI {
     private _leashing = false;
     private _fleeing = false;
     private _relationships: Map<Entity, EntityRelationship> = new Map();
+    private _lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
 
     get leashing() { return this._leashing; }
     get character() { return this._character; }
-
-    #lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
+    get fleeing() { return this._fleeing; }
 
     constructor(character: SentientEntity) {
         this._character = character;
@@ -88,13 +88,13 @@ export default class AI {
     wander() {
         if (this._character.target instanceof Entity) return;
 
-        if (performance.now() - this.#lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
+        if (performance.now() - this._lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
             /*
             if (this?.character?.target?.position) {
                 console.debug(`Old target: ${this._character.target.position.x}, ${this._character.target.position.y}`);
             }
             */
-            this.#lastDestinationPickedTime = performance.now();
+            this._lastDestinationPickedTime = performance.now();
             // we need to influence this to avoid anything we're afraid of
             // loop through our relationships and determine how 'strongly' we want to move in each direction
             this._character.target = this.#randomTargetPosition();
