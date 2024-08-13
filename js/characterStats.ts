@@ -1,13 +1,15 @@
-import { SCREEN_ZONE } from "../engine/js/ui/ui-element.ts";
-import Menu from "../engine/js/ui/menu.ts";
+import { SCREEN_ZONE } from "../engine/js/ui/ui-element";
+import Menu from "../engine/js/ui/menu";
 import KeyboardController from "./controls/keyboard-controller.mjs";
-import Character from "../engine/js/entities/character.ts";
-import Events from "../engine/js/events.ts";
+import Character from "../engine/js/entities/character";
+import Events from "../engine/js/events";
+import MenuItem from "../engine/js/ui/MenuItem";
+import CharacterAttribute from "../engine/js/entities/character-attribute.mjs";
 
-let strength = null,
-speed = null;
+let strength: CharacterAttribute = null,
+speed: CharacterAttribute = null;
 
-function characterMenuAction(context) {
+function characterMenuAction() {
 
     const selected = characterMenu.selected;
     if(selected.context.callback) selected.context.callback();
@@ -21,19 +23,22 @@ const characterMenu = new Menu({
     menuAction: characterMenuAction
 });
 
-const strengthLabel = characterMenu.addLabel({
+const strengthLabel = new MenuItem({
+    menu: characterMenu,
     name: 'Strength'
 });
 
-const speedLabel = characterMenu.addLabel({
+const speedLabel = new MenuItem({
+    menu: characterMenu,
     name: 'Speed'
 });
 
-const incrementAttribute = function(attribute) {
+const incrementAttribute = function(attribute: CharacterAttribute) {
 
     // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
     const localPlayer = Character.LOCAL_PLAYER;
-    const ctrl = localPlayer.controller.isKeyDown("Control");
+    // const ctrl = localPlayer.controller.isKeyDown("Control");
+    const ctrl = false;
     if(ctrl) {
         attribute.buy(10);
     } else {        
@@ -51,28 +56,34 @@ const makeFaster = function() {
     incrementAttribute(speed);
 }
 
-const strengthMenuItem = characterMenu.addItem({
+const strengthMenuItem = new MenuItem({
+    menu: characterMenu,
     name: 'Hit Harder',
-    cost: 40,
-    callback: makeStronger
+    context: {
+        cost: 40,
+        callback: makeStronger
+    }
 });
 
-const speedMenuItem = characterMenu.addItem({
+const speedMenuItem = new MenuItem({
+    menu: characterMenu,
     name: 'Run Faster',
-    cost: 40,
-    callback: makeFaster
+    context: {
+        cost: 40,
+        callback: makeFaster
+    }
 });
 
-function updateMenuItemText(event) {
+function updateMenuItemText(event: { attribute: CharacterAttribute }) {
 
     const { attribute } = event;
     if(attribute == strength) {
         strengthMenuItem.Element.innerHTML = strengthMenuItem.name 
-            + `<br />Cost: ${attribute.cost}`;
+            // + `<br />Cost: ${attribute.cost}`;
         strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
     } else if(attribute == speed) {
         speedMenuItem.Element.innerHTML = speedMenuItem.name 
-            + `<br />Cost: ${attribute.cost}`;
+            // + `<br />Cost: ${attribute.cost}`;
         speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
     }
 }

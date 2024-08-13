@@ -26,7 +26,7 @@ import Map from '../engine/js/mapping/map';
 import './entities/entities.mjs';
 // TODO: We can restructure 'entities.js' to import and export this
 import Resource from '../engine/js/entities/resource';
-import './characterStats.mjs';
+import './characterStats';
 
 import Cheat from './util/cheat';
 import MessageLog from '../engine/js/core/messageLog.mjs';
