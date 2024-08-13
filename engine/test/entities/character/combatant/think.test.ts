@@ -33,6 +33,8 @@ jest.mock('@/engine/js/events', () => {
     };
 });
 
+// TODO: these should have nothing to do with combatant / combative once we extract sentient
+
 describe('Combatant.think', () => {
 
     let combatant: Combatant;
