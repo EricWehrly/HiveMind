@@ -1,6 +1,7 @@
 import UIElement, { SCREEN_ZONE, UIElementOptions } from './ui-element';
 import Events from '../events';
 import Action from '../action';
+import UI from './ui';
 
 Events.List.MenuOpened = "MenuOpened";
 Events.List.MenuClosed = "MenuClosed";
@@ -181,7 +182,7 @@ export default class Menu extends UIElement {
     }
 
     private addIconToDom() {
-        UIElement.UI_CONTAINER.appendChild(this._iconHandle);
+        UI.CONTAINER.appendChild(this._iconHandle);
     }
 
     collapseClicked() {
