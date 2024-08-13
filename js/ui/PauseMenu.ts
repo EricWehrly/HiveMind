@@ -1,6 +1,6 @@
 import Events from "../../engine/js/events";
 import Menu, { MenuItem } from "../../engine/js/ui/menu";
-import UIElement from "../../engine/js/ui/ui-element";
+import { SCREEN_ZONE } from "../../engine/js/ui/ui-element";
 import KeyboardController from "../controls/keyboard-controller.mjs";
 
 interface PauseMenuItemContext {
@@ -16,11 +16,11 @@ function openMenu(context: PauseMenuItemContext) {
 }
 
 const pauseMenu = new Menu({
-    screenZone: UIElement.SCREEN_ZONE.MIDDLE_CENTER,
+    screenZone: SCREEN_ZONE.MIDDLE_CENTER,
     name: "Pause",
     menuAction: openMenu,
     icon: '<u>=</u>',
-    iconPosition: UIElement.SCREEN_ZONE.TOP_LEFT
+    iconPosition: SCREEN_ZONE.TOP_LEFT
 });
 
 KeyboardController.AddDefaultBinding("openMenu/Pause", "Escape");

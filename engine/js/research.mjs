@@ -1,6 +1,6 @@
 import Listed from './baseTypes/listed.ts';
 import Menu from './ui/menu.ts';
-import UIElement from './ui/ui-element.ts';
+import { SCREEN_ZONE } from './ui/ui-element.ts';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.ts';
 import { Defer } from "./loop.mjs";
@@ -44,7 +44,7 @@ export default class Research extends Listed {
         // we shouldn't have to do this but there's a whole ugly call stack down to UIElement if we don't
         Events.Subscribe(Events.List.ScriptsLoaded, function () {
             Research.#UI_MENU_RESEARCH = new Menu({
-                screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
+                screenZone: SCREEN_ZONE.MIDDLE_RIGHT,
                 name: "Research",
                 visible: false,
                 menuAction: Research.DoResearch

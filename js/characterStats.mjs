@@ -1,4 +1,4 @@
-import UIElement from "../engine/js/ui/ui-element.ts";
+import { SCREEN_ZONE } from "../engine/js/ui/ui-element.ts";
 import Menu from "../engine/js/ui/menu.ts";
 import KeyboardController from "./controls/keyboard-controller.mjs";
 import Character from "../engine/js/entities/character.ts";
@@ -15,7 +15,7 @@ function characterMenuAction(context) {
 
 // we actually probably want this to be more of a modal
 const characterMenu = new Menu({
-    screenZone: UIElement.SCREEN_ZONE.TOP_CENTER,
+    screenZone: SCREEN_ZONE.TOP_CENTER,
     name: "Character Upgrades",
     visible: false,
     menuAction: characterMenuAction

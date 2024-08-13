@@ -1,7 +1,7 @@
 import Game from "../engine/js/engine.mjs";
 import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events";
-import UIElement from "../engine/js/ui/ui-element";
+import UIElement, { SCREEN_ZONE } from "../engine/js/ui/ui-element";
 
 // eventually this should problably translate into an adaptation 
 // of Engine-level Objective definitions
@@ -10,7 +10,7 @@ import UIElement from "../engine/js/ui/ui-element";
 let playerHasWon = false;
 
 const UI_ELEMENT_PROGRESS = new UIElement({
-    screenZone: UIElement.SCREEN_ZONE.TOP_CENTER
+    screenZone: SCREEN_ZONE.TOP_CENTER
 });
 UI_ELEMENT_PROGRESS.Element.id = "objective-progress";
 UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress";

@@ -1,4 +1,4 @@
-import UIElement from "./ui-element";
+import UIElement, { SCREEN_ZONE } from "./ui-element";
 import Events from '../events';
 import { TechnologyTypes } from "../TechnologyTypes";
 import Rectangle from "../baseTypes/rectangle";
@@ -11,7 +11,7 @@ import HiveMindCharacter from "../../../js/entities/character/HiveMindCharacter"
 let playerAttack: EquippedTechnology;
 
 const UI_ELEMENT_ATTACK = new UIElement({
-    screenZone: UIElement.SCREEN_ZONE.BOTTOM_CENTER
+    screenZone: SCREEN_ZONE.BOTTOM_CENTER
 });
 
 Events.Subscribe(Events.List.EquipmentChanged, function(details: EquipmentChangedEvent) {

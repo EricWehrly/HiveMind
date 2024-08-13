@@ -27,12 +27,6 @@ export default class UIElement {
         return document.getElementById("ui-container");
     }
 
-    // TODO: we should delete this
-    // css classes to apply
-    static get SCREEN_ZONE() {
-        return SCREEN_ZONE;
-    }
-
     private static _UI_ELEMENTS: UIElement[] = [];
     screenZone;
 
@@ -74,7 +68,7 @@ export default class UIElement {
 
     constructor(options: UIElementOptions = {}) {
 
-        this.screenZone = options.screenZone || UIElement.SCREEN_ZONE.NONE;
+        this.screenZone = options.screenZone || SCREEN_ZONE.NONE;
         // we had a redundant 'options assign' method .. in entity
 
         this._element = document.createElement('div');

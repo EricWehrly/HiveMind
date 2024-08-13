@@ -1,7 +1,7 @@
 import Character from '../../engine/js/entities/character.ts';
 import CharacterType from './CharacterType.ts';
 import Menu from '../../engine/js/ui/menu.ts';
-import UIElement from '../../engine/js/ui/ui-element.ts';
+import { SCREEN_ZONE } from '../../engine/js/ui/ui-element.ts';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.ts';
 import NodeAI from '../ai/node.ts';
@@ -34,7 +34,7 @@ const BuildFromMenu = function (context) {
 
 // maybe it's time to extract a 'buildingMenu' file
 const UI_MENU_BUILDINGS = new Menu({
-    screenZone: UIElement.SCREEN_ZONE.MIDDLE_RIGHT,
+    screenZone: SCREEN_ZONE.MIDDLE_RIGHT,
     name: "Build",
     visible: false,
     menuAction: BuildFromMenu

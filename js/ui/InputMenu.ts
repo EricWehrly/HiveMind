@@ -1,6 +1,6 @@
 import Events from "../../engine/js/events";
 import Menu, { MenuItem } from "../../engine/js/ui/menu";
-import UIElement from "../../engine/js/ui/ui-element";
+import { SCREEN_ZONE } from "../../engine/js/ui/ui-element";
 import KeyboardController from "../controls/keyboard-controller.mjs";
 
 function reBindKey(action: string, key: string) {
@@ -10,7 +10,7 @@ function reBindKey(action: string, key: string) {
 }
 
 const characterMenu = new Menu({
-    screenZone: UIElement.SCREEN_ZONE.MIDDLE_CENTER,
+    screenZone: SCREEN_ZONE.MIDDLE_CENTER,
     name: "Key Bindings",
     menuAction: reBindKey
 });
