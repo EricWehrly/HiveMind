@@ -1,4 +1,4 @@
-import UIElement from "./ui-element.ts";
+import UIElement, { SCREEN_ZONE } from "./ui-element.ts";
 import Resource from "../entities/resource.ts";
 import Events from "../events.ts";
 
@@ -9,7 +9,7 @@ const RENDER_RESERVED = true;
 function createResourceUI(resource) {
 
     resource.UIElement = new UIElement({
-        screenZone: UIElement.SCREEN_ZONE.TOP_RIGHT,
+        screenZone: SCREEN_ZONE.TOP_RIGHT,
         classes: [ 'Resource' ]
     });
 
