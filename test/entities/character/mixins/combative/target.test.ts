@@ -1,11 +1,12 @@
 import { expect } from '@jest/globals';
-import mockMap from '../../../testHelpers/mockMap';
-import { Combatant } from '../../../../js/entities/character/Combatant';
-import AI from '../../../../js/ai/basic';
-import WorldCoordinate from '../../../../js/coordinates/WorldCoordinate';
-import Entity from '../../../../js/entities/character/Entity';
+import mockMap from '../../../../testHelpers/mockMap';
+import AI from '../../../../../js/ai/basic';
+import PlayableEntity from '../../../../../js/entities/character/PlayableEntity';
+import Entity from '../../../../../js/entities/character/Entity';
+import { Combative, MakeCombative } from '../../../../../js/entities/character/mixins/Combative';
+import { EntityMixin, MakeCharacter } from '../../../../../js/entities/character/CharacterFactory';
+import WorldCoordinate from '../../../../../js/coordinates/WorldCoordinate';
 
-// https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/predator',  () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/basic', () => {
@@ -34,18 +35,20 @@ jest.mock('@/engine/js/events', () => {
     };
 });
 
-describe('Combatant.target', () => {
+describe('Combative.target', () => {
 
-    let combatant: Combatant;
+    // TODO: This needs to be PlayableEntity for the afterMove reference,
+    // which we can remove to downgrade the entity type
+    let combative: PlayableEntity & Combative;
     let secondEntity: Entity;
     beforeEach(() => {
-        combatant = new Combatant({
+        combative = MakeCharacter([MakeCombative as EntityMixin], {
             ai: AI,
             position: {
                 x: 0,
                 y: 0
             }
-        });
+        }, PlayableEntity) as PlayableEntity & Combative;
         secondEntity = new Entity({
             position: {
                 x: 1,
@@ -54,25 +57,25 @@ describe('Combatant.target', () => {
         });
     });
 
-    it('should set to target position', () => {
-        expect(combatant.position.x).toEqual(0);
-        combatant.target = secondEntity;
-        expect(combatant.target).toEqual(secondEntity);
+    it('should set to target entity', () => {
+        expect(combative.position.x).toEqual(0);
+        combative.target = secondEntity;
+        expect(combative.target).toEqual(secondEntity);
     });
 
-    it('should set to target entity', () => {
-        expect(combatant.position.x).toEqual(0);
+    it('should set to target position', () => {
+        expect(combative.position.x).toEqual(0);
         const position = new WorldCoordinate(1, 1);
-        combatant.target = position;
-        expect(combatant.target).toEqual(position);
-        expect(combatant.targetPosition).toEqual(position);
+        combative.target = position;
+        expect(combative.target).toEqual(position);
+        expect(combative.targetPosition).toEqual(position);
     });
 
     it('should follow moving target', () => {
-        expect(combatant.position.x).toEqual(0);
-        combatant.target = secondEntity;
+        expect(combative.position.x).toEqual(0);
+        combative.target = secondEntity;
         secondEntity.move(2);
-        expect(combatant.target.x).toEqual(secondEntity.position.x);
-        expect(combatant.target.y).toEqual(secondEntity.position.y);
+        expect(combative.target.x).toEqual(secondEntity.position.x);
+        expect(combative.target.y).toEqual(secondEntity.position.y);
     });
 });
