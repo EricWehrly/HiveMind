@@ -1,10 +1,11 @@
 import Listed from './baseTypes/listed';
-import Menu, { MenuItem } from './ui/menu';
+import Menu from './ui/menu';
 import { SCREEN_ZONE } from './ui/ui-element';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events';
 import { Defer } from "./loop.mjs";
 import Entity from './entities/character/Entity';
+import MenuItem from './ui/MenuItem';
 
 Events.List.ResearchEnabled = "ResearchEnabled";
 Events.List.ResearchFinished = "ResearchFinished";

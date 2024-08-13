@@ -1,5 +1,6 @@
 import Events from "../../engine/js/events";
-import Menu, { MenuItem } from "../../engine/js/ui/menu";
+import MenuItem from "../../engine/js/ui/MenuItem";
+import Menu from "../../engine/js/ui/menu";
 import { SCREEN_ZONE } from "../../engine/js/ui/ui-element";
 import KeyboardController from "../controls/keyboard-controller.mjs";
 

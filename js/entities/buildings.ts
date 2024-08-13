@@ -1,11 +1,12 @@
 import Character from '../../engine/js/entities/character';
 import CharacterType from './CharacterType';
-import Menu, { MenuItem, MenuItemType } from '../../engine/js/ui/menu';
+import Menu from '../../engine/js/ui/menu';
 import { SCREEN_ZONE } from '../../engine/js/ui/ui-element';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events';
 import NodeAI from '../ai/node';
 import Building from './building';
+import MenuItem, { MenuItemType } from '../../engine/js/ui/MenuItem';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
