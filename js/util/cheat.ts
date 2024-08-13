@@ -6,6 +6,7 @@ import Resource from "../../engine/js/entities/resource";
 import Menu from "../../engine/js/ui/menu";
 import CharacterType from "../entities/CharacterType";
 import Building from "../entities/building";
+import { addBuildItem } from "../entities/buildings";
 import { MakeHiveMindCharacter } from "../entities/character/HivemindCharacterFactory";
 import { MakeGrower } from "../entities/character/mixins/Grower";
 import { MakeSlimey } from "../entities/character/mixins/Slimey";
@@ -42,11 +43,8 @@ export default class Cheat {
         
         localPlayer.AddTechnology("claws");
 
-        const buildMenu = Menu.Get("build");
-        // const seeder = buildMenu.addItem(CharacterType.List['Seeder']);
-        // seeder.Element.innerHTML = `Desire ${CharacterType.List['Seeder'].name}`;
-        // const eater = buildMenu.addItem(CharacterType.List['Eater']);
-        // eater.Element.innerHTML = `Desire ${CharacterType.List['Eater'].name}`;
+        addBuildItem(CharacterType.List['Seeder']);
+        addBuildItem(CharacterType.List['Eater']);
 
         return null;
     }

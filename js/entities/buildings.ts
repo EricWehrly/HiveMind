@@ -40,7 +40,7 @@ const UI_MENU_BUILDINGS = new Menu({
     menuAction: BuildFromMenu
 });
 
-const addBuildItem = function(itemType: CharacterType) {
+export const addBuildItem = function(itemType: CharacterType) {
 
     return new MenuItem({
         menu: UI_MENU_BUILDINGS,
