@@ -9,17 +9,20 @@ export enum SCREEN_ZONE {
     BOTTOM_LEFT = "bottom left",
     BOTTOM_CENTER = "bottom center",
     BOTTOM_RIGHT = "bottom right",
-    TOP_RIGHT = "top right",
-    TOP_CENTER = "top center",
     TOP_LEFT = "top left",
-    MIDDLE_RIGHT = "middle right",
-    MIDDLE_CENTER = "middle center"
+    TOP_CENTER = "top center",
+    TOP_RIGHT = "top right",
+    MIDDLE_LEFT = "middle left",
+    MIDDLE_CENTER = "middle center",
+    MIDDLE_RIGHT = "middle right"
 };
 
 export interface UIElementOptions {
+    parent?: HTMLElement;
     screenZone?: SCREEN_ZONE;
     visible?: boolean;
     classes?: string[];
+    tag?: string;
 }
 
 export default class UIElement {
@@ -39,10 +42,11 @@ export default class UIElement {
     }
 
     private _initialized = false;
-    private _element;
+    private _element: HTMLElement;
     private _visible = true
     private _entity: Entity;
     private _initialDisplay = "none";
+    private _parent: HTMLElement;
 
     get visible() {
         return this._visible;
@@ -68,7 +72,10 @@ export default class UIElement {
         this.screenZone = options.screenZone || SCREEN_ZONE.NONE;
         // we had a redundant 'options assign' method .. in entity
 
-        this._element = document.createElement('div');
+        this._parent = options.parent || UI.CONTAINER;
+        if(this._parent == null) debugger;
+
+        this._element = document.createElement(options.tag || 'div');
         this.addClass("ui");
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
@@ -83,7 +90,7 @@ export default class UIElement {
     }
 
     private appendUIElement() {
-        UI.CONTAINER.appendChild(this.Element);
+        this._parent.appendChild(this.Element);
         this._initialDisplay = window.getComputedStyle(this.Element).display;
         this.initialize();
     }

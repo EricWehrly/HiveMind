@@ -16,12 +16,54 @@ export interface MenuOptions {
     iconPosition?: SCREEN_ZONE;
 }
 
-export interface MenuItem {
+interface IMenuItem {
+    menu: Menu;
+    menuItemType?: MenuItemType;
     Element?: HTMLElement;
     context?: Record<string, any>;
     name?: string;
     cost?: number;
     characterTypeName?: string;
+}
+
+export enum MenuItemType {
+    Default = 'div',
+    Label = 'span'
+}
+
+export class MenuItem extends UIElement implements IMenuItem {
+
+    private _menu: Menu;
+    public get menu() { return this._menu; }
+
+    get Element() {
+        return super.Element;
+    }
+    context: Record<string, any>;
+    name: string;
+    cost: number;
+    characterTypeName: string;
+    menuItemType: MenuItemType;
+
+    constructor(options: UIElementOptions & IMenuItem) {
+        options.menuItemType = options.menuItemType || MenuItemType.Default;
+        options.tag = options.menuItemType;
+        options.parent = options.menu.Element;
+        super(options);
+
+        this.context = options.context || {};
+        this.name = options.name || options.characterTypeName;
+        this.characterTypeName = options.characterTypeName || options.name
+        this.menuItemType = options.menuItemType || MenuItemType.Default;
+        
+        if(options.cost) {
+            this.cost = options.cost;
+        }
+        if(options.context?.callback) this.context.callback = options.context.callback.bind(this);
+        this.Element.innerHTML = options.name || options.characterTypeName;
+
+        options.menu.addItem(this);
+    }
 }
 
 export default class Menu extends UIElement {
@@ -191,44 +233,13 @@ export default class Menu extends UIElement {
         Menu.#computeAnyMenuOpen();
     }
 
-    addItem(options: MenuItem) {
+    addItem(menuItem: MenuItem) {
         
-        // should menuItem be a ui element?
-        let menuItem: MenuItem = {
-            context: options.context || {},
-            name: options.name || options.characterTypeName,
-            characterTypeName: options.characterTypeName || options.name    // this isn't the best, but it should be fine for now
-        };
-        if(options.cost) {
-            menuItem.cost = options.cost;
-            delete options.cost;
-        }
-        if(menuItem.context.callback) menuItem.context.callback = menuItem.context.callback.bind(menuItem);
-        menuItem.Element = document.createElement('div');
-        menuItem.Element.innerHTML = options.name || options.characterTypeName;
-        this.#addToDom(menuItem.Element);
-
         if(!this.#selected) {
             this.select(menuItem);
         }
 
         this.#items.push(menuItem);
-
-        return menuItem;
-    }
-
-    addLabel(options: any) {
-        
-        // should menuItem be a ui element?
-        const menuItem: MenuItem = {
-            context: {}
-        };
-        Object.assign(menuItem.context, options);
-        menuItem.Element = document.createElement('span');
-        menuItem.Element.innerHTML = options.name;
-        this.#addToDom(menuItem.Element, options);
-
-        return menuItem;
     }
 
     removeItem(item: MenuItem) {
