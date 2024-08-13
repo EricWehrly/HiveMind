@@ -4,7 +4,7 @@ import Entity from "./entities/character/Entity";
 import { Combative } from "./entities/character/mixins/Combative";
 import SentientEntity from "./entities/character/SentientEntity";
 import { Defer } from "./loop.mjs";
-import Research from "./research.mjs";
+import Research from "./research";
 import StatusEffect from "./StatusEffect";
 
 export interface TechnologyOptions {
