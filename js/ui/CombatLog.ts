@@ -2,8 +2,9 @@
 
 import MessageLog from "../../engine/js/core/messageLog.mjs";
 import { RegisterLoopMethod } from "../../engine/js/loop.mjs";
-import { SCREEN_ZONE } from "../../engine/js/ui/ui-element.ts";
-import Menu from "../../engine/js/ui/menu.ts";
+import { SCREEN_ZONE } from "../../engine/js/ui/ui-element";
+import Menu from "../../engine/js/ui/menu";
+import MenuItem from "../../engine/js/ui/MenuItem";
 
 const UI_MENU_COMABT_LOG = new Menu({
     screenZone: SCREEN_ZONE.BOTTOM_LEFT,
@@ -30,7 +31,8 @@ function updateCombatLog() {
 
     for (var log of combatLog.logs) {
         if (!log.menuItem) {
-            log.menuItem = UI_MENU_COMABT_LOG.addItem({
+            new MenuItem({
+                menu: UI_MENU_COMABT_LOG,
                 name: log.message
             });
         }

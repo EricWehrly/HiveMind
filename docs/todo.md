@@ -20,6 +20,10 @@ get player and other slimes to "mark" the ground
     travel ability should have a cooldown after doing it before starting again
     (later) also have a stamina affect duration
 
+draw equipment menu
+
+status effect applications (fear, running) in combat log?
+
 we need to set up a whole "layered renderer" thing (like in monolith)
 to be able to draw in canvas
 to be able to try some of the shader stuff we wanted to mess with

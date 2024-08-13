@@ -1,7 +1,7 @@
-import './combatLog.mjs';
+import './CombatLog';
 // import './characterInfo.mjs';
-import './InputMenu.ts';
-import './PauseMenu.ts';
+import './InputMenu';
+import './PauseMenu';
 
 // TODO: Maybe in 'player' file, or 'ui' file, draw equipment screen
 // listen for equipped events to change equipment
