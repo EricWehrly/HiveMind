@@ -18,7 +18,7 @@ export enum SCREEN_ZONE {
 };
 
 export interface UIElementOptions {
-    parent?: HTMLElement;
+    parent?: Element;
     screenZone?: SCREEN_ZONE;
     visible?: boolean;
     classes?: string[];
@@ -46,7 +46,7 @@ export default class UIElement {
     private _visible = true
     private _entity: Entity;
     private _initialDisplay = "none";
-    private _parent: HTMLElement;
+    private _parent: Element;
 
     get visible() {
         return this._visible;

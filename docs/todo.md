@@ -1,3 +1,9 @@
+Menu:
+    click to close button
+    cursor pointer
+    default type is button
+    click to activate button
+
 why are food starting with 0 health?
     (constructor seems to provide health ...)
 

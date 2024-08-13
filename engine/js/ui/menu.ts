@@ -24,6 +24,7 @@ interface IMenuItem {
     name?: string;
     cost?: number;
     characterTypeName?: string;
+    section?: string;
 }
 
 export enum MenuItemType {
@@ -48,7 +49,12 @@ export class MenuItem extends UIElement implements IMenuItem {
     constructor(options: UIElementOptions & IMenuItem) {
         options.menuItemType = options.menuItemType || MenuItemType.Default;
         options.tag = options.menuItemType;
-        options.parent = options.menu.Element;
+
+        if(options.section) {
+            options.parent = options.menu.getSection(options.section, true);
+        } else {
+            options.parent = options.menu.Element;
+        }
         super(options);
 
         this.context = options.context || {};
@@ -257,7 +263,7 @@ export default class Menu extends UIElement {
         }
     }
 
-    getSection(name: string, addIfMissing = false) {
+    getSection(name: string, addIfMissing = false): Element {
 
         if(!name) return this.Element;
 
@@ -272,7 +278,7 @@ export default class Menu extends UIElement {
     }
 
     // TODO: section header
-    addSection(name: string) {
+    addSection(name: string): Element {
         
         const section = document.createElement('div');
         section.className = `section ${name}`;

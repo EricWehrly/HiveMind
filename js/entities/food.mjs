@@ -1,23 +1,22 @@
 import CharacterType from './CharacterType.ts';
 import Events from '../../engine/js/events.ts';
 import Chunk from '../../engine/js/mapping/chunk.ts';
-import Game from '../../engine/js/engine.mjs';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.ts';
 import { MakeGrowable } from './character/mixins/Growable.ts';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
-
-const Seed = Game.Seed;
 
 // need a definition for character types
 // so the player can study the type and learn how to gain health from it
 
 new CharacterType({
     name: 'Food',
-    color: 'green',
-    health: 5,
-    ai: null,
     research: {
         cost: 10
+    },
+    context: {
+        color: 'green',
+        health: 5,
+        ai: null
     }
 });
 

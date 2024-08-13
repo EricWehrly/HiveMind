@@ -10,8 +10,10 @@ import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped
 
 new CharacterType({
     name: "Animal",
-    color: 'red',
-    health: 4,
+    context: {
+        color: 'red',
+        health: 4,
+    }
 });
 
 // can't declare these at file level because it's too early in lifecycle

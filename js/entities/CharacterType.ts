@@ -2,6 +2,15 @@ import AI from "../../engine/js/ai/basic";
 import Research from "../../engine/js/research.mjs";
 import { GrowerConfig } from "./character/mixins/Grower";
 
+export interface CharacterTypeOptions {
+    name: string;
+    // TODO: check this is working as intended
+    research?: {
+        cost: number
+    };
+    context: any;
+}
+
 export default class CharacterType {
 
     static List: { [key: string]: CharacterType } = {}
@@ -29,19 +38,17 @@ export default class CharacterType {
 
     get characterType() { return this; }
 
-    constructor(options: CharacterType) {
-
-        const { name, research, ...characterOptions } = options;
+    constructor(options: CharacterTypeOptions) {
 
         if(options.research) {
             this._research = new Research({
-                name,
+                name: options.name,
                 ...options.research
             });
         }
-        this._name = name;
+        this._name = options.name;
 
-        Object.assign(this, characterOptions);
+        Object.assign(this, options.context);
 
         CharacterType.List[this.name] = this;
         // TODO: We probably don't need to do this
