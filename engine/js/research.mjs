@@ -1,5 +1,5 @@
 import Listed from './baseTypes/listed.ts';
-import Menu from './ui/menu.ts';
+import Menu, { MenuItem } from './ui/menu.ts';
 import { SCREEN_ZONE } from './ui/ui-element.ts';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
 import Events from './events.ts';
@@ -74,9 +74,11 @@ export default class Research extends Listed {
             // TODO: if this is the first enabled, also enable research menu
             // (but not really, for a tech demo. empty research menu is fine)
 
-            Research.#UI_MENU_RESEARCH.addItem({
+            new MenuItem({
+                menu: Research.#UI_MENU_RESEARCH,
                 name: this.name,
                 cost: this.cost,
+                // context?
                 research: this
             });
         }

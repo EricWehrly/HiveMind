@@ -75,6 +75,13 @@ export default class Events {
 
         if(!detail) detail = {};    // because null is allowed
 
+        if(Object.isSealed(detail) || Object.isFrozen(detail)) {
+            console.log(typeof detail);
+            if(detail?.constructor) console.log(detail?.constructor?.name);
+            console.warn(`Need to pass deconstructed objects?`);
+            debugger;
+        }
+
         // @ts-expect-error
         detail.eventId = generateId();
 

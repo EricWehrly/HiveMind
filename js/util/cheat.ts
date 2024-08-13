@@ -43,10 +43,10 @@ export default class Cheat {
         localPlayer.AddTechnology("claws");
 
         const buildMenu = Menu.Get("build");
-        const seeder = buildMenu.addItem(CharacterType.List['Seeder']);
-        seeder.Element.innerHTML = `Desire ${CharacterType.List['Seeder'].name}`;
-        const eater = buildMenu.addItem(CharacterType.List['Eater']);
-        eater.Element.innerHTML = `Desire ${CharacterType.List['Eater'].name}`;
+        // const seeder = buildMenu.addItem(CharacterType.List['Seeder']);
+        // seeder.Element.innerHTML = `Desire ${CharacterType.List['Seeder'].name}`;
+        // const eater = buildMenu.addItem(CharacterType.List['Eater']);
+        // eater.Element.innerHTML = `Desire ${CharacterType.List['Eater'].name}`;
 
         return null;
     }

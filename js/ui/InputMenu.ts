@@ -17,14 +17,14 @@ const characterMenu = new Menu({
 
 Events.Subscribe(Events.List.GameStart, function() {
     for(const [action, key] of Object.entries(KeyboardController.Default_Bindings)) {
-        const menuItem: MenuItem = {
+        new MenuItem({
+            menu: characterMenu,
             name: `${action} - ${key}`,
             context: {
                 // callback: reBindKey
                 action,
                 key
             }
-        }
-        characterMenu.addItem(menuItem);
+        });
     }
 });

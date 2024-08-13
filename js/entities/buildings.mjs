@@ -1,6 +1,6 @@
 import Character from '../../engine/js/entities/character.ts';
 import CharacterType from './CharacterType.ts';
-import Menu from '../../engine/js/ui/menu.ts';
+import Menu, { MenuItem, MenuItemType } from '../../engine/js/ui/menu.ts';
 import { SCREEN_ZONE } from '../../engine/js/ui/ui-element.ts';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events.ts';
@@ -41,8 +41,9 @@ const UI_MENU_BUILDINGS = new Menu({
 });
 
 const addBuildItem = function(itemType) {
-    
-    return UI_MENU_BUILDINGS.addItem({
+
+    return new MenuItem({
+        menu: UI_MENU_BUILDINGS,
         characterTypeName: itemType.characterType.name,
         section: 'available'
     });
@@ -50,10 +51,12 @@ const addBuildItem = function(itemType) {
 
 Events.Subscribe(Events.List.BuildingDesired, function (desire) {
 
-    desireLabels[desire] = UI_MENU_BUILDINGS.addLabel({
+    desireLabels[desire] = new MenuItem({
+        menu: UI_MENU_BUILDINGS,
+        menuItemType: MenuItemType.Label,
         name: `${desire.name} desired`,
         section: 'desired'
-    })
+    });
 });
 
 Events.Subscribe(Events.List.BuildingDesireFulfilled, function (desire) {

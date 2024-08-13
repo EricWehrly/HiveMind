@@ -34,10 +34,10 @@ Events.Subscribe(Events.List.DataLoaded, function() {
         const menuItemContext: PauseMenuItemContext = {
             menu
         }
-        const menuItem: MenuItem = {
+        new MenuItem({
+            menu: pauseMenu,
             name: `${menu.name}`,
             context: menuItemContext
-        }
-        pauseMenu.addItem(menuItem);
+        });
     });
 });
