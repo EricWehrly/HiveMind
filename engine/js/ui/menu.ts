@@ -292,17 +292,6 @@ export default class Menu extends UIElement {
     toggle() {
         this.visible = !this.visible;
     }
-
-    #addToDom(element: HTMLElement, options?: { section?: string }) {
-
-        if(options?.section) {
-
-            const section = this.getSection(options.section, true);
-            section.appendChild(element);
-        } else {
-            this.Element.appendChild(element);
-        }
-    }
 }
 
 if(window) window.Menu = Menu;
