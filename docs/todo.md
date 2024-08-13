@@ -1,7 +1,13 @@
-where did the food resource counter go?
-
 why are food starting with 0 health?
     (constructor seems to provide health ...)
+
+Configuration items with defaults and events
+
+need to start having (and drawing) individual tiles
+
+Debug menu ...
+with option to enable writing on tiles
+tiles contain "x,y <br > graphic <br> modifiers"
 
 get player and other slimes to "mark" the ground
     later, let player travel through any slimed ground

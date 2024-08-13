@@ -1,4 +1,4 @@
-import UIElement, { UIElementOptions } from './ui-element';
+import UIElement, { SCREEN_ZONE, UIElementOptions } from './ui-element';
 import Events from '../events';
 import Action from '../action';
 
@@ -11,6 +11,8 @@ export interface MenuOptions {
     collapsible?: boolean;
     collapsed?: boolean;
     menuAction?: Function;
+    icon?: string;
+    iconPosition?: SCREEN_ZONE;
 }
 
 export interface MenuItem {
@@ -59,6 +61,8 @@ export default class Menu extends UIElement {
     #selected: MenuItem;
     #menuAction;
     #collapsed: boolean;
+    private _collapseHandle: HTMLElement;
+    private _iconHandle: HTMLElement;
     get name() { return this.#name; }
     get selected() { return this.#selected; }
     get menuAction() { return this.#menuAction; }
@@ -131,8 +135,6 @@ export default class Menu extends UIElement {
         }
     }
 
-    private _collapseHandle: HTMLElement;
-
     constructor(options: MenuOptions & UIElementOptions = {}) {
 
         options.visible = options.visible || false;     // new menus are hidden by default, unlike ui elements
@@ -163,10 +165,23 @@ export default class Menu extends UIElement {
             this._collapseHandle = document.createElement("span");
             this._collapseHandle.className = "collapse-handler";
             this.Element.appendChild(this._collapseHandle);
-            this.Element.addEventListener("click", this.collapseClicked.bind(this), false); //where func is your function name
+            this.Element.addEventListener("click", this.collapseClicked.bind(this), false);
+        }
+
+        if(options.iconPosition) {
+            this._iconHandle = document.createElement("div");
+            this._iconHandle.className = `ui ${this.name} menu icon ${options.iconPosition}`;
+            if(options.icon) this._iconHandle.innerHTML = options.icon;
+
+            this._iconHandle.addEventListener("click", this.toggle.bind(this));
+            Events.Subscribe(Events.List.DataLoaded, this.addIconToDom.bind(this));
         }
 
         Menu.#addMenu(this);
+    }
+
+    private addIconToDom() {
+        UIElement.UI_CONTAINER.appendChild(this._iconHandle);
     }
 
     collapseClicked() {
@@ -260,6 +275,10 @@ export default class Menu extends UIElement {
 
     close() {
         this.visible = false;
+    }
+
+    toggle() {
+        this.visible = !this.visible;
     }
 
     #addToDom(element: HTMLElement, options?: { section?: string }) {

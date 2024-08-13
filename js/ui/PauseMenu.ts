@@ -18,7 +18,9 @@ function openMenu(context: PauseMenuItemContext) {
 const pauseMenu = new Menu({
     screenZone: UIElement.SCREEN_ZONE.MIDDLE_CENTER,
     name: "Pause",
-    menuAction: openMenu
+    menuAction: openMenu,
+    icon: '<u>=</u>',
+    iconPosition: UIElement.SCREEN_ZONE.TOP_LEFT
 });
 
 KeyboardController.AddDefaultBinding("openMenu/Pause", "Escape");

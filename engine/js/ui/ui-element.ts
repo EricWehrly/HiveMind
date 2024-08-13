@@ -23,6 +23,11 @@ export interface UIElementOptions {
 
 export default class UIElement {
 
+    static get UI_CONTAINER() {
+        return document.getElementById("ui-container");
+    }
+
+    // TODO: we should delete this
     // css classes to apply
     static get SCREEN_ZONE() {
         return SCREEN_ZONE;
@@ -87,7 +92,7 @@ export default class UIElement {
     }
 
     private appendUIElement() {
-        document.getElementById("ui-container").appendChild(this.Element);
+        UIElement.UI_CONTAINER.appendChild(this.Element);
         this._initialDisplay = window.getComputedStyle(this.Element).display;
         this.initialize();
     }
