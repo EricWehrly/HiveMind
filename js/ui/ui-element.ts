@@ -2,6 +2,7 @@ import Renderer from '../rendering/renderer.mjs';
 import Events from '../events';
 import Rectangle from '../baseTypes/rectangle';
 import Entity from '../entities/character/Entity';
+import UI from './ui';
 
 export enum SCREEN_ZONE {
     NONE = "",
@@ -22,10 +23,6 @@ export interface UIElementOptions {
 }
 
 export default class UIElement {
-
-    static get UI_CONTAINER() {
-        return document.getElementById("ui-container");
-    }
 
     private static _UI_ELEMENTS: UIElement[] = [];
     screenZone;
@@ -86,7 +83,7 @@ export default class UIElement {
     }
 
     private appendUIElement() {
-        UIElement.UI_CONTAINER.appendChild(this.Element);
+        UI.CONTAINER.appendChild(this.Element);
         this._initialDisplay = window.getComputedStyle(this.Element).display;
         this.initialize();
     }
