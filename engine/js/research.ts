@@ -1,19 +1,24 @@
-import Listed from './baseTypes/listed.ts';
-import Menu, { MenuItem } from './ui/menu.ts';
-import { SCREEN_ZONE } from './ui/ui-element.ts';
+import Listed from './baseTypes/listed';
+import Menu, { MenuItem } from './ui/menu';
+import { SCREEN_ZONE } from './ui/ui-element';
 import KeyboardController from '../../js/controls/keyboard-controller.mjs';
-import Events from './events.ts';
+import Events from './events';
 import { Defer } from "./loop.mjs";
-import Entity from './entities/character/Entity.ts';
+import Entity from './entities/character/Entity';
 
 Events.List.ResearchEnabled = "ResearchEnabled";
 Events.List.ResearchFinished = "ResearchFinished";
 
+export interface ResearchOptions {
+    cost?: number;
+    callback?: Function;
+}
+
 export default class Research extends Listed {
 
-    static #UI_MENU_RESEARCH;
+    static #UI_MENU_RESEARCH: Menu;
 
-    static DoResearch(context) {
+    static DoResearch(context: { menu: Menu }) {
 
         if(context?.menu?.selected?.enabled === false) return;
         const selectedResearch = context?.menu?.selected?.context?.research;
@@ -58,7 +63,7 @@ export default class Research extends Listed {
     #cost = 0;
     get cost() { return this.#cost; }
     
-    #callback = null;
+    #callback: Function = null;
     get callback() { return this.#callback; }
 
     #enabled = false;
@@ -78,13 +83,14 @@ export default class Research extends Listed {
                 menu: Research.#UI_MENU_RESEARCH,
                 name: this.name,
                 cost: this.cost,
-                // context?
-                research: this
+                context: {
+                    research: this
+                }
             });
         }
     }
 
-    constructor(options) {
+    constructor(options: ResearchOptions & { name: string }) {
         super(options);
 
         this.#cost = options.cost || 0;

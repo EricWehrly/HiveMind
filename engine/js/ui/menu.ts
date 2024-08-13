@@ -11,7 +11,7 @@ export interface MenuOptions {
     vertical?: boolean;
     collapsible?: boolean;
     collapsed?: boolean;
-    menuAction?: Function;
+    menuAction?: (arg: { menu: Menu }) => void;
     icon?: string;
     iconPosition?: SCREEN_ZONE;
 }
@@ -34,6 +34,7 @@ export enum MenuItemType {
 
 export class MenuItem extends UIElement implements IMenuItem {
 
+    private _enabled: boolean;
     private _menu: Menu;
     public get menu() { return this._menu; }
 
@@ -45,6 +46,9 @@ export class MenuItem extends UIElement implements IMenuItem {
     cost: number;
     characterTypeName: string;
     menuItemType: MenuItemType;
+
+    public get enabled() { return this._enabled; }
+    public set enabled(newValue) { this.enabled = newValue; }
 
     constructor(options: UIElementOptions & IMenuItem) {
         options.menuItemType = options.menuItemType || MenuItemType.Default;

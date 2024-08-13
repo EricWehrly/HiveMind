@@ -12,7 +12,7 @@ function reBindKey(action: string, key: string) {
 const characterMenu = new Menu({
     screenZone: SCREEN_ZONE.MIDDLE_CENTER,
     name: "Key Bindings",
-    menuAction: reBindKey
+    // menuAction: reBindKey
 });
 
 Events.Subscribe(Events.List.GameStart, function() {

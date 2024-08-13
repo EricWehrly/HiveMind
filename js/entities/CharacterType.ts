@@ -1,5 +1,5 @@
 import AI from "../../engine/js/ai/basic";
-import Research from "../../engine/js/research.mjs";
+import Research from "../../engine/js/research";
 import { GrowerConfig } from "./character/mixins/Grower";
 
 export interface CharacterTypeOptions {

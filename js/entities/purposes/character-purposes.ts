@@ -1,5 +1,5 @@
 import Events from "../../../engine/js/events";
-import Research from "../../../engine/js/research.mjs";
+import Research from "../../../engine/js/research";
 import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
 import Character from "../../../engine/js/entities/character";
 import Resource from "../../../engine/js/entities/resource";
