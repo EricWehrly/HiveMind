@@ -14,6 +14,10 @@ get player and other slimes to "mark" the ground
     travel ability should have a cooldown after doing it before starting again
     (later) also have a stamina affect duration
 
+we need to set up a whole "layered renderer" thing (like in monolith)
+to be able to draw in canvas
+to be able to try some of the shader stuff we wanted to mess with
+
 we're in the middle of reworking the way things get built
 grown could use some love
 then we also started on character movement -_-
