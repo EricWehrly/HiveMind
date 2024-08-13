@@ -22,7 +22,7 @@ export interface CharacterAttackedEvent {
 }
 
 export interface Combative {
-    target?: Entity;
+    target?: Entity | WorldCoordinate;
     aggression: number;
     aggressionRange: number;
     thornMultiplier: number;
@@ -47,16 +47,13 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
         private _thornMultiplier: number;
         private _statusEffects: Map<StatusEffect, number> = new Map();
         aggression: number = 0;
-        // target: Entity;
 
-        get target(): Entity {
-            if(super.target instanceof Entity) {
-                return super.target;
-            }
-            else return null;
+        // TODO: it'd be nice to just do entity
+        get target(): Entity | WorldCoordinate {
+            return super.target;
         }
 
-        set target(newValue) {
+        set target(newValue: Entity | WorldCoordinate) {
             super.target = newValue;
         }
 
