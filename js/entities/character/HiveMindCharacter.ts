@@ -1,4 +1,4 @@
-import CharacterAttribute from '../../../engine/js/entities/character-attribute.mjs';
+import CharacterAttribute from '../../../engine/js/entities/character-attribute';
 import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
 import Purposes from '../purposes/character-purposes';

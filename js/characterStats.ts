@@ -4,7 +4,7 @@ import KeyboardController from "./controls/keyboard-controller.mjs";
 import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events";
 import MenuItem from "../engine/js/ui/MenuItem";
-import CharacterAttribute from "../engine/js/entities/character-attribute.mjs";
+import CharacterAttribute from "../engine/js/entities/character-attribute";
 
 let strength: CharacterAttribute = null,
 speed: CharacterAttribute = null;

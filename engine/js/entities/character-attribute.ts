@@ -1,7 +1,14 @@
-import Events from "../events.ts";
-import Resource from './resource.ts';
+import Events from "../events";
+import Resource from './resource';
 
 Events.List.CharacterAttributeChanged = "CharacterAttributeChanged";
+
+export interface CharacterAttributeOptions {
+    name: string;
+    value?: number;
+    baseCost?: number;
+    costFunction?: (arg: { baseCost: number, value: number }) => number;
+}
 
 export default class CharacterAttribute {
 
@@ -30,7 +37,7 @@ export default class CharacterAttribute {
 
     #costFunction;
 
-    constructor(options) {
+    constructor(options: CharacterAttributeOptions) {
 
         if(!options.name) debugger;
         if(options.value == undefined) debugger;
@@ -50,7 +57,7 @@ export default class CharacterAttribute {
         }
     }
 
-    buy(amount) {
+    buy(amount: number) {
 
         let value = this.value;
         let cost = 0;
