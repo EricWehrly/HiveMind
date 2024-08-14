@@ -1,13 +1,13 @@
 import Events from "../events";
 import Map from './map';
 import Seed from "../core/seed.mjs";
-import './chunk-graphic.mjs';
+import './chunk-graphic';
 import Biome from "./biome";
 import Point from "../coordinates/point";
 
 Events.List.ChunkCreated = "ChunkCreated";
 
-interface ChunkOptions {
+export interface ChunkOptions {
     biome: Biome;
     x: number;
     y: number;
@@ -69,7 +69,8 @@ export default class Chunk {
         return this.x + ", " + this.y;
     }
 
-    #biome
+    _biome: Biome;
+    get biome() { return this._biome; }
     private _seed
     get seed() {
         return this._seed;
@@ -86,6 +87,8 @@ export default class Chunk {
     get flora() {
         return this._flora;
     }
+    private _map;
+    get map() { return this._map; }
 
     // TODO: remove reundant
     get Seed() {
@@ -120,7 +123,7 @@ export default class Chunk {
 
         if(!options.biome) debugger;
 
-        this.#biome = options.biome;
+        this._biome = options.biome;
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
         if(options.active) this.active = options.active;
@@ -133,7 +136,8 @@ export default class Chunk {
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this._flora = seed.Random(1, 10);
 
-        options.map.addChunk(this);
+        this._map = options.map;
+        this.map.addChunk(this);
         Events.RaiseEvent(Events.List.ChunkCreated, this, {
             isNetworkBoundEvent: true
         });
