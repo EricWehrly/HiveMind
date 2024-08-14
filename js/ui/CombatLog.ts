@@ -11,7 +11,8 @@ const UI_MENU_COMABT_LOG = new Menu({
     name: "Combat Log",
     visible: true,
     vertical: true,
-    collapsed: true
+    collapsed: true,
+    closeButton: false
 });
 UI_MENU_COMABT_LOG.Element.id = "CombatLog";
 
