@@ -87,3 +87,13 @@
 .collapse > div {
     display: none;
 }
+
+.ui.close {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    padding: .1em .2em;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: transparent;
+}
