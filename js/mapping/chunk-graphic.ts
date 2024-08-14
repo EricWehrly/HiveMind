@@ -1,36 +1,42 @@
+import Rectangle from '../baseTypes/rectangle';
 import Renderer from '../rendering/renderer.mjs';
-import Chunk from './chunk.ts';
-import Map from './map.ts';
+import Chunk from './chunk';
+import Map from './map';
 
 // TODO: This playfield reference should probably be stored somewhere more globally referencable
-let playfield = null;
+let playfield: Element = null;
 
 // TODO: make this a global enum
 const gridSize = 32;
 
-function createGraphic(chunk) {
+const chunkGraphics: WeakMap<Chunk, HTMLElement> = new WeakMap();
 
-    chunk.graphic = document.createElement('div');
-    chunk.graphic.className = 'chunk';
-    if (chunk.color) chunk.graphic.className += ` ${chunk.color}`;
+function createGraphic(chunk: Chunk) {
+
+    const graphic = document.createElement('div');
+    chunkGraphics.set(chunk, graphic);
+
+    graphic.className = 'chunk';
+    // if (chunk.color) graphic.className += ` ${chunk.color}`;
 
     if(playfield == null) playfield = document.getElementById("playfield");
-    playfield.appendChild(chunk.graphic);
+    playfield.appendChild(graphic);
 
     const chunkPixels = Chunk.CHUNK_SIZE * gridSize;
-    chunk.graphic.style.width = chunkPixels + "px";
-    chunk.graphic.style.height = chunkPixels + "px";
+    graphic.style.width = chunkPixels + "px";
+    graphic.style.height = chunkPixels + "px";
 
     // border color from biome?
 }
 
-function redraw(chunk, screenRect) {
+function redraw(chunk: Chunk, screenRect: Rectangle) {
 
-    if(!chunk.graphic) createGraphic(chunk);
+    if(!chunkGraphics.has(chunk)) createGraphic(chunk);
 
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
     // but even static characters need to be redrawn when screenRect moves
 
+    const graphic = chunkGraphics.get(chunk);
     // TODO: get grid size constant
     const gridSize = 32;
 
@@ -39,11 +45,11 @@ function redraw(chunk, screenRect) {
         y: (chunk.y * gridSize) - screenRect.y
     };
 
-    chunk.graphic.style.left = (gridSize * offsetPosition.x) + "px";
-    chunk.graphic.style.top = (gridSize * offsetPosition.y) + "px";
+    graphic.style.left = (gridSize * offsetPosition.x) + "px";
+    graphic.style.top = (gridSize * offsetPosition.y) + "px";
 }
 
-function redraw_loop(screenRect) {
+function redraw_loop(screenRect: Rectangle) {
 
     for(var chunk of Object.values(Map.Instance.chunks)) {
         // if chunk in screenRect
