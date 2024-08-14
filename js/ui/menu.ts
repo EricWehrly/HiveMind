@@ -20,22 +20,20 @@ export interface MenuOptions {
 export default class Menu extends UIElement {
     
     static #isAnyMenuOpen = false;
-    static #MENU_LIST_COUNT = 0;
     // Menu class should "be" (extend) Listed, but can't extend 2, so...
-    static #MENU_LIST: Record<string, Menu> = {}
+    static #MENU_LIST: Map<String, Menu> = new Map();
     static get MENU_LIST() { return Menu.#MENU_LIST; }
 
     static #current: Menu = null;
     static get Current() { return Menu.#current; }
 
     static Get(name: string) {
-        return Menu.#MENU_LIST[name.toLowerCase()];
+        return Menu.#MENU_LIST.get(name.toLowerCase());
     }
 
     static #addMenu(menu: Menu) {
         
-        Menu.#MENU_LIST[Menu.#MENU_LIST_COUNT++] = menu;
-        Menu.#MENU_LIST[menu.name.toLowerCase()] = menu;
+        Menu.#MENU_LIST.set(menu.name.toLowerCase(), menu);
     }
 
     static get anyOpen() {
