@@ -1,28 +1,27 @@
 Menu:
-    click to close button
     cursor pointer
     default type is button
     click to activate button
 
+are sounds playing?
+
 why are food starting with 0 health?
     (constructor seems to provide health ...)
 
-Configuration items with defaults and events
+Tiles: {
+    need to start having (and drawing) individual tiles
 
-need to start having (and drawing) individual tiles
+    Debug menu ...
+    with option to enable writing on tiles
+    tiles contain "x,y <br > graphic <br> modifiers"
 
-Debug menu ...
-with option to enable writing on tiles
-tiles contain "x,y <br > graphic <br> modifiers"
-
-get player and other slimes to "mark" the ground
-    later, let player travel through any slimed ground
-    travel ability should have a cooldown after doing it before starting again
-    (later) also have a stamina affect duration
+    get player and other slimes to "mark" the ground
+        later, let player travel through any slimed ground
+        travel ability should have a cooldown after doing it before starting again
+        (later) also have a stamina affect duration
+}
 
 draw equipment menu
-
-status effect applications (fear, running) in combat log?
 
 we need to set up a whole "layered renderer" thing (like in monolith)
 to be able to draw in canvas
@@ -37,10 +36,9 @@ menu items should have a padding when not selected
     so that they don't adjust their vertical position when selected
 
 allow 'down' and 'up' on menu (but don't need to enable by default)
-    wanted on for input menu
-    off for build menu
 
 - (fix) node position selection for stuff to build
+    buildings shouldn't be able to build close together. Need a way to visualize this and some tests for it
 
 we need the stuff the player builds directly to grow
     just like what is built by the 'ai'
@@ -196,6 +194,8 @@ Should be able to switch to a new attack even if switch in progress is not compl
 Rather than a broad Ai, each 'node' (or structure) should only be able to think about either 
     doings it's job, or building another node 
     Until whichever it chooses has finished, and it can reconsider
+
+status effect applications (fear, running) in combat log?
 
 ---
 
