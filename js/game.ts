@@ -6,7 +6,7 @@ import Events from '../engine/js/events';
 import './data/biomeTypes'
 
 // Functionality
-import '../engine/js/mapping/tile-manager.mjs';
+import '../engine/js/mapping/tile-manager';
 import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from '../engine/js/entities/character';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';

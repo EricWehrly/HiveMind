@@ -1,4 +1,4 @@
-import addCustomStyle from "../util/custom-style.mjs";
+import addCustomStyle from "../util/custom-style";
 
 export default class TileManager {
 
