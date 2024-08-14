@@ -15,9 +15,9 @@ interface IMenuItem {
 }
 
 export enum MenuItemType {
-    Default = 'div',
-    Label = 'span',
-    Checkbox = 'input',
+    Default,
+    Label,
+    Checkbox
 }
 
 export default class MenuItem extends UIElement implements IMenuItem {
@@ -50,12 +50,12 @@ export default class MenuItem extends UIElement implements IMenuItem {
             options.parent = options.menu.Element;
         }
         super(options);
+        this.menuItemType = options.menuItemType || MenuItemType.Default;
         this._menu = options.menu;
 
         this.context = options.context || {};
         this.name = options.name || options.characterTypeName;
         this.characterTypeName = options.characterTypeName || options.name
-        this.menuItemType = options.menuItemType || MenuItemType.Default;
         
         if(options.cost) {
             this.cost = options.cost;
@@ -66,17 +66,18 @@ export default class MenuItem extends UIElement implements IMenuItem {
         options.menu.addItem(this);
     }
 
-    render() {
-        if(this.menuItemType == MenuItemType.Label) {
+    render(options: UIElementOptions & IMenuItem) {
+        if(options.menuItemType == MenuItemType.Label) {
             this.Element = document.createElement('span');
-        } else if(this.menuItemType == MenuItemType.Checkbox) {
+        } else if(options.menuItemType == MenuItemType.Checkbox) {
             this.Element = document.createElement('input');
             this.Element.setAttribute('type', 'checkbox');
         } else {
             this.Element = document.createElement('div');
         }
+        const that = this;
         Defer(() => {
-            Events.Subscribe(Events.List.DataLoaded, this.miAppendUIElement.bind(this));
+            Events.Subscribe(Events.List.DataLoaded, that.miAppendUIElement.bind(that));
         }, 1);
     }
 

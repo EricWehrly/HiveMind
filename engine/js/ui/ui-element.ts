@@ -75,7 +75,7 @@ export default class UIElement {
         this._parent = options.parent || UI.CONTAINER;
         if(this._parent == null) debugger;
 
-        this.render();
+        this.render(options);
         this.addClass("ui");
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
@@ -87,7 +87,7 @@ export default class UIElement {
         UIElement._UI_ELEMENTS.push(this);
     }
 
-    render() {
+    render(options: UIElementOptions) {
         this._element = document.createElement('div');
         Events.Subscribe(Events.List.DataLoaded, this.appendUIElement.bind(this));
     }
