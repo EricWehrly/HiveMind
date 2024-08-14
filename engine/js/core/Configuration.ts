@@ -33,7 +33,7 @@ export default class Configuration {
             return this._config[options];
         } else {
             if (options.default && this._config[options.key] === undefined) {
-                // store the config value as default?
+                this._config[options.key] = options.default;
                 return options.default;
             }
             return this._config[options.key];
@@ -42,8 +42,6 @@ export default class Configuration {
 
     public Set(key: string, value: any): void {
         this._config[key] = value;
-        console.log('config changed event');
-        console.log({ key, value });
         Events.RaiseEvent(Events.List.ConfigurationChanged, { key, value });
     }
 }
