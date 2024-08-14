@@ -27,21 +27,21 @@
 
 .ui.top {
     position: absolute;
-    top: 5px;
+    top: 4px;
 }
 
 .ui.bottom {
     position: absolute;
-    bottom: 5px;
+    bottom: 4px;
     align-self: flex-end;
 }
 
 .ui.left {
-    left: 5px;
+    left: 4px;
 }
 
 .ui.right {
-    right: 5px;
+    right: 4px;
 }
 
 .ui.center {    
