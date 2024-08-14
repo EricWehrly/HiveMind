@@ -75,6 +75,11 @@ export default class MenuItem extends UIElement implements IMenuItem {
             this._labelElement.innerHTML = options.name;
             this.Element = document.createElement('input');
             this.Element.setAttribute('type', 'checkbox');
+
+            if(options.context.action) {
+                // need to bind 'this'?
+                this.Element.addEventListener('change', options.context.action);
+            }
         } else {
             this.Element = document.createElement('div');
         }
