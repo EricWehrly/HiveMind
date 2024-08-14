@@ -23,17 +23,10 @@ Tiles: {
 
 draw equipment menu
 
-we need to set up a whole "layered renderer" thing (like in monolith)
-to be able to draw in canvas
-to be able to try some of the shader stuff we wanted to mess with
-
 we're in the middle of reworking the way things get built
 grown could use some love
 then we also started on character movement -_-
     we should add a unit test that characters will stop moving when they arrive at their destination with extra time elapsed
-
-menu items should have a padding when not selected
-    so that they don't adjust their vertical position when selected
 
 allow 'down' and 'up' on menu (but don't need to enable by default)
 
@@ -77,27 +70,11 @@ when implementing mountains,
 dont start growing new food if cant reserve enough to grow it to completion
 can we make this generic to all growing?
 
-Maybe all buildings should be able to build other buildings
-    and nodes should just add 'thinking power' to the hivemind...
-
-- There should be one aggregate AI for the entire hivemind
-    (we went down this road before, we need to document why we do / don't)
-- Each player entity should have a volume (size) with a min and max
-    as well as 'stomach contents' for digestion
-    the volume should increase as contents are digested
-    the current volume should also dictate the maximum size of external objects that can be consumed for digestion
-- Each thing in the world should have an associated rate of digestion
-    which increases as player characters become more familiar with it
-- Things like 'eater' slimes should target the highest rate of digestion things first
-
 Are spawns having trouble moving when their y is 0?
 
 In Builds.mjs:Build, we should probably call grow()
 
 one seeder per node
-
-we have notes below on the whole mountain thing which seems like it should be more of a priority
-    for starters, a 'mountain' should just be a really 'tall' (high Y) tile
 
 nodes should take some time to grow when first placed (by player or by another node)
 
@@ -112,9 +89,6 @@ buildings issues:
     - too easy to get stuck in not having enough food
         - if we don't have enough food, limit what's grown
     - new nodes have a tendency to 'stack' position
-
-events like 'character created' fire in the base class but don't let the super classes finish
-    we need some kind of "post constructor" pattern to fire these events for classes that have derivatives
 
 when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
 
@@ -131,8 +105,6 @@ when food levels get low, start siphoning "spare" food off buildings like eaters
 Defense building should look tougher, more callous:
     Less opaque
     Thicker border
-
-- Maybe spawner should look wide and short 
 
 - Once 1 research, can research research and unlock research node which speeds up research
 
@@ -163,11 +135,6 @@ Defense building should look tougher, more callous:
 
 - need to have some collision
 
-- Camera controls & following player
-    rendering controller or something for other entities
-    smooth movement? tweening? speed and accel?
-    when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
-
 - The more evolved an attack is, the longer it takes the player to switch to it.
 Should be able to switch to a new attack even if switch in progress is not complete
 - - Also needs implemented ability to switch between attacks / equipment...
@@ -191,10 +158,6 @@ Should be able to switch to a new attack even if switch in progress is not compl
 - priorities for targets for player acquisition
     Animal > Native Flora > Player Spawns (maybe just use a "whose hostility property is highest"?)
 
-Rather than a broad Ai, each 'node' (or structure) should only be able to think about either 
-    doings it's job, or building another node 
-    Until whichever it chooses has finished, and it can reconsider
-
 status effect applications (fear, running) in combat log?
 
 ---
@@ -206,8 +169,6 @@ in part to be able to determine what % of max aggression a creature is
 - Upgrade that lets you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
 
 - Research to be able to automatically absorb things X smaller than you
-
-- I think the "chunk" graphic could be a bordered-box that's sized and colored to the chunk ...
 
 - list of entities targeting the player?
     very helpful for debug
