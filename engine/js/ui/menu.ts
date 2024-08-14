@@ -15,6 +15,7 @@ export interface MenuOptions {
     menuAction?: (arg: { menu: Menu }) => void;
     icon?: string;
     iconPosition?: SCREEN_ZONE;
+    closeButton?: boolean;
 }
 
 export default class Menu extends UIElement {
@@ -167,6 +168,14 @@ export default class Menu extends UIElement {
 
             this._iconHandle.addEventListener("click", this.toggle.bind(this));
             Events.Subscribe(Events.List.DataLoaded, this.addIconToDom.bind(this));
+        }
+
+        if(options.closeButton == true || options.closeButton == undefined) {
+            const closeButton = document.createElement("span");
+            closeButton.className = "ui close";
+            closeButton.innerHTML = "X";
+            closeButton.addEventListener("click", this.close.bind(this), false);
+            this.Element.appendChild(closeButton);
         }
 
         Menu.#addMenu(this);
