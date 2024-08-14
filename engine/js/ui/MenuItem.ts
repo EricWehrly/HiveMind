@@ -1,3 +1,5 @@
+import Events from "../events";
+import { Defer } from "../loop.mjs";
 import Menu from "./menu";
 import UIElement, { UIElementOptions } from "./ui-element";
 
@@ -14,7 +16,8 @@ interface IMenuItem {
 
 export enum MenuItemType {
     Default = 'div',
-    Label = 'span'
+    Label = 'span',
+    Checkbox = 'input',
 }
 
 export default class MenuItem extends UIElement implements IMenuItem {
@@ -25,6 +28,9 @@ export default class MenuItem extends UIElement implements IMenuItem {
 
     get Element() {
         return super.Element;
+    }
+    set Element(value) {
+        super.Element = value;
     }
     context: Record<string, any>;
     name: string;
@@ -37,7 +43,6 @@ export default class MenuItem extends UIElement implements IMenuItem {
 
     constructor(options: UIElementOptions & IMenuItem) {
         options.menuItemType = options.menuItemType || MenuItemType.Default;
-        options.tag = options.menuItemType;
 
         if(options.section) {
             options.parent = options.menu.getSection(options.section, true);
@@ -45,6 +50,7 @@ export default class MenuItem extends UIElement implements IMenuItem {
             options.parent = options.menu.Element;
         }
         super(options);
+        this._menu = options.menu;
 
         this.context = options.context || {};
         this.name = options.name || options.characterTypeName;
@@ -58,5 +64,24 @@ export default class MenuItem extends UIElement implements IMenuItem {
         this.Element.innerHTML = options.name || options.characterTypeName;
 
         options.menu.addItem(this);
+    }
+
+    render() {
+        if(this.menuItemType == MenuItemType.Label) {
+            this.Element = document.createElement('span');
+        } else if(this.menuItemType == MenuItemType.Checkbox) {
+            this.Element = document.createElement('input');
+            this.Element.setAttribute('type', 'checkbox');
+        } else {
+            this.Element = document.createElement('div');
+        }
+        Defer(() => {
+            Events.Subscribe(Events.List.DataLoaded, this.miAppendUIElement.bind(this));
+        }, 1);
+    }
+
+    private miAppendUIElement() {
+        this.menu.Element.appendChild(this.Element);
+        // this.initialize();
     }
 }
