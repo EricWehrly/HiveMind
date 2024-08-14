@@ -25,6 +25,7 @@ export default class MenuItem extends UIElement implements IMenuItem {
     private _enabled: boolean;
     private _menu: Menu;
     public get menu() { return this._menu; }
+    private _labelElement: HTMLElement;
 
     get Element() {
         return super.Element;
@@ -70,6 +71,8 @@ export default class MenuItem extends UIElement implements IMenuItem {
         if(options.menuItemType == MenuItemType.Label) {
             this.Element = document.createElement('span');
         } else if(options.menuItemType == MenuItemType.Checkbox) {
+            this._labelElement = document.createElement('label');
+            this._labelElement.innerHTML = options.name;
             this.Element = document.createElement('input');
             this.Element.setAttribute('type', 'checkbox');
         } else {
@@ -82,7 +85,12 @@ export default class MenuItem extends UIElement implements IMenuItem {
     }
 
     private miAppendUIElement() {
-        this.menu.Element.appendChild(this.Element);
-        // this.initialize();
+        if(this.menuItemType == MenuItemType.Checkbox) {
+            this._labelElement.appendChild(this.Element);
+            this.menu.Element.appendChild(this._labelElement);
+        } else {
+            this.menu.Element.appendChild(this.Element);
+            // this.initialize();
+        }
     }
 }
