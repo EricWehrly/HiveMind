@@ -28,7 +28,8 @@ KeyboardController.AddDefaultBinding("openMenu/Pause", "Escape");
 
 Events.Subscribe(Events.List.DataLoaded, function() {
     const pauseMenuItems = [
-        'Key Bindings'
+        'Key Bindings',
+        'Debug'
     ];
     pauseMenuItems.forEach((menuItemName) => {
         const menu = Menu.Get(menuItemName);
