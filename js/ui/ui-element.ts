@@ -22,7 +22,6 @@ export interface UIElementOptions {
     screenZone?: SCREEN_ZONE;
     visible?: boolean;
     classes?: string[];
-    tag?: string;
 }
 
 export default class UIElement {
@@ -66,6 +65,7 @@ export default class UIElement {
     set entity(value) { this._entity = value; }
 
     get Element() { return this._element; }
+    set Element(value) { this._element = value; }
 
     constructor(options: UIElementOptions = {}) {
 
@@ -75,7 +75,7 @@ export default class UIElement {
         this._parent = options.parent || UI.CONTAINER;
         if(this._parent == null) debugger;
 
-        this._element = document.createElement(options.tag || 'div');
+        this.render();
         this.addClass("ui");
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
@@ -85,7 +85,10 @@ export default class UIElement {
         if('visible' in options) this.visible = options.visible;
 
         UIElement._UI_ELEMENTS.push(this);
+    }
 
+    render() {
+        this._element = document.createElement('div');
         Events.Subscribe(Events.List.DataLoaded, this.appendUIElement.bind(this));
     }
 
