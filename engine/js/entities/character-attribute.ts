@@ -15,15 +15,18 @@ export default class CharacterAttribute {
     // maybe later static list of possible character attributes?
     // should there be min and max values?
 
-    #name;
-    get name() { return this.#name; }
+    private _name;
+    private _value;
+    private _baseCost = 0;
+    private _costFunction;
+    get name() { return this._name; }
+    get baseCost() { return this._baseCost; }
 
-    #value;
-    get value() { return this.#value; }
+    get value() { return this._value; }
     set value(newValue) {
         
-        const oldVal = this.#value;
-        this.#value = newValue;
+        const oldVal = this._value;
+        this._value = newValue;
 
         Events.RaiseEvent(Events.List.CharacterAttributeChanged, {
             from: oldVal,
@@ -32,29 +35,18 @@ export default class CharacterAttribute {
         });
     }
 
-    #baseCost = 0;
-    get baseCost() { return this.#baseCost; }
-
-    #costFunction;
+    get cost() { return this._costFunction(this); }
 
     constructor(options: CharacterAttributeOptions) {
 
         if(!options.name) debugger;
         if(options.value == undefined) debugger;
 
-        this.#name = options.name;
+        this._name = options.name;
 
-        if(options.value != undefined) this.#value = options.value;
-        if(options.baseCost != undefined) this.#baseCost = options.baseCost;
-    
-        if(options.costFunction) {
-            this.#costFunction = options.costFunction;
-            Object.defineProperties(this, {
-                "cost": {
-                    "get": function() { return this.#costFunction(this) },
-                }
-            });
-        }
+        if(options.value != undefined) this._value = options.value;
+        if(options.baseCost != undefined) this._baseCost = options.baseCost;
+        if(options.costFunction != undefined) this._costFunction = options.costFunction;
     }
 
     buy(amount: number) {
@@ -62,8 +54,9 @@ export default class CharacterAttribute {
         let value = this.value;
         let cost = 0;
         while(amount > 0) {
-            cost += this.#costFunction({
-                baseCost: this.#baseCost,
+            // TODO: Why doesn't this throw an error (for null cost function)?
+            cost += this._costFunction({
+                baseCost: this._baseCost,
                 value
             });
             value++;
@@ -75,9 +68,5 @@ export default class CharacterAttribute {
             Resource.Get("food").value -= cost;
             this.value += (value - this.value);
         }
-
-        Events.RaiseEvent(Events.List.CharacterAttributeChanged, {
-            attribute: this
-        });
     }
 }

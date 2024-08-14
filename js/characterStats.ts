@@ -79,11 +79,11 @@ function updateMenuItemText(event: { attribute: CharacterAttribute }) {
     const { attribute } = event;
     if(attribute == strength) {
         strengthMenuItem.Element.innerHTML = strengthMenuItem.name 
-            // + `<br />Cost: ${attribute.cost}`;
+            + `<br />Cost: ${attribute.cost}`;
         strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
     } else if(attribute == speed) {
         speedMenuItem.Element.innerHTML = speedMenuItem.name 
-            // + `<br />Cost: ${attribute.cost}`;
+            + `<br />Cost: ${attribute.cost}`;
         speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
     }
 }
