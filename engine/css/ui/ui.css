@@ -97,3 +97,15 @@
     cursor: pointer;
     background-color: transparent;
 }
+
+.ui.menu { 
+    /* TODO: these should be stored / var'd somewhere ...
+    maybe we can get away with "calc ui + 100"? */
+    z-index: 1100;
+}
+
+.menu button {
+    cursor: pointer;
+    margin-top: 4px;
+    text-align: center;
+}

@@ -81,21 +81,32 @@ export default class MenuItem extends UIElement implements IMenuItem {
                 this.Element.addEventListener('change', options.context.action);
             }
         } else {
-            this.Element = document.createElement('div');
+            this.Element = document.createElement('button');
+            if(options.menu.menuAction) {
+                // TODO: touch inputs? we probly need to generalize "addEventListener" ...
+                this.Element.addEventListener('click', this.menuInteract.bind(this));
+            }
         }
         const that = this;
         Defer(() => {
-            Events.Subscribe(Events.List.DataLoaded, that.miAppendUIElement.bind(that));
+            Events.Subscribe(Events.List.DataLoaded, that.appendMenuItem.bind(that));
         }, 1);
     }
 
-    private miAppendUIElement() {
+    private appendMenuItem() {
         if(this.menuItemType == MenuItemType.Checkbox) {
             this._labelElement.appendChild(this.Element);
             this.menu.Element.appendChild(this._labelElement);
         } else {
             this.menu.Element.appendChild(this.Element);
             // this.initialize();
+        }
+    }
+
+    private menuInteract() {
+        this.menu.select(this);
+        if(this.menu.menuAction) {
+            this.menu.menuAction(null);
         }
     }
 }

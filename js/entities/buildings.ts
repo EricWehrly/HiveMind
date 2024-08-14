@@ -12,7 +12,10 @@ const desireLabels: Map<string, MenuItem> = new Map();
 
 const BuildFromMenu = function (context: { menu: Menu }) {
 
-    const menuItem = context?.menu?.selected;
+    // TODO: We know which menu this is, but we shouldn't be "hard reference"-ing it like this...
+    // const menuItem = context?.menu?.selected;
+    const menu = UI_MENU_BUILDINGS;
+    const menuItem = menu.selected;
 
     const characterType = CharacterType.List[menuItem.characterTypeName || menuItem.name];
 
