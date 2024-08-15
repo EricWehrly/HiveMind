@@ -1,5 +1,5 @@
 import Events from '../events.ts';
-import Renderer from '../rendering/renderer.mjs';
+import Renderer from '../rendering/renderer.ts';
 import Entity from './character/Entity.ts';
 
 function createGraphic(character) {

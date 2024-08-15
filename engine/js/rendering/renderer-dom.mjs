@@ -1,5 +1,5 @@
 import Events from "../events.ts";
-import Renderer from "./renderer.mjs";
+import Renderer from "./renderer.ts";
 
 Events.List.RendererResized = 'RendererResized';
 
