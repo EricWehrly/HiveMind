@@ -1,11 +1,12 @@
-import Events from "../events.ts";
-import Renderer from "./renderer.ts";
+import Rectangle from "../baseTypes/rectangle";
+import Events from "../events";
+import Renderer from "./renderer";
 
 Events.List.RendererResized = 'RendererResized';
 
 export default class DomRenderer extends Renderer {
 
-    static Render(screenRect) {
+    static Render(screenRect: Rectangle) {
 
         for(var index in Renderer._renderMethods) {
             var renderMethodEntry = Renderer._renderMethods[index];
@@ -20,7 +21,7 @@ export default class DomRenderer extends Renderer {
 }
 
 function onWindowResize() {
-    Events.RaiseEvent(Events.List.RendererResized);
+    Events.RaiseEvent(Events.List.RendererResized, null);
 }
 
 window.addEventListener('resize', onWindowResize);
