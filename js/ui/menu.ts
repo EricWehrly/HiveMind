@@ -12,10 +12,14 @@ export interface MenuOptions {
     vertical?: boolean;
     collapsible?: boolean;
     collapsed?: boolean;
-    menuAction?: (arg: { menu: Menu }) => void;
+    menuAction?: (arg: MenuAction) => void;
     icon?: string;
     iconPosition?: SCREEN_ZONE;
     closeButton?: boolean;
+}
+
+export interface MenuAction {
+    menu: Menu;
 }
 
 export default class Menu extends UIElement {
