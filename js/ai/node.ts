@@ -31,8 +31,12 @@ export default class NodeAI extends AI {
     static QueueDesire(desire: CharacterType) {
 
         NodeAI.#desiredBuildingsQueue.push(desire);
+
+        const details = {
+            name: desire.name
+        };
         
-        Events.RaiseEvent(Events.List.BuildingDesired, desire);
+        Events.RaiseEvent(Events.List.BuildingDesired, details);
     }
     
     // "source" sometimes won't have a chunk.
