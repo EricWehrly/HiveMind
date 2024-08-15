@@ -1,4 +1,4 @@
-import Renderer from '../rendering/renderer.mjs';
+import Renderer from '../rendering/renderer';
 import Events from '../events';
 import Rectangle from '../baseTypes/rectangle';
 import Entity from '../entities/character/Entity';

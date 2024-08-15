@@ -1,5 +1,5 @@
 import Rectangle from '../baseTypes/rectangle';
-import Renderer from '../rendering/renderer.mjs';
+import Renderer from '../rendering/renderer';
 import Chunk from './chunk';
 import Map from './map';
 
