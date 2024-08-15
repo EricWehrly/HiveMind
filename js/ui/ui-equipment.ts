@@ -4,9 +4,9 @@ import { TechnologyTypes } from "../TechnologyTypes";
 import Rectangle from "../baseTypes/rectangle";
 import { CooldownCompleteEvent, EquipmentChangedEvent, EquippedTechnology } from "../entities/equipment";
 import Character from "../entities/character";
-import { CharacterAttackedEvent } from "../entities/character/Combatant";
 import Entity from "../entities/character/Entity";
 import HiveMindCharacter from "../../../js/entities/character/HiveMindCharacter";
+import { CharacterAttackedEvent } from "../entities/character/mixins/Combative";
 
 let playerAttack: EquippedTechnology;
 
