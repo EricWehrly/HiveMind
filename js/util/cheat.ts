@@ -1,9 +1,8 @@
 import Character from "../../engine/js/entities/character";
-import { Combatant } from "../../engine/js/entities/character/Combatant";
 import Entity from "../../engine/js/entities/character/Entity.js";
+import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Resource from "../../engine/js/entities/resource";
-import Menu from "../../engine/js/ui/menu";
 import CharacterType from "../entities/CharacterType";
 import Building from "../entities/building";
 import { addBuildItem } from "../entities/buildings";
@@ -37,7 +36,7 @@ export default class Cheat {
 
     static get Unlocks(): void {
 
-        const localPlayer = Character.LOCAL_PLAYER as Combatant;
+        const localPlayer: Entity & Equipped = Character.LOCAL_PLAYER as unknown as Entity & Equipped;
         
         localPlayer.AddTechnology("thorns");
         
