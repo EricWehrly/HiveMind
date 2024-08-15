@@ -106,7 +106,7 @@ export default class MenuItem extends UIElement implements IMenuItem {
     private menuInteract() {
         this.menu.select(this);
         if(this.menu.menuAction) {
-            this.menu.menuAction(null);
+            this.menu.menuAction({ menu: this.menu} );
         }
     }
 }

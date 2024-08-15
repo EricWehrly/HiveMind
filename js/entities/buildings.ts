@@ -1,6 +1,6 @@
 import Character from '../../engine/js/entities/character';
 import CharacterType from './CharacterType';
-import Menu from '../../engine/js/ui/menu';
+import Menu, { MenuAction } from '../../engine/js/ui/menu';
 import { SCREEN_ZONE } from '../../engine/js/ui/ui-element';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events';
@@ -10,12 +10,9 @@ import MenuItem, { MenuItemType } from '../../engine/js/ui/MenuItem';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
-const BuildFromMenu = function (context: { menu: Menu }) {
+const BuildFromMenu = function (context: MenuAction) {
 
-    // TODO: We know which menu this is, but we shouldn't be "hard reference"-ing it like this...
-    // const menuItem = context?.menu?.selected;
-    const menu = UI_MENU_BUILDINGS;
-    const menuItem = menu.selected;
+    const menuItem = context?.menu?.selected;
 
     const characterType = CharacterType.List[menuItem.characterTypeName || menuItem.name];
 
