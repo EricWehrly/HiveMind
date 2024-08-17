@@ -37,7 +37,7 @@ export default class Character extends PlayableEntity {
             this.#research = options.research;
         }
 
-        this.color = options.color;
+        this.color = options.color || options.characterType?.color || null;
         // TODO: Find a better way to have a cancellable default?
         if (options.color === null) delete this.color;
 
