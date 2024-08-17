@@ -3,6 +3,7 @@ import Events from '../events';
 import Rectangle from '../baseTypes/rectangle';
 import Entity from '../entities/character/Entity';
 import UI from './ui';
+import { GetEntityGraphic } from '../entities/entity-graphics';
 
 export enum SCREEN_ZONE {
     NONE = "",
@@ -128,16 +129,14 @@ export default class UIElement {
 
     redraw(screenRect: Rectangle) {
         
-        // TODO: fix this later
-        // @ts-expect-error
-        const entityGraphic = this?.entity?.graphic;
+        const entityGraphic = GetEntityGraphic(this.entity);
 
         if(entityGraphic) {
 
             // TODO: get grid size constant
             const gridSize = 32;
 
-            const entityHeight = entityGraphic.offsetHeight;
+            const entityHeight: number = entityGraphic.offsetHeight;
             const offsetPosition = {
                 x: this._entity.position.x - screenRect.x,
                 y: this._entity.position.y - screenRect.y
@@ -145,7 +144,7 @@ export default class UIElement {
             let targetY = gridSize * offsetPosition.y;
             if(entityGraphic?.style?.height) {
                 // multiply height for some reason
-                targetY -= (1.5 * parseInt(entityHeight));
+                targetY -= (1.5 * entityHeight);
             }
 
             this._element.style.left = (gridSize * offsetPosition.x) + "px";
