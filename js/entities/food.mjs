@@ -54,16 +54,13 @@ export default class Food {
                 const offsetY = Math.randomBetween(-3, 3);
     
                 const opts = {
+                    characterType: CharacterType.List['Food'],
                     position: {
                         x: spawnerPosition.x + offsetX,
                         y: spawnerPosition.y + offsetY
                     }
                 };
                 
-                // Maybe we should have a "spawn item" shorthand function?
-                // or maybe "character type" should be an option we can pass into the character constructor?
-                Object.assign(opts, CharacterType.List['Food']);
-                opts.characterType = CharacterType.List['Food'];
                 MakeHiveMindCharacter([MakeGrowable, MakeLiving], opts);
             }
         }

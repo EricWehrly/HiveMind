@@ -1,3 +1,4 @@
+import CharacterType from "../../../../../js/entities/CharacterType";
 import Events from "../../../events";
 import { RemoveCharacterFromList } from "../../characters";
 import Entity from "../Entity";
@@ -15,8 +16,9 @@ export interface Living {
 }
 
 export interface LivingOptions {
-    health?: number;
+    health: number;
     maxHealth?: number;
+    characterType?: CharacterType;
 }
 
 export interface CharacterDamagedEvent {
@@ -31,8 +33,8 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
     return class extends Base implements Living {
 
         // TODO: value of health when options is null
-        private _health = options?.health;
-        private _initialHealth = options?.maxHealth || this._health;
+        private _health = options?.health || options.characterType?.health;
+        private _initialHealth = options?.maxHealth || options.characterType?.maxHealth || this._health;
     
         get size() { 
             // TODO: address this magic number

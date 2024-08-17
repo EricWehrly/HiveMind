@@ -266,11 +266,11 @@ export default class NodeAI extends AI {
         }
         // console.log(`I'm at ${this.character.position}, making a new node at ${position}`);
 
+        // TODO: combining charactertype with other types results in properties that can't be traced back to their proper types :(
+        // (because of dynamic property definitions)
         const options = Object.assign({}, wantToBuild) as CharacterType & Living & Positioned;
         options.position = position;
-        //@ts-expect-error
         options.faction = this.character.faction;
-        //@ts-expect-error
         options.cost = wantToBuild.health;
 
         return options;

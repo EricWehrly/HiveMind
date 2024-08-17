@@ -1,9 +1,6 @@
-import Research from "../../engine/js/research";
-import { GrowerConfig } from "./character/mixins/Grower";
-
 export interface CharacterTypeOptions {
     name: string;
-    // TODO: check this is working as intended
+    // TODO: check (unit test) this is working as intended
     research?: {
         cost: number
     };
@@ -18,19 +15,14 @@ export default class CharacterType {
         return new CharacterType(options);
     }
 
+    // hack to allow for dynamic properties
+    [key: string]: any;
+
     _name: string;
     get name() { return this._name; }
-    // some of these properties might be ... odd, to have on here ...
-    // but then, this whole class is kinda murky javascript hack fun
-    _spawnPurposeKey?: string;
-    _currentPurposeKey?: string;
-    growerConfig?: GrowerConfig;
 
     // expose commonly accessed character property
     health?: number;
-
-    private _research: Research;
-    get research() { return this._research; }
 
     #isStudied = false;
     get isStudied() { return this.#isStudied; }
@@ -38,22 +30,15 @@ export default class CharacterType {
         this.#isStudied = value;
     }
 
+    // TODO: delete when all mjs files are gone
     get characterType() { return this; }
 
     private constructor(options: CharacterTypeOptions) {
-
-        if(options.research) {
-            this._research = new Research({
-                name: options.name,
-                ...options.research
-            });
-        }
         this._name = options.name;
 
         Object.assign(this, options.context);
 
         CharacterType.List[this.name] = this;
         // TODO: We probably don't need to do this
-        Object.freeze(this);
     }
 }
