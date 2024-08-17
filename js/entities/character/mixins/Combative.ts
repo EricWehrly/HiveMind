@@ -7,13 +7,20 @@ import { Defer } from "../../../loop.mjs";
 import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";
 import Entity from "../Entity";
-import PlayableEntity from "../PlayableEntity";
 import SentientEntity from "../SentientEntity";
 import { Equipped, IsEquipped } from "./Equipped";
 import { IsLiving, Living } from "./Living";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.CharacterAttacked = "CharacterAttacked";
+
+// TODO: use the type when raising the event
+// which is currently in SentientEntity.target.set
+export interface CharacterTargetChangedEvent {
+    character: SentientEntity;
+    from: Entity | WorldCoordinate;
+    to: Entity | WorldCoordinate;
+}
 
 export interface CharacterAttackedEvent {
     attacker: Entity;
@@ -28,10 +35,6 @@ export interface Combative {
     thornMultiplier: number;
     attack(): number;
     applyStatusEffect(statusEffect: StatusEffect, duration: number): void;
-}
-
-export interface CombatantOptions {
-
 }
 
 type Axis = 'x' | 'y';
