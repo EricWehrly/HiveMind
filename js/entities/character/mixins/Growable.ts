@@ -103,7 +103,8 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
                     const characterType = this.characterType;
                     this.growConfig = characterType.growerConfig;
                     if (this.name != characterType.name) {
-                        this.name = characterType.name;
+                        // TODO: check that removing the name assignment doesn't break anything
+                        // this.name = characterType.name;
                         this.growConfig = characterType.growerConfig;
                         this._currentPurposeKey = characterType._currentPurposeKey;
                         // TODO: this method doesn't seem to exist anymore

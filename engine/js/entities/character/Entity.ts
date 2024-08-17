@@ -59,8 +59,10 @@ export default class Entity {
         return charList;
     }
 
-    id: string;
-    name: string;
+    private _id: string;
+    private _name: string;
+    get id() { return this._id; }
+    get name() { return this._name; }
     
     private _attributes: { [key: string]: CharacterAttribute } = {};
     _position: WorldCoordinate = new WorldCoordinate(0, 0);
@@ -74,7 +76,7 @@ export default class Entity {
     private _characterType: CharacterType;
     get characterType() { 
         if(this._characterType == null) {
-            this._characterType = CharacterType.List[this.name];
+            this._characterType = CharacterType.List[this._name];
         }
         return this._characterType;
     }
@@ -125,11 +127,11 @@ export default class Entity {
 
     constructor(options: EntityOptions = {}) {
 
-        this.id = options.id || generateId();
+        this._id = options.id || generateId();
 
         this._characterType = options.characterType || CharacterType.List[options.name];
 
-        this.name = options.name || this.characterType?.name || "TODO";     // TODO :/
+        this._name = options.name || this.characterType?.name || "TODO";     // TODO :/
         
         if(options.position) { 
             this._position = new WorldCoordinate(options.position.x, options.position.y);
@@ -327,6 +329,6 @@ export default class Entity {
     }
 
     equals(entity: Entity) {
-        return entity.id == this.id;
+        return entity._id == this._id;
     }
 }
