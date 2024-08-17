@@ -1,4 +1,3 @@
-import AI from "../../engine/js/ai/basic";
 import Research from "../../engine/js/research";
 import { GrowerConfig } from "./character/mixins/Grower";
 
@@ -15,6 +14,10 @@ export default class CharacterType {
 
     static List: { [key: string]: CharacterType } = {}
 
+    static Create(options: CharacterTypeOptions) {
+        return new CharacterType(options);
+    }
+
     _name: string;
     get name() { return this._name; }
     // some of these properties might be ... odd, to have on here ...
@@ -22,7 +25,6 @@ export default class CharacterType {
     _spawnPurposeKey?: string;
     _currentPurposeKey?: string;
     growerConfig?: GrowerConfig;
-    ai?: AI;
 
     // expose commonly accessed character property
     health?: number;
@@ -38,7 +40,7 @@ export default class CharacterType {
 
     get characterType() { return this; }
 
-    constructor(options: CharacterTypeOptions) {
+    private constructor(options: CharacterTypeOptions) {
 
         if(options.research) {
             this._research = new Research({

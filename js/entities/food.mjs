@@ -4,11 +4,12 @@ import Chunk from '../../engine/js/mapping/chunk.ts';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.ts';
 import { MakeGrowable } from './character/mixins/Growable.ts';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
+import MakeCharacterType from './CharacterTypeFactory.ts';
 
 // need a definition for character types
 // so the player can study the type and learn how to gain health from it
 
-new CharacterType({
+MakeCharacterType({
     name: 'Food',
     research: {
         cost: 10

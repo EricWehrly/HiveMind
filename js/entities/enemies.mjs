@@ -7,8 +7,9 @@ import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.ts';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
 import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative.ts';
 import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped.ts';
+import MakeCharacterType from './CharacterTypeFactory.ts';
 
-new CharacterType({
+MakeCharacterType({
     name: "Animal",
     context: {
         color: 'red',

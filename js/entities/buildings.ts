@@ -7,6 +7,7 @@ import Events from '../../engine/js/events';
 import NodeAI from '../ai/node';
 import Building from './building';
 import MenuItem, { MenuItemType } from '../../engine/js/ui/MenuItem';
+import MakeCharacterType from './CharacterTypeFactory';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
@@ -82,7 +83,8 @@ KeyboardController.AddDefaultBinding("openMenu/build", "b");
 /* Buildings data begin */
 
 // TODO: import from json, or ... ?
-new CharacterType({
+
+MakeCharacterType({
     name: 'Seeder',
     context: {
         health: 15,
@@ -99,7 +101,7 @@ new CharacterType({
 });
 
 // this probably needs to express a (max) distance
-new CharacterType({
+MakeCharacterType({
     name: 'Eater',
     context: {
         health: 40,
@@ -109,7 +111,7 @@ new CharacterType({
     }
 });
 
-new CharacterType({
+MakeCharacterType({
     name: 'Node',
     context: {
         health: 40,
@@ -119,7 +121,7 @@ new CharacterType({
 });
 addBuildItem(CharacterType.List['Node']);
 
-new CharacterType({
+MakeCharacterType({
     name: 'Hunter',
     context: {
         health: 30,
@@ -134,7 +136,7 @@ hunterMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Hunter'].name}`
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
-new CharacterType({
+MakeCharacterType({
     name: 'Researcher',
     context: {
         health: 50,
@@ -144,7 +146,7 @@ new CharacterType({
 const researcherMenuItem = addBuildItem(CharacterType.List['Researcher']);
 researcherMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Researcher'].name}`;
 
-new CharacterType({
+MakeCharacterType({
     name: 'Healer',
     context: {
         health: 30,
