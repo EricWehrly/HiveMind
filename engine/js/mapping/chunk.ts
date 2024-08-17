@@ -1,7 +1,6 @@
 import Events from "../events";
 import Map from './map';
 import Seed from "../core/seed.mjs";
-import './chunk-graphic';
 import Biome from "./biome";
 import Point from "../coordinates/point";
 

@@ -34,6 +34,7 @@ import "./goal.ts";
 import '../engine/js/rendering/entities/entity-graphics';
 import '../engine/js/rendering/ui/ui-element-renderer';
 import '../engine/js/rendering/ui/equipment-renderer';
+import '../engine/js/rendering/mapping/chunk-graphic';
 
 // hack, until we convert Actions to proper ts
 import './actions';
