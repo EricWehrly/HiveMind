@@ -101,8 +101,10 @@ describe('Building', () => {
             expect(result).toBeNull();
         });
 
+        /* TODO
         it('should handle food reservation', () => {
         });
+        */
 
         // let's have this 'grow' the building as well ...
     });
