@@ -1,6 +1,4 @@
-import Renderer from '../rendering/renderer';
 import Events from '../events';
-import Rectangle from '../baseTypes/rectangle';
 import Entity from '../entities/character/Entity';
 import UI from './ui';
 
@@ -27,18 +25,8 @@ export interface UIElementOptions {
 export default class UIElement {
 
     private static _UI_ELEMENTS: UIElement[] = [];
+    public static get UI_ELEMENTS() { return this._UI_ELEMENTS; }
     screenZone;
-
-    static {
-        Renderer.RegisterRenderMethod(10, UIElement.#ui_loop);
-    }
-
-    static #ui_loop(screenRect: Rectangle) {
-    
-        for(var element of UIElement._UI_ELEMENTS) {
-            element.redraw(screenRect);
-        }
-    }
 
     private _initialized = false;
     private _element: HTMLElement;
@@ -124,33 +112,6 @@ export default class UIElement {
         }
 
         span.innerHTML = text;
-    }
-
-    redraw(screenRect: Rectangle) {
-        
-        // TODO: fix this later
-        // @ts-expect-error
-        const entityGraphic = this?.entity?.graphic;
-
-        if(entityGraphic) {
-
-            // TODO: get grid size constant
-            const gridSize = 32;
-
-            const entityHeight = entityGraphic.offsetHeight;
-            const offsetPosition = {
-                x: this._entity.position.x - screenRect.x,
-                y: this._entity.position.y - screenRect.y
-            };
-            let targetY = gridSize * offsetPosition.y;
-            if(entityGraphic?.style?.height) {
-                // multiply height for some reason
-                targetY -= (1.5 * parseInt(entityHeight));
-            }
-
-            this._element.style.left = (gridSize * offsetPosition.x) + "px";
-            this._element.style.top = targetY + "px";
-        }
     }
 
     initialize() {
