@@ -1,4 +1,3 @@
-import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Point from "../coordinates/point";
 import Seed from "../core/seed.mjs";
 import SentientEntity from "../entities/character/SentientEntity";
