@@ -6,35 +6,24 @@ import Events from '../engine/js/events';
 import './data/biomeTypes'
 
 // Functionality
-import '../engine/js/mapping/tile-manager';
 import KeyboardController from './controls/keyboard-controller.mjs';
 import Character from '../engine/js/entities/character';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import { MakeSlimey } from './entities/character/mixins/Slimey';
 import { MakeHiveMindCharacter } from './entities/character/HivemindCharacterFactory';
-// import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import ToolTip from '../engine/js/ui/tooltip';
-import Technology from '../engine/js/technology';
-// import Menu from '../engine/js/ui/menu.mjs';
 import './ui/ui';
-import '../engine/js/ui/ui-equipment';
-import '../engine/js/ui/ui-resource.mjs';
 // weirdly we've removed any other imports for this ...
 import './entities/building';
 
 import Map from '../engine/js/mapping/map';
 import './entities/entities.mjs';
-// TODO: We can restructure 'entities.js' to import and export this
 import Resource from '../engine/js/entities/resource';
 import './characterStats';
 
 import Cheat from './util/cheat';
 import MessageLog from '../engine/js/core/messageLog.mjs';
 import "./goal.ts";
-import '../engine/js/rendering/entities/entity-graphics';
-import '../engine/js/rendering/ui/ui-element-renderer';
-import '../engine/js/rendering/ui/equipment-renderer';
-import '../engine/js/rendering/mapping/chunk-graphic';
 
 // hack, until we convert Actions to proper ts
 import './actions';
