@@ -70,6 +70,7 @@ function spawnFauna(chunk) {
         const randomX = seed.Random(padding, (Chunk.CHUNK_SIZE / 2) - (padding + 1));
         const randomY = seed.Random(padding, (Chunk.CHUNK_SIZE / 2) - (padding + 1));
         const spawnOpts = {
+            characterType: CharacterType.List['Animal'],
             position: {
                 x: chunkX + (Chunk.CHUNK_SIZE / 2) + randomX,
                 y: chunkY + (Chunk.CHUNK_SIZE / 2) + randomY
@@ -78,7 +79,6 @@ function spawnFauna(chunk) {
             ai: PredatorAI
         };
         Object.assign(spawnOpts, characterOpts);
-        spawnOpts.characterType = CharacterType.List['Animal'];
         MakeHiveMindCharacter([MakeLiving, MakeCombative, MakeEquipped], spawnOpts);
     }
 }
