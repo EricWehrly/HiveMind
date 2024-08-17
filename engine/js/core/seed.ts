@@ -8,7 +8,7 @@ export default class Seed {
 
     #seed;
 
-    constructor(seed) {
+    constructor(seed: number) {
 
         this.#seed = seed;
     }
@@ -18,7 +18,7 @@ export default class Seed {
     // but remember though that we intentionally wanted players (clients) doing the generation each, and sharing to the network
     // 'different' could mean variety
     // also, screw it, this is just supposed to be a prototype
-    Random(min, max) {
+    Random(min?: number, max?: number): number {
 
         // TODO: the 'if' should be 'isNumeric'?
         if(min != null && max != null) {

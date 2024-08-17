@@ -1,5 +1,5 @@
 import Point from "../coordinates/point";
-import Seed from "../core/seed.mjs";
+import Seed from "../core/seed";
 import SentientEntity from "../entities/character/SentientEntity";
 import Events from "../events";
 import Biome, { BiomeType } from "./biome";
