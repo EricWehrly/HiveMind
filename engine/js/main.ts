@@ -1,15 +1,17 @@
-import Camera from './camera.ts';
+import Camera from './camera';
 import Seed from './core/seed.mjs';
 import Client from './network/client.mjs';
-import Events from './events.ts';
+import Events from './events';
+import Map from './mapping/map';
 
 const Game = {
     Camera: new Camera(),
     Seed: new Seed(123456),
     Timings: {
-        FirstLoad: performance.now()
+        FirstLoad: performance.now(),
+        GameStart: -1
     },
-    Map: null,  // TODO: fix needing this...
+    Map: null as Map | null,  // TODO: fix needing this...
 };
 
 export default Game;

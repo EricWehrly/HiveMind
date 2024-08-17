@@ -1,5 +1,5 @@
 // Core
-import Game from '../engine/js/engine.mjs';
+import Game from '../engine/js/main';
 import Events from '../engine/js/events';
 
 // Data

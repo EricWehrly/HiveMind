@@ -1,4 +1,4 @@
-import Game from "../engine/js/engine.mjs";
+import Game from "../engine/js/main";
 import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events";
 import UIElement, { SCREEN_ZONE } from "../engine/js/ui/ui-element";
