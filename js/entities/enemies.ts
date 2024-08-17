@@ -1,13 +1,13 @@
-import Technology from '../../engine/js/technology.ts';
-import Events from '../../engine/js/events.ts';
-import CharacterType from './CharacterType.ts';
-import Chunk from '../../engine/js/mapping/chunk.ts';
-import PredatorAI from '../../engine/js/ai/predator.ts';
-import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.ts';
-import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
-import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative.ts';
-import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped.ts';
-import MakeCharacterType from './CharacterTypeFactory.ts';
+import Technology from '../../engine/js/technology';
+import Events from '../../engine/js/events';
+import CharacterType from './CharacterType';
+import Chunk from '../../engine/js/mapping/chunk';
+import PredatorAI from '../../engine/js/ai/predator';
+import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
+import { MakeLiving } from '../../engine/js/entities/character/mixins/Living';
+import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative';
+import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped';
+import MakeCharacterType from './CharacterTypeFactory';
 
 MakeCharacterType({
     name: "Animal",
@@ -31,7 +31,7 @@ function getFaunaTechs() {
 // we may as well spawn "fauna", too, while we're at it
 // why don't we just have fauna have aggression from 0 to 100?
 // need some kind of indicator like "redness" of the creature to show how dangerous / aggressive it is?
-function spawnFauna(chunk) {
+function spawnFauna(chunk: Chunk) {
 
     const seed = chunk.seed;
 

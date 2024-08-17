@@ -1,4 +1,4 @@
 import './food';
 import './buildings';
-import './enemies.mjs';
+import './enemies';
 import './technologies.mjs'
