@@ -1,5 +1,5 @@
 import Camera from './camera';
-import Seed from './core/seed.mjs';
+import Seed from './core/seed';
 import Events from './events';
 import Map from './mapping/map';
 

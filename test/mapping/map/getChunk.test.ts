@@ -1,4 +1,4 @@
-import Seed from '../../../js/core/seed.mjs';
+import Seed from '../../../js/core/seed';
 import Map from '../../../js/mapping/map';
 import SentientEntity from '../../../js/entities/character/SentientEntity';
 import Biome, { BiomeType } from '../../../js/mapping/biome';
@@ -34,7 +34,7 @@ describe('map', () => {
     let mockCharacter: SentientEntity;
 
     beforeEach(() => {
-        map = new Map(new Seed());
+        map = new Map(new Seed(123));
         mockCharacter = new SentientEntity({}); // replace with the actual constructor if it requires parameters
         mockCharacter.isPlayer = true;
         const biomeType = new BiomeType({

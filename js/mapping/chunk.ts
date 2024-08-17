@@ -1,6 +1,6 @@
 import Events from "../events";
 import Map from './map';
-import Seed from "../core/seed.mjs";
+import Seed from "../core/seed";
 import Biome from "./biome";
 import Point from "../coordinates/point";
 
