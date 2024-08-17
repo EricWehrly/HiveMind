@@ -1,10 +1,10 @@
-import CharacterType from './CharacterType.ts';
-import Events from '../../engine/js/events.ts';
-import Chunk from '../../engine/js/mapping/chunk.ts';
-import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory.ts';
-import { MakeGrowable } from './character/mixins/Growable.ts';
-import { MakeLiving } from '../../engine/js/entities/character/mixins/Living.ts';
-import MakeCharacterType from './CharacterTypeFactory.ts';
+import CharacterType from './CharacterType';
+import Events from '../../engine/js/events';
+import Chunk from '../../engine/js/mapping/chunk';
+import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
+import { MakeGrowable } from './character/mixins/Growable';
+import { MakeLiving } from '../../engine/js/entities/character/mixins/Living';
+import MakeCharacterType from './CharacterTypeFactory';
 
 // need a definition for character types
 // so the player can study the type and learn how to gain health from it
@@ -30,7 +30,7 @@ export default class Food {
         Events.Subscribe(Events.List.ChunkCreated, this.spawnFood.bind(this));
     }
 
-    static spawnFood(chunk) {
+    static spawnFood(chunk: Chunk) {
 
         const seed = chunk.seed;
         
