@@ -1,7 +1,7 @@
-import Rectangle from '../baseTypes/rectangle';
-import Renderer from '../rendering/renderer';
-import Chunk from './chunk';
-import Map from './map';
+import Rectangle from '../../baseTypes/rectangle';
+import Renderer from '../renderer';
+import Chunk from '../../mapping/chunk';
+import Map from '../../mapping/map';
 
 // TODO: This playfield reference should probably be stored somewhere more globally referencable
 let playfield: Element = null;
