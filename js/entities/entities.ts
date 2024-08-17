@@ -1,4 +1,4 @@
-import './food.ts';
-import './buildings.ts';
+import './food';
+import './buildings';
 import './enemies.mjs';
 import './technologies.mjs'

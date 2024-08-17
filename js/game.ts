@@ -17,7 +17,7 @@ import './ui/ui';
 import './entities/building';
 
 import Map from '../engine/js/mapping/map';
-import './entities/entities.mjs';
+import './entities/entities';
 import Resource from '../engine/js/entities/resource';
 import './characterStats';
 
