@@ -23,11 +23,6 @@ function ui_loop(screenRect: Rectangle) {
 function initialRender(uiElement: UIElement): HTMLElement {
     
     const element = document.createElement(uiElement.elementType);
-    if(uiElement.elementType == UI_ELEMENT_TYPE.Checkbox) {
-        element.setAttribute('type', 'checkbox');
-        const labelElement = document.createElement('label');
-        element.appendChild(labelElement);
-    }
 
     if(uiElement.title) {
         const title = document.createElement('h3');
@@ -47,6 +42,15 @@ function initialRender(uiElement: UIElement): HTMLElement {
         UI.CONTAINER.appendChild(element);
     }
     INITIAL_DISPLAY_VALUES.set(uiElement, window.getComputedStyle(element).display);
+
+    if(uiElement.elementType == UI_ELEMENT_TYPE.Checkbox) {
+        element.setAttribute('type', 'checkbox');
+        const labelElement = document.createElement('label');
+        labelElement.innerHTML = uiElement.text;
+        element.parentElement.appendChild(labelElement);
+        // TODO: clicking label toggles checkbox, needs checkbox to be able to update dom from event
+        // labelElement.addEventListener('click', uiElement.customAction);
+    }
 
     uiElementUpdated(uiElement);
 
