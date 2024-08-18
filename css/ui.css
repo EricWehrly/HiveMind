@@ -24,11 +24,11 @@
 }
 
 /* TODO: not this stupid fix */
-#CombatLog {
+.menu.Combat.Log {
     max-width: 34%;
 }
 
-#CombatLog h3 {
+.menu.Combat.Log h3 {
     margin: 0;
 }
 

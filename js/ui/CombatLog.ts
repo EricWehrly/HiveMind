@@ -14,7 +14,6 @@ const UI_MENU_COMABT_LOG = new Menu({
     collapsed: true,
     closeButton: false
 });
-UI_MENU_COMABT_LOG.Element.id = "CombatLog";
 
 function updateCombatLog() {
 
