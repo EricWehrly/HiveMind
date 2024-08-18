@@ -130,6 +130,7 @@ export default class Menu extends UIElement {
 
     constructor(options: MenuOptions & UIElementOptions = {}) {
 
+        options.title = options.name;
         options.visible = options.visible || false;     // new menus are hidden by default, unlike ui elements
 
         super(options);
@@ -142,9 +143,6 @@ export default class Menu extends UIElement {
             this.#name = options.name;
             this.addClass(options.name);
         }
-        // const title = document.createElement('h3');
-        // title.innerHTML = this.#name;
-        // this.Element.appendChild(title);
 
         if(options.menuAction) this.#menuAction = options.menuAction;
 

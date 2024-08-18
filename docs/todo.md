@@ -1,5 +1,5 @@
 ui element conversion fixes {
-    menu title
+    checkbox inputs
     menu sections
     menu collapsible
     menu iconPosition
