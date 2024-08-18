@@ -1,5 +1,4 @@
 ui element conversion fixes {
-    menu sections
     menu collapsible
     menu iconPosition
     menu closeButton
