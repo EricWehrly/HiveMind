@@ -48,8 +48,7 @@ function initialRender(uiElement: UIElement): HTMLElement {
         const labelElement = document.createElement('label');
         labelElement.innerHTML = uiElement.text;
         element.parentElement.appendChild(labelElement);
-        // TODO: clicking label toggles checkbox, needs checkbox to be able to update dom from event
-        // labelElement.addEventListener('click', uiElement.customAction);
+        labelElement.appendChild(element);
     }
 
     uiElementUpdated(uiElement);
