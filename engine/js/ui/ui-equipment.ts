@@ -30,7 +30,6 @@ function onCooldownComplete(details: CooldownCompleteEvent) {
     const character = details.character;
     // TODO: Playable mixin should define 'IsLocalPlayer' method
     if(character && (character as unknown as Entity).id == Character.LOCAL_PLAYER.id) {
-        UI_ELEMENT_ATTACK.Element.style.background = "";
         UI_ELEMENT_ATTACK.removeClass('cooldown');
     }
 }

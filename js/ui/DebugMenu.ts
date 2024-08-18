@@ -1,7 +1,7 @@
 import Configuration from "../../engine/js/core/Configuration";
-import MenuItem, { MenuItemType } from "../../engine/js/ui/MenuItem";
+import MenuItem from "../../engine/js/ui/MenuItem";
 import Menu from "../../engine/js/ui/menu";
-import { SCREEN_ZONE } from "../../engine/js/ui/ui-element";
+import { SCREEN_ZONE, UI_ELEMENT_TYPE } from "../../engine/js/ui/ui-element";
 import KeyboardController from "../controls/keyboard-controller.mjs";
 
 interface MenuContext {
@@ -27,7 +27,7 @@ const debugMenu = new Menu({
 new MenuItem({
     menu: debugMenu,
     name: 'Draw metadata on level',
-    menuItemType: MenuItemType.Checkbox,
+    elementType: UI_ELEMENT_TYPE.Checkbox,
     context: {
         action: toggleLevelMetaDrawing
     }

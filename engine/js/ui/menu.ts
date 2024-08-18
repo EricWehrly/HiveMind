@@ -55,13 +55,13 @@ export default class Menu extends UIElement {
 
     #name;
     #items: MenuItem[] = [];
-    #selected: MenuItem;
+    _selected: MenuItem;
     #menuAction;
     #collapsed: boolean;
     private _collapseHandle: HTMLElement;
     private _iconHandle: HTMLElement;
     get name() { return this.#name; }
-    get selected() { return this.#selected; }
+    get selected() { return this._selected; }
     get menuAction() { return this.#menuAction; }
     get visible() { return super.visible; }
     get items() { return this.#items; }
@@ -98,14 +98,10 @@ export default class Menu extends UIElement {
 
     select(menuItem: MenuItem) {
 
-        // we'd have access to these functions
-        // if it was a uiElement instead of a dom element
-        const selected = this.Element.querySelector(".selected");
-        if(selected) selected.classList.remove("selected");
-
-        // the ideal would probably still be for these classes to be enums
-        menuItem.Element.classList.add("selected");
-        this.#selected = menuItem;
+        if(this._selected == menuItem) return;
+        if(this._selected) this._selected.removeClass("selected");
+        this._selected = menuItem;
+        menuItem.addClass("selected");
     }
 
     selectNext() {
@@ -146,9 +142,9 @@ export default class Menu extends UIElement {
             this.#name = options.name;
             this.addClass(options.name);
         }
-        const title = document.createElement('h3');
-        title.innerHTML = this.#name;
-        this.Element.appendChild(title);
+        // const title = document.createElement('h3');
+        // title.innerHTML = this.#name;
+        // this.Element.appendChild(title);
 
         if(options.menuAction) this.#menuAction = options.menuAction;
 
@@ -157,6 +153,7 @@ export default class Menu extends UIElement {
             this.collapsed = true;
         }
 
+        /*
         // TODO: Handle input situations without mouse
         if(options.collapsible) {
             this._collapseHandle = document.createElement("span");
@@ -181,6 +178,7 @@ export default class Menu extends UIElement {
             closeButton.addEventListener("click", this.close.bind(this), false);
             this.Element.appendChild(closeButton);
         }
+        */
 
         Menu.#addMenu(this);
     }
@@ -197,7 +195,7 @@ export default class Menu extends UIElement {
 
     addItem(menuItem: MenuItem) {
         
-        if(!this.#selected) {
+        if(!this._selected) {
             this.select(menuItem);
         }
 
@@ -206,19 +204,14 @@ export default class Menu extends UIElement {
 
     removeItem(item: MenuItem) {
 
-        if(item?.Element == null) {
-            console.warn("Invalid item for removal.");
-            debugger;
-            return;
-        }
-
-        item.Element.remove();
+        item.destroy();
         const index = this.#items.indexOf(item);
         if(index > -1) {
             this.#items.splice(index, 1);
         }
     }
 
+    /* TODO: sections
     getSection(name: string, addIfMissing = false): Element {
 
         if(!name) return this.Element;
@@ -242,6 +235,7 @@ export default class Menu extends UIElement {
 
         return section;
     }
+    */
 
     open() {
         this.visible = true;

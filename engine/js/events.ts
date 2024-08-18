@@ -115,6 +115,10 @@ export default class Events {
         Events.Context = {};
     }
 
+    static EventHasFired(eventName: string): boolean {
+        return Events.#FiredEvents[eventName] != undefined;
+    }
+
     /**
      * @param {Function} callback The callback method of the subscriber.
      * @param {Object} options.detail The details of the event (usually the subject of the action). Varies by event type.

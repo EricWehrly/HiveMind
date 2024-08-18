@@ -10,10 +10,10 @@ import UIElement, { SCREEN_ZONE } from "../engine/js/ui/ui-element";
 let playerHasWon = false;
 
 const UI_ELEMENT_PROGRESS = new UIElement({
-    screenZone: SCREEN_ZONE.TOP_CENTER
+    screenZone: SCREEN_ZONE.TOP_CENTER,
+    text: "Planetary Takeover Progress",
+    classes: ["planetary-takeover-progress"]
 });
-UI_ELEMENT_PROGRESS.Element.id = "objective-progress";
-UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress";
 
 Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt() {
 
@@ -25,12 +25,11 @@ Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt() {
     // do we want to do more than just 1 building = 1 point?
     const progress = (buildings.length / Game.Map.size) * 100;
     // communicate more concisely to the player
-    // UI_ELEMENT_PROGRESS.Element.innerHTML = "Planetary Takeover Progress"
-        // + `<br> ${buildings.length} / ${map.size} : ${progress}%`;
+    UI_ELEMENT_PROGRESS.setText(`Planetary Takeover Progress: ${progress.toFixed(2)}%`);
 
     // TODO: CSS var for player color
-    UI_ELEMENT_PROGRESS.Element.style.backgroundImage = 
-        `linear-gradient(90deg, blue ${progress}%,transparent ${progress * 1.1}%)`;
+    // UI_ELEMENT_PROGRESS.Element.style.backgroundImage = 
+//         `linear-gradient(90deg, blue ${progress}%,transparent ${progress * 1.1}%)`;
 
     if(progress >= 100) {
         alert("You win!");

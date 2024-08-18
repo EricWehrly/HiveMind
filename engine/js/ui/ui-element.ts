@@ -15,12 +15,25 @@ export enum SCREEN_ZONE {
     MIDDLE_RIGHT = "middle right"
 };
 
+export enum UI_ELEMENT_TYPE {
+    Default = "div",
+    Button = "button",
+    Label = "label",
+    Checkbox = "input",
+}
+
 export interface UIElementOptions {
-    parent?: Element;
+    text?: string;
+    parent?: UIElement;
     screenZone?: SCREEN_ZONE;
     visible?: boolean;
     classes?: string[];
+    elementType?: UI_ELEMENT_TYPE;
+    customAction?: (event: Event) => void;
 }
+
+Events.List.UIElementUpdated = "UIElementUpdated";
+Events.List.UIElementDestroyed = "UIElementDestroyed";
 
 export default class UIElement {
 
@@ -28,12 +41,21 @@ export default class UIElement {
     public static get UI_ELEMENTS() { return this._UI_ELEMENTS; }
     screenZone;
 
-    private _initialized = false;
-    private _element: HTMLElement;
     private _visible = true
     private _entity: Entity;
-    private _initialDisplay = "none";
-    private _parent: Element;
+    private _text: string;
+    private _parent: UIElement;
+    private _classes: string[] = [];
+    private _elementType: UI_ELEMENT_TYPE = UI_ELEMENT_TYPE.Default;
+    // later, we may want to instead track a map of interaction types to responding actions
+    // so rather than just click, we can custom double-click, hovver, etc.
+    private _customAction: (event: Event) => void;
+
+    // there's no need for anyone except the renderer to know this, so far
+    get classes() { return this._classes; }
+
+    // TODO: Ideally, we want only the renderer to read the parent
+    get parent() { return this._parent; }
 
     get visible() {
         return this._visible;
@@ -43,27 +65,24 @@ export default class UIElement {
         if(this._visible == value) return;
         
         this._visible = value;
-        if(this._initialized) {
-            if(this._element && this._visible) this._element.style.display = this._initialDisplay;
-            if(this._element && !this._visible) this._element.style.display = "none";
-        }
+        Events.RaiseEvent(Events.List.UIElementUpdated, this);
     }
+    get customAction() { return this._customAction; } 
+    // ideally 'protected' :/
+    set customAction(value) { this._customAction = value; }
 
+    get elementType() { return this._elementType; }
+    get text() { return this._text; }
     get entity() { return this._entity; }
     set entity(value) { this._entity = value; }
-
-    get Element() { return this._element; }
-    set Element(value) { this._element = value; }
 
     constructor(options: UIElementOptions = {}) {
 
         this.screenZone = options.screenZone || SCREEN_ZONE.NONE;
         // we had a redundant 'options assign' method .. in entity
 
-        this._parent = options.parent || UI.CONTAINER;
-        if(this._parent == null) debugger;
+        this._parent = options.parent;
 
-        this.render(options);
         this.addClass("ui");
         // if it doesn't have a follow entity...
         this.addClass(this.screenZone);
@@ -72,31 +91,29 @@ export default class UIElement {
         }
         if('visible' in options) this.visible = options.visible;
 
+        if(options.text) this.setText(options.text);
+
+        if(options.elementType) this._elementType = options.elementType;
+        if(options.customAction) this._customAction = options.customAction;
+
         UIElement._UI_ELEMENTS.push(this);
     }
 
-    render(options: UIElementOptions) {
-        this._element = document.createElement('div');
-        Events.Subscribe(Events.List.DataLoaded, this.appendUIElement.bind(this));
-    }
-
-    private appendUIElement() {
-        this._parent.appendChild(this.Element);
-        this._initialDisplay = window.getComputedStyle(this.Element).display;
-        this.initialize();
-    }
-
     addClass(className: string) {
-        this._element.className += ` ${className}`;
+        if(!this._classes.includes(className)) {
+            this._classes.push(className);
+        }
+        Events.RaiseEvent(Events.List.UIElementUpdated, this);
     }
     
     removeClass(className: string) {
-        this._element.className = this._element.className.replace(className, "").trim();
+        this._classes = this._classes.filter(clazz => clazz != className);
+        Events.RaiseEvent(Events.List.UIElementUpdated, this);
     }
 
     toggleClass(className: string) {
 
-        if(this._element.className.indexOf(className) > -1) {
+        if(this._classes.includes(className)) {
             this.removeClass(className);
         } else {
             this.addClass(className);
@@ -104,21 +121,12 @@ export default class UIElement {
     }
 
     setText(text: string) {
-
-        let span = this._element.getElementsByTagName('span')[0] || null;
-        if(!span) {
-            span = document.createElement('span');
-            this._element.appendChild(span);
-        }
-
-        span.innerHTML = text;
+        this._text = text;
+        Events.RaiseEvent(Events.List.UIElementUpdated, this);
     }
 
-    initialize() {
-        if(this._initialized) console.warn("Already initialized.");
-        else this._initialized = true;
-        // toggle visibility on/off now that we're initialized ...
-        this.visible = !this.visible;
-        this.visible = !this.visible;
+    destroy() {
+        Events.RaiseEvent(Events.List.UIElementDestroyed, this);
+        UIElement._UI_ELEMENTS.splice(UIElement._UI_ELEMENTS.indexOf(this), 1);
     }
 }

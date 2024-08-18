@@ -1,3 +1,13 @@
+ui element conversion fixes {
+    menu title
+    menu sections
+    menu collapsible
+    menu iconPosition
+    menu closeButton
+    planetary takeover progress rendering
+    combat log
+}
+
 Menu:
     cursor pointer
     default type is button

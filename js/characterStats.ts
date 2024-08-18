@@ -78,13 +78,13 @@ function updateMenuItemText(event: { attribute: CharacterAttribute }) {
 
     const { attribute } = event;
     if(attribute == strength) {
-        strengthMenuItem.Element.innerHTML = strengthMenuItem.name 
-            + `<br />Cost: ${attribute.cost}`;
-        strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
+        strengthMenuItem.setText(strengthMenuItem.name 
+            + `<br />Cost: ${attribute.cost}`);
+        strengthLabel.setText(`Strength: ${strength.value}`);
     } else if(attribute == speed) {
-        speedMenuItem.Element.innerHTML = speedMenuItem.name 
-            + `<br />Cost: ${attribute.cost}`;
-        speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
+        speedMenuItem.setText(speedMenuItem.name 
+            + `<br />Cost: ${attribute.cost}`);
+        speedLabel.setText( `Speed: ${speed.value}`);
     }
 }
 
@@ -96,10 +96,10 @@ Events.Subscribe(Events.List.GameStart, function() {
     
     strength = localPlayer.getAttribute("Strength");
     updateMenuItemText( { attribute: strength } );
-    strengthLabel.Element.innerHTML = `Strength: ${strength.value}`;
+    strengthLabel.setText(`Strength: ${strength.value}`);
     speed = localPlayer.getAttribute("Speed");
     updateMenuItemText( { attribute: speed } );
-    speedLabel.Element.innerHTML = `Speed: ${speed.value}`;
+    speedLabel.setText(`Speed: ${speed.value}`);
 
     Events.Subscribe(Events.List.CharacterAttributeChanged, updateMenuItemText);
 });

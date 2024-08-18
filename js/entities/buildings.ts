@@ -1,12 +1,12 @@
 import Character from '../../engine/js/entities/character';
 import CharacterType from './CharacterType';
 import Menu, { MenuAction } from '../../engine/js/ui/menu';
-import { SCREEN_ZONE } from '../../engine/js/ui/ui-element';
+import { SCREEN_ZONE, UI_ELEMENT_TYPE } from '../../engine/js/ui/ui-element';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events';
 import NodeAI from '../ai/node';
 import Building from './building';
-import MenuItem, { MenuItemType } from '../../engine/js/ui/MenuItem';
+import MenuItem from '../../engine/js/ui/MenuItem';
 import MakeCharacterType from './CharacterTypeFactory';
 
 const desireLabels: Map<string, MenuItem> = new Map();
@@ -54,7 +54,7 @@ Events.Subscribe(Events.List.BuildingDesired, function (desire: CharacterType) {
 
     const menuItem = new MenuItem({
         menu: UI_MENU_BUILDINGS,
-        menuItemType: MenuItemType.Label,
+        elementType: UI_ELEMENT_TYPE.Label,
         name: `${desire.name} desired`,
         section: 'desired'
     });
@@ -73,9 +73,10 @@ Events.Subscribe(Events.List.BuildingDesireFulfilled, function (desire: Characte
 Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
 
     const seeder = addBuildItem(CharacterType.List['Seeder']);
-    seeder.Element.innerHTML = `Desire ${CharacterType.List['Seeder'].name}`;
+    // TODO: see if we can figure this out inside addBuildItem
+    seeder.setText(`Desire ${CharacterType.List['Seeder'].name}`);
     const eater = addBuildItem(CharacterType.List['Eater']);
-    eater.Element.innerHTML = `Desire ${CharacterType.List['Eater'].name}`;
+    eater.setText(`Desire ${CharacterType.List['Eater'].name}`);
 });
 
 KeyboardController.AddDefaultBinding("openMenu/build", "b");
@@ -132,7 +133,7 @@ MakeCharacterType({
 });
 // TODO: TBH it doesn't feel "right" to put the 'desire' buildings with the actually 'available' ones
 const hunterMenuItem = addBuildItem(CharacterType.List['Hunter']);
-hunterMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Hunter'].name}`;
+hunterMenuItem.setText(`Desire ${CharacterType.List['Hunter'].name}`);
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
@@ -144,7 +145,7 @@ MakeCharacterType({
     }
 });
 const researcherMenuItem = addBuildItem(CharacterType.List['Researcher']);
-researcherMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Researcher'].name}`;
+researcherMenuItem.setText(`Desire ${CharacterType.List['Researcher'].name}`);
 
 MakeCharacterType({
     name: 'Healer',
@@ -155,7 +156,7 @@ MakeCharacterType({
     }
 });
 const healerMenuItem = addBuildItem(CharacterType.List['Healer']);
-healerMenuItem.Element.innerHTML = `Desire ${CharacterType.List['Healer'].name}`;
+healerMenuItem.setText(`Desire ${CharacterType.List['Healer'].name}`);
 
 // rock driller
 
