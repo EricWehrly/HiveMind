@@ -1,8 +1,6 @@
 ui element conversion fixes {
-    menu collapsible
     menu iconPosition
     menu closeButton
-    combat log
 }
 
 are sounds playing?

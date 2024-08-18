@@ -57,8 +57,8 @@ export default class Menu extends UIElement {
     #items: MenuItem[] = [];
     _selected: MenuItem;
     #menuAction;
-    #collapsed: boolean;
-    private _collapseHandle: HTMLElement;
+    _collapsed: boolean;
+    _collapsible: boolean;
     private _iconHandle: HTMLElement;
     private _sections = new Map<string, UIElement>();
     get name() { return this.#name; }
@@ -66,7 +66,8 @@ export default class Menu extends UIElement {
     get menuAction() { return this.#menuAction; }
     get visible() { return super.visible; }
     get items() { return this.#items; }
-    get collapsed() { return this.#collapsed; }
+    get collapsed() { return this._collapsed; }
+    get collapsible() { return this._collapsible; }
     get sections() { return this._sections; }
 
     // when I become visibile, I want to enable "menu_interact" from Action
@@ -87,8 +88,8 @@ export default class Menu extends UIElement {
     }
 
     set collapsed(newValue) {
-        this.#collapsed = newValue;
-        if(this.#collapsed) this.addClass("collapse");
+        this._collapsed = newValue;
+        if(this._collapsed) this.addClass("collapse");
         else this.removeClass("collapse");
     }
 
@@ -150,18 +151,12 @@ export default class Menu extends UIElement {
 
         if(options.collapsed) {
             options.collapsible = true;
-            this.collapsed = true;
+            this._collapsed = true;
         }
+        this._collapsible = options.collapsible;
+        if(this._collapsible) this.addClass("collapsible");
 
         /*
-        // TODO: Handle input situations without mouse
-        if(options.collapsible) {
-            this._collapseHandle = document.createElement("span");
-            this._collapseHandle.className = "collapse-handler";
-            this.Element.appendChild(this._collapseHandle);
-            this.Element.addEventListener("click", this.collapseClicked.bind(this), false);
-        }
-
         if(options.iconPosition) {
             this._iconHandle = document.createElement("div");
             this._iconHandle.className = `ui ${this.name} menu icon ${options.iconPosition}`;
@@ -171,6 +166,7 @@ export default class Menu extends UIElement {
             Events.Subscribe(Events.List.DataLoaded, this.addIconToDom.bind(this));
         }
 
+        /*
         if(options.closeButton == true || options.closeButton == undefined) {
             const closeButton = document.createElement("span");
             closeButton.className = "ui close";
@@ -187,7 +183,7 @@ export default class Menu extends UIElement {
         UI.CONTAINER.appendChild(this._iconHandle);
     }
 
-    collapseClicked() {
+    toggleCollapsed() {
 
         this.collapsed = !this.collapsed;
         Menu.#computeAnyMenuOpen();

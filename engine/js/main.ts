@@ -21,6 +21,7 @@ import './ui/ui-resource.mjs';
 // rendering
 import './rendering/entities/entity-graphics';
 import './rendering/ui/ui-element-renderer';
+import './rendering/ui/ui-menu-renderer';
 import './rendering/ui/equipment-renderer';
 import './rendering/mapping/chunk-graphic';
 
