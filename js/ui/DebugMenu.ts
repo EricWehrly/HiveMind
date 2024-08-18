@@ -28,10 +28,7 @@ new MenuItem({
     menu: debugMenu,
     name: 'Draw metadata on level',
     elementType: UI_ELEMENT_TYPE.Checkbox,
-    context: {
-        action: toggleLevelMetaDrawing
-    }
-    // TODO: action is toggle checkbox
+    customAction: toggleLevelMetaDrawing
 });
 
 KeyboardController.AddDefaultBinding("openMenu/Debug", "`");

@@ -1,16 +1,10 @@
 ui element conversion fixes {
-    checkbox inputs
     menu sections
     menu collapsible
     menu iconPosition
     menu closeButton
     combat log
 }
-
-Menu:
-    cursor pointer
-    default type is button
-    click to activate button
 
 are sounds playing?
 
