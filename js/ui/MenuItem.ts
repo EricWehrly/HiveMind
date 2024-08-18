@@ -26,14 +26,11 @@ export default class MenuItem extends UIElement implements IMenuItem {
     public set enabled(newValue) { this.enabled = newValue; }
 
     constructor(options: UIElementOptions & IMenuItem) {
-        /* TODO: support menu sections
         if(options.section) {
-            options.parent = options.menu.getSection(options.section, true);
+            options.parent = options.menu.getSection(options.section);
         } else {
-            options.parent = options.menu.Element;
+            options.parent = options.menu;
         }
-        */
-        options.parent = options.menu;
         super(options);
         this._menu = options.menu;
 

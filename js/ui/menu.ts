@@ -60,12 +60,14 @@ export default class Menu extends UIElement {
     #collapsed: boolean;
     private _collapseHandle: HTMLElement;
     private _iconHandle: HTMLElement;
+    private _sections = new Map<string, UIElement>();
     get name() { return this.#name; }
     get selected() { return this._selected; }
     get menuAction() { return this.#menuAction; }
     get visible() { return super.visible; }
     get items() { return this.#items; }
     get collapsed() { return this.#collapsed; }
+    get sections() { return this._sections; }
 
     // when I become visibile, I want to enable "menu_interact" from Action
     set visible(value) {
@@ -209,31 +211,25 @@ export default class Menu extends UIElement {
         }
     }
 
-    /* TODO: sections
-    getSection(name: string, addIfMissing = false): Element {
+    getSection(name: string): UIElement {
 
-        if(!name) return this.Element;
-
-        let section = this.Element.getElementsByClassName(`section ${name}`);
-        if(section.length > 0) return section[0];
-
-        else if(addIfMissing) {
-            return this.addSection(name);
+        if(!this._sections.has(name)) {
+            this._sections.set(name, this.addSection(name));
         }
-
-        return this.Element;
+        return this._sections.get(name);
     }
 
     // TODO: section header
-    addSection(name: string): Element {
+    addSection(name: string): UIElement {
         
-        const section = document.createElement('div');
-        section.className = `section ${name}`;
-        this.Element.appendChild(section);
+        const section = new UIElement({
+            classes: ["section", name],
+            parent: this,
+            // title: name
+        });
 
         return section;
     }
-    */
 
     open() {
         this.visible = true;
