@@ -30,6 +30,7 @@ export interface UIElementOptions {
     classes?: string[];
     elementType?: UI_ELEMENT_TYPE;
     customAction?: (event: Event) => void;
+    title?: string;
 }
 
 Events.List.UIElementUpdated = "UIElementUpdated";
@@ -50,6 +51,7 @@ export default class UIElement {
     // later, we may want to instead track a map of interaction types to responding actions
     // so rather than just click, we can custom double-click, hovver, etc.
     private _customAction: (event: Event) => void;
+    private _title: string;
 
     // there's no need for anyone except the renderer to know this, so far
     get classes() { return this._classes; }
@@ -75,6 +77,7 @@ export default class UIElement {
     get text() { return this._text; }
     get entity() { return this._entity; }
     set entity(value) { this._entity = value; }
+    get title() { return this._title; }
 
     constructor(options: UIElementOptions = {}) {
 
@@ -92,6 +95,7 @@ export default class UIElement {
         if('visible' in options) this.visible = options.visible;
 
         if(options.text) this.setText(options.text);
+        if(options.title) this._title = options.title;
 
         if(options.elementType) this._elementType = options.elementType;
         if(options.customAction) this._customAction = options.customAction;

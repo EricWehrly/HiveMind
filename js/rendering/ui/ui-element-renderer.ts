@@ -21,12 +21,18 @@ function ui_loop(screenRect: Rectangle) {
 }
 
 function initialRender(uiElement: UIElement): HTMLElement {
-
+    
     const element = document.createElement(uiElement.elementType);
     if(uiElement.elementType == UI_ELEMENT_TYPE.Checkbox) {
         element.setAttribute('type', 'checkbox');
         const labelElement = document.createElement('label');
         element.appendChild(labelElement);
+    }
+
+    if(uiElement.title) {
+        const title = document.createElement('h3');
+        title.innerHTML = uiElement.title;
+        element.appendChild(title);
     }
 
     if(uiElement.customAction) {
