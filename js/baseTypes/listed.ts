@@ -12,6 +12,12 @@ export default class Listed {
         }
     }
 
+    // TODO: we can add a "destroy" method
+    // that removes from list
+    // can be overridden in a extending class
+    // and has a setTimeout to check if the element is undefined
+    // 'cause if it ain't, maybe the gc didn't get it (memory leak?)
+
     constructor(options: { name: string }) {
         if(!options.name) throw `Cannot create ${this.constructor.name} without 'name' property.`;
 
