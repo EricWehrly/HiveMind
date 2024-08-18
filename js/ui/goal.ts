@@ -1,12 +1,14 @@
-import Game from "../engine/js/main";
-import Character from "../engine/js/entities/character";
-import Events from "../engine/js/events";
-import UIElement, { SCREEN_ZONE } from "../engine/js/ui/ui-element";
+import Game from "../../engine/js/main";
+import Character from "../../engine/js/entities/character";
+import Events from "../../engine/js/events";
+import UIElement, { SCREEN_ZONE } from "../../engine/js/ui/ui-element";
+import { GetDomForUIElement } from "../../engine/js/rendering/ui/ui-element-renderer";
 
 // eventually this should problably translate into an adaptation 
 // of Engine-level Objective definitions
 // but that's arguably more than we need right now
 
+// TODO: separate game logic from ui logic
 let playerHasWon = false;
 
 const UI_ELEMENT_PROGRESS = new UIElement({
@@ -27,9 +29,11 @@ Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt() {
     // communicate more concisely to the player
     UI_ELEMENT_PROGRESS.setText(`Planetary Takeover Progress: ${progress.toFixed(2)}%`);
 
-    // TODO: CSS var for player color
-    // UI_ELEMENT_PROGRESS.Element.style.backgroundImage = 
-//         `linear-gradient(90deg, blue ${progress}%,transparent ${progress * 1.1}%)`;
+    // TODO: CSS var for player color    
+    // this pulls in the ui layer that we need to separate out
+    const element = GetDomForUIElement(UI_ELEMENT_PROGRESS);
+    element.style.backgroundImage = 
+         `linear-gradient(90deg, blue ${progress}%,transparent ${progress * 1.1}%)`;
 
     if(progress >= 100) {
         alert("You win!");

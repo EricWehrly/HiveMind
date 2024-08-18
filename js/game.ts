@@ -19,11 +19,9 @@ import './entities/building';
 import Map from '../engine/js/mapping/map';
 import './entities/entities';
 import Resource from '../engine/js/entities/resource';
-import './characterStats';
 
 import Cheat from './util/cheat';
 import MessageLog from '../engine/js/core/messageLog.mjs';
-import "./goal.ts";
 
 // hack, until we convert Actions to proper ts
 import './actions';
@@ -34,6 +32,9 @@ import { MakeLiving } from '../engine/js/entities/character/mixins/Living';
 import { Equipped, MakeEquipped } from '../engine/js/entities/character/mixins/Equipped';
 import { MakeCombative } from '../engine/js/entities/character/mixins/Combative';
 import { MakeGrower } from './entities/character/mixins/Grower';
+
+import './characterStats';
+import "./ui/goal";
 
 new MessageLog({
     name: "Combat",

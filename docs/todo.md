@@ -4,7 +4,6 @@ ui element conversion fixes {
     menu collapsible
     menu iconPosition
     menu closeButton
-    planetary takeover progress rendering
     combat log
 }
 
