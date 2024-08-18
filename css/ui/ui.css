@@ -74,10 +74,17 @@
     font-size: 1.3em;
 }
 
+.collapsible {
+    padding-right: 10px;
+}
+
 .collapse-handler {
     position: absolute;
     right: 2px;
     top: 2px;
+
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .collapse-handler:after {

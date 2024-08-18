@@ -5,11 +5,18 @@ import UIElement, { UI_ELEMENT_TYPE } from "../../ui/ui-element";
 import { GetEntityGraphic } from "../entities/entity-graphics";
 import Renderer from "../renderer";
 
-const UI_ELEMENTS = new WeakMap<UIElement, HTMLElement>();
 const INITIAL_DISPLAY_VALUES = new WeakMap<UIElement, string>();
+const UI_ELEMENTS = new Map<UIElement, HTMLElement>();
+export const CUSTOM_INITIALIZERS = new Map<string, (uiElement: UIElement) => void>();
 
 export function GetDomForUIElement(uiElement: UIElement) {
     return UI_ELEMENTS.get(uiElement);
+}
+
+export function GetUIElementFromDom(domElement: HTMLElement) {
+    for(const [uiElement, element] of UI_ELEMENTS) {
+        if(element == domElement) return uiElement;
+    }
 }
 
 function ui_loop(screenRect: Rectangle) {
@@ -52,6 +59,7 @@ function initialRender(uiElement: UIElement): HTMLElement {
     }
 
     uiElementUpdated(uiElement);
+    CUSTOM_INITIALIZERS.get(uiElement.constructor.name)?.(uiElement);
 
     return element;
 }
