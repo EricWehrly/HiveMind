@@ -22,8 +22,6 @@ export default class Tooltip extends UIElement {
         this.entity = options.entity || null;
 
         this.addClass("tooltip");
-        this.Element.style.left = position.x + "px";
-        this.Element.style.top = position.y + "px";
 
         this.message = options.message || "";
         this.visible = this.message != "";
@@ -37,7 +35,7 @@ export default class Tooltip extends UIElement {
         if(newValue == this._message) return;
 
         this._message = newValue;
-        this.Element.innerHTML = this.message;
+        this.setText(this.message);
         
         this.visible = this.message != "";
     }

@@ -23,11 +23,9 @@ export default class Research extends Listed {
 
         if(context?.menu?.selected?.enabled === false) return;
         const selectedResearch = context?.menu?.selected?.context?.research;
-        if(context?.menu?.selected?.Element) {
-            context.menu.selected.Element.innerHTML = selectedResearch.name + "<br>Researching...";
-        }
+        selectedResearch.setText(`${selectedResearch.name}<br>Researching...`);
+        selectedResearch.addClass("disabled");
         context.menu.selected.enabled = false;
-        context.menu.selected.Element.className += " disabled";
 
         const researchers = Entity.get({
             name: "Researcher"
