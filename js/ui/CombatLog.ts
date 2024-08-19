@@ -12,7 +12,7 @@ const UI_MENU_COMABT_LOG = new Menu({
     visible: true,
     vertical: true,
     collapsed: true,
-    closeButton: false
+    canBeClosed: false
 });
 
 function updateCombatLog() {

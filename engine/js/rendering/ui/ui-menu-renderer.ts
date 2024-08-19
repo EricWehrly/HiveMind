@@ -11,14 +11,22 @@ function toggleCollapsed() {
 function initialRender(uiElemenet: UIElement) {
 
     const menu = uiElemenet as Menu;
+    const htmlElement = GetDomForUIElement(uiElemenet);
 
     if(menu.collapsible) {
         // TODO: Handle input situations without mouse
         const collapseHandle = document.createElement("span");
         collapseHandle.className = "collapse-handler";
-        const htmlElement = GetDomForUIElement(uiElemenet);
         htmlElement.appendChild(collapseHandle);
         htmlElement.addEventListener("click", toggleCollapsed, false);
+    }
+
+    if(menu.canBeClosed) {
+        const closeButton = document.createElement("span");
+        closeButton.className = "ui close";
+        closeButton.innerHTML = "X";
+        closeButton.addEventListener("click", menu.close.bind(menu), false);
+        htmlElement.appendChild(closeButton);
     }
 }
 

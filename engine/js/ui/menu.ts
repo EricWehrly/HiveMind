@@ -13,7 +13,7 @@ export interface MenuOptions {
     collapsible?: boolean;
     collapsed?: boolean;
     menuAction?: (arg: MenuAction) => void;
-    closeButton?: boolean;
+    canBeClosed?: boolean;
     icon?: UIElementOptions;
 }
 
@@ -26,6 +26,7 @@ export default class Menu extends UIElement {
     static #isAnyMenuOpen = false;
     // Menu class should "be" (extend) Listed, but can't extend 2, so...
     static #MENU_LIST: Map<String, Menu> = new Map();
+    canBeClosed: any;
     static get MENU_LIST() { return Menu.#MENU_LIST; }
 
     static #current: Menu = null;
@@ -158,15 +159,7 @@ export default class Menu extends UIElement {
             this._icon.customAction = this.toggle.bind(this);
         }
 
-        /*
-        if(options.closeButton == true || options.closeButton == undefined) {
-            const closeButton = document.createElement("span");
-            closeButton.className = "ui close";
-            closeButton.innerHTML = "X";
-            closeButton.addEventListener("click", this.close.bind(this), false);
-            this.Element.appendChild(closeButton);
-        }
-        */
+        if(options.canBeClosed == true || options.canBeClosed == undefined) this.canBeClosed = true;
 
         Menu.#addMenu(this);
     }
