@@ -1,8 +1,9 @@
 import Menu from "../../ui/menu";
 import UIElement from "../../ui/ui-element";
-import { CUSTOM_INITIALIZERS, GetDomForUIElement, GetUIElementFromDom } from "./ui-element-renderer";
+import { AddCustomInitializer, GetDomForUIElement, GetUIElementFromDom } from "./ui-element-renderer";
 
 function toggleCollapsed() {
+    // The "this" here works, but shouldn't
     const menu = GetUIElementFromDom(this) as Menu;
     menu.toggleCollapsed();
 }
@@ -21,4 +22,4 @@ function initialRender(uiElemenet: UIElement) {
     }
 }
 
-CUSTOM_INITIALIZERS.set("Menu", initialRender);
+AddCustomInitializer("Menu", initialRender);

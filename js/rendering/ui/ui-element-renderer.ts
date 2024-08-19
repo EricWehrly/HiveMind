@@ -7,7 +7,7 @@ import Renderer from "../renderer";
 
 const INITIAL_DISPLAY_VALUES = new WeakMap<UIElement, string>();
 const UI_ELEMENTS = new Map<UIElement, HTMLElement>();
-export const CUSTOM_INITIALIZERS = new Map<string, (uiElement: UIElement) => void>();
+const CUSTOM_INITIALIZERS = new Map<string, (uiElement: UIElement) => void>();
 
 export function GetDomForUIElement(uiElement: UIElement) {
     return UI_ELEMENTS.get(uiElement);
@@ -17,6 +17,10 @@ export function GetUIElementFromDom(domElement: HTMLElement) {
     for(const [uiElement, element] of UI_ELEMENTS) {
         if(element == domElement) return uiElement;
     }
+}
+
+export function AddCustomInitializer(uiElementClassName: string, initializer: (uiElement: UIElement) => void) {
+    CUSTOM_INITIALIZERS.set(uiElementClassName, initializer);
 }
 
 function ui_loop(screenRect: Rectangle) {

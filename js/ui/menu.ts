@@ -13,9 +13,8 @@ export interface MenuOptions {
     collapsible?: boolean;
     collapsed?: boolean;
     menuAction?: (arg: MenuAction) => void;
-    icon?: string;
-    iconPosition?: SCREEN_ZONE;
     closeButton?: boolean;
+    icon?: UIElementOptions;
 }
 
 export interface MenuAction {
@@ -59,7 +58,7 @@ export default class Menu extends UIElement {
     #menuAction;
     _collapsed: boolean;
     _collapsible: boolean;
-    private _iconHandle: HTMLElement;
+    private _icon: UIElement;
     private _sections = new Map<string, UIElement>();
     get name() { return this.#name; }
     get selected() { return this._selected; }
@@ -149,21 +148,14 @@ export default class Menu extends UIElement {
 
         if(options.menuAction) this.#menuAction = options.menuAction;
 
-        if(options.collapsed) {
-            options.collapsible = true;
-            this._collapsed = true;
-        }
-        this._collapsible = options.collapsible;
-        if(this._collapsible) this.addClass("collapsible");
+        this._collapsed = options.collapsed;
+        this._collapsible = options.collapsed || options.collapsible;        
+        if (this._collapsible) this.addClass("collapsible");
 
-        /*
-        if(options.iconPosition) {
-            this._iconHandle = document.createElement("div");
-            this._iconHandle.className = `ui ${this.name} menu icon ${options.iconPosition}`;
-            if(options.icon) this._iconHandle.innerHTML = options.icon;
-
-            this._iconHandle.addEventListener("click", this.toggle.bind(this));
-            Events.Subscribe(Events.List.DataLoaded, this.addIconToDom.bind(this));
+        if(options.icon) {
+            this._icon = new UIElement(options.icon);
+            this._icon.addClasses(["icon", this.name]);
+            this._icon.customAction = this.toggle.bind(this);
         }
 
         /*
@@ -177,10 +169,6 @@ export default class Menu extends UIElement {
         */
 
         Menu.#addMenu(this);
-    }
-
-    private addIconToDom() {
-        UI.CONTAINER.appendChild(this._iconHandle);
     }
 
     toggleCollapsed() {
@@ -236,6 +224,7 @@ export default class Menu extends UIElement {
     }
 
     toggle() {
+        console.log('togle');
         this.visible = !this.visible;
     }
 }
