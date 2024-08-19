@@ -109,6 +109,13 @@ export default class UIElement {
         }
         Events.RaiseEvent(Events.List.UIElementUpdated, this);
     }
+
+    addClasses(classNames: string[]) {
+        for(var className of classNames) {
+            this.addClass(className);
+        }
+        Events.RaiseEvent(Events.List.UIElementUpdated, this);
+    }
     
     removeClass(className: string) {
         this._classes = this._classes.filter(clazz => clazz != className);

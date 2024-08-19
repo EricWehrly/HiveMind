@@ -20,8 +20,10 @@ const pauseMenu = new Menu({
     screenZone: SCREEN_ZONE.MIDDLE_CENTER,
     name: "Pause",
     menuAction: openMenu,
-    icon: '<u>=</u>',
-    iconPosition: SCREEN_ZONE.TOP_LEFT
+    icon: {
+        text: 'pause',
+        screenZone: SCREEN_ZONE.TOP_LEFT
+    }
 });
 
 KeyboardController.AddDefaultBinding("openMenu/Pause", "Escape");

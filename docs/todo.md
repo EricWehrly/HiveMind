@@ -1,5 +1,4 @@
 ui element conversion fixes {
-    menu iconPosition
     menu closeButton
 }
 
