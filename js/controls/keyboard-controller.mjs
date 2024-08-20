@@ -16,6 +16,8 @@ const Actions = Action.List;
 
 export default class KeyboardController {
 
+    static #instance;
+
     static #List = [];
 
     // TODO: Private?
@@ -38,6 +40,10 @@ export default class KeyboardController {
         // press F to break off a piece to study something (in front of the player)
     }
 
+    // TODO: Maybe when we convert to typescript,
+    // we can leave this open to accept strings (good for modding)
+    // but add another overload that takes Action obj instead of name,
+    // and use that wherever possible
     static AddDefaultBinding(name, button) {
 
         // TODO: warn button is already bound
@@ -50,6 +56,14 @@ export default class KeyboardController {
             KeyboardController.Default_Bindings[name] = [];
         }
         KeyboardController.Default_Bindings[name].push(button);
+
+        const instanceBindings = KeyboardController.#instance?.Bindings;
+
+        // if we've already copied bindings over
+        if(instanceBindings && Object.keys(instanceBindings).length > 0) {
+            if(instanceBindings[name]) instanceBindings[name].push(button);
+            else instanceBindings[name] = [button];
+        }
     }
 
     Bindings = {}
@@ -57,6 +71,8 @@ export default class KeyboardController {
     _keys_down = {};
 
     constructor(options = {}) {
+
+        KeyboardController.#instance = this;
 
         Object.assign(this.Bindings, KeyboardController.Default_Bindings);
         // TODO: Take bindings from options?
