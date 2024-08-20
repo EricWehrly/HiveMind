@@ -1,10 +1,14 @@
-import Events from "../events";
+import Events, { GameEvent } from "../events";
 import Map from './map';
 import Seed from "../core/seed";
 import Biome from "./biome";
 import Point from "../coordinates/point";
 
 Events.List.ChunkCreated = "ChunkCreated";
+
+export interface ChunkEvent extends GameEvent {
+    chunk: Chunk;
+}
 
 export interface ChunkOptions {
     biome: Biome;
@@ -137,7 +141,9 @@ export default class Chunk {
 
         this._map = options.map;
         this.map.addChunk(this);
-        Events.RaiseEvent(Events.List.ChunkCreated, this, {
+        Events.RaiseEvent(Events.List.ChunkCreated, {
+            chunk: this
+        }, {
             isNetworkBoundEvent: true
         });
         // console.log(`New chunk at ${options.x}, ${options.y}`);

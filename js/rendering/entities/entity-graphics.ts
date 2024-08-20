@@ -2,31 +2,32 @@ import Rectangle from '../../baseTypes/rectangle';
 import Events from '../../events';
 import Renderer from '../renderer';
 import Character from '../../entities/character';
-import Entity from '../../entities/character/Entity';
+import Entity, { EntityEvent } from '../../entities/character/Entity';
 import { CharacterTargetChangedEvent } from '../../entities/character/mixins/Combative';
 import { IsLiving, Living } from '../../entities/character/mixins/Living';
 import { CHARACTER_LIST } from '../../entities/characters';
 
-const entityGraphics: WeakMap<Entity, HTMLElement> = new WeakMap();
+const entityGraphics = new Map<Entity, HTMLElement>();
 
 export function GetEntityGraphic(entity: Entity) {
     return entityGraphics.get(entity);
 }
 
-// TODO: migrate type to entity
-function createGraphic(character: Character) {
+function createGraphic(entity: Entity) {
 
+    // TODO: migrate type to entity
+    const character = entity as Character;
     const graphic = document.createElement('div');
-    entityGraphics.set(character, graphic);
+    entityGraphics.set(entity, graphic);
     graphic.className = 'character';
-    if (IsLiving(character) && (character as Living).isAlive) graphic.className += ' alive';
+    if (IsLiving(entity) && (entity as Living).isAlive) graphic.className += ' alive';
     setColor(character);
 
     if (character.additionalClasses) graphic.className += " " + character.additionalClasses;
 
-    if(character.entityRenderingSettings) {
-        if(character.entityRenderingSettings.renderedName) {
-            graphic.innerHTML = character.entityRenderingSettings.renderedName;
+    if(entity.entityRenderingSettings) {
+        if(entity.entityRenderingSettings.renderedName) {
+            graphic.innerHTML = entity.entityRenderingSettings.renderedName;
         }
     }
 
@@ -75,7 +76,7 @@ function redraw(entity: Entity, screenRect: Rectangle) {
 
     // how to check if the character is off screen?
 
-    if(!entityGraphics.has(entity)) createGraphic(entity as Character);
+    if(!entityGraphics.has(entity)) createGraphic(entity);
     const graphic = entityGraphics.get(entity);
 
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
@@ -116,7 +117,8 @@ function redraw_loop(screenRect: Rectangle) {
     }
 }
 
-function characterDied(entity: Entity) {
+function characterDied(event: EntityEvent) {
+    const entity = event.entity;
     const graphic = entityGraphics.get(entity);
     if(graphic) {
         document.getElementById("playfield").removeChild(graphic);
@@ -126,7 +128,6 @@ function characterDied(entity: Entity) {
 
 Events.Subscribe(Events.List.GameStart, function() {
     
-    Events.Subscribe(Events.List.CharacterCreated, createGraphic);
     Events.Subscribe(Events.List.CharacterTargetChanged, updateTargetingClasses);
     Events.Subscribe(Events.List.CharacterDied, characterDied);
 });

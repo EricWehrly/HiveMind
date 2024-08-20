@@ -1,7 +1,11 @@
-import Events from "../events";
+import Events, { GameEvent } from "../events";
 import Resource from './resource';
 
 Events.List.CharacterAttributeChanged = "CharacterAttributeChanged";
+
+export interface CharacterAttributeChangedEvent extends GameEvent {
+    attribute: CharacterAttribute;
+ }
 
 export interface CharacterAttributeOptions {
     name: string;

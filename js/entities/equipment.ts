@@ -1,5 +1,5 @@
 import { TechnologyTypes } from "../TechnologyTypes";
-import Events from "../events";
+import Events, { GameEvent } from "../events";
 import { Defer } from "../loop.mjs";
 import Technology from "../technology";
 import { Equipped } from "./character/mixins/Equipped";
@@ -7,7 +7,7 @@ import { Equipped } from "./character/mixins/Equipped";
 Events.List.EquipmentChanged = "EquipmentChanged"
 Events.List.CooldownComplete = "CooldownComplete";
 
-export interface EquipmentChangedEvent {
+export interface EquipmentChangedEvent extends GameEvent {
     from: Technology;
     to: Technology;
     equipped: EquippedTechnology;
@@ -15,7 +15,7 @@ export interface EquipmentChangedEvent {
     character: Equipped;
 }
 
-export interface CooldownCompleteEvent {
+export interface CooldownCompleteEvent extends GameEvent {
     equippedTechnology: EquippedTechnology;
     character: Equipped;
 }
@@ -41,6 +41,7 @@ export class EquippedTechnology {
 
         Defer(() => {
             let details: CooldownCompleteEvent = {
+                id: null,
                 equippedTechnology: this,
                 character: this._equipment.character
             };
@@ -97,6 +98,7 @@ export default class Equipment {
         this._equipment[technology.type as TechnologyTypes] = new EquippedTechnology(technology, this);
 
         const details: EquipmentChangedEvent = {
+            id: null,
             type: technology.type,
             from: this.getEquipped(technology.type).technology,
             to: technology,
