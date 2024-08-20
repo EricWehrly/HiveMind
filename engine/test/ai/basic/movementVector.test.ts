@@ -26,6 +26,7 @@ jest.mock('@/engine/js/events', () => {
 
 function hitEm(ai: AI, attacker: Entity) {
     const damagedEvent: CharacterDamagedEvent = {
+        id: null,
         attacker: attacker,
         amount: 1,
         character: ai.character

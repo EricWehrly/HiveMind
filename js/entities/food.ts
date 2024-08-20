@@ -1,6 +1,6 @@
 import CharacterType from './CharacterType';
 import Events from '../../engine/js/events';
-import Chunk from '../../engine/js/mapping/chunk';
+import Chunk, { ChunkEvent } from '../../engine/js/mapping/chunk';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
 import { MakeGrowable } from './character/mixins/Growable';
 import { MakeLiving } from '../../engine/js/entities/character/mixins/Living';
@@ -30,8 +30,9 @@ export default class Food {
         Events.Subscribe(Events.List.ChunkCreated, this.spawnFood.bind(this));
     }
 
-    static spawnFood(chunk: Chunk) {
+    static spawnFood(event: ChunkEvent) {
 
+        const chunk = event.chunk;
         const seed = chunk.seed;
         
         const food_per_spawn_min = seed.Random(0, chunk.flora / 4);

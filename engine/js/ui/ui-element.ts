@@ -1,4 +1,4 @@
-import Events from '../events';
+import Events, { GameEvent } from '../events';
 import Entity from '../entities/character/Entity';
 import UI from './ui';
 
@@ -36,6 +36,10 @@ export interface UIElementOptions {
 Events.List.UIElementUpdated = "UIElementUpdated";
 Events.List.UIElementDestroyed = "UIElementDestroyed";
 
+export interface UIElementEvent extends GameEvent {
+    uiElement: UIElement;
+}
+
 export default class UIElement {
 
     private static _UI_ELEMENTS: UIElement[] = [];
@@ -67,7 +71,8 @@ export default class UIElement {
         if(this._visible == value) return;
         
         this._visible = value;
-        Events.RaiseEvent(Events.List.UIElementUpdated, this);
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
     get customAction() { return this._customAction; } 
     // ideally 'protected' :/
@@ -107,19 +112,22 @@ export default class UIElement {
         if(!this._classes.includes(className)) {
             this._classes.push(className);
         }
-        Events.RaiseEvent(Events.List.UIElementUpdated, this);
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
     addClasses(classNames: string[]) {
         for(var className of classNames) {
             this.addClass(className);
         }
-        Events.RaiseEvent(Events.List.UIElementUpdated, this);
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
     
     removeClass(className: string) {
         this._classes = this._classes.filter(clazz => clazz != className);
-        Events.RaiseEvent(Events.List.UIElementUpdated, this);
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
     toggleClass(className: string) {
@@ -133,11 +141,17 @@ export default class UIElement {
 
     setText(text: string) {
         this._text = text;
-        Events.RaiseEvent(Events.List.UIElementUpdated, this);
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
     destroy() {
-        Events.RaiseEvent(Events.List.UIElementDestroyed, this);
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementDestroyed, uiEvent);
         UIElement._UI_ELEMENTS.splice(UIElement._UI_ELEMENTS.indexOf(this), 1);
+    }
+
+    private RaiseUIElementEvent(eventName: string, uiElementEvent: UIElementEvent) {
+        Events.RaiseEvent(eventName, uiElementEvent);
     }
 }

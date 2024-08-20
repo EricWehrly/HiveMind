@@ -1,5 +1,5 @@
 import CharacterType from "../../../../js/entities/CharacterType";
-import Events from "../../events";
+import Events, { GameEvent } from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute";
 import { AddCharacterToList, CHARACTER_LIST } from "../characters";
@@ -45,6 +45,11 @@ interface GetClosestEntityOptions {
     priorities?: CharacterType[];
     characterProperties?: Object;
 }
+
+export interface EntityEvent extends GameEvent {
+    entity: Entity;
+}
+
 @PostConstructClass
 export default class Entity {
 
@@ -159,7 +164,7 @@ export default class Entity {
     @PostConstruct
     postConstruct() {
 
-        Events.RaiseEvent(Events.List.CharacterCreated, {character: this }, {
+        Events.RaiseEvent(Events.List.CharacterCreated, {entity: this }, {
             isNetworkBoundEvent: true
         });
     }

@@ -2,7 +2,7 @@ import StatusEffect, { StatusEffectCallbackOptions } from "../../../StatusEffect
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
 import MessageLog from "../../../core/messageLog.mjs";
-import Events from "../../../events";
+import Events, { GameEvent } from "../../../events";
 import { Defer } from "../../../loop.mjs";
 import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";
@@ -16,13 +16,13 @@ Events.List.CharacterAttacked = "CharacterAttacked";
 
 // TODO: use the type when raising the event
 // which is currently in SentientEntity.target.set
-export interface CharacterTargetChangedEvent {
+export interface CharacterTargetChangedEvent extends GameEvent {
     character: SentientEntity;
     from: Entity | WorldCoordinate;
     to: Entity | WorldCoordinate;
 }
 
-export interface CharacterAttackedEvent {
+export interface CharacterAttackedEvent extends GameEvent {
     attacker: Entity;
     attacked: Entity;
     equipped?: EquippedTechnology;
@@ -206,6 +206,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
             }
     
             const event: CharacterAttackedEvent = {
+                id: null,
                 attacker: this,
                 attacked: target,
                 equipped

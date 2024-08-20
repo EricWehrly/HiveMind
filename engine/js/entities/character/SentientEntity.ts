@@ -1,7 +1,7 @@
 import AI from "../../ai/basic";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Events from "../../events";
-import Entity from "./Entity";
+import Entity, { EntityEvent } from "./Entity";
 
 Events.List.PlayerChunkChanged = "PlayerChunkChanged";
 Events.List.PlayerMoved = "PlayerMoved";
@@ -75,7 +75,9 @@ export default class SentientEntity extends Entity {
         }
     }
 
-    private sentientEntityDied(entity: SentientEntity) {
+    private sentientEntityDied(event: EntityEvent) {
+
+        const entity = event.entity;
 
         if(entity.equals(this)
             && entity instanceof SentientEntity

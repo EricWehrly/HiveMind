@@ -4,7 +4,7 @@ import KeyboardController from "./controls/keyboard-controller.mjs";
 import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events";
 import MenuItem from "../engine/js/ui/MenuItem";
-import CharacterAttribute from "../engine/js/entities/character-attribute";
+import CharacterAttribute, { CharacterAttributeChangedEvent } from "../engine/js/entities/character-attribute";
 
 let strength: CharacterAttribute = null,
 speed: CharacterAttribute = null;
@@ -74,7 +74,7 @@ const speedMenuItem = new MenuItem({
     }
 });
 
-function updateMenuItemText(event: { attribute: CharacterAttribute }) {
+function updateMenuItemText(event: CharacterAttributeChangedEvent) {
 
     const { attribute } = event;
     if(attribute == strength) {
@@ -95,10 +95,10 @@ Events.Subscribe(Events.List.GameStart, function() {
     const localPlayer = Character.LOCAL_PLAYER;
     
     strength = localPlayer.getAttribute("Strength");
-    updateMenuItemText( { attribute: strength } );
+    updateMenuItemText( { attribute: strength, id: null } );
     strengthLabel.setText(`Strength: ${strength.value}`);
     speed = localPlayer.getAttribute("Speed");
-    updateMenuItemText( { attribute: speed } );
+    updateMenuItemText( { attribute: speed, id: null } );
     speedLabel.setText(`Speed: ${speed.value}`);
 
     Events.Subscribe(Events.List.CharacterAttributeChanged, updateMenuItemText);

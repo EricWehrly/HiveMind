@@ -23,6 +23,14 @@ interface Subscription extends SubscribeOptions {
     subscriptionId: string;
 }
 
+export interface GameEvent {
+    id: string;
+    // by marking this definitively distinct property as non-nullable, we can browse errors
+    // to try to find anywhere raising a GameEvent with an entity or other object that legitimately has an id property
+    gameEventSpecificPropertyToForceInheritance?: boolean;
+}
+type EventCallbackFunction = (event: GameEvent) => void;
+
 // TODO: extends Listed
 export default class Events {
 
@@ -36,7 +44,7 @@ export default class Events {
 
     static #FiredEvents: Record<string, Object> = {};
 
-    static Context = {};
+    static Context = new Map<string, Object>();
 
     /**
      * @param {String | Array<String>} eventNames The enum name from Events.List
@@ -48,7 +56,7 @@ export default class Events {
      * @param {String} [options.before] The name of the function that this subscription should be called before.
      * @returns the id of the subscription if successful
      */
-    static Subscribe(eventNames: string | Array<string>, callback: Function, options: SubscribeOptions = {}) {
+    static Subscribe(eventNames: string | Array<string>, callback: EventCallbackFunction, options: SubscribeOptions = {}) {
 
         // TODO: check inputs for bad values
 
@@ -75,11 +83,13 @@ export default class Events {
 
         if(!detail) detail = {};    // because null is allowed
 
-        // @ts-expect-error
-        detail.eventId = generateId();
+        const propgatedDetails = {
+            eventId: generateId(),
+            ...detail
+        };
 
         if (options?.isNetworkBoundEvent) {
-            NetworkMessenger.TransmitEvent(eventName, detail);
+            NetworkMessenger.TransmitEvent(eventName, propgatedDetails);
         }
 
         if (options?.finalFire == true) {
@@ -101,9 +111,9 @@ export default class Events {
             //@ts-expect-error
             if(subscription.onlyPlayerEvents && detail?.character?.isPlayer != true) continue;
 
-            Events.Context = detail;
+            Events.Context.set(propgatedDetails.eventId, detail);
             Events._raiseSubscription(subscription.callback, {
-                detail,
+                detail: propgatedDetails,
                 eventName
             });
 
@@ -112,7 +122,7 @@ export default class Events {
                 // Events.Unsubscribe(subscription.subscriptionId);
             }
         }
-        Events.Context = {};
+        Events.Context.delete(propgatedDetails.eventId);
     }
 
     static EventHasFired(eventName: string): boolean {

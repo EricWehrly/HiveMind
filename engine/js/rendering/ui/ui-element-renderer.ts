@@ -1,7 +1,7 @@
 import Rectangle from "../../baseTypes/rectangle";
 import Events from "../../events";
 import UI from "../../ui/ui";
-import UIElement, { UI_ELEMENT_TYPE } from "../../ui/ui-element";
+import UIElement, { UIElementEvent, UI_ELEMENT_TYPE } from "../../ui/ui-element";
 import { GetEntityGraphic } from "../entities/entity-graphics";
 import Renderer from "../renderer";
 
@@ -62,7 +62,7 @@ function initialRender(uiElement: UIElement): HTMLElement {
         labelElement.appendChild(element);
     }
 
-    uiElementUpdated(uiElement);
+    uiElementUpdated({ uiElement, id: null });
     CUSTOM_INITIALIZERS.get(uiElement.constructor.name)?.(uiElement);
 
     return element;
@@ -99,7 +99,8 @@ function redraw(uiElement: UIElement, screenRect: Rectangle) {
 
 Renderer.RegisterRenderMethod(10, ui_loop);
 
-function uiElementUpdated(uiElement: UIElement) {
+function uiElementUpdated(event: UIElementEvent) {
+    const uiElement = event.uiElement;
     if(!Events.EventHasFired(Events.List.GameStart)) return;
     if(!UI_ELEMENTS.has(uiElement)) return;
     
@@ -117,7 +118,8 @@ function uiElementUpdated(uiElement: UIElement) {
     }
 }
 
-function UIElementDestroyed(uiElement: UIElement) {
+function UIElementDestroyed(event: UIElementEvent) {
+    const uiElement = event.uiElement;
     const element = UI_ELEMENTS.get(uiElement);
     if(element) {
         element.remove();

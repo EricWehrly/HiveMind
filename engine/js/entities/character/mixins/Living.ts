@@ -1,5 +1,5 @@
 import CharacterType from "../../../../../js/entities/CharacterType";
-import Events from "../../../events";
+import Events, { GameEvent } from "../../../events";
 import { RemoveCharacterFromList } from "../../characters";
 import Entity from "../Entity";
 
@@ -21,7 +21,7 @@ export interface LivingOptions {
     characterType?: CharacterType;
 }
 
-export interface CharacterDamagedEvent {
+export interface CharacterDamagedEvent extends GameEvent {
     character: Entity & Living;
     amount: number;
     attacker: Entity;
@@ -73,6 +73,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
             this.health -= amount;
 
             const event : CharacterDamagedEvent = {
+                id: null,
                 character: this,
                 amount,
                 attacker: attacker
@@ -83,7 +84,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
         // private?
         // TODO: Should we just flag not alive and defer 'fading out' corpse?
         die() {
-            Events.RaiseEvent(Events.List.CharacterDied, this);
+            Events.RaiseEvent(Events.List.CharacterDied, { entity: this });
             
             RemoveCharacterFromList(this);
         }
@@ -91,5 +92,6 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
 }
 
 export function IsLiving(obj: Entity): obj is Entity & Living {
-    return (obj as Living).health !== undefined;
+    const living = obj as Living;
+    return living && living.health !== undefined;
 }

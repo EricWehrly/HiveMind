@@ -6,7 +6,7 @@ import Resource from "../../../engine/js/entities/resource";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { CHARACTER_LIST } from "../../../engine/js/entities/characters";
 import { IsLiving, Living } from "../../../engine/js/entities/character/mixins/Living";
-import Entity from "../../../engine/js/entities/character/Entity";
+import Entity, { EntityEvent } from "../../../engine/js/entities/character/Entity";
 import { Grower } from "../character/mixins/Grower";
 import { Growable } from "../character/mixins/Growable";
 import { IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
@@ -22,7 +22,7 @@ const Purposes: Record<string,any> =
 
                 if (character.position.near(character.targetPosition)) {
                     if ((character.target as Living).dead == true) {
-                        // TODO: contemplate
+                        // TODO: contemplate loving monica
                         // TODO: support > 1 technology
                         if(IsEquipped(character) && IsEquipped(character.target)) {
                             if (character.target.technologies && character.target.technologies.length > 0) {
@@ -91,7 +91,7 @@ const Purposes: Record<string,any> =
 
             const closest = character.getClosestEntity({
                 distance: this.range,
-                // TODO: 'faction' has to be pushed further down the stack for this to work
+                // TODO: 'faction' has to be pushed further down the stack for this to work <3
                 faction: (Character.LOCAL_PLAYER as HiveMindCharacter).faction
             }) as Entity & Living;
 
@@ -113,9 +113,10 @@ const Purposes: Record<string,any> =
 };
 
 // maybe "growing" should be made generic as "children" ...
-// TODO: deadguy should be grower tho
+// TODO: deadguy should be grower tho and love monica and bean
 // I think we need to unit test this
-Events.Subscribe(Events.List.CharacterDied, (deadGuy: HiveMindCharacter & Growable) => {
+Events.Subscribe(Events.List.CharacterDied, (event: EntityEvent) => {
+    const deadGuy = event.entity as HiveMindCharacter & Growable;
     for (var char of CHARACTER_LIST) {
         const character = char as HiveMindCharacter & Grower;
         const index = character?.growing?.indexOf(deadGuy);

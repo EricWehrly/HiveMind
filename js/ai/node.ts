@@ -1,7 +1,7 @@
 import AI from "../../engine/js/ai/basic";
 import Resource from "../../engine/js/entities/resource";
 import CharacterType from "../entities/CharacterType";
-import Events from "../../engine/js/events";
+import Events, { GameEvent } from "../../engine/js/events";
 import Building from "../entities/building";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { Living } from "../../engine/js/entities/character/mixins/Living";
@@ -10,6 +10,10 @@ import { Grower } from "../entities/character/mixins/Grower";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
+
+export interface BuildingDesiredEvent extends GameEvent {
+    desire: CharacterType
+}
 
 const TIME_BETWEEN_THOUGHTS = 5000;
 const NEARBY_RANGE = 100;

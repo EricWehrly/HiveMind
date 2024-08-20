@@ -4,7 +4,7 @@ import Menu, { MenuAction } from '../../engine/js/ui/menu';
 import { SCREEN_ZONE, UI_ELEMENT_TYPE } from '../../engine/js/ui/ui-element';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events';
-import NodeAI from '../ai/node';
+import NodeAI, { BuildingDesiredEvent } from '../ai/node';
 import Building from './building';
 import MenuItem from '../../engine/js/ui/MenuItem';
 import MakeCharacterType from './CharacterTypeFactory';
@@ -50,22 +50,22 @@ export const addBuildItem = function(itemType: CharacterType) {
     });
 }
 
-Events.Subscribe(Events.List.BuildingDesired, function (desire: CharacterType) {
+Events.Subscribe(Events.List.BuildingDesired, function (event: BuildingDesiredEvent) {
 
     const menuItem = new MenuItem({
         menu: UI_MENU_BUILDINGS,
         elementType: UI_ELEMENT_TYPE.Label,
-        name: `${desire.name} desired`,
+        name: `${event.desire.name} desired`,
         section: 'desired'
     });
-    desireLabels.set(desire.name, menuItem);
+    desireLabels.set(event.desire.name, menuItem);
 });
 
-Events.Subscribe(Events.List.BuildingDesireFulfilled, function (desire: CharacterType) {
+Events.Subscribe(Events.List.BuildingDesireFulfilled, function (event: BuildingDesiredEvent) {
 
     console.log("filling desire...");
-    UI_MENU_BUILDINGS.removeItem(desireLabels.get(desire.name));
-    desireLabels.delete(desire.name);
+    UI_MENU_BUILDINGS.removeItem(desireLabels.get(event.desire.name));
+    desireLabels.delete(event.desire.name);
 });
 
 // TODO: Later, generically unlock items in menus by having them locked/unlocked
