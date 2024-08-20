@@ -3,6 +3,8 @@ are sounds playing?
 why are food starting with 0 health?
     (constructor seems to provide health ...)
 
+I'm pretty sure non-menu actions are still enabled / firing when menus are open
+
 Tiles: {
     need to start having (and drawing) individual tiles
 
