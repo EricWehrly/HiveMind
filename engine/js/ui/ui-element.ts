@@ -1,6 +1,6 @@
 import Events, { GameEvent } from '../events';
 import Entity from '../entities/character/Entity';
-import UI from './ui';
+import { generateId } from '../util/javascript-extensions.mjs';
 
 export enum SCREEN_ZONE {
     NONE = "",
@@ -46,6 +46,7 @@ export default class UIElement {
     public static get UI_ELEMENTS() { return this._UI_ELEMENTS; }
     screenZone;
 
+    private _id: string;
     private _visible = true
     private _entity: Entity;
     private _text: string;
@@ -78,6 +79,7 @@ export default class UIElement {
     // ideally 'protected' :/
     set customAction(value) { this._customAction = value; }
 
+    get id() { return this._id; }
     get elementType() { return this._elementType; }
     get text() { return this._text; }
     get entity() { return this._entity; }
@@ -85,6 +87,8 @@ export default class UIElement {
     get title() { return this._title; }
 
     constructor(options: UIElementOptions = {}) {
+
+        this._id = generateId();
 
         this.screenZone = options.screenZone || SCREEN_ZONE.NONE;
         // we had a redundant 'options assign' method .. in entity
