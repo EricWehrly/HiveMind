@@ -15,7 +15,10 @@ export interface TechnologyOptions {
     damage?: number;
     range?: number;
     sound?: any;
-    research?: Research;
+    research?: {
+        cost: number,
+        callback?: Function
+    };
     name: string;
     type?: any;
 }

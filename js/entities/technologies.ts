@@ -1,7 +1,9 @@
-import Character from "../../engine/js/entities/character.ts";
-import StatusEffect from "../../engine/js/StatusEffect.ts";
-import Technology from "../../engine/js/technology.ts";
-import { TechnologyTypes } from "../../engine/js/TechnologyTypes.ts";
+import Character from "../../engine/js/entities/character";
+import { Combative } from "../../engine/js/entities/character/mixins/Combative";
+import PlayableEntity from "../../engine/js/entities/character/PlayableEntity";
+import StatusEffect from "../../engine/js/StatusEffect";
+import Technology from "../../engine/js/technology";
+import { TechnologyTypes } from "../../engine/js/TechnologyTypes";
 
 const bleeding = new StatusEffect({
     name: "bleeding",
@@ -68,7 +70,9 @@ new Technology({
 
 function makeThornier() {
 
-    Character.LOCAL_PLAYER.thornMultiplier++;
+    const combativePlayer = Character.LOCAL_PLAYER as PlayableEntity & Combative;
+
+    combativePlayer.thornMultiplier++;
 }
 
 new Technology({
