@@ -2,7 +2,9 @@ module.exports = {
     preset: 'ts-jest',
     // testEnvironment: 'node',
     testEnvironment: 'jsdom',
-    testMatch: ['**/test/**/*.test.ts'],
+    testMatch: [
+      '**/test/**/*.test.ts',
+    ],
     transform: {
       '^.+\\.m?js$': 'babel-jest',
       '^.+\\.ts$': 'ts-jest',
@@ -10,5 +12,6 @@ module.exports = {
     moduleNameMapper: {
       '^@/(.*)$': '<rootDir>/$1',
     },
+    testPathIgnorePatterns: ['/node_modules/', '/dist/'], // ignore tests in node_modules and dist
   };
   
