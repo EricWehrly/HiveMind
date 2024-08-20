@@ -1,6 +1,6 @@
 
 import Rectangle from "../../baseTypes/rectangle";
-import { GetPlayerEquippedAttack } from "../../entities/character/CharacterUtils";
+import { CharacterUtils } from "../../entities/character/CharacterUtils";
 import { UI_ELEMENT_ATTACK } from "../../ui/ui-equipment";
 import Renderer from "../renderer";
 import { GetDomForUIElement } from "./ui-element-renderer";
@@ -8,7 +8,7 @@ import { GetDomForUIElement } from "./ui-element-renderer";
 let backgroundDirty = false;
 
 function redraw(screenRect: Rectangle) {
-    const playerAttack = GetPlayerEquippedAttack();
+    const playerAttack = CharacterUtils.GetPlayerEquippedAttack();
     if(playerAttack && !playerAttack.ready) {
         backgroundDirty = true;
         let progress = (performance.now() - playerAttack.lastFired) / playerAttack.technology.delay;
