@@ -2,9 +2,9 @@
 
 import Purposes from "./entities/purposes/character-purposes";
 import Action from "../engine/js/action";
-import Technology from "../engine/js/technology";
 import Entity from "../engine/js/entities/character/Entity";
 import { Slimey } from "./entities/character/mixins/Slimey";
+import { CharacterUtils } from "../engine/js/entities/character/CharacterUtils";
 
 // this should move down to the engine once we ts it
 interface ActionOptions {
@@ -49,13 +49,12 @@ new Action({
     delay: 250,    // do we even want this? maybe there should be a generic one
     callback: function (options: ActionOptions) {
 
-        // TODO: take this from the player eventually
-        const slap = Technology.Get("slap");
+        const playerAttack = CharacterUtils.GetPlayerEquippedAttack();
 
         options.character.Subdivide({
             purpose: Purposes["consume"],
             target: ActionList["consume"].target,
-            technologies: [slap]
+            technologies: [playerAttack]
         });
     }
 });
