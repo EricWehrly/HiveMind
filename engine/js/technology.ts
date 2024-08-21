@@ -105,8 +105,6 @@ export default class Technology extends Listed {
         this._statusEffectDuration = options.statusEffectDuration;
 
         this.#deferLoadingSounds();
-        // TODO: Probably stop doing this?
-        Object.seal(this);
     }
 
     #deferLoadingSounds() {
