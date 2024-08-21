@@ -4,7 +4,13 @@ export default class Listed {
 
     static Get<T extends Listed>(this: new (...args: any[]) => T, item: string | { name: string }): T | null {
         const list = (this as any).List;
-        if(typeof item == "string") return list[item] as T;
+        if(typeof item == "string") {
+            if(!list.hasOwnProperty(item)) {
+                console.warn(`Listed ${this.name} does not contain ${item}.`);
+                return null;
+            }
+            return list[item] as T;
+        }
         else if(item?.name) return list[item.name] as T;
         else {
             console.warn(`Don't know how to get ${item}`);
