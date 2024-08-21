@@ -1,4 +1,5 @@
 import { expect } from '@jest/globals';
+import { createMock } from '../../../../testHelpers/helpers';
 import mockMap from '../../../../testHelpers/mockMap';
 import AI from '../../../../../js/ai/basic';
 import PlayableEntity from '../../../../../js/entities/character/PlayableEntity';
@@ -7,8 +8,8 @@ import { Combative, MakeCombative } from '../../../../../js/entities/character/m
 import { EntityMixin, MakeCharacter } from '../../../../../js/entities/character/CharacterFactory';
 
 // https://stackoverflow.com/a/54475733/5450892
-jest.mock('@/engine/js/entities/character.ts', () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/ai/predator',  () => require('../../../testHelpers/helpers').createMock);
+jest.mock('@/engine/js/entities/character.ts', () => createMock);
+jest.mock('@/engine/js/ai/predator',  () => createMock);
 jest.mock('@/engine/js/ai/basic', () => {
     return {
         __esModule: true, // this property makes it work
