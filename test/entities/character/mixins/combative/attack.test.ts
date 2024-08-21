@@ -8,10 +8,10 @@ import { Equipped, MakeEquipped } from "../../../../../js/entities/character/mix
 import Technology from "../../../../../js/technology";
 import { TechnologyTypes } from "../../../../../js/TechnologyTypes";
 import { MakeLiving } from "../../../../../js/entities/character/mixins/Living";
-import { CharacterUtils } from "../../../../../js/entities/character/CharacterUtils";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+// make defer fire immediately
 jest.mock('@/engine/js/loop.mjs', () => ({
     ...jest.requireActual('@/engine/js/loop.mjs'),
     Defer: (callback: Function, ms: number) => callback(),
@@ -30,12 +30,6 @@ describe('Combative', () => {
                 type: TechnologyTypes.ATTACK
             });
             const playSoundSpy = jest.spyOn(tech, 'playSound');//.mockImplementation(() => {});
-            
-            // ain't work?
-            jest.mock('@/engine/js/entities/character/CharacterUtils', () => ({
-                ...jest.requireActual('@/engine/js/entities/character/CharacterUtils'),
-                GetLocalPlayer: () => localPlayer,
-            }));
 
             function makeAttacker(distance: number) {                
                 attacker = MakeCharacter([MakeEquipped, MakeCombative as EntityMixin], {
@@ -70,11 +64,7 @@ describe('Combative', () => {
                 expect(attacker.canAttack()).toBe(true);
                 attacker.attack();
                 
-                // jump past deferral
-                // attack tech becomes ready after delay, which should be '0', or completion of current 'loop'...
-                setTimeout(() => {
-                    expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
-                }, 10);
+                expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
             });
         });        
 
