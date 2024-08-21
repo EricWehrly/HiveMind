@@ -20,7 +20,7 @@ jest.mock('@/engine/js/loop.mjs', () => ({
 describe('Combative', () => {
     describe('attack', () => {
         describe('volume', () => {
-            let localPlayer: PlayableEntity = MakeCharacter([], {
+            PlayableEntity.LOCAL_PLAYER = MakeCharacter([], {
                 name: 'Player'
             });
             let attacker: PlayableEntity & Combative & Equipped;
@@ -45,13 +45,7 @@ describe('Combative', () => {
                     range: 5
                 });
             }
-        
-            it('should be 0 at distance 100', () => {
-                PlayableEntity.LOCAL_PLAYER = localPlayer;
-                const distance = 100;
-                const targetVolume = 0;
-
-                makeAttacker(distance);
+            function makeTarget(distance: number) {
                 target = MakeCharacter([MakeLiving, MakeCombative as EntityMixin], {
                     name: 'targetEntity',
                     health: 100,
@@ -60,7 +54,67 @@ describe('Combative', () => {
                         y: 0
                     }
                 });
+            }
+        
+            it('should be 0 at distance 100', () => {
+                const distance = 100;
+                const targetVolume = 0;
+                makeAttacker(distance);
+                makeTarget(distance);
                 attacker.target = target;
+
+                expect(attacker.canAttack()).toBe(true);
+                attacker.attack();
+                
+                expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
+            });
+        
+            it('should be 100 at distance 0', () => {
+                const distance = 0;
+                const targetVolume = 100;
+                makeAttacker(distance);
+                makeTarget(distance);
+                attacker.target = target;
+
+                expect(attacker.canAttack()).toBe(true);
+                attacker.attack();
+                
+                expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
+            });
+        
+            it('should be 70 at distance 30', () => {
+                const distance = 30;
+                const targetVolume = 70;
+                makeAttacker(distance);
+                makeTarget(distance);
+                attacker.target = target;
+
+                expect(attacker.canAttack()).toBe(true);
+                attacker.attack();
+                
+                expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
+            });
+        
+            it('should be 90 at distance -10', () => {
+                const distance = -10;
+                const targetVolume = 90;
+                makeAttacker(distance);
+                makeTarget(distance);
+                attacker.target = target;
+
+                expect(attacker.canAttack()).toBe(true);
+                attacker.attack();
+                
+                expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
+            });
+        
+            it('should be 0 at distance 103', () => {
+                const distance = 100;
+                const targetVolume = 0;
+                makeAttacker(distance);
+                makeTarget(distance);
+                attacker.target = target;
+
                 expect(attacker.canAttack()).toBe(true);
                 attacker.attack();
                 
