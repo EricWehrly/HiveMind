@@ -1,4 +1,4 @@
-import './CombatLog';
+// import './CombatLog';
 // import './characterInfo.mjs';
 import './InputMenu';
 import './PauseMenu';
