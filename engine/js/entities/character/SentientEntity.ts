@@ -1,10 +1,15 @@
 import AI from "../../ai/basic";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Events from "../../events";
-import Entity, { EntityEvent } from "./Entity";
+import Entity, { EntityEvent, EntityOptions } from "./Entity";
 
 Events.List.PlayerChunkChanged = "PlayerChunkChanged";
 Events.List.PlayerMoved = "PlayerMoved";
+
+export interface SentientEntityOptions {
+    ai?: new (...args: any[]) => AI;
+    isPlayer?: boolean;
+}
 
 export default class SentientEntity extends Entity {
 
@@ -49,7 +54,7 @@ export default class SentientEntity extends Entity {
         // console.debug(`New target for ${this.name}: ${this?.target?.x}, ${this?.target?.y}`);
     }
 
-    constructor(options: any) {
+    constructor(options: EntityOptions & SentientEntityOptions) {
         super(options);        
         this.#spawnPosition = new WorldCoordinate(this.position.x, this.position.y);
         // TODO: unit test this 'null' thing
