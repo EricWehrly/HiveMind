@@ -6,6 +6,7 @@ import Events, { GameEvent } from "../../../events";
 import { Defer } from "../../../loop.mjs";
 import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";
+import { CharacterUtils } from "../CharacterUtils";
 import Entity from "../Entity";
 import SentientEntity from "../SentientEntity";
 import { Equipped, IsEquipped } from "./Equipped";
@@ -34,6 +35,7 @@ export interface Combative {
     aggressionRange: number;
     thornMultiplier: number;
     attack(): number;
+    canAttack(): boolean;
     applyStatusEffect(statusEffect: StatusEffect, duration: number): void;
 }
 
@@ -41,6 +43,8 @@ type Axis = 'x' | 'y';
 const axes: Axis[] = ['x', 'y'];
 
 type Constructor<T = {}> = new (...args: any[]) => T;
+
+// TODO: Maybe, ultimately, combative needs to extend equipped?
 
 // TODO: drop this from a SentientEntity to an entity
 // but the way we handle target may make that difficult
@@ -79,7 +83,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
 
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
             if (equipped == null) {
-                console.log("Character has no attack skill equipped!");
+                console.warn("Character has no attack skill equipped!");
                 return false;
             }
 
@@ -102,22 +106,27 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
             let target = this.target as Entity & Living;
             const strAttr = this.getAttribute("Strength");
+
+            // TODO: magic numbers
+            let volume = 100;   // default ... maybe pull audio master instead?
+            // TODO: When we implement Playable as separate, we should have a "IsLocalPlayer" method that will also take an array
+            if(CharacterUtils.IsLocalPlayer(target)
+                || CharacterUtils.IsLocalPlayer(this)) {
+                    const NOT_PLAYER_ATTENUATOR = 0.5;
+                    volume *= NOT_PLAYER_ATTENUATOR;
+                }
     
-            // TODO: visual and audio cues
+            // TODO: (trigger / subscribe) visual
     
-            // TODO: is there a better way to check whether to play sound?
             // TODO: This needs a unit test for the volume level and entity difference
-            /* TODO: make this work ... (port to hivemind character?)
-            if(this._currentPurposeKey != "consume") {
                 // compute volume based on distance
                 // maybe every 10 pixels away = -1 volume?
                 // (volume is between 0.0 and 1.0)
-                const distance = 100 - this.position.distance(PlayableEntity.LOCAL_PLAYER.position);
-                equipped.technology.playSound({
-                    volume: distance
-                });
-            }
-            */
+            const localPlayer = CharacterUtils.GetLocalPlayer();
+            const distance = 100 - this.position.distance(localPlayer.position);
+            equipped.technology.playSound({
+                volume: distance
+            });
     
             equipped.lastFired = performance.now();
     
@@ -125,16 +134,21 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
     
             const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
             const damage = (equipped.damage * strengthMultiplier);
-            const combatLog = MessageLog.Get("Combat");
             target.damage(damage, this);
-    
-            const message = `${this.name} attacked ${target.name}`
-                + ` for ${equipped.damage} * ${strengthMultiplier}.`;
-            combatLog.log(message, {
-                attacker: this.id,
-                attackee: target.id,
-                damage
-            });
+            
+            // TODO: Can we have the combatLog subscribe instead?
+            try {
+                const combatLog = MessageLog.Get("Combat");    
+                const message = `${this.name} attacked ${target.name}`
+                    + ` for ${equipped.damage} * ${strengthMultiplier}.`;
+                combatLog.log(message, {
+                    attacker: this.id,
+                    attackee: target.id,
+                    damage
+                });
+            } catch(ex) {
+                console.warn(`Couldn't write to combat log: ${ex}`);
+            }
     
             if(IsCombative(target) && IsEquipped(target)) {
                 this._attackCharacter(target, equipped, damage);

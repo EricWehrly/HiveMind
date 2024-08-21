@@ -10,6 +10,7 @@ import Entity from "./Entity";
 import { Defer } from "../../loop.mjs";
 import StatusEffect, { StatusEffectCallbackOptions } from "../../StatusEffect";
 import { IsCombative } from "./mixins/Combative";
+import { CharacterUtils } from "./CharacterUtils";
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.CharacterAttacked = "CharacterAttacked";
@@ -155,9 +156,10 @@ export class Combatant extends PlayableEntity {
             // compute volume based on distance
             // maybe every 10 pixels away = -1 volume?
             // (volume is between 0.0 and 1.0)
-            const distance = 100 - this.position.distance(PlayableEntity.LOCAL_PLAYER.position);
+            const distance = CharacterUtils.GetDistanceToPlayer(this.position);
+            const volume = 100 - distance
             equipped.technology.playSound({
-                volume: distance
+                volume
             });
         }
 
