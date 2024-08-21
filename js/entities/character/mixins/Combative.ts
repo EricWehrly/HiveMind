@@ -116,12 +116,8 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
                     volume *= NOT_PLAYER_ATTENUATOR;
                 }
     
-            // TODO: (trigger / subscribe) visual
+            // TODO: visuals for attacks (ideally trigger here & subscribe in renderer)
     
-            // TODO: This needs a unit test for the volume level and entity difference
-                // compute volume based on distance
-                // maybe every 10 pixels away = -1 volume?
-                // (volume is between 0.0 and 1.0)
             const localPlayer = CharacterUtils.GetLocalPlayer();
             const distance = 100 - this.position.distance(localPlayer.position);
             equipped.technology.playSound({
