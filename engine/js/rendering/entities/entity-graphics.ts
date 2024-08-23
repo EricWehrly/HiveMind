@@ -1,11 +1,11 @@
 import Rectangle from '../../baseTypes/rectangle';
 import Events from '../../events';
-import Renderer from '../renderer';
 import Character from '../../entities/character';
 import Entity, { EntityEvent } from '../../entities/character/Entity';
 import { CharacterTargetChangedEvent } from '../../entities/character/mixins/Combative';
 import { IsLiving, Living } from '../../entities/character/mixins/Living';
 import { CHARACTER_LIST } from '../../entities/characters';
+import DomRenderingContext from '../contexts/DomRenderingContext';
 
 const entityGraphics = new Map<Entity, HTMLElement>();
 
@@ -13,7 +13,7 @@ export function GetEntityGraphic(entity: Entity) {
     return entityGraphics.get(entity);
 }
 
-function createGraphic(entity: Entity) {
+function createGraphic(entity: Entity, domRoot: HTMLElement) {
 
     // TODO: migrate type to entity
     const character = entity as Character;
@@ -31,8 +31,7 @@ function createGraphic(entity: Entity) {
         }
     }
 
-    // TODO: This playfield reference should probably be stored somewhere more globally referencable
-    document.getElementById("playfield").appendChild(graphic);
+    domRoot.appendChild(graphic);
 }
 
 function setColor(character: Character) {
@@ -72,11 +71,11 @@ function removeClass(entity: Entity, className: string) {
     if(graphic) graphic.className = graphic.className.replace(className, "").trim();
 }
 
-function redraw(entity: Entity, screenRect: Rectangle) {
+function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
 
     // how to check if the character is off screen?
 
-    if(!entityGraphics.has(entity)) createGraphic(entity);
+    if(!entityGraphics.has(entity)) createGraphic(entity, domRoot);
     const graphic = entityGraphics.get(entity);
 
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
@@ -108,12 +107,12 @@ function redraw(entity: Entity, screenRect: Rectangle) {
     }
 }
 
-function redraw_loop(screenRect: Rectangle) {
+function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
 
     // despite the name, these are entities
     for(var character of CHARACTER_LIST) {
         // if character in screenRect
-        redraw(character, screenRect);
+        redraw(character, screenRect, domRoot);
     }
 }
 
@@ -121,7 +120,7 @@ function characterDied(event: EntityEvent) {
     const entity = event.entity;
     const graphic = entityGraphics.get(entity);
     if(graphic) {
-        document.getElementById("playfield").removeChild(graphic);
+        graphic.parentNode.removeChild(graphic);
         entityGraphics.delete(entity);
     }
 }
@@ -132,4 +131,5 @@ Events.Subscribe(Events.List.GameStart, function() {
     Events.Subscribe(Events.List.CharacterDied, characterDied);
 });
 
-Renderer.RegisterRenderMethod(10, redraw_loop);
+// Renderer.RegisterRenderMethod(10, redraw_loop);
+DomRenderingContext.RegisterRenderMethod(10, redraw_loop);
