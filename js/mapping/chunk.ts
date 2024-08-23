@@ -113,6 +113,7 @@ export default class Chunk {
     }
     set active(value) {
         if(value == this.#active) return;
+        // console.log(`setting chunk to ${value == true ? "active" : "inactive" }`, this);
         // TODO: one last check to prevent deactivating a chunk that a player is in
         // if(value == false) console.log(`Deactivating chunk at ${this.coordinate}`);
         // else console.log(`Activating chunk at ${this.coordinate}`);
