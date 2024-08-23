@@ -1,4 +1,4 @@
-import Renderer from "./rendering/renderer-dom";
+import Renderer from "./rendering/renderer";
 import Events from "./events";
 import Entity from "./entities/character/Entity";
 import Rectangle from "./baseTypes/rectangle";

@@ -18,6 +18,11 @@ import './entities/character/mixins/Combative';
 import './ui/ui-equipment';
 import './ui/ui-resource.mjs';
 
+// establish rendering contexts
+// (eventually, we want the game itself to do this)
+import DomRenderingContext from './rendering/contexts/DomRenderingContext';
+import CanvasRenderingContext from './rendering/contexts/CanvasRenderingContext';
+
 // rendering
 import './rendering/entities/entity-graphics';
 import './rendering/ui/ui-element-renderer';
@@ -37,6 +42,9 @@ const Game = {
 
 export default Game;
 
+new DomRenderingContext();
+new CanvasRenderingContext();
+// TODO: Move into dom rendering context
 const playfield = document.createElement("div")
 playfield.id = "playfield";
 document.body.appendChild(playfield);
