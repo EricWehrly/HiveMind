@@ -164,7 +164,11 @@ export default class Entity {
     @PostConstruct
     postConstruct() {
 
-        Events.RaiseEvent(Events.List.CharacterCreated, {entity: this }, {
+        const entityEvent: EntityEvent = {
+            id: null,
+            entity: this
+        };
+        Events.RaiseEvent(Events.List.CharacterCreated, entityEvent, {
             isNetworkBoundEvent: true
         });
     }
@@ -262,7 +266,7 @@ export default class Entity {
 
         return nearbyEntities[0]?.entity || null;
     }
-
+    
     #prioritizedNearestSort(priorities: CharacterType[], margin: number) {
         return function(first: SortingEntity, second: SortingEntity) {
 
