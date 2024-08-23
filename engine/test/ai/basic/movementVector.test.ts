@@ -5,7 +5,7 @@ import { CharacterDamagedEvent } from "../../../js/entities/character/mixins/Liv
 import Entity from "../../../js/entities/character/Entity";
 import WorldCoordinate from "../../../js/coordinates/WorldCoordinate";
 
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work

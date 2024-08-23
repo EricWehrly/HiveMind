@@ -35,7 +35,7 @@ jest.mock('@/engine/js/entities/resource.ts', () => {
         }
     }
 });
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 // we can get rid of this when we move to a structured type for the Entity constructor ...
 interface CharacterOptions {

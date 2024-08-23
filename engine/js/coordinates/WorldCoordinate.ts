@@ -1,6 +1,6 @@
 import Chunk from "../mapping/chunk";
 import Point from "./point"
-import Map from '../mapping/map';
+import GameMap from '../mapping/GameMap';
 
 export default class WorldCoordinate extends Point {
 
@@ -8,7 +8,7 @@ export default class WorldCoordinate extends Point {
 
     get chunk() {
         if(this._chunk == null) {
-            this._chunk = Map.Instance.getChunk(this);
+            this._chunk = GameMap.Instance.getChunk(this);
         }
         return this._chunk;
     }
@@ -18,17 +18,17 @@ export default class WorldCoordinate extends Point {
 
     set x(value: number) {
         super.x = value;
-        this._chunk = Map.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.getChunk(this);
     }
 
     set y(value: number) {
         super.y = value;
-        this._chunk = Map.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.getChunk(this);
     }
 
     constructor(x: number, y: number) {
         super(x, y);
-        this._chunk = Map.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.getChunk(this);
     }
 
     update(point: WorldCoordinate) {

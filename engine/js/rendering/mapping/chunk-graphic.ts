@@ -1,6 +1,6 @@
 import Rectangle from '../../baseTypes/rectangle';
 import Chunk from '../../mapping/chunk';
-import Map from '../../mapping/map';
+import GameMap from '../../mapping/GameMap';
 import DomRenderingContext from '../contexts/DomRenderingContext';
 
 // TODO: make this a global enum
@@ -47,7 +47,7 @@ function redraw(chunk: Chunk, screenRect: Rectangle, domRoot: HTMLElement) {
 
 function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
 
-    for(var chunk of Object.values(Map.Instance.chunks)) {
+    for(var chunk of Object.values(GameMap.Instance.chunks)) {
         // if chunk in screenRect
         redraw(chunk, screenRect, domRoot);
     }

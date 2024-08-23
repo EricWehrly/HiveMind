@@ -25,7 +25,7 @@ Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt() {
         isBuilding: true
     });
     // do we want to do more than just 1 building = 1 point?
-    const progress = (buildings.length / Game.Map.size) * 100;
+    const progress = (buildings.length / Game.GameMap.size) * 100;
     // communicate more concisely to the player
     UI_ELEMENT_PROGRESS.setText(`Planetary Takeover Progress: ${progress.toFixed(2)}%`);
 

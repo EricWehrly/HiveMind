@@ -16,7 +16,7 @@ import './ui/ui';
 // weirdly we've removed any other imports for this ...
 import './entities/building';
 
-import Map from '../engine/js/mapping/map';
+import GameMap from '../engine/js/mapping/GameMap';
 import './entities/entities';
 import Resource from '../engine/js/entities/resource';
 
@@ -51,7 +51,7 @@ KeyboardController.AddDefaultBinding("consume", "f");
 // still 'interact' ... depends on what has focus right now ...
 KeyboardController.AddDefaultBinding("menu_interact", "f");
 
-Game.Map = new Map(Game.Seed);
+Game.GameMap = new GameMap(Game.Seed);
 
 // TODO: figure out where to properly put this
 declare global {

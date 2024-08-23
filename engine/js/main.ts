@@ -1,7 +1,7 @@
 import Camera from './camera';
 import Seed from './core/seed';
 import Events from './events';
-import Map from './mapping/map';
+import GameMap from './mapping/GameMap';
 
 // functionality
 import './mapping/tile-manager';
@@ -37,7 +37,7 @@ const Game = {
         FirstLoad: performance.now(),
         GameStart: -1
     },
-    Map: null as Map | null,  // TODO: fix needing this...
+    GameMap: GameMap.Instance
 };
 
 export default Game;

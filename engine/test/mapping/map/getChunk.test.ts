@@ -1,5 +1,5 @@
 import Seed from '../../../js/core/seed';
-import Map from '../../../js/mapping/map';
+import GameMap from '../../../js/mapping/GameMap';
 import SentientEntity from '../../../js/entities/character/SentientEntity';
 import Biome, { BiomeType } from '../../../js/mapping/biome';
 
@@ -30,11 +30,11 @@ jest.mock('@/engine/js/entities/character/SentientEntity', () => {
 });
 
 describe('map', () => {
-    let map: Map;
+    let map: GameMap;
     let mockCharacter: SentientEntity;
 
     beforeEach(() => {
-        map = new Map(new Seed(123));
+        map = new GameMap(new Seed(123));
         mockCharacter = new SentientEntity({}); // replace with the actual constructor if it requires parameters
         mockCharacter.isPlayer = true;
         const biomeType = new BiomeType({
