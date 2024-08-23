@@ -1,6 +1,7 @@
 import Point from "../coordinates/point";
 import Seed from "../core/seed";
-import SentientEntity from "../entities/character/SentientEntity";
+import { CharacterUtils } from "../entities/character/CharacterUtils";
+import { EntityEvent } from "../entities/character/Entity";
 import Events from "../events";
 import Biome, { BiomeType } from "./biome";
 import Chunk from "./chunk";
@@ -92,10 +93,11 @@ export default class GameMap {
         return nearbyChunks;
     }
 
-    private _characterCreated(event: { character: SentientEntity}) {
+    private _characterCreated(event: EntityEvent) {
 
-        if(event?.character?.isPlayer) {
-            const toChunk = event.character.position.chunk;
+        if(event?.entity 
+            && event?.entity.equals(CharacterUtils.GetLocalPlayer())) {
+            const toChunk = event.entity.position.chunk;
             this._playerChunkChanged({
                 from: toChunk,
                 to: toChunk
