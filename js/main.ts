@@ -44,10 +44,6 @@ export default Game;
 
 new DomRenderingContext();
 new CanvasRenderingContext();
-// TODO: Move into dom rendering context
-const playfield = document.createElement("div")
-playfield.id = "playfield";
-document.body.appendChild(playfield);
 
 Events.Subscribe(Events.List.GameStart, function() {
     Game.Timings.GameStart = performance.now();

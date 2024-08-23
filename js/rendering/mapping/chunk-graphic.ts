@@ -1,17 +1,14 @@
 import Rectangle from '../../baseTypes/rectangle';
-import Renderer from '../renderer';
 import Chunk from '../../mapping/chunk';
 import Map from '../../mapping/map';
-
-// TODO: This playfield reference should probably be stored somewhere more globally referencable
-let playfield: Element = null;
+import DomRenderingContext from '../contexts/DomRenderingContext';
 
 // TODO: make this a global enum
 const gridSize = 32;
 
 const chunkGraphics: WeakMap<Chunk, HTMLElement> = new WeakMap();
 
-function createGraphic(chunk: Chunk) {
+function createGraphic(chunk: Chunk, domRoot: HTMLElement) {
 
     const graphic = document.createElement('div');
     chunkGraphics.set(chunk, graphic);
@@ -19,8 +16,7 @@ function createGraphic(chunk: Chunk) {
     graphic.className = 'chunk';
     // if (chunk.color) graphic.className += ` ${chunk.color}`;
 
-    if(playfield == null) playfield = document.getElementById("playfield");
-    playfield.appendChild(graphic);
+    domRoot.appendChild(graphic);
 
     const chunkPixels = Chunk.CHUNK_SIZE * gridSize;
     graphic.style.width = chunkPixels + "px";
@@ -29,9 +25,9 @@ function createGraphic(chunk: Chunk) {
     // border color from biome?
 }
 
-function redraw(chunk: Chunk, screenRect: Rectangle) {
+function redraw(chunk: Chunk, screenRect: Rectangle, domRoot: HTMLElement) {
 
-    if(!chunkGraphics.has(chunk)) createGraphic(chunk);
+    if(!chunkGraphics.has(chunk)) createGraphic(chunk, domRoot);
 
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
     // but even static characters need to be redrawn when screenRect moves
@@ -49,12 +45,12 @@ function redraw(chunk: Chunk, screenRect: Rectangle) {
     graphic.style.top = (gridSize * offsetPosition.y) + "px";
 }
 
-function redraw_loop(screenRect: Rectangle) {
+function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
 
     for(var chunk of Object.values(Map.Instance.chunks)) {
         // if chunk in screenRect
-        redraw(chunk, screenRect);
+        redraw(chunk, screenRect, domRoot);
     }
 }
 
-Renderer.RegisterRenderMethod(10, redraw_loop);
+DomRenderingContext.RegisterRenderMethod(10, redraw_loop);
