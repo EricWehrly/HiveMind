@@ -41,7 +41,7 @@ function setColor(character: Character) {
     if(character.color) color = character.color;
     else if(character?.faction?.color) color = character.faction.color;
 
-    if(color?.indexOf("rgb") > -1) {
+    if(color && color.indexOf("rgb") > -1) {
         graphic.style.backgroundColor = color;
     } else if(color) {
         graphic.className += ` ${color}`;
