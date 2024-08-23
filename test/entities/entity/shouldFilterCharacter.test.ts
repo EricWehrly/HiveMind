@@ -22,7 +22,7 @@ jest.mock('@/engine/js/events', () => {
         }
     };
 });
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 jest.mock('@/engine/js/technology.ts', () => createMock);
 jest.mock('@/engine/js/research.ts', () => createMock);
 

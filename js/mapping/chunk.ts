@@ -1,5 +1,5 @@
 import Events, { GameEvent } from "../events";
-import Map from './map';
+import GameMap from './GameMap';
 import Seed from "../core/seed";
 import Biome from "./biome";
 import Point from "../coordinates/point";
@@ -15,7 +15,7 @@ export interface ChunkOptions {
     x: number;
     y: number;
     active: boolean;
-    map: Map;
+    gameMap: GameMap;
 }
 
 export default class Chunk {
@@ -130,7 +130,7 @@ export default class Chunk {
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
         if(options.active) this.active = options.active;
-        this._seed = new Seed(Map.Instance.Seed.Random());
+        this._seed = new Seed(GameMap.Instance.Seed.Random());
         const seed = this._seed;
 
         this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
@@ -139,7 +139,7 @@ export default class Chunk {
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this._flora = seed.Random(1, 10);
 
-        this._map = options.map;
+        this._map = options.gameMap;
         this.map.addChunk(this);
         Events.RaiseEvent(Events.List.ChunkCreated, {
             chunk: this

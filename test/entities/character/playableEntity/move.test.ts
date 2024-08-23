@@ -32,7 +32,7 @@ jest.mock('@/engine/js/events', () => {
         }
     };
 });
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('PlayableEntity.move', () => {
 

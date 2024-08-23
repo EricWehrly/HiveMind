@@ -33,7 +33,7 @@ jest.mock('@/engine/js/events', () => {
         }
     };
 });
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('SentientEntity.ctor', () => {
     it('should have no ai if null is passed', () => {

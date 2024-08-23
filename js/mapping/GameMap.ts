@@ -9,9 +9,9 @@ import Chunk from "./chunk";
 const CHUNK_SOFT_LIMIT = 5000;
 
 // TODO: export the instance, not the class
-export default class Map {
+export default class GameMap {
 
-    private static _instance: Map;
+    private static _instance: GameMap;
     static get Instance() {
         return this._instance;
     };
@@ -52,8 +52,8 @@ export default class Map {
             throw message;
         }
 
-        if(Map._instance == null) {
-            Map._instance = this;
+        if(GameMap._instance == null) {
+            GameMap._instance = this;
             window.map = this;
         }
 
@@ -161,7 +161,7 @@ export default class Map {
             new Chunk({
                 biome,
                 active,
-                map: this,
+                gameMap: this,
                 x: point.x,
                 y: point.y
             });

@@ -35,7 +35,7 @@ jest.mock('@/engine/js/entities/resource.ts', () => {
         }
     }
 });
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('ChacterFactory.MakeCharacter', () => {
 

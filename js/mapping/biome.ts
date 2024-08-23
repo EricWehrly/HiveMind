@@ -1,6 +1,6 @@
 import Listed from "../baseTypes/listed";
 import Point from "../coordinates/point";
-import Map from "./map";
+import GameMap from "./GameMap";
 
 export interface BiomeOptions {
     biomeType: BiomeType;
@@ -67,7 +67,7 @@ export default class Biome {
         this.#width = options.width;
         this.#height = options.height;
         
-        Map.Instance.addBiome(this);
+        GameMap.Instance.addBiome(this);
     }
 
     contains(coordinates: Point) {

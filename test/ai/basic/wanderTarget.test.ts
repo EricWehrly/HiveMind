@@ -2,7 +2,7 @@ import mockMap from "../../testHelpers/mockMap";
 import AI from "../../../js/ai/basic";
 import SentientEntity from "../../../js/entities/character/SentientEntity";
 
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 jest.mock('@/engine/js/events', () => {
     return {
         __esModule: true, // this property makes it work

@@ -8,7 +8,7 @@ import SentientEntity from '../../../../js/entities/character/SentientEntity';
 jest.mock('@/engine/js/entities/character', () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/basic',  () => require('../../../testHelpers/helpers').createMock);
 jest.mock('@/engine/js/ai/predator',  () => require('../../../testHelpers/helpers').createMock);
-jest.mock('@/engine/js/mapping/map', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap', () => mockMap);
 jest.mock('@/engine/js/coordinates/point', () => {
     return {
         __esModule: true, // this property makes it work

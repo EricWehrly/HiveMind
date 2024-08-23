@@ -10,7 +10,7 @@ import { TechnologyTypes } from "../../../../../js/TechnologyTypes";
 import { MakeLiving } from "../../../../../js/entities/character/mixins/Living";
 
 jest.mock('@/engine/js/events', () => mockEvents);
-jest.mock('@/engine/js/mapping/map.ts', () => mockMap);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 // make defer fire immediately
 jest.mock('@/engine/js/loop.mjs', () => ({
     ...jest.requireActual('@/engine/js/loop.mjs'),
