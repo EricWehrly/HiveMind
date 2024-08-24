@@ -5,6 +5,7 @@ import Biome from "./biome";
 import Point from "../coordinates/point";
 
 Events.List.ChunkCreated = "ChunkCreated";
+Events.List.ChunkActiveChanged = "ChunkActiveChanged";
 
 export interface ChunkEvent extends GameEvent {
     chunk: Chunk;
@@ -118,6 +119,12 @@ export default class Chunk {
         // if(value == false) console.log(`Deactivating chunk at ${this.coordinate}`);
         // else console.log(`Activating chunk at ${this.coordinate}`);
         this.#active = value;
+
+        const chunkEvent: ChunkEvent = {
+            id: null,
+            chunk: this
+        };
+        Events.RaiseEvent(Events.List.ChunkActiveChanged, chunkEvent);
     }
 
     #distance;

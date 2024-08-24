@@ -1,5 +1,6 @@
 import Rectangle from '../../baseTypes/rectangle';
-import Chunk from '../../mapping/chunk';
+import Events from '../../events';
+import Chunk, { ChunkEvent } from '../../mapping/chunk';
 import GameMap from '../../mapping/GameMap';
 import DomRenderingContext from '../contexts/DomRenderingContext';
 
@@ -44,6 +45,20 @@ function redraw(chunk: Chunk, screenRect: Rectangle, domRoot: HTMLElement) {
     graphic.style.left = (gridSize * offsetPosition.x) + "px";
     graphic.style.top = (gridSize * offsetPosition.y) + "px";
 }
+
+function onChunkActiveChanged(event: ChunkEvent) {
+    
+    if(event.chunk.active == false)  {
+        const graphic = chunkGraphics.get(event.chunk);
+        
+        if (graphic) {
+            graphic.parentNode.removeChild(graphic);
+            chunkGraphics.delete(event.chunk);
+        }
+    }
+}
+
+Events.Subscribe(Events.List.ChunkActiveChanged, onChunkActiveChanged);
 
 function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
 
