@@ -1,16 +1,32 @@
+export enum CARDINAL_DIRECTION {
+    'East',
+    'South',
+    'West',
+    'North'
+}
+
 export default class Vector {
     private _x: number;
     private _y: number;
 
     get x() { return this._x; }
-    set x(value: number) { this._x = value; }
+    set x(value: number) {
+        this._x = value;
+        this.onChanged(this);
+    }
     get y () { return this._y; }
-    set y(value: number) { this._y = value; }
+    set y(value: number) { 
+        this._y = value;
+        this.onChanged(this);
+    }
 
     constructor(x: number, y: number) {
         this._x = x;
         this._y = y;
+        this.onChanged = () => {};
     }
+
+    onChanged: (vector: Vector) => void;
 
     add(firstParam: Vector | number, secondParam?: number) {
         if(firstParam instanceof Vector) {
@@ -30,6 +46,12 @@ export default class Vector {
             this._x *= firstParam;
             this._y *= firstParam;
         }
+    }
+
+    get cardinalDirection(): CARDINAL_DIRECTION {
+        const angle = Math.atan2(this._y, this._x) * 180 / Math.PI;
+        const index = Math.round(((angle + 360) % 360) / 90) % 4;
+        return index;
     }
 
     get normalized() {

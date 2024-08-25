@@ -6,6 +6,7 @@ import { CharacterTargetChangedEvent } from '../../entities/character/mixins/Com
 import { IsLiving, Living } from '../../entities/character/mixins/Living';
 import { CHARACTER_LIST } from '../../entities/characters';
 import DomRenderingContext from '../contexts/DomRenderingContext';
+import { CARDINAL_DIRECTION } from '../../baseTypes/Vector';
 
 const entityGraphics = new Map<Entity, HTMLElement>();
 
@@ -71,12 +72,32 @@ function removeClass(entity: Entity, className: string) {
     if(graphic) graphic.className = graphic.className.replace(className, "").trim();
 }
 
+function hasClass(entity: Entity, className: string) {
+    const graphic = entityGraphics.get(entity);
+    if(!graphic) return false;
+    return graphic.className.indexOf(className) > -1;
+}
+
+function hasAnyClass(entity: Entity, classNames: string[]) {
+    const graphic = entityGraphics.get(entity);
+    if(!graphic) return false;
+    for(var className of classNames) {
+        if(graphic.className.indexOf(className) > -1) return true;
+    }
+    return false;
+}
+
 function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
 
     // how to check if the character is off screen?
 
     if(!entityGraphics.has(entity)) createGraphic(entity, domRoot);
     const graphic = entityGraphics.get(entity);
+    
+    // @ts-expect-error
+    if(entity.isPlayer) {
+        dom_handle_facing(entity);
+    }
 
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
     // but even static characters need to be redrawn when screenRect moves
@@ -105,6 +126,22 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
         // we need to implement this alternative, but we can avoid it for now
         console.warn('this guy aint livin');
     }
+}
+
+function dom_handle_facing(entity: Entity) {
+
+    const cardinals: string[] = Object.keys(CARDINAL_DIRECTION).filter(key => isNaN(Number(key)));
+    const facingIndex = entity.facing.cardinalDirection;
+    const facing = cardinals[facingIndex];
+
+    if(hasClass(entity, facing)) return;
+
+    if(hasAnyClass(entity, cardinals)) {
+        for(var cardinal of cardinals) {
+            removeClass(entity, cardinal);
+        }
+    }
+    addClass(entity, facing);
 }
 
 function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
