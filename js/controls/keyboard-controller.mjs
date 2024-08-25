@@ -1,5 +1,5 @@
 import { RegisterLoopMethod } from '../../engine/js/loop.mjs';
-
+import Vector from '../../engine/js/baseTypes/Vector.ts';
 import Action from '../../engine/js/action.ts';
 const Actions = Action.List;
 
@@ -116,8 +116,7 @@ export default class KeyboardController {
 
     loopMethod() {
 
-        this.character.desiredMovementVector.x = 0;
-        this.character.desiredMovementVector.y = 0;
+        this.character.desiredMovementVector = new Vector(0, 0);
 
         for (var action of Object.keys(Actions)) {
             if (Actions[action].enabled !== false

@@ -8,6 +8,8 @@ Performance {
 }
 
 bug / sanitization {
+- I found an interesting trick to return frozen objects, which will throw errors if anything tries to modify them.
+    this could help at determining byref / byval unintentionals
 - remove any places where the engine is depending on the game itself
     we can identify these by (hopefully) counting (relative) slashes?
     (easily identifiable offending engine components should have more '../' than possible, at least for their level)

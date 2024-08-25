@@ -72,6 +72,7 @@ export default class Entity {
     private _attributes: { [key: string]: CharacterAttribute } = {};
     _position: WorldCoordinate = new WorldCoordinate(0, 0);
     private _desiredMovementVector: Vector = new Vector(0, 0);
+    private _facing = new Vector(0, 0);
     private _rotation: number = 0;
     private _area: Rectangle = new Rectangle(0, 0, 0, 0);
 
@@ -93,6 +94,7 @@ export default class Entity {
     get y() { return this._position.y; }
 
     get area() { return this._area; }
+    get facing() { return this._facing; }
 
     // TODO: implement variable character attributes
     get vision() {
@@ -124,6 +126,7 @@ export default class Entity {
 
     set desiredMovementVector(newVal: Vector) {
         this._desiredMovementVector = newVal;
+       this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
     }
 
     get rotation() { return this._rotation; }
@@ -158,7 +161,15 @@ export default class Entity {
             costFunction: this.logarithmicCost
         }));
 
+        this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
+
         AddCharacterToList(this);
+    }
+
+    private onDirectionVectorChanged(vector: Vector) {
+        if(vector.x != 0 || vector.y != 0) {
+            this._facing = vector;
+        }
     }
 
     @PostConstruct
@@ -266,7 +277,7 @@ export default class Entity {
 
         return nearbyEntities[0]?.entity || null;
     }
-    
+
     #prioritizedNearestSort(priorities: CharacterType[], margin: number) {
         return function(first: SortingEntity, second: SortingEntity) {
 
