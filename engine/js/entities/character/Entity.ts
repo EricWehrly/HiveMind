@@ -2,7 +2,7 @@ import CharacterType from "../../../../js/entities/CharacterType";
 import Events, { GameEvent } from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute";
-import { AddCharacterToList, CHARACTER_LIST } from "../characters";
+import { AddCharacterToList, CHARACTER_LIST, RemoveCharacterFromList } from "../characters";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
 import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
@@ -223,7 +223,7 @@ export default class Entity {
 
         for (var character of CHARACTER_LIST) {
 
-            if(character == this 
+            if(character.equals(this)
                 || this.shouldFilterCharacter(character, options)) {
                 continue;
             }
@@ -239,7 +239,7 @@ export default class Entity {
             }
         }
 
-        nearbyEntities.sort(this.#nearestSort);
+        nearbyEntities.sort(this._nearestSort);
         if(nearbyEntities.length > options.max) {
             nearbyEntities.splice(options.max - 1);
         }
@@ -272,13 +272,13 @@ export default class Entity {
         if(options.priorities) {
             const distMargin = 5;
 
-            nearbyEntities.sort(this.#prioritizedNearestSort(options.priorities, distMargin));
+            nearbyEntities.sort(this._prioritizedNearestSort(options.priorities, distMargin));
         }
 
         return nearbyEntities[0]?.entity || null;
     }
 
-    #prioritizedNearestSort(priorities: CharacterType[], margin: number) {
+    private _prioritizedNearestSort(priorities: CharacterType[], margin: number) {
         return function(first: SortingEntity, second: SortingEntity) {
 
             // TODO: charactertype is a hivemind implementation, not an engine one ...
@@ -295,7 +295,7 @@ export default class Entity {
         }
     }
 
-    #nearestSort(first: SortingEntity, second: SortingEntity) {
+    private _nearestSort(first: SortingEntity, second: SortingEntity) {
 
         if(first.distance > second.distance) {
             return 1;
@@ -350,5 +350,10 @@ export default class Entity {
 
     equals(entity: Entity) {
         return entity._id == this._id;
+    }
+
+    destroy() {   
+        RemoveCharacterFromList(this);
+        // TODO: probably raise event to get graphics removed
     }
 }
