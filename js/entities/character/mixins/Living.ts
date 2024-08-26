@@ -85,8 +85,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
         // TODO: Should we just flag not alive and defer 'fading out' corpse?
         die() {
             Events.RaiseEvent(Events.List.CharacterDied, { entity: this });
-            
-            RemoveCharacterFromList(this);
+            super.destroy();
         }
     }
 }

@@ -2,6 +2,7 @@ import Renderer from "./rendering/renderer";
 import Events from "./events";
 import Entity from "./entities/character/Entity";
 import Rectangle from "./baseTypes/rectangle";
+import { CARDINAL_DIRECTION } from "./baseTypes/Vector";
 
 // TODO: Global reference somewhere somehow
 const GRID_SIZE = 32;
@@ -18,7 +19,7 @@ const SCREEN_BORDER_PADDING = 4;
 export default class Camera {
 
     private static _instance: Camera;
-    private static _target: Entity;
+    private _target: Entity;
 
     static get() {
         return Camera._instance;
@@ -55,18 +56,40 @@ export default class Camera {
     }
 
     private refreshScreenRect() {
-        if(Camera._target == null) {
+        const camera = Camera._instance;
+        if(camera._target == null) {
             this._screenRect = null;
         }
-
+    
         else {
             const viewport = this.getViewPortSize();
             const gridHalfWidth = (viewport.width / 2) / GRID_SIZE;
             const gridHalfHeight = (viewport.height / 2) / GRID_SIZE;
     
+            // offset screenRect based on camera._target.facing
+            const facing = camera._target.facing.cardinalDirection;
+            let offsetX = 0, offsetY = 0;
+            // const offsetValue = 20 / GRID_SIZE; // Convert pixel offset to grid units
+            const offsetValue = 8;
+    
+            switch(facing) {
+                case CARDINAL_DIRECTION.North:
+                    offsetY -= offsetValue;
+                    break;
+                case CARDINAL_DIRECTION.South:
+                    offsetY += offsetValue;
+                    break;
+                case CARDINAL_DIRECTION.West:
+                    offsetX -= offsetValue;
+                    break;
+                case CARDINAL_DIRECTION.East:
+                    offsetX += offsetValue;
+                    break;
+            }
+    
             this._screenRect = new Rectangle(
-                Camera._target.position.x - gridHalfWidth,
-                Camera._target.position.y - gridHalfHeight,
+                camera._target.position.x - gridHalfWidth + offsetX,
+                camera._target.position.y - gridHalfHeight + offsetY,
                 gridHalfWidth * 2,
                 gridHalfHeight * 2
             );
@@ -74,7 +97,8 @@ export default class Camera {
     }
 
     setTarget(target?: Entity) {
-        Camera._target = target;
+        const camera = Camera._instance;
+        camera._target = target;
 
         this.refreshScreenRect();
     }
