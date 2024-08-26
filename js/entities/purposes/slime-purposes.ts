@@ -8,6 +8,7 @@ import { Grower } from "../character/mixins/Grower";
 Purposes["return"] = {
     // do not show this one in menus!
     name: "return",
+    // TODO: remove the need for "slime" purpose, and purpose needs to be pushed down to 'character'
     think: function (character: HiveMindCharacter & Slimey, elapsed: number) {
 
         if (!character.target) {
@@ -23,6 +24,7 @@ Purposes["return"] = {
     }
 };
 
+// TODO: structure this better so that it can be tested
 // we kind of need to be able to "ask" if the thing to be spawned can do what it's purpose should be
 Purposes["spawn"] = {
     name: "spawn",
@@ -50,6 +52,7 @@ Purposes["spawn"] = {
         });
 
         if (target != null) {
+            // TODO: take from player (don't we already have this note?)
             const slap = Technology.Get("slap");
             const options = {
                 purposeKey: purpose,
@@ -58,6 +61,7 @@ Purposes["spawn"] = {
             }
             const spawnedCharacter = character.Subdivide(options);
             if (spawnedCharacter != null) {
+                // store 'spawntargets' on the spawner so that only one spawn per target
                 character.spawnTargets.push(target);
                 // console.log(`Character ${character.id} has ${character.spawnTargets.length} spawn targets.`);
             }
