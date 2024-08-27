@@ -8,6 +8,8 @@ import NodeAI, { BuildingDesiredEvent } from '../ai/node';
 import Building from './building';
 import MenuItem from '../../engine/js/ui/MenuItem';
 import MakeCharacterType from './CharacterTypeFactory';
+import Playable from '../../engine/js/entities/character/mixins/Playable';
+import { Combative } from '../../engine/js/entities/character/mixins/Combative';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
@@ -23,7 +25,7 @@ const BuildFromMenu = function (context: MenuAction) {
         return;
     }
 
-    const player = Character.LOCAL_PLAYER as Character;
+    const player = Playable.LocalPlayer as Character & Combative;
 
     const options = {
         position: player.position,

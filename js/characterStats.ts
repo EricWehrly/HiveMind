@@ -1,10 +1,10 @@
 import { SCREEN_ZONE } from "../engine/js/ui/ui-element";
 import Menu from "../engine/js/ui/menu";
 import KeyboardController from "./controls/keyboard-controller.mjs";
-import Character from "../engine/js/entities/character";
 import Events from "../engine/js/events";
 import MenuItem from "../engine/js/ui/MenuItem";
 import CharacterAttribute, { CharacterAttributeChangedEvent } from "../engine/js/entities/character-attribute";
+import Playable from "../engine/js/entities/character/mixins/Playable";
 
 let strength: CharacterAttribute = null,
 speed: CharacterAttribute = null;
@@ -36,7 +36,7 @@ const speedLabel = new MenuItem({
 const incrementAttribute = function(attribute: CharacterAttribute) {
 
     // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
-    const localPlayer = Character.LOCAL_PLAYER;
+    const localPlayer = Playable.LocalPlayer;
     // const ctrl = localPlayer.controller.isKeyDown("Control");
     const ctrl = false;
     if(ctrl) {
@@ -92,7 +92,7 @@ KeyboardController.AddDefaultBinding("openMenu/character upgrades", "c");
 
 Events.Subscribe(Events.List.GameStart, function() {
     
-    const localPlayer = Character.LOCAL_PLAYER;
+    const localPlayer = Playable.LocalPlayer;
     
     strength = localPlayer.getAttribute("Strength");
     updateMenuItemText( { attribute: strength, id: null } );

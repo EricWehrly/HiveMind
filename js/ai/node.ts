@@ -7,6 +7,7 @@ import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { Living } from "../../engine/js/entities/character/mixins/Living";
 import { Growable } from "../entities/character/mixins/Growable";
 import { Grower } from "../entities/character/mixins/Grower";
+import { Combative } from "../../engine/js/entities/character/mixins/Combative";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -192,13 +193,16 @@ export default class NodeAI extends AI {
 
     #whatShouldBeBuilt(): CharacterType & Living {
 
+        // TODO: fix this 'as unknown'
+        const combativeCharacter = this.character as unknown as Building & Combative;
+
             // at least 1 other node nearby (that can build other nodes ...)
             // we may want to allow non-nodes to build buildings?
 
             // TODO: Should be using characterType enums
             const nearbyNodes = this.character.getNearbyEntities({
                 distance: NEARBY_RANGE,
-                faction: this.character.faction,
+                faction: combativeCharacter.faction,
                 characterType: CharacterType.List['Node'],
             });
             if(nearbyNodes.length == 0) {
@@ -209,7 +213,7 @@ export default class NodeAI extends AI {
             // maybe we can 'default' one at the end, and compare counts?
             const nearbyEaters = this.character.getNearbyEntities({
                 distance: NEARBY_RANGE,
-                faction: this.character.faction,
+                faction: combativeCharacter.faction,
                 characterType: CharacterType.List['Eater']
             });
             if(nearbyEaters.length == 0) {
@@ -222,7 +226,7 @@ export default class NodeAI extends AI {
 
             const nearbySeeders = this.character.getNearbyEntities({
                 distance: NEARBY_RANGE,
-                faction: this.character.faction,
+                faction: combativeCharacter.faction,
                 characterType: CharacterType.List['Seeder']
             });
             if(nearbySeeders.length == 0) {
@@ -261,6 +265,9 @@ export default class NodeAI extends AI {
     #getDesiredBuildOptions(wantToBuild: CharacterType)
         : CharacterType & Living & Positioned {
 
+        // TODO: fix this 'as unknown'
+        const combativeCharacter = this.character as unknown as Building & Combative;
+
         // this needs to be changed entirely
         // const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
         const position = this.#getNextConstructionPosition(wantToBuild);
@@ -274,7 +281,7 @@ export default class NodeAI extends AI {
         // (because of dynamic property definitions)
         const options = Object.assign({}, wantToBuild) as CharacterType & Living & Positioned;
         options.position = position;
-        options.faction = this.character.faction;
+        options.faction = combativeCharacter.faction;
         options.cost = wantToBuild.health;
 
         return options;

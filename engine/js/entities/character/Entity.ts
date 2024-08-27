@@ -25,6 +25,7 @@ export interface EntityOptions {
     speed?: number;
     characterType?: CharacterType,
     entityRenderingSettings?: EntityRenderingSettings
+    color?: string;
 }
 
 interface SortingEntity {
@@ -73,9 +74,11 @@ export default class Entity {
     private _facing = new Vector(0, 0);
     private _rotation: number = 0;
     private _area: Rectangle = new Rectangle(0, 0, 0, 0);
+    private _color: string;
 
     // one dimension, rather than height and width, for now
     get size() { return 1 }
+    get color() { return this._color; }
 
     private _characterType: CharacterType;
     get characterType() { 
@@ -151,6 +154,7 @@ export default class Entity {
         }
 
         if(options.entityRenderingSettings) this.entityRenderingSettings = options.entityRenderingSettings;
+        this._color = options.color || options.characterType?.color || undefined;
         
         this.addAttribute(new CharacterAttribute({
             name: 'Speed',

@@ -8,6 +8,7 @@ import { Equipped, MakeEquipped } from "../../../../../js/entities/character/mix
 import Technology from "../../../../../js/technology";
 import { TechnologyTypes } from "../../../../../js/TechnologyTypes";
 import { MakeLiving } from "../../../../../js/entities/character/mixins/Living";
+import { MakePlayable } from "../../../../../js/entities/character/mixins/Playable";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -20,8 +21,9 @@ jest.mock('@/engine/js/loop.mjs', () => ({
 describe('Combative', () => {
     describe('attack', () => {
         describe('volume', () => {
-            PlayableEntity.LOCAL_PLAYER = MakeCharacter([], {
-                name: 'Player'
+            const localPlayer = MakeCharacter([MakePlayable], {
+                name: 'Player',
+                isPlayer: true
             });
             let attacker: PlayableEntity & Combative & Equipped;
             let target: Entity;

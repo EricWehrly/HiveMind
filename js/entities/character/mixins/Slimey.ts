@@ -5,7 +5,7 @@ import { Living, MakeLiving } from "../../../../engine/js/entities/character/mix
 import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
 import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
 import { HivemindCharacterFilterOptions } from "../../../../engine/js/entities/character";
-import { MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
+import { Combative, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -56,13 +56,15 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             const entityRenderingSettings = {
                 renderedName: purpose.name
             };
+            // TODO: fix 'as unknown'
+            const faction = (this as unknown as Combative).faction;
             const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped], {            
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
                 position: this.position,
                 _currentPurposeKey: purpose.name.toLowerCase(),
-                faction: this.faction,
+                faction,
                 technologies: options.technologies,
                 entityRenderingSettings,
                 parent: this

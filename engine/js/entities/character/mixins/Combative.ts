@@ -6,6 +6,7 @@ import Events, { GameEvent } from "../../../events";
 import { Defer } from "../../../loop.mjs";
 import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";
+import Faction from "../../faction";
 import { CharacterUtils } from "../CharacterUtils";
 import Entity from "../Entity";
 import SentientEntity from "../SentientEntity";
@@ -34,9 +35,14 @@ export interface Combative {
     aggression: number;
     aggressionRange: number;
     thornMultiplier: number;
+    faction: Faction;
     attack(): number;
     canAttack(): boolean;
     applyStatusEffect(statusEffect: StatusEffect, duration: number): void;
+}
+
+export interface CombativeOptions {
+    faction: Faction;
 }
 
 type Axis = 'x' | 'y';
@@ -48,12 +54,16 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: drop this from a SentientEntity to an entity
 // but the way we handle target may make that difficult
-export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
+export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, combativeOptions: CombativeOptions) {
     return class extends Base implements Combative {
 
         private _thornMultiplier: number;
         private _statusEffects: Map<StatusEffect, number> = new Map();
-        aggression: number = 0;
+        private _aggression: number = 0;
+        private _faction: Faction = combativeOptions?.faction;
+    
+        get faction() { return this._faction; }
+        set faction(value) { this._faction = value; }
 
         // TODO: it'd be nice to just do entity
         get target(): Entity | WorldCoordinate {
@@ -66,12 +76,26 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T) {
 
         get thornMultiplier() { return this._thornMultiplier; }        
 
+        get aggression() { return this._aggression; }
         get aggressionRange() {
             // not vision. the range of the equipped attack
             if(IsEquipped(this)) {
-                return this.aggression * (this?.equipment?.attack?.range || 0);
+                return this._aggression * (this?.equipment?.attack?.range || 0);
             }
             return 0;
+        }
+
+        constructor(...args: any) {
+            super(args);
+
+            const options = args[0] || args;
+            
+            if(options.isPlayer) {
+                this.faction = new Faction({ 
+                    name: this.name,
+                    color: this.color
+                });
+            }
         }
         
         canAttack() {

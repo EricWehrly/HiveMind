@@ -35,6 +35,7 @@ import { MakeGrower } from './entities/character/mixins/Grower';
 
 import './characterStats';
 import "./ui/goal";
+import { MakePlayable } from '../engine/js/entities/character/mixins/Playable';
 
 new MessageLog({
     name: "Combat",
@@ -70,7 +71,7 @@ const food = new Resource({
 // maybe this number should scale over time
 food.reserve(100, {});
 
-const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative], {
+const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative], {
     name: "Local Player",
     color: "blue",
     speed: 5,
@@ -80,7 +81,6 @@ const localPlayer = MakeHiveMindCharacter([MakeSlimey, MakeGrower, MakeLiving, M
     isPlayer: true
 }) as HiveMindCharacter & Equipped;
 localPlayer.controller = new KeyboardController({ character: localPlayer });
-Character.LOCAL_PLAYER = localPlayer;
 window.LOCAL_PLAYER = localPlayer;
 
 localPlayer.AddTechnology("slap");
