@@ -1,7 +1,7 @@
 import PostConstruct from "../../../../ts/decorators/PostConstruct";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
 import Events from "../../../events";
-import Entity from "../Entity";
+import Entity, { CharacterFilterOptions } from "../Entity";
 
 export interface Playable {
     isPlayer: boolean;
@@ -88,6 +88,15 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOpt
             else if(!this._position.equals(this._lastPosition)) {
                 this._lastPosition.update(this._position);
             }
+        }
+        
+        shouldFilterCharacter(character: Entity & Playable, options: CharacterFilterOptions & PlayableOptions) {
+
+            if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
+                return true;
+            }
+            
+            return super.shouldFilterCharacter(character, options);
         }
     }
 }

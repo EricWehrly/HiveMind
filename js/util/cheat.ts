@@ -1,5 +1,6 @@
 import Character from "../../engine/js/entities/character";
 import Entity from "../../engine/js/entities/character/Entity.js";
+import { Combative } from "../../engine/js/entities/character/mixins/Combative";
 import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Playable from "../../engine/js/entities/character/mixins/Playable";
@@ -62,7 +63,7 @@ export default class Cheat {
 
     static get Nodes(): void {
 
-        const localPlayer = (Playable.LocalPlayer as unknown as Character);
+        const localPlayer = (Playable.LocalPlayer as unknown as Character & Combative);
         const playerFaction = localPlayer.faction;
         const nodeCount = 10;
         const characterType = CharacterType.List['Node'];

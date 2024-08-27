@@ -9,7 +9,7 @@ import { IsLiving, Living } from "../../../engine/js/entities/character/mixins/L
 import Entity, { EntityEvent } from "../../../engine/js/entities/character/Entity";
 import { Grower } from "../character/mixins/Grower";
 import { Growable } from "../character/mixins/Growable";
-import { IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
+import { Combative, IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
 import { IsEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 import { CharacterUtils } from "../../../engine/js/entities/character/CharacterUtils";
 
@@ -90,7 +90,7 @@ const Purposes: Record<string,any> =
                 return;
             }
 
-            const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter;
+            const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter & Combative;
             const closest = character.getClosestEntity({
                 distance: this.range,
                 // TODO: 'faction' has to be pushed further down the stack for this to work <3

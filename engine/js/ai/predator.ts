@@ -34,7 +34,7 @@ export default class PredatorAI extends AI {
                 // const wasTarget = this.#character.target;
                 // TODO: Don't directly target the player.
                 // Maybe we want to encourage attacking biggest threat first?
-                const localPlayer = CharacterUtils.GetLocalPlayer() as Character;
+                const localPlayer = CharacterUtils.GetLocalPlayer() as Character & Combative;
                 const targetFaction = localPlayer.faction;
                 const closest = this.character.getClosestEntity({
                     distance: this.character.aggressionRange,

@@ -7,6 +7,7 @@ import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { Living } from "../../engine/js/entities/character/mixins/Living";
 import { Growable } from "../entities/character/mixins/Growable";
 import { Grower } from "../entities/character/mixins/Grower";
+import { Combative } from "../../engine/js/entities/character/mixins/Combative";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -68,13 +69,13 @@ export default class NodeAI extends AI {
 
     #nextConstructPositions: Record<string, WorldCoordinate> = {};
     
-    private _building: Building & Growable & Grower;
+    private _building: Building & Growable & Grower & Combative;
 
     get character() {
         return this._building;
     }
 
-    constructor(character: Building & Growable & Grower) {
+    constructor(character: Building & Growable & Grower & Combative) {
         super(character);
 
         this._building = character;

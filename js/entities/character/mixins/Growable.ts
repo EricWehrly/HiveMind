@@ -1,4 +1,3 @@
-import { HivemindCharacterFilterOptions } from "../../../../engine/js/entities/character";
 import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
 import { Living } from "../../../../engine/js/entities/character/mixins/Living";
 import Resource from "../../../../engine/js/entities/resource";
@@ -20,7 +19,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
 export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
-    return class extends Base implements Growable {
+    return class GrowableClass extends Base implements Growable {
 
         growth: number = null;
         growConfig: GrowableConfig = options?.growConfig || {};
@@ -119,7 +118,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             }
         }
 
-        shouldFilterCharacter(character: HiveMindCharacter & Growable, options: CharacterFilterOptions & HivemindCharacterFilterOptions & { grown: boolean}): boolean {            
+        shouldFilterCharacter(character: HiveMindCharacter & Growable, options: CharacterFilterOptions & { grown: boolean}): boolean {            
             if(options.grown != null && character.isGrown != options.grown) {
                 return true;
             }

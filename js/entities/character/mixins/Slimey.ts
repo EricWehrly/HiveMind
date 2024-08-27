@@ -4,8 +4,7 @@ import { MakeHiveMindCharacter } from "../HivemindCharacterFactory";
 import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
 import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
 import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
-import { HivemindCharacterFilterOptions } from "../../../../engine/js/entities/character";
-import { MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
+import { Combative, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -22,11 +21,15 @@ export interface Slimey {
     Reabsorb(): void;
 }
 
+export interface SlimeyOptions {
+    parent?: HiveMindCharacter;
+}
+
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
-export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
-    return class extends Base implements Slimey {
+export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: SlimeyOptions) {
+    return class SlimeyClass extends Base implements Slimey {
 
         parent?: HiveMindCharacter & Living = options?.parent;
         
@@ -56,13 +59,14 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             const entityRenderingSettings = {
                 renderedName: purpose.name
             };
+            const faction = (this as unknown as Combative).faction;
             const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped], {            
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
                 position: this.position,
                 currentPurposeKey: purpose.name.toLowerCase(),
-                faction: this.faction,
+                faction,
                 technologies: options.technologies,
                 entityRenderingSettings,
                 parent: this
@@ -97,7 +101,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             this.parent.health += amountToGive;
         }
 
-        shouldFilterCharacter(character: HiveMindCharacter & Slimey, options: CharacterFilterOptions & HivemindCharacterFilterOptions & { filterChildren: boolean }): boolean {
+        shouldFilterCharacter(character: HiveMindCharacter & Slimey, options: CharacterFilterOptions & SlimeyOptions & { filterChildren: boolean }): boolean {
             if (options.filterChildren && character.parent == this) {
                 return true;
             }

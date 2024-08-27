@@ -70,7 +70,9 @@ export default class HiveMindCharacter extends Character {
         if(IsLiving(this)
             && (this as Living).dead) return false;
         if(this.ai != null) return false;
-        if(byWhom?.faction != null && this.faction == byWhom.faction) return false;
+        if(IsCombative(this) && IsCombative(byWhom)) {
+            if(byWhom?.faction != null && this.faction == byWhom.faction) return false;
+        }
         if(this.characterType && this.characterType.isStudied == true) return false;
 
         return true;
