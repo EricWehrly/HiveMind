@@ -26,10 +26,10 @@ export function RequestMethod(callback)
 }
 
 // try to act like "setTimeout" but for the game loop
-export function Defer(callback, ms) {
+export function Defer(callback, remainingMs) {
 
     DEFERRALS.push({
-        remainingMs: ms,
+        remainingMs: remainingMs || 0,
         callback
     });
 }
