@@ -88,9 +88,9 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         constructor(...args: any) {
             super(args);
 
-            const options = args[0] || args;
+            args = CharacterUtils.UnMangleMixinArgs(args);
             
-            if(options.isPlayer) {
+            if(args.isPlayer) {
                 this.faction = new Faction({ 
                     name: this.name,
                     color: this.color
