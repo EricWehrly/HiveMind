@@ -1,4 +1,3 @@
-import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
 import Faction from './faction';
 import Tooltip from '../ui/tooltip';
 import { CharacterFilterOptions } from './character/Entity';
