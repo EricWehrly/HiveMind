@@ -23,8 +23,9 @@ export interface EntityOptions {
     id?: string;
     name?: string;
     speed?: number;
-    characterType?: CharacterType,
-    entityRenderingSettings?: EntityRenderingSettings
+    characterType?: CharacterType;
+    entityRenderingSettings?: EntityRenderingSettings;
+    color?: string;
 }
 
 interface SortingEntity {
@@ -73,9 +74,11 @@ export default class Entity {
     private _facing = new Vector(0, 0);
     private _rotation: number = 0;
     private _area: Rectangle = new Rectangle(0, 0, 0, 0);
+    private _color: string;
 
     // one dimension, rather than height and width, for now
     get size() { return 1 }
+    get color() { return this._color; }
 
     private _characterType: CharacterType;
     get characterType() { 
@@ -151,6 +154,7 @@ export default class Entity {
         }
 
         if(options.entityRenderingSettings) this.entityRenderingSettings = options.entityRenderingSettings;
+        this._color = options.color || options.characterType?.color || undefined;
         
         this.addAttribute(new CharacterAttribute({
             name: 'Speed',
@@ -306,8 +310,8 @@ export default class Entity {
 
     // TODO: Putting this in here was kind of a hack
     // it used to be private
-    // and we basically just wired it for Character above to overwrite
-    // since it needs to be called in this class ...
+    // and we basically just wired it for mixins to overwrite / extend
+    // since it needs to be called from this base class ...
     shouldFilterCharacter(character: Entity, options: CharacterFilterOptions) {
         
         if(options.characterType != null && character.characterType != options.characterType) {

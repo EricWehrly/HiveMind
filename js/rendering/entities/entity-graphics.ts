@@ -2,7 +2,7 @@ import Rectangle from '../../baseTypes/rectangle';
 import Events from '../../events';
 import Character from '../../entities/character';
 import Entity, { EntityEvent } from '../../entities/character/Entity';
-import { CharacterTargetChangedEvent } from '../../entities/character/mixins/Combative';
+import { CharacterTargetChangedEvent, Combative } from '../../entities/character/mixins/Combative';
 import { IsLiving, Living } from '../../entities/character/mixins/Living';
 import { CHARACTER_LIST } from '../../entities/characters';
 import DomRenderingContext from '../contexts/DomRenderingContext';
@@ -17,7 +17,7 @@ export function GetEntityGraphic(entity: Entity) {
 function createGraphic(entity: Entity, domRoot: HTMLElement) {
 
     // TODO: migrate type to entity
-    const character = entity as Character;
+    const character = entity as Character & Combative;
     const graphic = document.createElement('div');
     entityGraphics.set(entity, graphic);
     graphic.className = 'character';
@@ -33,9 +33,11 @@ function createGraphic(entity: Entity, domRoot: HTMLElement) {
     }
 
     domRoot.appendChild(graphic);
+    // @ts-expect-error     // easy 'hook' to debug
+    entity._element = graphic;
 }
 
-function setColor(character: Character) {
+function setColor(character: Character & Combative) {
 
     const graphic = entityGraphics.get(character);
     let color;
