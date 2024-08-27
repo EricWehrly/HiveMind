@@ -26,7 +26,7 @@ export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
         get technologies() { return this._technologies; }
         get equipment() { return this._equipment; }
 
-        constructor(...args: any[]) {
+        constructor(...args: any) {
             super(...args);
     
             const [deconstructed] = args;

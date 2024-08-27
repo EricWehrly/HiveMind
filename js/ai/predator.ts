@@ -5,6 +5,7 @@ import { TechnologyTypes } from "../TechnologyTypes";
 import { Combative } from "../entities/character/mixins/Combative";
 import SentientEntity from "../entities/character/SentientEntity";
 import { Equipped } from "../entities/character/mixins/Equipped";
+import { CharacterUtils } from "../entities/character/CharacterUtils";
 
 export default class PredatorAI extends AI {
 
@@ -31,12 +32,13 @@ export default class PredatorAI extends AI {
         if(this.leashing == false) {
             if(this.#shouldTarget()) {
                 // const wasTarget = this.#character.target;
+                // TODO: Don't directly target the player.
+                // Maybe we want to encourage attacking biggest threat first?
+                const localPlayer = CharacterUtils.GetLocalPlayer() as Character;
+                const targetFaction = localPlayer.faction;
                 const closest = this.character.getClosestEntity({
                     distance: this.character.aggressionRange,
-                    // TODO: Don't directly target the player.
-                    // Maybe we want to encourage attacking biggest threat first?
-                    //@ts-expect-error
-                    faction: Character.LOCAL_PLAYER.faction
+                    faction: targetFaction
                 });
                 if(closest != null) this.character.target = closest;
                 /*
