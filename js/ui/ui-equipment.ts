@@ -2,7 +2,6 @@ import UIElement, { SCREEN_ZONE } from "./ui-element";
 import Events from '../events';
 import { TechnologyTypes } from "../TechnologyTypes";
 import { CooldownCompleteEvent, EquipmentChangedEvent, EquippedTechnology } from "../entities/equipment";
-import Entity from "../entities/character/Entity";
 import { CharacterAttackedEvent } from "../entities/character/mixins/Combative";
 import SentientEntity from "../entities/character/SentientEntity";
 import { Equipped } from "../entities/character/mixins/Equipped";
@@ -29,7 +28,7 @@ function onCooldownComplete(details: CooldownCompleteEvent) {
 
     const character = details.character;
     const localPlayer = Playable.LocalPlayer;
-    if(character && (character as unknown as Entity).id == localPlayer.id) {
+    if(character && character.equals(localPlayer)) {
         UI_ELEMENT_ATTACK.removeClass('cooldown');
     }
 }
