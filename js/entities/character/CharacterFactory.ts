@@ -14,5 +14,15 @@ export function MakeCharacter<T extends Entity>(
     }
     if(!options) options = {};
     options.calledByFactory = true;
-    return new ExtendedCharacter(options) as T;
+    const character = new ExtendedCharacter(options) as T;
+    RunPostConstructMethods(character);
+    return character;
+}
+
+export function RunPostConstructMethods(entity: Entity) {
+    // @ts-expect-error
+    const methods: string[] = entity.constructor._postConstructMethods || [];
+    for (const methodName of methods) {
+        (entity as any)[methodName]();
+    }
 }

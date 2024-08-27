@@ -3,6 +3,7 @@ import GameMap from './GameMap';
 import Seed from "../core/seed";
 import Biome from "./biome";
 import Point from "../coordinates/point";
+import { Defer } from "../loop.mjs";
 
 Events.List.ChunkCreated = "ChunkCreated";
 Events.List.ChunkActiveChanged = "ChunkActiveChanged";
@@ -149,10 +150,16 @@ export default class Chunk {
 
         this._map = options.gameMap;
         this.map.addChunk(this);
-        Events.RaiseEvent(Events.List.ChunkCreated, {
+
+        const createdEvent: ChunkEvent = {
+            id: null,
             chunk: this
-        }, {
+        };
+        const eventOptions = {
             isNetworkBoundEvent: true
+        }        
+        Defer(() => {
+            Events.RaiseEvent(Events.List.ChunkCreated, createdEvent, eventOptions);
         });
         // console.log(`New chunk at ${options.x}, ${options.y}`);
     }
