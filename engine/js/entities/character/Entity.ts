@@ -3,13 +3,12 @@ import Events, { GameEvent } from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute";
 import { AddCharacterToList, CHARACTER_LIST, RemoveCharacterFromList } from "../characters";
-import PostConstruct from "../../../ts/decorators/PostConstruct";
-import PostConstructClass from "../../../ts/decorators/PostConstructClass";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Rectangle from "../../baseTypes/rectangle";
 import EntityRenderingSettings from './EntityRenderingSettings';
 import Faction from '../faction';
 import Vector from "../../baseTypes/Vector";
+import { Defer } from "../../loop.mjs";
 
 Events.List.CharacterCreated = "CharacterCreated";
 
@@ -50,7 +49,6 @@ export interface EntityEvent extends GameEvent {
     entity: Entity;
 }
 
-@PostConstructClass
 export default class Entity {
 
     static get(options: any) {
@@ -164,6 +162,8 @@ export default class Entity {
         this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
 
         AddCharacterToList(this);
+
+        Defer(this.postConstruct.bind(this));
     }
 
     private onDirectionVectorChanged(vector: Vector) {
@@ -172,9 +172,7 @@ export default class Entity {
         }
     }
 
-    @PostConstruct
     postConstruct() {
-
         const entityEvent: EntityEvent = {
             id: null,
             entity: this

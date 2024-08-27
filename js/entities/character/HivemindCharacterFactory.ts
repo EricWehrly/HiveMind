@@ -1,3 +1,4 @@
+import { RunPostConstructMethods } from "../../../engine/js/entities/character/CharacterFactory";
 import HiveMindCharacter from "./HiveMindCharacter";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -14,5 +15,7 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     }
     if(!options) options = {};
     options.calledByFactory = true;
-    return new ExtendedCharacter(options) as T;
+    const character = new ExtendedCharacter(options) as T;
+    RunPostConstructMethods(character);
+    return character;
 }
