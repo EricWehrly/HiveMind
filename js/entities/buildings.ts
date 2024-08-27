@@ -8,6 +8,7 @@ import NodeAI, { BuildingDesiredEvent } from '../ai/node';
 import Building from './building';
 import MenuItem from '../../engine/js/ui/MenuItem';
 import MakeCharacterType from './CharacterTypeFactory';
+import Playable from '../../engine/js/entities/character/mixins/Playable';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
@@ -23,7 +24,7 @@ const BuildFromMenu = function (context: MenuAction) {
         return;
     }
 
-    const player = Character.LOCAL_PLAYER as Character;
+    const player = Playable.LocalPlayer as Character;
 
     const options = {
         position: player.position,
@@ -89,7 +90,7 @@ MakeCharacterType({
     name: 'Seeder',
     context: {
         health: 15,
-        _currentPurposeKey: 'grow',
+        currentPurposeKey: 'grow',
         growerConfig: {
             subject: CharacterType.List['Food'],
             max: 8, // once 8 are grown, don't start any more
@@ -106,7 +107,7 @@ MakeCharacterType({
     name: 'Eater',
     context: {
         health: 40,
-        _currentPurposeKey: 'spawn',
+        currentPurposeKey: 'spawn',
         _spawnPurposeKey: 'consume',
         ai: null
     }
@@ -126,7 +127,7 @@ MakeCharacterType({
     name: 'Hunter',
     context: {
         health: 30,
-        _currentPurposeKey: 'spawn',
+        currentPurposeKey: 'spawn',
         _spawnPurposeKey: 'hunt',
         ai: null
     }
@@ -151,7 +152,7 @@ MakeCharacterType({
     name: 'Healer',
     context: {
         health: 30,
-        _currentPurposeKey: 'heal',
+        currentPurposeKey: 'heal',
         ai: null
     }
 });

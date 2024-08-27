@@ -1,8 +1,8 @@
 import { AssignWithUnderscores, WarnUnassignedOptions } from '../util/javascript-extensions.mjs'
 import Faction from './faction';
 import Tooltip from '../ui/tooltip';
-import PlayableEntity from './character/PlayableEntity';
 import { CharacterFilterOptions } from './character/Entity';
+import SentientEntity from './character/SentientEntity';
 
 // these will need to get broken up, but it can wait
 export interface HivemindCharacterFilterOptions {
@@ -10,7 +10,7 @@ export interface HivemindCharacterFilterOptions {
     faction: Faction
 }
 
-export default class Character extends PlayableEntity {
+export default class Character extends SentientEntity {
 
     toolTip: Tooltip;
     controller: any; // inputdevice

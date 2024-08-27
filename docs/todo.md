@@ -1,6 +1,8 @@
 why are food starting with 0 health?
     (constructor seems to provide health ...)
 
+sound doesn't seem to be dropping off at a distance
+
 I'm pretty sure non-menu actions are still enabled / firing when menus are open
 
 Tiles: {

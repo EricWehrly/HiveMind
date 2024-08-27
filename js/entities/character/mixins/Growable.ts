@@ -106,7 +106,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
                         // TODO: check that removing the name assignment doesn't break anything
                         // this.name = characterType.name;
                         this.growConfig = characterType.growerConfig;
-                        this._currentPurposeKey = characterType._currentPurposeKey;
+                        this.currentPurposeKey = characterType.currentPurposeKey;
                         // TODO: this method doesn't seem to exist anymore
                         // this.removeGraphic();
                         // assign ai?

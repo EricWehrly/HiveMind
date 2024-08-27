@@ -11,6 +11,7 @@ import { Grower } from "../character/mixins/Grower";
 import { Growable } from "../character/mixins/Growable";
 import { IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
 import { IsEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
+import { CharacterUtils } from "../../../engine/js/entities/character/CharacterUtils";
 
 const Purposes: Record<string,any> =
 {
@@ -89,10 +90,11 @@ const Purposes: Record<string,any> =
                 return;
             }
 
+            const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter;
             const closest = character.getClosestEntity({
                 distance: this.range,
                 // TODO: 'faction' has to be pushed further down the stack for this to work <3
-                faction: (Character.LOCAL_PLAYER as HiveMindCharacter).faction
+                faction: localPlayer.faction
             }) as Entity & Living;
 
             if(closest && IsLiving(closest)) {

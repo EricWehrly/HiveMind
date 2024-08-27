@@ -2,10 +2,16 @@ import CharacterAttribute from '../../../engine/js/entities/character-attribute'
 import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
 import Purposes from '../purposes/character-purposes';
-import Entity from '../../../engine/js/entities/character/Entity';
+import Entity, { EntityOptions } from '../../../engine/js/entities/character/Entity';
 import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/Living';
 import { IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
 import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equipped';
+import { CharacterUtils } from '../../../engine/js/entities/character/CharacterUtils';
+
+export interface HivemindCharacterOptions {
+    calledByFactory: boolean;
+    currentPurposeKey: string;
+}
 
 export default class HiveMindCharacter extends Character {
 
@@ -13,7 +19,7 @@ export default class HiveMindCharacter extends Character {
 
     static Purposes = Purposes;
 
-    _currentPurposeKey: string = null;
+    private _currentPurposeKey: string = null;
     // this should be managed as a 'dynmic' property ... 
     // we're only attaching it to the character because we want it garbage collected there
     lastHeal: number = 0;
@@ -24,12 +30,22 @@ export default class HiveMindCharacter extends Character {
         return this.#spawnTargets;
     }
 
+    get purpose () { return HiveMindCharacter.Purposes[this._currentPurposeKey]; }
+    set currentPurposeKey(value: string) { this._currentPurposeKey = value; }
+
     // TODO: Mark this private and use a static create (makes the class not extensible)
     // once we've turned Building into a mixin ... maybe?
-    constructor(options: any) {
-        if(!options.calledByFactory) console.warn(`HiveMindCharacter should be created by the factory.`);
-        const key = options._currentPurposeKey || options.currentPurposeKey;
-        delete options._currentPurposeKey;
+    constructor(options: EntityOptions & HivemindCharacterOptions) {
+        // TODO:  catch potential infinite loop
+        while(Array.isArray(options)) {
+            if(options.length > 1) console.warn(`That's too many options!`);
+            options = options[0];
+        }
+        if(!options.calledByFactory) {
+            debugger;
+            console.warn(`HiveMindCharacter should be created by the factory.`);
+        }
+        const key = options.currentPurposeKey;
         delete options.currentPurposeKey;
         super(options);
 
@@ -44,8 +60,6 @@ export default class HiveMindCharacter extends Character {
 
         Events.Subscribe(Events.List.CharacterDied, this.removeSpawnTarget.bind(this));
     }
-
-    get purpose () { return HiveMindCharacter.Purposes[this._currentPurposeKey]; }
 
     canBeStudied(byWhom: HiveMindCharacter) {
         // TODO: use "or"s rather than all these if's
@@ -71,7 +85,7 @@ export default class HiveMindCharacter extends Character {
 
     get toolTipMessage() {
 
-        const localPlayer = Character.LOCAL_PLAYER as HiveMindCharacter;
+        const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter;
 
         let toolTipMessage = "";
 

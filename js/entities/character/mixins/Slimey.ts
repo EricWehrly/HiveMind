@@ -38,7 +38,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             if (options.purposeKey) purpose = HiveMindCharacter.Purposes[options.purposeKey];
             else if (options.purpose) purpose = options.purpose;
             // else if not in that array ...
-            else purpose = HiveMindCharacter.Purposes[this._currentPurposeKey];
+            else purpose = this.purpose;
     
             if(purpose == null) {
                 if(this.isPlayer) console.log("Tell the player they can't subdivbide (no purpose)");
@@ -61,7 +61,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
                 position: this.position,
-                _currentPurposeKey: purpose.name.toLowerCase(),
+                currentPurposeKey: purpose.name.toLowerCase(),
                 faction: this.faction,
                 technologies: options.technologies,
                 entityRenderingSettings,

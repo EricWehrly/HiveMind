@@ -4,9 +4,10 @@ import Character from "../character";
 import { EquippedTechnology } from "../equipment";
 import Entity from "./Entity";
 import { Equipped } from "./mixins/Equipped";
+import Playable from "./mixins/Playable";
 
 function GetLocalPlayer(): Entity {
-    return Character.LOCAL_PLAYER;
+    return Playable.LocalPlayer;
 }
 
 function IsLocalPlayer(player: Entity): boolean {
@@ -15,14 +16,14 @@ function IsLocalPlayer(player: Entity): boolean {
 
 // TODO: Would love a limited integration test for this
 function GetPlayerEquippedAttack(player?: Character): EquippedTechnology {
-    if(!player) player = Character.LOCAL_PLAYER as Character;
+    if(!player) player = GetLocalPlayer() as Character;
     const equippedCharacter = player as Character & Equipped;
     const equipped = equippedCharacter.getEquipped(TechnologyTypes.ATTACK);
     return equipped;
 }
 
 function GetDistanceToPlayer(point: WorldCoordinate, player?: Character): number {
-    if(!player) player = Character.LOCAL_PLAYER as Character;
+    if(!player) player = GetLocalPlayer() as Character;
     return point.distance(player.position);
 }
 
