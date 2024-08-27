@@ -70,7 +70,7 @@ export default class Camera {
             const facing = camera._target.facing.cardinalDirection;
             let offsetX = 0, offsetY = 0;
             // const offsetValue = 20 / GRID_SIZE; // Convert pixel offset to grid units
-            const offsetValue = 8;
+            const offsetValue = 0;
     
             switch(facing) {
                 case CARDINAL_DIRECTION.North:
