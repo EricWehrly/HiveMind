@@ -40,11 +40,14 @@ Purposes["grow"] = {
                 return;
             }
 
+            // TODO: need to instrument range, maybe growConfig.range?
+            const position = randomPositionOffset(character.position, 5)
             // check if we have the food to do this
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
             const options = {
                 characterType: character.growerConfig.subject,
+                position,
                 ...character.growerConfig.subject
             };
             const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving, MakeCombative, MakeEquipped], options) as HiveMindCharacter & Growable;
@@ -53,8 +56,6 @@ Purposes["grow"] = {
                 return;
             }
             newGrow.grow(character.growerConfig.interval);
-            // TODO: need to instrument range, maybe growConfig.range?
-            newGrow.position = randomPositionOffset(character.position, 5);
             character.growing.push(newGrow);
         }
     }
