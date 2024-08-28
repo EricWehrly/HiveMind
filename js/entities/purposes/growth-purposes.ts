@@ -9,8 +9,9 @@ import HiveMindCharacter from "../character/HiveMindCharacter";
 import { Growable, MakeGrowable } from "../character/mixins/Growable";
 import { Grower } from "../character/mixins/Grower";
 import Purposes from "./character-purposes";
+import Point from "../../../engine/js/coordinates/point";
 
-function randomPositionOffset(source: WorldCoordinate, offsetAmountPerAxis: number) {
+function randomPositionOffset(source: Readonly<Point>, offsetAmountPerAxis: number) {
 
     let xOffset = Math.randomBetween(0, offsetAmountPerAxis);
     if (Math.random() < 0.5) xOffset *= -1;

@@ -178,8 +178,17 @@ export default class Entity extends WorldObject {
     
     move(amount: number) {
         if(this.speed != 0) {
-            if(this._desiredMovementVector.x != 0) this.position.x += this._desiredMovementVector.x * this.speed * amount;
-            if(this._desiredMovementVector.y != 0) this.position.y += this._desiredMovementVector.y * this.speed * amount;
+            const desiredPosition = {
+                x: null as number | null,
+                y: null as number | null
+            }
+            if(this._desiredMovementVector.x != 0) {
+                desiredPosition.x = this.position.x + (this._desiredMovementVector.x * this.speed * amount);
+            }
+            if(this._desiredMovementVector.y != 0) {
+                desiredPosition.y = this.position.y + (this._desiredMovementVector.y * this.speed * amount);
+            }
+            this.position = desiredPosition;
         }
     }
 
@@ -302,7 +311,7 @@ export default class Entity extends WorldObject {
     }
 
     // TODO: should we support a point as well?
-    pointAtTarget(target?: WorldCoordinate) {
+    pointAtTarget(target?: Readonly<WorldCoordinate>) {
 
         if (target) {
             if (this.position.x != target.x

@@ -1,5 +1,5 @@
 import { TechnologyTypes } from "../../TechnologyTypes";
-import WorldCoordinate from "../../coordinates/WorldCoordinate";
+import Point from "../../coordinates/point";
 import Character from "../character";
 import { EquippedTechnology } from "../equipment";
 import Entity from "./Entity";
@@ -22,7 +22,7 @@ function GetPlayerEquippedAttack(player?: Character): EquippedTechnology {
     return equipped;
 }
 
-function GetDistanceToPlayer(point: WorldCoordinate, player?: Character): number {
+function GetDistanceToPlayer(point: Readonly<Point>, player?: Character): number {
     if(!player) player = GetLocalPlayer() as Character;
     return point.distance(player.position);
 }

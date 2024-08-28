@@ -293,6 +293,7 @@ export class Combatant extends PlayableEntity {
     move(amount: number) {
 
         if (this.shouldMoveToTarget()) {
+            /*
             for (const axis of axes) {
                 if (!this.atTarget(axis)) {
                     if (this.shouldStopOnAxis(axis, amount)) {
@@ -303,6 +304,7 @@ export class Combatant extends PlayableEntity {
                     }
                 }
             }
+            */
             this.afterMove();
         } else {
             super.move(amount);

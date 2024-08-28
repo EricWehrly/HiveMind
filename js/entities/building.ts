@@ -20,7 +20,7 @@ export interface BuildingCharacterType extends CharacterType {
 }
 
 export interface BuildingOptions {
-    position?: WorldCoordinate;
+    position?: Readonly<WorldCoordinate>;
     faction?: Faction;
     cost?: number;
 }
