@@ -36,10 +36,10 @@ export interface Combative {
     aggressionRange: number;
     thornMultiplier: number;
     faction: Faction;
-    attack(): number;
-    canAttack(): boolean;
-    getAttackObstacle(): string;
-    applyStatusEffect(statusEffect: StatusEffect, duration: number): void;
+    attack(target: Entity): number;
+    canAttack(target: Entity): boolean;
+    getAttackObstacle(target: Entity): string;
+    applyStatusEffect(target: Entity, statusEffect: StatusEffect, duration: number): void;
 }
 
 export interface CombativeOptions {
@@ -100,16 +100,16 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
             }
         }
         
-        canAttack() {
-            return this.getAttackObstacle() == null;
+        canAttack(target: Entity) {
+            return this.getAttackObstacle(target) == null;
         }
 
-        getAttackObstacle(): string {
+        getAttackObstacle(target: Entity): string {
 
             if(!IsEquipped(this)) return "No equipment";
 
-            if(!(this.target instanceof Entity)
-                || !IsLiving(this.target)) return "target is not living";
+            if(!(target instanceof Entity)
+                || !IsLiving(target)) return "target is not living";
 
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
             if (equipped == null) {
@@ -118,7 +118,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
 
             if (!equipped.ready) return "equipped attack is not ready";
 
-            if(!IsCombative(this.target)) return "target is not combative";
+            if(!IsCombative(target)) return "target is not combative";
 
             if(IsCombative(this)) {
                 // maybe instead retrieve range difference? (how much closer would the target need to be?)
@@ -129,13 +129,12 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
             return null;
         }
         
-        attack(): number {
+        attack(target: Entity): number {
 
-            if(!this.canAttack()) return 0;
+            if(!this.canAttack(target)) return 0;
             if(!IsEquipped(this)) return 0;
     
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
-            let target = this.target as Entity & Living;
             const strAttr = this.getAttribute("Strength");
 
             // TODO: magic numbers
@@ -202,7 +201,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
             }
         }
     
-        applyStatusEffect(statusEffect: StatusEffect, duration: number) {
+        applyStatusEffect(target: Entity, statusEffect: StatusEffect, duration: number) {
     
             this._statusEffects.set(statusEffect, this.getStatusEffect(statusEffect) + duration);
     
@@ -211,7 +210,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
                 startTime: now,
                 endTime: now + duration,
                 lastInterval: 0,
-                target: this.target as Living,
+                target: target as Living,
                 duration
             }
             if(options.target == null) debugger;
@@ -226,7 +225,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
             const technology = equipped.technology;
     
             if(technology.statusEffect) {
-                target.applyStatusEffect(technology.statusEffect, technology.statusEffectDuration);
+                target.applyStatusEffect(target, technology.statusEffect, technology.statusEffectDuration);
             }
     
             if(target.equipment) {
