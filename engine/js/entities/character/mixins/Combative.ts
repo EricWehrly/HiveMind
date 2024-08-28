@@ -286,17 +286,24 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
             }
         }
     
+        // TODO: move this entire logic to basic.ts ai
+        // once we've extracted sentient to be a non-entity type ...
         move(amount: number) {
     
             if (this.shouldMoveToTarget()) {
                 for (const axis of axes) {
                     if (!this.atTarget(axis)) {
+                        const desiredPosition = {
+                            x: this.position.x,
+                            y: this.position.y
+                        }
                         if (this.shouldStopOnAxis(axis, amount)) {
-                            this.position[axis] = this.targetPosition[axis];
+                            desiredPosition[axis] = this.targetPosition[axis];
                             this.desiredMovementVector[axis] = 0;
                         } else {
-                            this.position[axis] += this.desiredMovementVector[axis] * this.speed * amount;
+                            desiredPosition[axis] += this.desiredMovementVector[axis] * this.speed * amount;
                         }
+                        this.position = desiredPosition;
                     }
                 }
                 // @ts-expect-error
