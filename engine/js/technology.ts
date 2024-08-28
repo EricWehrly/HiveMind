@@ -2,7 +2,6 @@ import Listed from "./baseTypes/listed";
 import WorldCoordinate from "./coordinates/WorldCoordinate";
 import Entity from "./entities/character/Entity";
 import { Combative } from "./entities/character/mixins/Combative";
-import SentientEntity from "./entities/character/SentientEntity";
 import { Defer } from "./loop.mjs";
 import Research from "./research";
 import StatusEffect from "./StatusEffect";
@@ -116,7 +115,7 @@ export default class Technology extends Listed {
         }, 0);
     }
 
-    checkRange(character: SentientEntity & Combative) {
+    checkRange(character: Entity & Combative) {
 
         if (this._range) {
             if (!character?.target || character.target == null) return false;
@@ -146,12 +145,15 @@ export default class Technology extends Listed {
             const sound = Technology.#getSound(soundName);
             if(options.volume) {
                 while(options.volume > 1) options.volume = options.volume / 10;
-                sound.volume = options.volume;
+                sound.volume = options.volume / 2;
+            } else {
+                console.warn(`No volume for sound ${soundName}`);
             }
             // we may need to have a more robust way of checking
             // if the file is properly loaded before playing it
             if(sound.readyState > 0) {
                 try {
+                    // console.log(`Playing sound ${sound.src} for ${this.name} at ${sound.volume}`);
                     sound.play();
                 } catch(ex) {
                     console.warn(ex);
