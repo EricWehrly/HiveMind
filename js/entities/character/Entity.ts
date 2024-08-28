@@ -179,16 +179,26 @@ export default class Entity extends WorldObject {
     move(amount: number) {
         if(this.speed != 0) {
             const desiredPosition = {
-                x: null as number | null,
-                y: null as number | null
-            }
-            if(this._desiredMovementVector.x != 0) {
-                desiredPosition.x = this.position.x + (this._desiredMovementVector.x * this.speed * amount);
-            }
-            if(this._desiredMovementVector.y != 0) {
-                desiredPosition.y = this.position.y + (this._desiredMovementVector.y * this.speed * amount);
+                x: this.position.x + (this._desiredMovementVector.x * this.speed * amount),
+                y: this.position.y + (this._desiredMovementVector.y * this.speed * amount)
             }
             this.position = desiredPosition;
+        }
+    }
+
+    pointAtTarget(target?: Readonly<WorldCoordinate>) {
+
+        if (target) {
+            if (this.position.x != target.x
+                || this.position.y != target.y) {
+                if (this.position.x < target.x) this._desiredMovementVector.x = 1;
+                else if (this.position.x > target.x) this._desiredMovementVector.x = -1;
+                if (this.position.y < target.y) this._desiredMovementVector.y = 1;
+                else if (this.position.y > target.y) this._desiredMovementVector.y = -1;
+            }
+        } else {
+            this._desiredMovementVector.x = 0;
+            this._desiredMovementVector.y = 0;
         }
     }
 
@@ -308,23 +318,6 @@ export default class Entity extends WorldObject {
         }
         
         return false;
-    }
-
-    // TODO: should we support a point as well?
-    pointAtTarget(target?: Readonly<WorldCoordinate>) {
-
-        if (target) {
-            if (this.position.x != target.x
-                || this.position.y != target.y) {
-                if (this.position.x < target.x) this._desiredMovementVector.x = 1;
-                else if (this.position.x > target.x) this._desiredMovementVector.x = -1;
-                if (this.position.y < target.y) this._desiredMovementVector.y = 1;
-                else if (this.position.y > target.y) this._desiredMovementVector.y = -1;
-            }
-        } else {
-            this._desiredMovementVector.x = 0;
-            this._desiredMovementVector.y = 0;
-        }
     }
 
     equals(entity: Entity) {
