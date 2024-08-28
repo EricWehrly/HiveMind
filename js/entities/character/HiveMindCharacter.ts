@@ -36,7 +36,6 @@ export default class HiveMindCharacter extends Character {
     // TODO: Mark this private and use a static create (makes the class not extensible)
     // once we've turned Building into a mixin ... maybe?
     constructor(options: EntityOptions & HivemindCharacterOptions) {
-        options = CharacterUtils.UnMangleMixinArgs(options);
         if(!options.calledByFactory) {
             debugger;
             console.warn(`HiveMindCharacter should be created by the factory.`);

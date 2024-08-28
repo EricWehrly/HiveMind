@@ -30,7 +30,7 @@ export interface CharacterDamagedEvent extends GameEvent {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: LivingOptions) {
-    return class extends Base implements Living {
+    return class LivingClass extends Base implements Living {
 
         // TODO: value of health when options is null
         private _health = options?.health || options.characterType?.health;

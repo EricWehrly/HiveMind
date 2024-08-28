@@ -36,7 +36,7 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOpt
         
         // since we can't do (postconstructor) decorator, 
         constructor(...args: any) {
-            super(args);
+            super(...args);
 
             PostConstruct(this, 'initialize');
         }
