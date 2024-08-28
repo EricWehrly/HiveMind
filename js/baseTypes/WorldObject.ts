@@ -25,10 +25,12 @@ export default class WorldObject {
         return this._position;
     }
 
-    set position(options: { x: number, y: number }) {
+    set position(options: { x?: number, y?: number }) {
         if (options.x) this._position.x = options.x;
         if (options.y) this._position.y = options.y;
-        this._area.position = this._position;
+        if(options.x || options.y) {
+            this._area.position = this._position;
+        }
     }
 
     get rotation() { return this._rotation; }
