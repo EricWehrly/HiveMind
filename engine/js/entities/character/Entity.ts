@@ -53,13 +53,11 @@ export interface EntityEvent extends GameEvent {
 export default class Entity {
 
     static get(options: any) {
-
         let charList = CHARACTER_LIST;
         for(var key of Object.keys(options)) {
             // @ts-expect-error
             charList = charList.filter(x => x[key] == options[key]);
         }
-
         return charList;
     }
 
@@ -69,7 +67,7 @@ export default class Entity {
     get name() { return this._name; }
     
     private _attributes: { [key: string]: CharacterAttribute } = {};
-    _position: WorldCoordinate = new WorldCoordinate(0, 0);
+    private _position: WorldCoordinate = new WorldCoordinate(0, 0);
     private _desiredMovementVector: Vector = new Vector(0, 0);
     private _facing = new Vector(0, 0);
     private _rotation: number = 0;

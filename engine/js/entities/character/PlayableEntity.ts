@@ -37,21 +37,21 @@ export default class PlayableEntity extends SentientEntity {
 
         // TODO: We can probly extract to a method (#positionUpdated)
         // and call from within the position setter
-        if(!this._position.equals(this._lastPosition)) {
+        if(!this.position.equals(this._lastPosition)) {
             if(this.isPlayer) {
                 Events.RaiseEvent(Events.List.PlayerMoved, {
                     character: this,
                     from: this._lastPosition,
-                    to: this._position
+                    to: this.position
                     }, {
                     isNetworkBoundEvent: true
                 });
                 
-                if(!this._position.chunk.equals(this._lastPosition?.chunk)) {
+                if(!this.position.chunk.equals(this._lastPosition?.chunk)) {
                     Events.RaiseEvent(Events.List.PlayerChunkChanged, {
                         character: this,
                         from: this._lastPosition?.chunk,
-                        to: this._position.chunk
+                        to: this.position.chunk
                     }, {
                         isNetworkBoundEvent: true
                     });
@@ -60,10 +60,10 @@ export default class PlayableEntity extends SentientEntity {
         }
 
         if(this._lastPosition == null) { 
-            this._lastPosition = new WorldCoordinate(this._position.x, this._position.y);
+            this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
         }
-        else if(!this._position.equals(this._lastPosition)) {
-            this._lastPosition.update(this._position);
+        else if(!this.position.equals(this._lastPosition)) {
+            this._lastPosition.update(this.position);
         }
     }
 }
