@@ -43,6 +43,7 @@ export interface Combative {
 }
 
 export interface CombativeOptions {
+    aggression?: number;
     faction: Faction;
 }
 
@@ -60,7 +61,7 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
 
         private _thornMultiplier: number;
         private _statusEffects: Map<StatusEffect, number> = new Map();
-        private _aggression: number = 0;
+        private _aggression: number = combativeOptions?.aggression || 0;
         private _faction: Faction = combativeOptions?.faction;
     
         get faction() { return this._faction; }
