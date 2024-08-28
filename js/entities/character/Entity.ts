@@ -4,11 +4,11 @@ import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute";
 import { AddCharacterToList, CHARACTER_LIST, RemoveCharacterFromList } from "../characters";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
-import Rectangle from "../../baseTypes/rectangle";
 import EntityRenderingSettings from './EntityRenderingSettings';
 import Faction from '../faction';
 import Vector from "../../baseTypes/Vector";
 import { Defer } from "../../loop.mjs";
+import WorldObject, { WorldObjectOptions } from "../../baseTypes/WorldObject";
 
 Events.List.CharacterCreated = "CharacterCreated";
 
@@ -19,7 +19,6 @@ export interface CharacterFilterOptions {
 }
 
 export interface EntityOptions { 
-    position?: { x: number, y: number };
     id?: string;
     name?: string;
     speed?: number;
@@ -50,7 +49,7 @@ export interface EntityEvent extends GameEvent {
     entity: Entity;
 }
 
-export default class Entity {
+export default class Entity extends WorldObject {
 
     static get(options: any) {
         let charList = CHARACTER_LIST;
@@ -67,18 +66,14 @@ export default class Entity {
     get name() { return this._name; }
     
     private _attributes: { [key: string]: CharacterAttribute } = {};
-    private _position: WorldCoordinate = new WorldCoordinate(0, 0);
     private _desiredMovementVector: Vector = new Vector(0, 0);
-    private _facing = new Vector(0, 0);
-    private _rotation: number = 0;
-    private _area: Rectangle = new Rectangle(0, 0, 0, 0);
     private _color: string;
+    private _characterType: CharacterType;
 
     // one dimension, rather than height and width, for now
     get size() { return 1 }
     get color() { return this._color; }
 
-    private _characterType: CharacterType;
     get characterType() { 
         if(this._characterType == null) {
             this._characterType = CharacterType.List[this._name];
@@ -87,13 +82,6 @@ export default class Entity {
     }
 
     entityRenderingSettings: EntityRenderingSettings;
-
-    // prevent trying to set x and y
-    get x() { return this._position.x; }
-    get y() { return this._position.y; }
-
-    get area() { return this._area; }
-    get facing() { return this._facing; }
 
     // TODO: implement variable character attributes
     get vision() {
@@ -109,16 +97,6 @@ export default class Entity {
         this.getAttribute("Speed").value = newValue;
     }
 
-    get position(): WorldCoordinate {
-        return this._position;
-    }
-
-    set position(options: { x: number, y: number }) {
-        if (options.x) this._position.x = options.x;
-        if (options.y) this._position.y = options.y;
-        this._area.position = this._position;
-    }
-
     get desiredMovementVector() {
         return this._desiredMovementVector;
     }
@@ -128,23 +106,14 @@ export default class Entity {
        this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
     }
 
-    get rotation() { return this._rotation; }
-
-    set rotation(newValue) { this._rotation = newValue; }
-
-    constructor(options: EntityOptions = {}) {
+    constructor(options: EntityOptions & WorldObjectOptions = {}) {
+        super(options);
 
         this._id = options.id || generateId();
 
         this._characterType = options.characterType || CharacterType.List[options.name];
 
         this._name = options.name || this.characterType?.name || "TODO";     // TODO :/
-        
-        if(options.position) { 
-            this._position = new WorldCoordinate(options.position.x, options.position.y);
-            delete options.position;    // we should remove this line
-            this._area.position = this._position;
-        };
 
         let speedVal = 1;
         if(options.speed != undefined) {    // 0 is a valid speed, so we need to check more explicitly
@@ -170,7 +139,8 @@ export default class Entity {
 
     private onDirectionVectorChanged(vector: Vector) {
         if(vector.x != 0 || vector.y != 0) {
-            this._facing = vector;
+            // TODO: does this mean this should be pushed down to WorldObject?
+            this.facing = vector;
         }
     }
 
@@ -202,14 +172,14 @@ export default class Entity {
 
     getDistance(entity: Entity) {
         // TODO: Bounding boxes rather than coordinates
-        return Math.abs(this._position.x - entity._position.x)
-            + Math.abs(this._position.y - entity._position.y);
+        return Math.abs(this.position.x - entity.position.x)
+            + Math.abs(this.position.y - entity.position.y);
     }
     
     move(amount: number) {
         if(this.speed != 0) {
-            if(this._desiredMovementVector.x != 0) this._position.x += this._desiredMovementVector.x * this.speed * amount;
-            if(this._desiredMovementVector.y != 0) this._position.y += this._desiredMovementVector.y * this.speed * amount;
+            if(this._desiredMovementVector.x != 0) this.position.x += this._desiredMovementVector.x * this.speed * amount;
+            if(this._desiredMovementVector.y != 0) this.position.y += this._desiredMovementVector.y * this.speed * amount;
         }
     }
 
