@@ -65,7 +65,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.canAttack()).toBe(true);
+                expect(attacker.getAttackObstacle()).toBe(null);
                 attacker.attack();
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -78,7 +78,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.canAttack()).toBe(true);
+                expect(attacker.getAttackObstacle()).toBe(null);
                 attacker.attack();
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -91,7 +91,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.canAttack()).toBe(true);
+                expect(attacker.getAttackObstacle()).toBe(null);
                 attacker.attack();
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -104,7 +104,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.canAttack()).toBe(true);
+                expect(attacker.getAttackObstacle()).toBe(null);
                 attacker.attack();
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -117,7 +117,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.canAttack()).toBe(true);
+                expect(attacker.getAttackObstacle()).toBe(null);
                 attacker.attack();
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });

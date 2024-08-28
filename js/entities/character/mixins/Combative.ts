@@ -38,6 +38,7 @@ export interface Combative {
     faction: Faction;
     attack(): number;
     canAttack(): boolean;
+    getAttackObstacle(): string;
     applyStatusEffect(statusEffect: StatusEffect, duration: number): void;
 }
 
@@ -55,7 +56,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 // TODO: drop this from a SentientEntity to an entity
 // but the way we handle target may make that difficult
 export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, combativeOptions: CombativeOptions) {
-    return class extends Base implements Combative {
+    return class CombativeClass extends Base implements Combative {
 
         private _thornMultiplier: number;
         private _statusEffects: Map<StatusEffect, number> = new Map();
@@ -86,11 +87,11 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         }
 
         constructor(...args: any) {
-            super(args);
+            super(...args);
 
-            args = CharacterUtils.UnMangleMixinArgs(args);
+            const [deconstructed] = args;
             
-            if(args.isPlayer) {
+            if(deconstructed.isPlayer) {
                 this.faction = new Faction({ 
                     name: this.name,
                     color: this.color
@@ -99,27 +100,32 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         }
         
         canAttack() {
+            return this.getAttackObstacle() == null;
+        }
 
-            if(!IsEquipped(this)) return false;
+        getAttackObstacle(): string {
+
+            if(!IsEquipped(this)) return "No equipment";
 
             if(!(this.target instanceof Entity)
-                || !IsLiving(this.target)) return false;
+                || !IsLiving(this.target)) return "target is not living";
 
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
             if (equipped == null) {
-                console.warn("Character has no attack skill equipped!");
-                return false;
+                return "No attack skill equipped";
             }
 
-            if (!equipped.ready) return false;
+            if (!equipped.ready) return "equipped attack is not ready";
 
-            if(!IsCombative(this.target)) return false;
+            if(!IsCombative(this.target)) return "target is not combative";
 
             if(IsCombative(this)) {
-                if (!equipped.technology.checkRange(this)) return false;
+                // maybe instead retrieve range difference? (how much closer would the target need to be?)
+                // there are probably other scenarios where we'll want either that info or something close
+                if (!equipped.technology.checkRange(this)) return "target is out of range";
             }
 
-            return true;
+            return null;
         }
         
         attack(): number {
