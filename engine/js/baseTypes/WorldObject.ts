@@ -21,7 +21,7 @@ export default class WorldObject {
     get facing() { return this._facing; }
     set facing(newValue) { this._facing = newValue; }
 
-    get position(): WorldCoordinate {
+    get position(): Readonly<WorldCoordinate> {
         return this._position;
     }
 
