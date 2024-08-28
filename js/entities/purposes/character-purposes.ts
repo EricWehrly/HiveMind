@@ -60,7 +60,7 @@ const Purposes: Record<string,any> =
                         character.SetCurrentPurpose("return");
                     } else if (attack && character.position.distance(character.target.position) < attack.range
                         && (character.target as Living).dead != true) {
-                        const attackAmount = character.attack();
+                        const attackAmount = character.attack(character.target);
                         character.health += 2 * attackAmount;
                     }
                 }

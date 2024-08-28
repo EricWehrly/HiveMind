@@ -65,8 +65,8 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle()).toBe(null);
-                attacker.attack();
+                expect(attacker.getAttackObstacle(target)).toBe(null);
+                attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
             });
@@ -78,8 +78,8 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle()).toBe(null);
-                attacker.attack();
+                expect(attacker.getAttackObstacle(target)).toBe(null);
+                attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
             });
@@ -91,8 +91,8 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle()).toBe(null);
-                attacker.attack();
+                expect(attacker.getAttackObstacle(target)).toBe(null);
+                attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
             });
@@ -104,8 +104,8 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle()).toBe(null);
-                attacker.attack();
+                expect(attacker.getAttackObstacle(target)).toBe(null);
+                attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
             });
@@ -117,8 +117,8 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle()).toBe(null);
-                attacker.attack();
+                expect(attacker.getAttackObstacle(target)).toBe(null);
+                attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
             });
