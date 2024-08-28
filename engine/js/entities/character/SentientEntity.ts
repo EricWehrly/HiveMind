@@ -1,4 +1,5 @@
 import AI from "../../ai/basic";
+import { WorldObjectOptions } from "../../baseTypes/WorldObject";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import Events from "../../events";
 import Entity, { EntityEvent, EntityOptions } from "./Entity";
@@ -54,7 +55,7 @@ export default class SentientEntity extends Entity {
         // console.debug(`New target for ${this.name}: ${this?.target?.x}, ${this?.target?.y}`);
     }
 
-    constructor(options: EntityOptions & SentientEntityOptions) {
+    constructor(options: EntityOptions & SentientEntityOptions & WorldObjectOptions) {
         super(options);        
         this.#spawnPosition = new WorldCoordinate(this.position.x, this.position.y);
         // TODO: unit test this 'null' thing
