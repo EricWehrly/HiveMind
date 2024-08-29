@@ -118,10 +118,10 @@ export default class KeyboardController {
 
         this.character.desiredMovementVector = new Vector(0, 0);
 
+        // TODO: (Performance) we can cache actions that should be fired
+        // (rather than iterate the entire object.keys)
         for (var action of Object.keys(Actions)) {
-            if (Actions[action].enabled !== false
-                && this.Bindings[action]
-                && Actions[action].oncePerPress !== true) {
+            if (this.shouldFireAction(action)) {
                 for (var binding of this.Bindings[action]) {
                     if (this.isKeyDown(binding)) {
                         Actions[action].callback({
@@ -131,6 +131,12 @@ export default class KeyboardController {
                 }
             }
         }
+    }
+
+    shouldFireAction(action) {
+        return Actions[action].enabled !== false
+            && this.Bindings[action]
+            && Actions[action].oncePerPress !== true;
     }
 
     #performActions(key) {
