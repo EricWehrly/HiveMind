@@ -1,7 +1,9 @@
 import Listed from "./baseTypes/listed";
 import WorldCoordinate from "./coordinates/WorldCoordinate";
+import { CharacterAttackedEvent } from "./entities/character/Combatant";
 import Entity from "./entities/character/Entity";
 import { Combative } from "./entities/character/mixins/Combative";
+import Events from "./events";
 import { Defer } from "./loop.mjs";
 import Research from "./research";
 import StatusEffect from "./StatusEffect";
@@ -104,6 +106,14 @@ export default class Technology extends Listed {
         this._statusEffectDuration = options.statusEffectDuration;
 
         this.#deferLoadingSounds();
+
+        Events.Subscribe(Events.List.CharacterAttacked, this.onCharacterAttacked.bind(this));
+    }
+
+    private onCharacterAttacked(details: CharacterAttackedEvent) {
+        if(this.statusEffect && details.equipped?.technology == this) {
+            this.statusEffect.apply(details.attacked, this.statusEffectDuration);
+        }
     }
 
     #deferLoadingSounds() {

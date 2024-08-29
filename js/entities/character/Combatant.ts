@@ -205,37 +205,11 @@ export class Combatant extends PlayableEntity {
         }
     }
 
-    /**
-     * 
-     * @param {StatusEffect} statusEffect 
-     * @param {int} duration ms
-     */
-    applyStatusEffect(statusEffect: StatusEffect, duration: number) {
-
-        this._statusEffects.set(statusEffect, this.getStatusEffect(statusEffect) + duration);
-
-        const now = performance.now();
-        const options: StatusEffectCallbackOptions = {
-            startTime: now,
-            endTime: now + duration,
-            lastInterval: 0,
-            target: this.target as Living,
-            duration
-        }
-        if(options.target == null) debugger;
-        Defer(function() {
-            statusEffect.callback(options)
-        }, statusEffect.interval + 1);
-    }
 
     private _attackCharacter(target: Combatant, equipped: EquippedTechnology, damage: number) {
 
         const combatLog = MessageLog.Get("Combat");
         const technology = equipped.technology;
-
-        if(technology.statusEffect) {
-            target.applyStatusEffect(technology.statusEffect, technology.statusEffectDuration);
-        }
 
         if(target.equipment) {
             // TODO: Is this working right?

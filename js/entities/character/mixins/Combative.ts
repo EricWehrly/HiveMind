@@ -1,9 +1,7 @@
-import StatusEffect, { StatusEffectCallbackOptions } from "../../../StatusEffect";
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
 import MessageLog from "../../../core/messageLog.mjs";
 import Events, { GameEvent } from "../../../events";
-import { Defer } from "../../../loop.mjs";
 import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";
 import Faction from "../../faction";
@@ -39,7 +37,6 @@ export interface Combative {
     attack(target: Entity): number;
     canAttack(target: Entity): boolean;
     getAttackObstacle(target: Entity): string;
-    applyStatusEffect(target: Entity, statusEffect: StatusEffect, duration: number): void;
 }
 
 export interface CombativeOptions {
@@ -60,7 +57,6 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
     return class CombativeClass extends Base implements Combative {
 
         private _thornMultiplier: number;
-        private _statusEffects: Map<StatusEffect, number> = new Map();
         private _aggression: number = combativeOptions?.aggression || 0;
         private _faction: Faction = combativeOptions?.faction;
     
@@ -182,51 +178,10 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
     
             return damage;
         }
-
-        // this whole 'status effect' stack could hopefully be a mixin
-        getStatusEffect(statusEffect: StatusEffect) {
-    
-            if(!this._statusEffects.has(statusEffect)) {
-                this._statusEffects.set(statusEffect, performance.now());
-            }
-            
-            return this._statusEffects.get(statusEffect);
-        }
-    
-        statusEffectThink() {
-            for (let [statusEffect, effectEnd] of this._statusEffects.entries()) {
-                if (effectEnd > performance.now()) {
-                    this._statusEffects.delete(statusEffect);
-                }
-            }
-        }
-    
-        applyStatusEffect(target: Entity, statusEffect: StatusEffect, duration: number) {
-    
-            this._statusEffects.set(statusEffect, this.getStatusEffect(statusEffect) + duration);
-    
-            const now = performance.now();
-            const options: StatusEffectCallbackOptions = {
-                startTime: now,
-                endTime: now + duration,
-                lastInterval: 0,
-                target: target as Living,
-                duration
-            }
-            if(options.target == null) debugger;
-            Defer(function() {
-                statusEffect.callback(options)
-            }, statusEffect.interval + 1);
-        }
     
         private _attackCharacter(target: Entity & Equipped & Combative, equipped: EquippedTechnology, damage: number) {
     
             const combatLog = MessageLog.Get("Combat");
-            const technology = equipped.technology;
-    
-            if(technology.statusEffect) {
-                target.applyStatusEffect(target, technology.statusEffect, technology.statusEffectDuration);
-            }
     
             if(target.equipment) {
                 // TODO: Is this working right?
@@ -257,8 +212,6 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         // TODO: properly hook to sentient method ...
         think(): void {
             super.think();
-
-            this.statusEffectThink();
     
             if(this.isPlayer) {
 

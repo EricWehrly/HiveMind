@@ -1,13 +1,13 @@
 import Listed from "./baseTypes/listed";
+import Entity from "./entities/character/Entity";
 import { Living } from "./entities/character/mixins/Living";
 import { Defer } from "./loop.mjs";
 
 export interface StatusEffectCallbackOptions {
     startTime: number;
-    endTime: number;
     lastInterval: number;
     duration: number;
-    target: Living;
+    target: Entity;
 }
 
 export interface StatusEffectOptions {
@@ -17,11 +17,16 @@ export interface StatusEffectOptions {
     duration?: number;
 }
 
+type StatusEffectDuration = {
+    statusEffect: StatusEffect;
+    duration : number;
+}
+
 // should this extend Technology?
 export default class StatusEffect extends Listed {
 
     #damage = 0;
-    #interval = 0;
+    #interval = 1000;
     #damageOnHit = 0;   // this will be for thorns
     #knockback = 0;
     #duration = 0;
@@ -43,6 +48,7 @@ export default class StatusEffect extends Listed {
     }
 
     set interval(value) {
+        if(value < 1) this.#interval = 1;
         this.#interval = value;
     }
 
@@ -70,47 +76,93 @@ export default class StatusEffect extends Listed {
         
         super(options);
 
-        if(options.damage) this.#damage = options.damage;
-        if(options.interval) this.#interval = options.interval;
+        if(options.damage) this.damage = options.damage;
+        if(options.interval) this.interval = options.interval;
         if(options.duration) this.#duration = options.duration;
     }
 
-    #intervalMethod(target: Living) {
-        target.health -= this.damage;
+    static GetEffectsForEntity(entity: Entity) {
+        return this._entityEffects.get(entity);
+    }
+
+    static GetEffectForEntity(entity: Entity, statusEffect: StatusEffect) {
+        const effects = this._entityEffects.get(entity);
+        if(!effects) return null;
+        
+        return effects.find(effect => effect.statusEffect == statusEffect);
+    }
+
+    private static AddEntityEffect(entity: Entity, statusEffect: StatusEffect, duration: number) {
+        if(!this._entityEffects.has(entity)) {
+            this._entityEffects.set(entity, []);
+        }
+
+        const effectForEntity = StatusEffect.GetEffectForEntity(entity, statusEffect);
+        if(effectForEntity) {
+            effectForEntity.duration += duration;
+        } else {
+            this._entityEffects.get(entity).push({
+                statusEffect,
+                duration
+            });
+        }
+    }
+
+    private static _entityEffects = new Map<Entity, StatusEffectDuration[]>();
+
+    apply(target: Entity, duration: number) {
+
+        StatusEffect.AddEntityEffect(target, this, duration);
+
+        const options: StatusEffectCallbackOptions = {
+            startTime: performance.now(),
+            lastInterval: 0,
+            target: target,
+            duration
+        }
+        if(options.target == null) debugger;
+        Defer(function() {
+            this.callback(options)
+        }, this.interval + 1);        
     }
 
     callback(options: StatusEffectCallbackOptions) {
 
         if(Number.isNaN(options.startTime)
-            || Number.isNaN(options.endTime)
             || Number.isNaN(options.lastInterval)
             || Number.isNaN(options.duration)
             || options.target == null) {
                 debugger;
             }
+        const { startTime, duration, target } = options;
+        let { lastInterval } = options;
 
-        const timeElapsed = performance.now() - options.startTime;
-        // we thought we could get away without options.duration,
-        // and perhaps someone less dumb at math could
-        if(timeElapsed > options.duration) {
-            const maxIntervals = (Math.floor(options.endTime - options.startTime) / this.interval);
-            const remainingIntervals = maxIntervals - options.lastInterval;
-            if(remainingIntervals < 0) debugger;
-                for(var i = 0; i < remainingIntervals; i++) {
-                    this.#intervalMethod(options.target);
-                }
-            return;
+        const timeElapsed = performance.now() - startTime;
+        const intervalsElapsed = Math.floor(timeElapsed / this.interval);
+        
+        const maxIntervals = Math.floor(duration / this.interval);
+        const intervalsToExecute = Math.min(intervalsElapsed, maxIntervals) - lastInterval;
+        
+        if (intervalsToExecute <= 0) return;
+
+        for (let i = 0; i < intervalsToExecute; i++) {
+            this.#intervalMethod(target);
         }
         
-        const intervalsElapsed = Math.floor(timeElapsed / this.interval);
-        if(intervalsElapsed > options.lastInterval) {
-            this.#intervalMethod(options.target);
-            options.lastInterval += 1;
-        }
+        lastInterval += intervalsToExecute;
 
-        const that = this;
-        Defer(function() {
-            that.callback(options);
-        }, this.interval + 1);
+        if(lastInterval < maxIntervals) {
+            const that = this;
+            Defer(function() {
+                that.callback(options);
+            }, this.interval + 1);
+        }
+        
+        StatusEffect.GetEffectForEntity(target, this).duration = Math.max(duration - timeElapsed, 0);
+    }
+
+    #intervalMethod(target: Entity) {
+        const livingTarget = target as Living;
+        livingTarget.health -= this.damage;
     }
 }
