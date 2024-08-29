@@ -8,12 +8,12 @@ export default class PreyAI extends AI {
         // run away from predators (including players)
         
         if(this.shouldStopTargeting()) {
-            this.target = null;
+            this.targetEntity = null;
         }
         
-        this.target = this.character.getClosestEntity({ distance: 3 });
+        this.targetEntity = this.character.getClosestEntity({ distance: 3 });
 
-        if(!this.target) {
+        if(!this.targetEntity) {
             this.wander();
         } else { 
             this.character.pointAtTarget();
@@ -24,7 +24,7 @@ export default class PreyAI extends AI {
 
     shouldStopTargeting(distance = 4) {
 
-        const target = this.target as Entity & Living;
+        const target = this.targetEntity as Entity & Living;
 
         return target
             && (target.isAlive == false || 

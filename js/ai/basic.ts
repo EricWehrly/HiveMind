@@ -10,6 +10,8 @@ import { Defer } from '../loop.mjs';
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
 const MS_LEASH_COOLDOWN = 3000;
 
+// declare CharacterTargetChanged ? 
+
 export enum EntityRelationshipType {
     Friendly,
     Neutral,
@@ -29,24 +31,34 @@ export default class AI {
     private _fleeing = false;
     private _relationships: Map<Entity, EntityRelationship> = new Map();
     private _lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
+    private _targetEntity: Entity = null;
+    private _targetPosition: WorldCoordinate = null;
 
     get leashing() { return this._leashing; }
     get character() { return this._character; }
     get fleeing() { return this._fleeing; }
+    get targetEntity() { return this._targetEntity; }
+    get targetPosition() { return this._targetPosition; }
+
+    set targetEntity(newValue) { 
+        
+        if (newValue === undefined || newValue == this._targetEntity) return;
+
+        const oldValue = this._targetEntity;
+        this._targetEntity = newValue;
+
+        Events.RaiseEvent(Events.List.CharacterTargetChanged, {
+            character: this,
+            from: oldValue,
+            to: this._targetEntity
+        });
+    }
 
     constructor(character: SentientEntity) {
         this._character = character;
 
         Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
-    }
-
-    get target() {
-        return this._character.target;
-    }
-
-    set target(newVal) {
-        this._character.target = newVal;
-    }
+    }    
 
     // TODO: faction
 
@@ -156,7 +168,7 @@ export default class AI {
         var dist = this._character.position.distance(point);
         if (dist > distance) {
             console.debug(`Wandered too far (${dist}), with speed ${this._character.speed} leashing to ${point.x}, ${point.y}`);
-            this.target = point;
+            this._targetPosition = point;
 
             this._leashing = true;
             Defer(this.#unleash.bind(this), MS_LEASH_COOLDOWN);
