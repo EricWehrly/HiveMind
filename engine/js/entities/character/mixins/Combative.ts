@@ -209,40 +209,11 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
             Events.RaiseEvent(Events.List.CharacterAttacked, event);
         }
     
-        // TODO: properly hook to sentient method ...
-        think(): void {
-            super.think();
-    
-            if(this.isPlayer) {
-
-                if(IsEquipped(this)) {        
-                    // for now just target the closest thing. get more complicated later
-                    const dist = this.getAttackRange() || 5;
-                    const closestOptions = {
-                        distance: dist,
-                        filterChildren: true,
-                        // priorities: [CharacterType.]
-                    };
-                    this.target = this.getClosestEntity(closestOptions);
-        
-                    /*
-                    if(this.shouldStopTargeting()) {
-                        this.target = null;
-                    }
-                    // TODO: Use range of equipped attack?
-                    if (!this.target || !this.target.isAlive) {
-                        this.target = this.getClosestEntity({ distance: 5 });
-                    }
-                    */
-                }
-            }
-        }
-    
         // TODO: move this entire logic to basic.ts ai
         // once we've extracted sentient to be a non-entity type ...
         move(amount: number) {
     
-            if (this.shouldMoveToTarget()) {
+            if (this.isPlayer != true && this.shouldMoveToTarget()) {
                 for (const axis of axes) {
                     if (!this.atTarget(axis)) {
                         const desiredPosition = {

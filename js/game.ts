@@ -36,6 +36,7 @@ import { MakeGrower } from './entities/character/mixins/Grower';
 import './characterStats';
 import "./ui/goal";
 import { MakePlayable } from '../engine/js/entities/character/mixins/Playable';
+import PlayerAI from '../engine/js/ai/Player';
 
 new MessageLog({
     name: "Combat",
@@ -77,7 +78,7 @@ const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower,
     speed: 5,
     health: 40,
     additionalClasses: "player",
-    ai: null,
+    ai: PlayerAI,
     isPlayer: true
 }) as HiveMindCharacter & Equipped;
 localPlayer.controller = new KeyboardController({ character: localPlayer });
