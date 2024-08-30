@@ -10,6 +10,7 @@ import { MakeGrowable } from "./character/mixins/Growable";
 import { MakeGrower } from "./character/mixins/Grower";
 import { MakeSlimey } from "./character/mixins/Slimey";
 import Faction from "../../engine/js/entities/faction";
+import { MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
@@ -50,7 +51,7 @@ export default class Building extends HiveMindCharacter {
             console.warn(`No cost!`);
         }
         
-        return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey], characterOptions, Building);
+        return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative], characterOptions, Building);
     }
 
     static #blockingZones: { [key: string]: Rectangle[] } = {};

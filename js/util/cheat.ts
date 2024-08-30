@@ -1,6 +1,6 @@
 import Character from "../../engine/js/entities/character";
 import Entity from "../../engine/js/entities/character/Entity.js";
-import { Combative } from "../../engine/js/entities/character/mixins/Combative";
+import { Combative, MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import Playable from "../../engine/js/entities/character/mixins/Playable";
@@ -70,7 +70,7 @@ export default class Cheat {
         const nodes: Entity[] = [];
         let lastPosition = Playable.LocalPlayer.position;
         for(let i = 0; i < nodeCount; i++) {
-            nodes.push(MakeHiveMindCharacter([MakeGrower, MakeLiving, MakeSlimey], {
+            nodes.push(MakeHiveMindCharacter([MakeGrower, MakeLiving, MakeSlimey, MakeCombative], {
                 characterType,
                 faction: playerFaction
             }, Building));
