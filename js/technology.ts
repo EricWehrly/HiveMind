@@ -154,6 +154,7 @@ export default class Technology extends Listed {
             const soundName = this._sound[this._lastPlayedSoundIndex];
             const sound = Technology.#getSound(soundName);
             if(options.volume) {
+                if(options.volume < 0) return;
                 while(options.volume > 1) options.volume = options.volume / 10;
                 sound.volume = options.volume / 2;
             } else {
