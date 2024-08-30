@@ -63,4 +63,12 @@ export default class Vector {
 
         return new Vector(this._x / magnitude, this._y / magnitude);
     }
+
+    equals(other: Vector) {
+        return this._x === other.x && this._y === other.y;
+    }
+
+    toString() {
+        return `(${this._x}, ${this._y})`;
+    }
 }
