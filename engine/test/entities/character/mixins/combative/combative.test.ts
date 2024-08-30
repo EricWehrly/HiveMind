@@ -1,7 +1,12 @@
+import mockEvents from "../../../../testHelpers/mockEvents";
+import mockMap from "../../../../testHelpers/mockMap";
 import { EntityMixin, MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
 import Entity from "../../../../../js/entities/character/Entity";
 import { Combative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
 import Faction from "../../../../../js/entities/faction";
+
+jest.mock('@/engine/js/events', () => mockEvents);
+jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('Combative', () => {
     describe('constructor', () => {
