@@ -88,7 +88,10 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
 
             const [deconstructed] = args;
             
-            if(deconstructed.isPlayer) {
+            if(deconstructed.faction) {
+                this.faction = deconstructed.faction;
+            }
+            else if(deconstructed.isPlayer) {
                 this.faction = new Faction({ 
                     name: this.name,
                     color: this.color
