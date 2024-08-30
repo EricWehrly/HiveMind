@@ -16,4 +16,9 @@ export default class Faction extends Listed {
 
         if(options.color) this.#color = options.color;
     }
+
+    // TODO: later, use ids or something. make them more unique
+    equals(faction: Faction) {
+        return this.name == faction?.name;
+    }
 }
