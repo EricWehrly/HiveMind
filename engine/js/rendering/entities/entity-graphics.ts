@@ -128,6 +128,15 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
         // we need to implement this alternative, but we can avoid it for now
         console.warn('this guy aint livin');
     }
+
+    // debug info
+    /*
+    const localPlayer = CharacterUtils.GetLocalPlayer() as Entity & Combative;;
+    const combativeEntity = entity as Entity & Combative;
+    if(localPlayer.faction.equals(combativeEntity.faction)) {
+        graphic.innerText = combativeEntity.desiredMovementVector.toString();
+    }
+        */
 }
 
 function dom_handle_facing(entity: Entity) {
