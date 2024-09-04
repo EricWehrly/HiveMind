@@ -38,7 +38,10 @@ export default class AI {
     get character() { return this._character; }
     get fleeing() { return this._fleeing; }
     get targetEntity() { return this._targetEntity; }
-    get targetPosition() { return this._targetPosition; }
+    get targetPosition() { 
+        if(this.targetEntity != null) return this.targetEntity.position;
+        return this._targetPosition;
+    }
 
     set targetEntity(newValue) { 
         
@@ -86,7 +89,7 @@ export default class AI {
             this.leash(this._character.spawnPosition, this._character.maxWanderDistance);
         }
 
-        this._character.pointAtTarget(this._character.targetPosition);
+        this._character.pointAtTarget(this.targetPosition);
     }
 
     private isPastWanderLimits(): boolean {
@@ -94,7 +97,7 @@ export default class AI {
     }
 
     private isAtTarget() {
-        return this._character.position.distance(this._character.targetPosition) < 1;
+        return this._character.position.distance(this.targetPosition) < 1;
     }
 
     wander() {
@@ -190,6 +193,6 @@ export default class AI {
         y += from.position.y;
 
         this._fleeing = true;
-        this._character.target = new WorldCoordinate(x, y);
+        this._targetPosition = new WorldCoordinate(x, y);
     }
 }
