@@ -3,7 +3,7 @@ import HiveMindCharacter from "../HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../HivemindCharacterFactory";
 import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
 import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
-import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
+import Entity, { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
 import { Combative, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
 
 export interface SubdivideOptions {
@@ -71,7 +71,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 entityRenderingSettings,
                 parent: this
             });
-            if (options.target) spawnedCharacter.target = options.target;
+            if (options.target instanceof Entity) spawnedCharacter.ai.targetEntity = options.target;
             console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);        
     
             return spawnedCharacter;

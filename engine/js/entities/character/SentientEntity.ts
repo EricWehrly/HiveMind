@@ -28,13 +28,7 @@ export default class SentientEntity extends Entity {
     get maxWanderDistance() { return this._maxWanderDistance; }
 
     get target() {
-        return this.ai.targetEntity;
-    }
-
-    get targetPosition() {
-        if(this._target instanceof Entity) return this._target.position;
-        else if (this._target instanceof WorldCoordinate) return this._target;
-        else return null;
+        return this.ai?.targetEntity;
     }
 
     set target(newValue: Entity | WorldCoordinate) {

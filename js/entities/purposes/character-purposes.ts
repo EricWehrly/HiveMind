@@ -19,9 +19,9 @@ const Purposes: Record<string,any> =
         name: "Study",
         think: function (character: HiveMindCharacter, elapsed: number) {
             if (character.target && character.target instanceof Character) {
-                character.pointAtTarget(character.targetPosition);
+                character.pointAtTarget(character.ai.targetPosition);
 
-                if (character.position.near(character.targetPosition)) {
+                if (character.position.near(character.ai.targetPosition)) {
                     if ((character.target as Living).dead == true) {
                         // TODO: contemplate loving monica
                         // TODO: support > 1 technology
@@ -50,7 +50,7 @@ const Purposes: Record<string,any> =
         name: "consume",
         think: function (character: HiveMindCharacter & Living, elapsed: number) {
             if (character.target && character.target instanceof Character) {
-                character.pointAtTarget(character.targetPosition);
+                character.pointAtTarget(character.ai.targetPosition);
 
                 if(IsEquipped(character) && IsCombative(character)) {
                     const attack = character.getEquipped(TechnologyTypes.ATTACK);

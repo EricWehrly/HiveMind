@@ -14,11 +14,11 @@ Purposes["return"] = {
         if (!character.target) {
             character.target = character.parent;
         }
-        character.pointAtTarget(character.targetPosition);
+        character.pointAtTarget(character.ai.targetPosition);
 
         // TODO: if collision boxes overlap ..
         // if(character.targetEntity.area.contains(character.position)) {
-        if (character.position.near(character.targetPosition)) {
+        if (character.position.near(character.ai.targetPosition)) {
             character.Reabsorb();
         }
     }

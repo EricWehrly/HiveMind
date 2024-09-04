@@ -236,6 +236,7 @@ export class Combatant extends PlayableEntity {
         Events.RaiseEvent(Events.List.CharacterAttacked, event);
     }
 
+    // TODO: think should be an ai thing
     think(): void {
         super.think();
 
@@ -264,6 +265,7 @@ export class Combatant extends PlayableEntity {
         }
     }
 
+    // TODO: this gotta move to ai
     move(amount: number) {
 
         if (this.shouldMoveToTarget()) {
@@ -290,10 +292,10 @@ export class Combatant extends PlayableEntity {
     }
 
     shouldStopOnAxis(axis: Axis, amount: number) {
-        return Math.abs(this.position[axis] - this.targetPosition[axis]) < this.speed * amount;
+        return Math.abs(this.position[axis] - this.ai.targetPosition[axis]) < this.speed * amount;
     }
 
     atTarget(axis: Axis) {
-        return this.target && this.targetPosition[axis] == this.position[axis];
+        return this.target && this.ai.targetPosition[axis] == this.position[axis];
     }
 }
