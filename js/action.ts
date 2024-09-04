@@ -1,8 +1,10 @@
 import Listed from './baseTypes/listed';
 import Requirements from './requirements.mjs';
 import Events from './events';
-import Entity from './entities/character/Entity.js';
+import Entity from './entities/character/Entity';
 import Menu from './ui/menu';
+import { Combative } from './entities/character/mixins/Combative';
+import SentientEntity from './entities/character/SentientEntity';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -186,7 +188,12 @@ new Action({
             return 0;
         }
 
-        return options.character.attack(options);
+        const combative = options.character as Combative & SentientEntity;
+        if(combative.target instanceof Entity) {
+            return combative.attack(combative.target);
+        }
+
+        return 0;
     }
 });
 

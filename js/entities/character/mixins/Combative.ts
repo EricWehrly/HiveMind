@@ -1,4 +1,5 @@
 import { TechnologyTypes } from "../../../TechnologyTypes";
+import GameSound from "../../../audio/GameSound";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
 import MessageLog from "../../../core/messageLog.mjs";
 import Events, { GameEvent } from "../../../events";
@@ -36,7 +37,7 @@ export interface Combative {
     faction: Faction;
     attack(target: Entity): number;
     canAttack(target: Entity): boolean;
-    getAttackObstacle(target: Entity): string;
+    whyNotAttack(target: Entity): string;
 }
 
 export interface CombativeOptions {
@@ -100,10 +101,14 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         }
         
         canAttack(target: Entity) {
-            return this.getAttackObstacle(target) == null;
+            const reason = this.whyNotAttack(target);
+
+            // console.warn(reason);
+
+            return reason == null;
         }
 
-        getAttackObstacle(target: Entity): string {
+        whyNotAttack(target: Entity): string {
 
             if(!IsEquipped(this)) return "No equipment";
 
@@ -129,8 +134,15 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         }
         
         attack(target: Entity): number {
+            // we need a better way to "unwrap" from action.ts
+            // @ts-expect-error
+            if(target.character) target = target.character;
 
-            if(!this.canAttack(target)) return 0;
+            if(!this.canAttack(target)) {
+                const wrongSound = GameSound.Get('wrong');
+                wrongSound.Play();
+                return 0;
+            }
             if(!IsEquipped(this)) return 0;
     
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
