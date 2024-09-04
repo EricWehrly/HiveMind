@@ -1,5 +1,5 @@
 import Character from "../../engine/js/entities/character";
-import Entity from "../../engine/js/entities/character/Entity.js";
+import Entity from "../../engine/js/entities/character/Entity";
 import { Combative, MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
