@@ -1,6 +1,20 @@
+- if you hold down space bar for a bit, 
+    but don't release it
+    draw a 'hitbox' area in front of the player,
+    rendering the current range of their attack
+    Also, slow down the movement of the player when they do this,
+    and shorten the activation time of their attack ability
+    (also we'll need to add in 'activation time' :/)
+    also this shouldn't be "hard bound" to space, it should be the attack button
+    but if we can, it would be nice to rig it up in a way that 
+        lets this be bound to a separate button, alternatively, as desired
+
 - incorporate 'rotation' into the renderer
     step 1 is going to be actually assigning it
     starting with when we're turning to face our target ...
+
+- terrain should have a "roughness" that slows down characters moving over it
+    this should be able to vary e ven among tile types (adjacent grass tiles with different roughness, etc.)
 
 - debug console command:
     - list of everything currently growing
