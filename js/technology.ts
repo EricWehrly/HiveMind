@@ -1,8 +1,7 @@
 import Listed from "./baseTypes/listed";
 import WorldCoordinate from "./coordinates/WorldCoordinate";
-import { CharacterAttackedEvent } from "./entities/character/Combatant";
 import Entity from "./entities/character/Entity";
-import { Combative } from "./entities/character/mixins/Combative";
+import { CharacterAttackedEvent, Combative } from "./entities/character/mixins/Combative";
 import Events from "./events";
 import { Defer } from "./loop.mjs";
 import Research from "./research";
