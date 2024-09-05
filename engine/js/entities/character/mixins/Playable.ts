@@ -32,11 +32,13 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOpt
         }
 
         isPlayer: boolean;
-        private _lastPosition: WorldCoordinate = null;
+        private _lastPosition: Readonly<WorldCoordinate> = null;
         
         // since we can't do (postconstructor) decorator, 
         constructor(...args: any) {
             super(...args);
+
+            if(this.position) this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
 
             PostConstruct(this, 'initialize');
         }
