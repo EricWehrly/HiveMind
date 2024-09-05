@@ -65,7 +65,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle(target)).toBe(null);
+                expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -78,7 +78,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle(target)).toBe(null);
+                expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -91,7 +91,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle(target)).toBe(null);
+                expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -104,7 +104,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle(target)).toBe(null);
+                expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
@@ -117,7 +117,7 @@ describe('Combative', () => {
                 makeTarget(distance);
                 attacker.target = target;
 
-                expect(attacker.getAttackObstacle(target)).toBe(null);
+                expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
                 
                 expect(playSoundSpy).toHaveBeenCalledWith({ volume: targetVolume });
