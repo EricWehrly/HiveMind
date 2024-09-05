@@ -1,3 +1,5 @@
+debounce spacebar attack
+
 why are food starting with 0 health?
     (constructor seems to provide health ...)
 
