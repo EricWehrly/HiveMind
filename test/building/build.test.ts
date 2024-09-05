@@ -1,3 +1,4 @@
+import mockEvents from "../../engine/test/testHelpers/mockEvents";
 import mockMap from "../../engine/test/testHelpers/mockMap";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
@@ -9,24 +10,9 @@ import { MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeGrower } from "../../js/entities/character/mixins/Grower";
 import { MakeSlimey } from "../../js/entities/character/mixins/Slimey";
 import Resource from "../../engine/js/entities/resource";
+import { MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 
-jest.mock('@/engine/js/events', () => {
-    return {
-        __esModule: true, // this property makes it work
-        default: {
-            Subscribe: jest.fn().mockImplementation(() => { }),
-            RaiseEvent: jest.fn().mockImplementation(() => { }),
-            List: new Proxy({}, {
-                get: function(target, name) {
-                    return name;
-                },
-                set: function(target, name, value) {
-                    return true;  // Indicate that the assignment succeeded
-                }
-            })
-        }
-    };
-});
+jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 jest.mock('@/js/entities/character/HivemindCharacterFactory', () => ({
@@ -83,7 +69,7 @@ describe('Building', () => {
 
             expect(MakeHiveMindCharacter).toHaveBeenCalledTimes(1);
             const callArgs = (MakeHiveMindCharacter as jest.Mock).mock.calls[0];
-            expect(callArgs[0]).toEqual([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey]);
+            expect(callArgs[0]).toEqual([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative]);
             expect(callArgs[1]).toEqual(aggregateOptions);
             expect(callArgs[2]).toEqual(Building);
         });
