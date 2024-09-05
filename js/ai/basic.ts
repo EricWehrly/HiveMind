@@ -4,6 +4,7 @@ import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Entity from "../entities/character/Entity";
 import SentientEntity from "../entities/character/SentientEntity";
 import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
+import { Sentient } from "../entities/character/mixins/Sentient";
 import Events from "../events";
 import { Defer } from '../loop.mjs';
 
@@ -26,13 +27,15 @@ export interface EntityRelationship {
 
 export default class AI {
 
-    private _character: SentientEntity;
+    private _character: Entity & Sentient;
     private _leashing = false;
     private _fleeing = false;
     private _relationships: Map<Entity, EntityRelationship> = new Map();
     private _lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
     private _targetEntity: Entity;
     private _targetPosition: WorldCoordinate;
+    private _spawnPosition: Readonly<WorldCoordinate>;
+    private _maxWanderDistance = 10;    // we can add setters & options setup later when we want to use them
 
     get leashing() { return this._leashing; }
     get character() { return this._character; }
@@ -57,8 +60,10 @@ export default class AI {
         });
     }
 
-    constructor(character: SentientEntity) {
+    constructor(character: Entity & Sentient) {
         this._character = character;
+
+        this._spawnPosition = this._character.position;
 
         Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
     }    
@@ -86,14 +91,14 @@ export default class AI {
             this.wander();
 
             // this prevents the character chasing the player (too far) as well
-            this.leash(this._character.spawnPosition, this._character.maxWanderDistance);
+            this.leash(this._spawnPosition, this._maxWanderDistance);
         }
 
         this._character.pointAtTarget(this.targetPosition);
     }
 
     private isPastWanderLimits(): boolean {
-        return this._character.position.distance(this._character.spawnPosition) > this._character.maxWanderDistance;
+        return this._character.position.distance(this._spawnPosition) > this._maxWanderDistance;
     }
 
     private isAtTarget() {
@@ -101,7 +106,7 @@ export default class AI {
     }
 
     wander() {
-        if (this._character.target instanceof Entity) return;
+        if(this.targetEntity) return;
 
         if (performance.now() - this._lastDestinationPickedTime > MS_BETWEEN_WANDER_DESTINATIONS) {
             /*
@@ -167,11 +172,11 @@ export default class AI {
         this._leashing = false;
     }
 
-    leash(point: WorldCoordinate, distance: number) {
+    leash(point: Readonly<WorldCoordinate>, distance: number) {
         var dist = this._character.position.distance(point);
         if (dist > distance) {
             console.debug(`Wandered too far (${dist}), with speed ${this._character.speed} leashing to ${point.x}, ${point.y}`);
-            this._targetPosition = point;
+            this._targetPosition = new WorldCoordinate(point.x, point.y);
 
             this._leashing = true;
             Defer(this.#unleash.bind(this), MS_LEASH_COOLDOWN);
