@@ -26,13 +26,13 @@ export interface EntityRelationship {
 
 export default class AI {
 
-    private _character: SentientEntity = null;
+    private _character: SentientEntity;
     private _leashing = false;
     private _fleeing = false;
     private _relationships: Map<Entity, EntityRelationship> = new Map();
     private _lastDestinationPickedTime = performance.now() - (MS_BETWEEN_WANDER_DESTINATIONS / 2);
-    private _targetEntity: Entity = null;
-    private _targetPosition: WorldCoordinate = null;
+    private _targetEntity: Entity;
+    private _targetPosition: WorldCoordinate;
 
     get leashing() { return this._leashing; }
     get character() { return this._character; }
@@ -112,7 +112,7 @@ export default class AI {
             this._lastDestinationPickedTime = performance.now();
             // we need to influence this to avoid anything we're afraid of
             // loop through our relationships and determine how 'strongly' we want to move in each direction
-            this._character.target = this.#randomTargetPosition();
+            this._targetPosition = this.#randomTargetPosition();
 
             // console.debug(`New target: ${this._character.targetPosition.x}, ${this._character.targetPosition.y}`);
         }
