@@ -1,7 +1,6 @@
 import mockEvents from "../../testHelpers/mockEvents";
 import mockMap from "../../testHelpers/mockMap";
 import { createMock } from "../../testHelpers/helpers";
-import { Combatant } from "../../../js/entities/character/Combatant";
 import Entity from "../../../js/entities/character/Entity";
 import SentientEntity from "../../../js/entities/character/SentientEntity";
 import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
