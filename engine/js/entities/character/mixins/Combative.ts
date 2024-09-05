@@ -64,15 +64,6 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
         get faction() { return this._faction; }
         set faction(value) { this._faction = value; }
 
-        // TODO: it'd be nice to just do entity
-        get target(): Entity | WorldCoordinate {
-            return super.target;
-        }
-
-        set target(newValue: Entity | WorldCoordinate) {
-            super.target = newValue;
-        }
-
         get thornMultiplier() { return this._thornMultiplier; }        
 
         get aggression() { return this._aggression; }
@@ -222,45 +213,6 @@ export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, co
                 equipped
             };
             Events.RaiseEvent(Events.List.CharacterAttacked, event);
-        }
-    
-        // TODO: move this entire logic to basic.ts ai
-        // once we've extracted sentient to be a non-entity type ...
-        move(amount: number) {
-    
-            if (this.isPlayer != true && this.shouldMoveToTarget()) {
-                for (const axis of axes) {
-                    if (!this.atTarget(axis)) {
-                        const desiredPosition = {
-                            x: this.position.x,
-                            y: this.position.y
-                        }
-                        if (this.shouldStopOnAxis(axis, amount)) {
-                            desiredPosition[axis] = this.targetPosition[axis];
-                            this.desiredMovementVector[axis] = 0;
-                        } else {
-                            desiredPosition[axis] += this.desiredMovementVector[axis] * this.speed * amount;
-                        }
-                        this.position = desiredPosition;
-                    }
-                }
-                // @ts-expect-error
-                if(this.afterMove) this.afterMove();
-            } else {
-                super.move(amount);
-            }
-        }
-    
-        shouldMoveToTarget() {
-            return this.ai != null && this.target != null;
-        }
-    
-        shouldStopOnAxis(axis: Axis, amount: number) {
-            return Math.abs(this.position[axis] - this.targetPosition[axis]) < this.speed * amount;
-        }
-    
-        atTarget(axis: Axis) {
-            return this.target && this.targetPosition[axis] == this.position[axis];
         }
         
         shouldFilterCharacter(character: Entity & Combative, options: CharacterFilterOptions & CombativeOptions) {

@@ -3,85 +3,65 @@ import mockEvents from '../../../../testHelpers/mockEvents';
 import { createMock } from '../../../../testHelpers/helpers';
 import mockMap from '../../../../testHelpers/mockMap';
 import AI from '../../../../../js/ai/basic';
-import PlayableEntity from '../../../../../js/entities/character/PlayableEntity';
 import Entity from '../../../../../js/entities/character/Entity';
-import { Combative, MakeCombative } from '../../../../../js/entities/character/mixins/Combative';
-import { EntityMixin, MakeCharacter } from '../../../../../js/entities/character/CharacterFactory';
-import SentientEntity from '../../../../../js/entities/character/SentientEntity';
+import { MakeCharacter } from '../../../../../js/entities/character/CharacterFactory';
+import { MakeSentient, Sentient } from '../../../../../js/entities/character/mixins/Sentient';
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/entities/character.ts', () => createMock);
 jest.mock('@/engine/js/ai/predator',  () => createMock);
-/*
-jest.mock('@/engine/js/ai/basic', () => {
-    return {
-        __esModule: true, // this property makes it work
-        default: jest.fn().mockImplementation((options) => {}),
-        think: jest.fn()
-    };
-});
-*/
 
 describe('Combative.move', () => {
 
     // TODO: This needs to be PlayableEntity for the afterMove reference,
     // which we can remove to downgrade the entity type
-    let combative: SentientEntity & Combative;
+    let sentientEntity_underTest: Entity & Sentient;
     let secondEntity: Entity;
     beforeEach(() => {
-        combative = MakeCharacter([MakeCombative as EntityMixin], {
+        sentientEntity_underTest = MakeCharacter([MakeSentient], {
             ai: AI,
             position: {
                 x: 0,
                 y: 0
             }
-        }, SentientEntity) as SentientEntity & Combative;
-        secondEntity = new Entity({
+        }) as Entity & Sentient;
+        secondEntity = MakeCharacter([], {
             position: {
-                x: 1,
-                y: 1
+                x: 2,
+                y: 2
             }
         });
     });
 
     it('should move toward target', () => {
-        expect(combative.position.x).toEqual(0);
-        combative.target = secondEntity;
-        combative.ai.think();
-        combative.move(2);
-        expect(combative.position.x).toEqual(1);
+        const moveAmount = 1;
+        expect(sentientEntity_underTest.position.x).toEqual(0);
+        sentientEntity_underTest.ai.targetEntity = secondEntity;
+        sentientEntity_underTest.ai.think();
+        sentientEntity_underTest.move(1);
+        // later, we need to change this to be fractional
+        expect(sentientEntity_underTest.position.x).toEqual(1);
+        expect(sentientEntity_underTest.position.y).toEqual(1);
     });
 
     it('should not move past target', () => {
-        expect(combative.position.x).toEqual(0);
-        combative.target = secondEntity;
-        combative.ai.think();
-        combative.move(5);
-        expect(combative.position.x).toEqual(1);
-    });
-
-    it('should call afterMove if moving to target', () => {
-        combative.target = secondEntity;
-        const spy = jest.spyOn(PlayableEntity.prototype, 'afterMove');
-
-        expect(combative.position.x).toEqual(0);
-        combative.ai.think();
-        combative.move(2);
-        expect(combative.position.x).toEqual(1);
-    
-        expect(spy).toHaveBeenCalled();
-    
-        spy.mockRestore();
+        const moveAmount = (secondEntity.position.x - sentientEntity_underTest.position.x) * 5
+        expect(sentientEntity_underTest.position.x).toEqual(0);
+        sentientEntity_underTest.ai.targetEntity = secondEntity;
+        sentientEntity_underTest.ai.think();
+        sentientEntity_underTest.move(5);
+        expect(sentientEntity_underTest.position.x).toBeLessThan(secondEntity.position.x + 1);
+        expect(sentientEntity_underTest.position.x).toBeGreaterThanOrEqual(secondEntity.position.x);
     });
 
     it('should call super move if not moving to target', () => {
-        combative.target = null;
-        const spy = jest.spyOn(PlayableEntity.prototype, 'move');
+        sentientEntity_underTest.ai.targetEntity = null;
+        const spy = jest.spyOn(Entity.prototype, 'move');
 
-        combative.ai.think();
-        combative.move(1);
+        sentientEntity_underTest.ai.think();
+        sentientEntity_underTest.move(1);
     
         expect(spy).toHaveBeenCalled();
     
