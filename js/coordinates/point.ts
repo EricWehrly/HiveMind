@@ -23,7 +23,7 @@ export default class Point {
         this._y = y;
     }
 
-    equals(point: Point) {
+    equals(point: Readonly<Point>) {
         if(point == null) return false;
         
         return this.x == point.x && this.y == point.y;

@@ -1,17 +1,10 @@
 import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
-import PlayableEntity from '../../../../js/entities/character/PlayableEntity';
 import Vector from '../../../../js/baseTypes/Vector';
+import { MakeCharacter } from '../../../../js/entities/character/CharacterFactory';
+import { MakePlayable, Playable } from '../../../../js/entities/character/mixins/Playable';
+import Entity from '../../../../js/entities/character/Entity';
 
-jest.mock('@/engine/js/ai/basic', () => {
-    return {
-        __esModule: true, // this property makes it work
-        default: jest.fn().mockImplementation((options) => {}),
-        think: jest.fn()
-    };
-});
-
-let manuallyTrackedMockCalls: string[] = [];
 // TODO: fix this mocking when we move events to ts
 jest.mock('@/engine/js/events', () => {
     return {
@@ -33,19 +26,29 @@ jest.mock('@/engine/js/events', () => {
     };
 });
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
+jest.mock('@/engine/js/ai/basic', () => {
+    return {
+        __esModule: true, // this property makes it work
+        default: jest.fn().mockImplementation((options) => {}),
+        think: jest.fn()
+    };
+});
 
-describe('PlayableEntity.move', () => {
+let manuallyTrackedMockCalls: string[] = [];
 
-    let entity: PlayableEntity;
+// move to mixin
+describe('Playable.move', () => {
+    
+    let entity: Entity & Playable;
 
     beforeEach(() => {
-        entity = new PlayableEntity({
+        entity = MakeCharacter([MakePlayable], {
             isPlayer: true,
             position: {
                 x: 1,
                 y: 1
             }
-        });
+        }) as Entity & Playable;
         entity.desiredMovementVector = new Vector(1, 1);
         entity.isPlayer = true;
     });
