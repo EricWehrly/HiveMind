@@ -8,7 +8,6 @@ import { EquippedTechnology } from "../../equipment";
 import Faction from "../../faction";
 import { CharacterUtils } from "../CharacterUtils";
 import Entity, { CharacterFilterOptions } from "../Entity";
-import SentientEntity from "../SentientEntity";
 import { Equipped, IsEquipped } from "./Equipped";
 import { IsLiving, Living } from "./Living";
 
@@ -18,7 +17,7 @@ Events.List.CharacterAttacked = "CharacterAttacked";
 // TODO: use the type when raising the event
 // which is currently in SentientEntity.target.set
 export interface CharacterTargetChangedEvent extends GameEvent {
-    character: SentientEntity;
+    character: Entity;
     from: Entity | WorldCoordinate;
     to: Entity | WorldCoordinate;
 }
@@ -52,9 +51,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: Maybe, ultimately, combative needs to extend equipped?
 
-// TODO: drop this from a SentientEntity to an entity
-// but the way we handle target may make that difficult
-export function MakeCombative<T extends Constructor<SentientEntity>>(Base: T, combativeOptions: CombativeOptions) {
+export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeOptions: CombativeOptions) {
     return class CombativeClass extends Base implements Combative {
 
         private _thornMultiplier: number;

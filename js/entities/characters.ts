@@ -1,5 +1,6 @@
 import { RegisterLoopMethod } from '../loop.mjs';
 import Entity from './character/Entity';
+import { IsSentient } from './character/mixins/Sentient';
 
 export const CHARACTER_LIST: Entity[] = [];
 if(window) window.CHARACTER_LIST = CHARACTER_LIST;
@@ -23,8 +24,9 @@ function characterLoop(elapsed: number) {
             || character?.dead == true) {
             continue;
         }
-        // @ts-expect-error
-        character.think(elapsed);
+        if(IsSentient(character)) {
+            character.ai.think(elapsed);
+        }
 
         character.move(elapsed / 1000);
     }

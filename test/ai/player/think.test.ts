@@ -6,6 +6,7 @@ import SentientEntity from "../../../js/entities/character/SentientEntity";
 import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
 import PlayerAI from "../../../js/ai/Player";
 import { MakeEquipped } from "../../../js/entities/character/mixins/Equipped";
+import AI from "../../../js/ai/basic";
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/events', () => mockEvents);
@@ -37,16 +38,6 @@ describe('Player.think', () => {
         return secondEntity;
     });
 
-    it('will super think', () => {
-        const spy = jest.spyOn(SentientEntity.prototype, 'think');
-
-        entityUnderTest.think();
-    
-        expect(spy).toHaveBeenCalled();
-    
-        spy.mockRestore();
-    });
-
     // only this test needs the player to be equipped (MakeEquipped)
     // because the target requires the "attack range" of the entity as a shortcut
     // in reality, we have no scenarios for a player with no equipment
@@ -56,7 +47,7 @@ describe('Player.think', () => {
 
         entityUnderTest.isPlayer = true;
 
-        entityUnderTest.ai.think();
+        entityUnderTest.ai.think(0);
 
         expect(entityUnderTest.target).toBe(secondEntity);
     });

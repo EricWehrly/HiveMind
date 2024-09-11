@@ -4,7 +4,7 @@ import Events from './events';
 import Entity from './entities/character/Entity';
 import Menu from './ui/menu';
 import { Combative } from './entities/character/mixins/Combative';
-import SentientEntity from './entities/character/SentientEntity';
+import { Sentient } from './entities/character/mixins/Sentient';
 
 Events.List.ActionFired = "ActionFired";
 
@@ -188,7 +188,7 @@ new Action({
             return 0;
         }
 
-        const combative = options.character as Combative & SentientEntity;
+        const combative = options.character as Combative & Sentient;
         if(combative.target instanceof Entity) {
             return combative.attack(combative.target);
         }

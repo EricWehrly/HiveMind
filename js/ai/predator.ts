@@ -3,17 +3,18 @@ import Character from "../entities/character";
 import Action from "../action";
 import { TechnologyTypes } from "../TechnologyTypes";
 import { Combative } from "../entities/character/mixins/Combative";
-import SentientEntity from "../entities/character/SentientEntity";
 import { Equipped } from "../entities/character/mixins/Equipped";
 import { CharacterUtils } from "../entities/character/CharacterUtils";
+import { Sentient } from "../entities/character/mixins/Sentient";
+import Entity from "../entities/character/Entity";
 
 export default class PredatorAI extends AI {
 
     get character() {
-        return super.character as SentientEntity & Equipped & Combative;
+        return super.character as Entity & Sentient & Equipped & Combative;
     }
 
-    constructor(character: SentientEntity & Equipped & Combative) {
+    constructor(character: Entity & Sentient & Equipped & Combative) {
         super(character);
     }
 
@@ -25,7 +26,7 @@ export default class PredatorAI extends AI {
         return equipment.getEquipped(TechnologyTypes.ATTACK);;
     }
     
-    think() {
+    think(elapsed: number) {
 
         // TODO: hunt fauna (the herbivores are gonna hunt food too)
         
@@ -34,7 +35,7 @@ export default class PredatorAI extends AI {
                 // const wasTarget = this.#character.target;
                 // TODO: Don't directly target the player.
                 // Maybe we want to encourage attacking biggest threat first?
-                const localPlayer = CharacterUtils.GetLocalPlayer() as Character & Combative;
+                const localPlayer = CharacterUtils.GetLocalPlayer() as Entity & Sentient & Combative;
                 const targetFaction = localPlayer.faction;
                 const closest = this.character.getClosestEntity({
                     distance: this.character.aggressionRange,
@@ -51,7 +52,7 @@ export default class PredatorAI extends AI {
             }
         }
 
-        super.think();
+        super.think(elapsed);
 
         if(this.character.target && this.equippedAttack != null
             && this.character.position.distance(this.targetPosition) < this.equippedAttack.range) {

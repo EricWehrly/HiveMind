@@ -7,6 +7,7 @@ import { IsLiving, Living } from '../../entities/character/mixins/Living';
 import { CHARACTER_LIST } from '../../entities/characters';
 import DomRenderingContext from '../contexts/DomRenderingContext';
 import { CARDINAL_DIRECTION } from '../../baseTypes/Vector';
+import { CharacterUtils } from '../../entities/character/CharacterUtils';
 
 const entityGraphics = new Map<Entity, HTMLElement>();
 
@@ -53,7 +54,7 @@ function setColor(character: Character & Combative) {
 
 function updateTargetingClasses(event: CharacterTargetChangedEvent) {
 
-    if(!event.character.isPlayer) return;
+    if(!CharacterUtils.IsLocalPlayer(event.character)) return;
 
     if(event.to instanceof Entity) {
         addClass(event.to, "targeted");
