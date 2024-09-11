@@ -11,6 +11,9 @@ import { MakeGrower } from "./character/mixins/Grower";
 import { MakeSlimey } from "./character/mixins/Slimey";
 import Faction from "../../engine/js/entities/faction";
 import { MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
+import { HiveMindCharacterAI } from "../ai/HivemindCharacterAi";
+import { MakeSentient, Sentient, SentientOptions } from "../../engine/js/entities/character/mixins/Sentient";
+import { EntityOptions } from "../../engine/js/entities/character/Entity";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
@@ -28,14 +31,17 @@ export interface BuildingOptions {
 
 export default class Building extends HiveMindCharacter {
 
-    static Build(characterType: BuildingCharacterType, options?: BuildingOptions) {
+    static Build(characterType: BuildingCharacterType, options?: BuildingOptions & SentientOptions) {
 
         // TODO: food reserve?
         // TODO: placement, collision ... "walk" desired position until nearest non-colliding?
         const characterOptions = {
             name: characterType.name,
             ...characterType,
-            ...options
+            ...options,
+        }
+        if(!characterOptions.ai) {
+            characterOptions.ai = HiveMindCharacterAI;
         }
 
         const cost = options.cost || characterType.cost || characterType?.health;
@@ -51,7 +57,7 @@ export default class Building extends HiveMindCharacter {
             console.warn(`No cost!`);
         }
         
-        return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative], characterOptions, Building);
+        return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative, MakeSentient], characterOptions, Building);
     }
 
     static #blockingZones: { [key: string]: Rectangle[] } = {};

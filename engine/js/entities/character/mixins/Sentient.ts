@@ -2,6 +2,11 @@ import AI from "../../../ai/basic";
 import { CharacterUtils } from "../CharacterUtils";
 import Entity, { EntityOptions } from "../Entity";
 
+export interface SentientOptions {
+    ai?: typeof AI
+    target?: Entity;
+}
+
 export interface Sentient {
     ai?: AI
     target?: Entity;
@@ -13,7 +18,7 @@ const axes: Axis[] = ['x', 'y'];
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: EntityOptions & Sentient) 
+export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: EntityOptions & SentientOptions) 
 : T & Constructor<Sentient> {
     return class SentientClass extends Base implements Sentient {
 

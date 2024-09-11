@@ -11,6 +11,9 @@ import { MakeGrower } from "../../js/entities/character/mixins/Grower";
 import { MakeSlimey } from "../../js/entities/character/mixins/Slimey";
 import Resource from "../../engine/js/entities/resource";
 import { MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
+import AI from "../../engine/js/ai/basic";
+import { HiveMindCharacterAI } from "../../js/ai/HivemindCharacterAi";
+import { MakeSentient } from "../../engine/js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -28,7 +31,7 @@ describe('Building', () => {
 
         // @ts-expect-error
         const dummyCharacterType = new CharacterType({
-            name: 'dummy',
+            name: 'dummy'
         });
 
         const food = new Resource({
@@ -41,14 +44,14 @@ describe('Building', () => {
                 name: 'DummyBuilding',
                 unusedProperty: 'unused'
             };
-            (MakeHiveMindCharacter as jest.Mock).mockReturnValue(mockReturnValue);          
+            (MakeHiveMindCharacter as jest.Mock).mockReturnValue(mockReturnValue);   
 
             const result = Building.Build(dummyCharacterType, {});
             
             expect(result).toBe(mockReturnValue);
         });
 
-        it('should call the factory method with the correct arguments', () => {
+        it('should call the factory method with the provided arguments', () => {
 
             const dummyFaction = new Faction({ name: 'dummy' });
             food.value = 5;
@@ -56,10 +59,9 @@ describe('Building', () => {
             const buildingOptions = {
                 position: new WorldCoordinate(10, -11),
                 faction: dummyFaction,
-                cost: 2
+                cost: 2,
+                ai: AI
             };
-
-            Building.Build(dummyCharacterType, buildingOptions);
 
             const aggregateOptions = {
                 name: dummyCharacterType.name,
@@ -67,11 +69,27 @@ describe('Building', () => {
                 ...buildingOptions
             };
 
+            Building.Build(dummyCharacterType, buildingOptions);
+
             expect(MakeHiveMindCharacter).toHaveBeenCalledTimes(1);
             const callArgs = (MakeHiveMindCharacter as jest.Mock).mock.calls[0];
-            expect(callArgs[0]).toEqual([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative]);
+            expect(callArgs[0]).toEqual([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative, MakeSentient]);
             expect(callArgs[1]).toEqual(aggregateOptions);
             expect(callArgs[2]).toEqual(Building);
+        });
+
+        it('should configure HivemindCharacterAI if no ai is given', () => {
+
+            const buildingOptions = {
+                position: new WorldCoordinate(10, -11),
+                cost: 2
+            };
+
+            Building.Build(dummyCharacterType, buildingOptions);
+            expect(MakeHiveMindCharacter).toHaveBeenCalledTimes(1);
+            const callArgs = (MakeHiveMindCharacter as jest.Mock).mock.calls[0];
+            expect(callArgs[1]).toBeDefined();
+            expect(callArgs[1].ai).toBe(HiveMindCharacterAI);
         });
 
         it('should return null if resource cost is higher than available', () => {
