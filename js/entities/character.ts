@@ -1,7 +1,7 @@
 import Tooltip from '../ui/tooltip';
-import SentientEntity from './character/SentientEntity';
+import Entity from './character/Entity';
 
-export default class Character extends SentientEntity {
+export default class Character extends Entity {
 
     // TODO: this should probably go to 'playable', but let's make that change separately
     toolTip: Tooltip;
