@@ -1,8 +1,9 @@
 import mockMap from "../../testHelpers/mockMap";
 import AI, { EntityRelationshipType } from "../../../js/ai/basic";
-import SentientEntity from "../../../js/entities/character/SentientEntity";
 import { CharacterDamagedEvent } from "../../../js/entities/character/mixins/Living";
 import Entity from "../../../js/entities/character/Entity";
+import { MakeSentient } from "../../../js/entities/character/mixins/Sentient";
+import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
 
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 jest.mock('@/engine/js/events', () => {
@@ -36,14 +37,14 @@ function hitEm(ai: AI, attacker: Entity) {
 describe('AI', () => {
     describe('basic', () => {
 
-        const testCharacter = new SentientEntity({ name: 'testCharacter' });
+        const testCharacter = MakeCharacter([MakeSentient], { name: 'testCharacter' });
         const testAI = new AI(testCharacter);
         
         describe('relationships', () => {
 
             it('should fear what hits it', () => {
                 // give our entity-under-test something to fear (indirectly, because of method privacy)
-                const secondEntity = new SentientEntity({ name: 'secondEntity' });
+                const secondEntity = MakeCharacter([MakeSentient], { name: 'secondEntity' });
                 hitEm(testAI, secondEntity);
 
                 const relationship = testAI.relationship(secondEntity);

@@ -8,6 +8,7 @@ import { Living } from "../../engine/js/entities/character/mixins/Living";
 import { Growable } from "../entities/character/mixins/Growable";
 import { Grower } from "../entities/character/mixins/Grower";
 import { Combative } from "../../engine/js/entities/character/mixins/Combative";
+import { Sentient } from "../../engine/js/entities/character/mixins/Sentient";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -69,13 +70,13 @@ export default class NodeAI extends AI {
 
     #nextConstructPositions: Record<string, WorldCoordinate> = {};
     
-    private _building: Building & Growable & Grower & Combative;
+    private _building: Building & Growable & Grower & Combative & Sentient;
 
     get character() {
         return this._building;
     }
 
-    constructor(character: Building & Growable & Grower & Combative) {
+    constructor(character: Building & Growable & Grower & Combative & Sentient) {
         super(character);
 
         this._building = character;
@@ -118,8 +119,8 @@ export default class NodeAI extends AI {
         return this.#nextConstructPositions[buildingType.name];
     }
 
-    think() {
-        super.think();
+    think(elapsed: number) {
+        super.think(elapsed);
 
         if(NodeAI.#lastThought + TIME_BETWEEN_THOUGHTS > performance.now()) {
             return;

@@ -1,9 +1,10 @@
 import mockMap from "../../testHelpers/mockMap";
 import AI from "../../../js/ai/basic";
-import SentientEntity from "../../../js/entities/character/SentientEntity";
 import { CharacterDamagedEvent } from "../../../js/entities/character/mixins/Living";
 import Entity from "../../../js/entities/character/Entity";
 import WorldCoordinate from "../../../js/coordinates/WorldCoordinate";
+import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
+import { MakeSentient } from "../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 jest.mock('@/engine/js/events', () => {
@@ -37,7 +38,7 @@ function hitEm(ai: AI, attacker: Entity) {
 describe('AI', () => {
     describe('basic', () => {
 
-        const testCharacter = new SentientEntity({name: 'testCharacter'});
+        const testCharacter = MakeCharacter([MakeSentient], {name: 'testCharacter'});
         let testAI = new AI(testCharacter);
 
         beforeEach(() => {
@@ -61,7 +62,7 @@ describe('AI', () => {
 
             it('should move away from an entity it fears', () => {
                 // give our entity-under-test something to fear (indirectly, because of method privacy)
-                const secondEntity = new SentientEntity({});
+                const secondEntity = MakeCharacter([MakeSentient], {});
                 hitEm(testAI, secondEntity);
                 secondEntity.position = new WorldCoordinate(2, 0);
                 testCharacter.position = new WorldCoordinate(1, 0);
@@ -74,10 +75,10 @@ describe('AI', () => {
 
             it('should move away perpendicular to two feared entities', () => {
                 // give our entity-under-test something to fear (indirectly, because of method privacy)
-                const leftEntity = new SentientEntity({
+                const leftEntity = MakeCharacter([MakeSentient], {
                     position: { x: -5, y: 0 }
                 });
-                const topEntity = new SentientEntity({
+                const topEntity = MakeCharacter([MakeSentient], {
                     position: { x: -4, y: -1 }
                 });
                 hitEm(testAI, leftEntity);

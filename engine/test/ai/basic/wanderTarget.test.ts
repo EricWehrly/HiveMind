@@ -1,14 +1,15 @@
 import mockEvents from "../../testHelpers/mockEvents";
 import mockMap from "../../testHelpers/mockMap";
 import AI from "../../../js/ai/basic";
-import SentientEntity from "../../../js/entities/character/SentientEntity";
+import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
+import { MakeSentient } from "../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('basic ai wander', () => {
 
-    const testCharacter = new SentientEntity({ name: 'testCharacter' });
+    const testCharacter = MakeCharacter([MakeSentient], { name: 'testCharacter' });
     let testAI: AI;
 
     beforeEach(() => {

@@ -4,12 +4,13 @@ import Purposes from "./character-purposes";
 import CharacterType from "../CharacterType";
 import { Slimey } from "../character/mixins/Slimey";
 import { Grower } from "../character/mixins/Grower";
+import { Sentient } from "../../../engine/js/entities/character/mixins/Sentient";
 
 Purposes["return"] = {
     // do not show this one in menus!
     name: "return",
     // TODO: remove the need for "slime" purpose, and purpose needs to be pushed down to 'character'
-    think: function (character: HiveMindCharacter & Slimey, elapsed: number) {
+    think: function (character: HiveMindCharacter & Slimey & Sentient, elapsed: number) {
 
         if (!character.target) {
             character.target = character.parent;

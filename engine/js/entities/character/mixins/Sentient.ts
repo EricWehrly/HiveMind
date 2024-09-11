@@ -4,6 +4,7 @@ import Entity, { EntityOptions } from "../Entity";
 
 export interface Sentient {
     ai?: AI
+    target?: Entity;
 }
 
 // TODO: let's do away with this axis hack
@@ -20,6 +21,7 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
         get ai() { return this._ai; }
         set ai(newValue) { this._ai = newValue; }
         private get targetPosition() { return this.ai.targetPosition; }
+        get target() { return this.ai?.targetEntity; }
 
         constructor(...args: any) {
             super(...args);

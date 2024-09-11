@@ -4,11 +4,13 @@ import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import Action from '../engine/js/action';
 import { Living } from '../engine/js/entities/character/mixins/Living';
 import Events from '../engine/js/events';
+import { CharacterUtils } from '../engine/js/entities/character/CharacterUtils';
+import { Sentient } from '../engine/js/entities/character/mixins/Sentient';
 
 function checkPlayerInteraction() {
 
-    const localPlayer = window.LOCAL_PLAYER;
-    const closest = localPlayer.target as HiveMindCharacter & Living;
+    const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter & Sentient;
+    const closest = localPlayer.ai.targetEntity as HiveMindCharacter & Living;
 
     if(Menu.anyOpen || closest == null || !closest.isAlive) {
 

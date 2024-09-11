@@ -39,7 +39,7 @@ describe('Combative.move', () => {
         const moveAmount = 1;
         expect(sentientEntity_underTest.position.x).toEqual(0);
         sentientEntity_underTest.ai.targetEntity = secondEntity;
-        sentientEntity_underTest.ai.think();
+        sentientEntity_underTest.ai.think(0);
         sentientEntity_underTest.move(1);
         // later, we need to change this to be fractional
         expect(sentientEntity_underTest.position.x).toEqual(1);
@@ -50,7 +50,7 @@ describe('Combative.move', () => {
         const moveAmount = (secondEntity.position.x - sentientEntity_underTest.position.x) * 5
         expect(sentientEntity_underTest.position.x).toEqual(0);
         sentientEntity_underTest.ai.targetEntity = secondEntity;
-        sentientEntity_underTest.ai.think();
+        sentientEntity_underTest.ai.think(0);
         sentientEntity_underTest.move(5);
         expect(sentientEntity_underTest.position.x).toBeLessThan(secondEntity.position.x + 1);
         expect(sentientEntity_underTest.position.x).toBeGreaterThanOrEqual(secondEntity.position.x);
@@ -60,7 +60,7 @@ describe('Combative.move', () => {
         sentientEntity_underTest.ai.targetEntity = null;
         const spy = jest.spyOn(Entity.prototype, 'move');
 
-        sentientEntity_underTest.ai.think();
+        sentientEntity_underTest.ai.think(0);
         sentientEntity_underTest.move(1);
     
         expect(spy).toHaveBeenCalled();
