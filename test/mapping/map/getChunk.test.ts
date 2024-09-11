@@ -1,7 +1,9 @@
 import Seed from '../../../js/core/seed';
 import GameMap from '../../../js/mapping/GameMap';
-import SentientEntity from '../../../js/entities/character/SentientEntity';
 import Biome, { BiomeType } from '../../../js/mapping/biome';
+import { MakeCharacter } from '../../../js/entities/character/CharacterFactory';
+import Entity from '../../../js/entities/character/Entity';
+import { Playable } from '../../../js/entities/character/mixins/Playable';
 
 jest.mock('@/engine/js/events', () => {
     return {
@@ -21,22 +23,12 @@ jest.mock('@/engine/js/events', () => {
     };
 });
 
-jest.mock('@/engine/js/entities/character/SentientEntity', () => {
-    return {
-        __esModule: true, // this property makes it work
-        default: jest.fn(),
-        isPlayer: true
-    };
-});
-
 describe('map', () => {
     let map: GameMap;
-    let mockCharacter: SentientEntity;
+    let mockCharacter: Entity & Playable;
 
     beforeEach(() => {
         map = new GameMap(new Seed(123));
-        mockCharacter = new SentientEntity({}); // replace with the actual constructor if it requires parameters
-        mockCharacter.isPlayer = true;
         const biomeType = new BiomeType({
             name: 'test',
             minSize: 0,
@@ -50,6 +42,8 @@ describe('map', () => {
             y: 0
         });
         jest.spyOn(map, 'getBiome').mockReturnValue(mockBiome);
+        mockCharacter = MakeCharacter([], {}); // replace with the actual constructor if it requires parameters
+        mockCharacter.isPlayer = true;
     });
 
     describe('getChunk', () => {
