@@ -1,3 +1,9 @@
+only play 'wrong' sound for player actions
+
+spawned by player seems to be unable to consume
+spawned by eater seems to consume immediately
+why does eater take so long to spawn workers?
+
 debounce spacebar attack
 
 why are food starting with 0 health?

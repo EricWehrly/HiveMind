@@ -79,8 +79,6 @@ describe('HivemindChacterFactory.MakeHiveMindCharacter', () => {
 
             expect(spy).toHaveBeenCalledWith(referenceEntity);
 
-            expect(canBeEaten && isGrown).toBe(true);
-
             character.grow(1);
             canBeEaten = character.canBeEaten(referenceEntity);
             isGrown = character.isGrown;

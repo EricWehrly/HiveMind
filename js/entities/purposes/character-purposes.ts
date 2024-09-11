@@ -1,7 +1,6 @@
 import Events from "../../../engine/js/events";
 import Research from "../../../engine/js/research";
 import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
-import Character from "../../../engine/js/entities/character";
 import Resource from "../../../engine/js/entities/resource";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { CHARACTER_LIST } from "../../../engine/js/entities/characters";
@@ -12,35 +11,36 @@ import { Growable } from "../character/mixins/Growable";
 import { Combative, IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
 import { IsEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 import { CharacterUtils } from "../../../engine/js/entities/character/CharacterUtils";
+import { Sentient } from "../../../engine/js/entities/character/mixins/Sentient";
 
 const Purposes: Record<string,any> =
 {
     "study": {
         name: "Study",
-        think: function (character: HiveMindCharacter, elapsed: number) {
-            if (character.target && character.target instanceof Character) {
+        think: function (character: HiveMindCharacter & Sentient, elapsed: number) {
+            if (character.ai.targetEntity) {
                 character.pointAtTarget(character.ai.targetPosition);
 
                 if (character.position.near(character.ai.targetPosition)) {
-                    if ((character.target as Living).dead == true) {
+                    if ((character.ai.targetEntity as Living).dead == true) {
                         // TODO: contemplate loving monica
                         // TODO: support > 1 technology
-                        if(IsEquipped(character) && IsEquipped(character.target)) {
-                            if (character.target.technologies && character.target.technologies.length > 0) {
-                                character.AddTechnology(character.target.technologies[0]);
+                        if(IsEquipped(character) && IsEquipped(character.ai.targetEntity)) {
+                            if (character.ai.targetEntity.technologies && character.ai.targetEntity.technologies.length > 0) {
+                                character.AddTechnology(character.ai.targetEntity.technologies[0]);
                             }
                         }
                         // TODO: not until reabsorbed (after 'return')
-                        if (character.target.characterType) {
-                            character.target.characterType.isStudied = true;
-                            const research = Research.Get(character.target.characterType);
+                        if (character.ai.targetEntity.characterType) {
+                            character.ai.targetEntity.characterType.isStudied = true;
+                            const research = Research.Get(character.ai.targetEntity.characterType);
                             research.enabled = true;
                         }
-                        character.target = null;
+                        character.ai.targetEntity = null;
                         character.SetCurrentPurpose("return");
                         // } else character.target.health -= (character.damage || 1) * (elapsed / 1000);
                     } else {
-                        (character.target as Living).health = 0; // cheat for make testing easier
+                        (character.ai.targetEntity as Living).health = 0; // cheat for make testing easier
                     }
                 }
             }
@@ -48,8 +48,8 @@ const Purposes: Record<string,any> =
     },
     "consume": {
         name: "consume",
-        think: function (character: HiveMindCharacter & Living, elapsed: number) {
-            if (character.target && character.target instanceof Character) {
+        think: function (character: HiveMindCharacter & Living & Sentient, elapsed: number) {
+            if (character.ai.targetEntity) {
                 character.pointAtTarget(character.ai.targetPosition);
 
                 if(IsEquipped(character) && IsCombative(character)) {
@@ -58,9 +58,9 @@ const Purposes: Record<string,any> =
                     if (character.target == null || (character.target as Living).dead) {
                         character.target = null;
                         character.SetCurrentPurpose("return");
-                    } else if (attack && character.position.distance(character.target.position) < attack.range
+                    } else if (attack && character.position.distance(character.ai.targetPosition) < attack.range
                         && (character.target as Living).dead != true) {
-                        const attackAmount = character.attack(character.target);
+                        const attackAmount = character.attack(character.ai.targetEntity);
                         character.health += 2 * attackAmount;
                     }
                 }

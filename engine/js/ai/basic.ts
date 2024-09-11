@@ -2,7 +2,6 @@
 import Vector from "../baseTypes/Vector";
 import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Entity from "../entities/character/Entity";
-import SentientEntity from "../entities/character/SentientEntity";
 import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
 import { Sentient } from "../entities/character/mixins/Sentient";
 import Events from "../events";
@@ -45,6 +44,8 @@ export default class AI {
         if(this.targetEntity != null) return this.targetEntity.position;
         return this._targetPosition;
     }
+    
+    OnThink: (elapsed: number) => void; 
 
     set targetEntity(newValue) { 
         
@@ -78,7 +79,7 @@ export default class AI {
         return this._relationships.get(entity);
     }
 
-    think() {
+    think(elapsed: number) {
 
         if(this._fleeing &&
             this.isAtTarget() || this.isPastWanderLimits()
@@ -95,6 +96,8 @@ export default class AI {
         }
 
         this._character.pointAtTarget(this.targetPosition);
+
+        if(this.OnThink) this.OnThink(elapsed);
     }
 
     private isPastWanderLimits(): boolean {

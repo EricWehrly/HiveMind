@@ -7,6 +7,8 @@ import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/L
 import { IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
 import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equipped';
 import { CharacterUtils } from '../../../engine/js/entities/character/CharacterUtils';
+import { IsSentient, Sentient } from '../../../engine/js/entities/character/mixins/Sentient';
+import { IsPlayable, Playable } from '../../../engine/js/entities/character/mixins/Playable';
 
 export interface HivemindCharacterOptions {
     calledByFactory: boolean;
@@ -60,11 +62,13 @@ export default class HiveMindCharacter extends Character {
         // TODO: use "or"s rather than all these if's
         // this is something that would probably automatically benefit from 
         // a magic function-level caching implementation
-        if(this.isPlayer) return false;
-        // TODO: Is there a way we can streamline what will be these three repeating lines?
+        if(IsPlayable(this)
+            && this.isPlayer) return false;
         if(IsLiving(this)
             && (this as Living).dead) return false;
-        if(this.ai != null) return false;
+        if(IsSentient(this)
+            // @ts-expect-error     // we probably want to try to make this work correctly ...
+            && this.ai != null) return false;
         if(IsCombative(this) && IsCombative(byWhom)) {
             if(byWhom?.faction != null && this.faction == byWhom.faction) return false;
         }
@@ -111,26 +115,6 @@ export default class HiveMindCharacter extends Character {
         }
 
         return toolTipMessage;
-    }
-
-    think(elapsed: number = 0) {
-
-        // stupid hack
-        let origTarget = null;
-        if(this._currentPurposeKey) origTarget = this.target;
-
-        super.think();
-
-        if (this._currentPurposeKey) {
-            if(origTarget) this.target = origTarget;
-            // maybe the purposes should be specific AI implementations ...
-            // if Purposes doesn't contain key, warn
-            if(!(this._currentPurposeKey in HiveMindCharacter.Purposes)) {
-                console.warn(`${this._currentPurposeKey} not in purposes.`);
-            } else {
-                HiveMindCharacter.Purposes[this._currentPurposeKey].think(this, elapsed);
-            }
-        }
     }
 
     SetCurrentPurpose = function (newPurpose: string) {

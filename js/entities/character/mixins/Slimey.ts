@@ -5,6 +5,8 @@ import { Living, MakeLiving } from "../../../../engine/js/entities/character/mix
 import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
 import Entity, { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
 import { Combative, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
+import { MakeSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
+import { HiveMindCharacterAI } from "../../../ai/HivemindCharacterAi";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -44,12 +46,12 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
             else purpose = this.purpose;
     
             if(purpose == null) {
-                if(this.isPlayer) console.log("Tell the player they can't subdivbide (no purpose)");
+                // if(this.isPlayer) console.log("Tell the player they can't subdivbide (no purpose)");
                 return;
             }
         
             if (!this.canAfford(amount)) {
-                if(this.isPlayer) console.log("Tell the player they can't subdivbide (cant afford)");
+                // if(this.isPlayer) console.log("Tell the player they can't subdivbide (cant afford)");
                 return;
             }
         
@@ -60,7 +62,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 renderedName: purpose.name
             };
             const faction = (this as unknown as Combative).faction;
-            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped], {            
+            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient], {            
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
@@ -69,8 +71,9 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 faction,
                 technologies: options.technologies,
                 entityRenderingSettings,
-                parent: this
-            });
+                parent: this,
+                ai: HiveMindCharacterAI
+            }) as HiveMindCharacter & Sentient;
             if (options.target instanceof Entity) spawnedCharacter.ai.targetEntity = options.target;
             console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);        
     

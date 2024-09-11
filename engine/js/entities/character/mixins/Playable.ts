@@ -1,7 +1,10 @@
 import PostConstruct from "../../../../ts/decorators/PostConstruct";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
 import Events from "../../../events";
+import Character from "../../character";
 import Entity, { CharacterFilterOptions } from "../Entity";
+import { Combative } from "./Combative";
+import { Sentient } from "./Sentient";
 
 export interface Playable {
     isPlayer: boolean;
@@ -11,8 +14,8 @@ export interface PlayableOptions {
     isPlayer?: boolean;
 }
 
-
-let _LOCAL_PLAYER: Entity & Playable;
+// TODO: reduce to Entity?
+let _LOCAL_PLAYER: Character & Playable & Combative;
 
 export function GetLocalPlayer(): Entity {
     return _LOCAL_PLAYER;
@@ -49,7 +52,7 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOpt
 
             if(this.isPlayer) {
                 if(_LOCAL_PLAYER) console.warn(`Setting the local player when one is already set.`);
-                _LOCAL_PLAYER = this;
+                _LOCAL_PLAYER = this as unknown as Character & Playable & Combative;
             }
         }
 
@@ -101,6 +104,13 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOpt
             return super.shouldFilterCharacter(character, options);
         }
     }
+}
+
+export function IsPlayable(obj: Entity): obj is Entity & Playable {
+    const playable = obj as unknown as Playable;
+    return playable 
+        && playable.isPlayer !== undefined
+        && playable.isPlayer != null;
 }
 
 const Playable = {
