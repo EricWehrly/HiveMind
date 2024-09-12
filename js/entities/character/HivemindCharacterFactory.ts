@@ -1,6 +1,9 @@
 import { RunPostConstructMethods } from "../../../engine/js/entities/character/CharacterFactory";
 import HiveMindCharacter from "./HiveMindCharacter";
 
+// double check these values and then we can start using them ...
+// export const HivemindCharacter_Default_Classes = [MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient];
+
 type Constructor<T = {}> = new (...args: any[]) => T;
 type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
 

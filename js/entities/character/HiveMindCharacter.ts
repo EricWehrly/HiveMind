@@ -21,6 +21,8 @@ export default class HiveMindCharacter extends Character {
 
     static Purposes = Purposes;
 
+    // TODO: constrain this to possible purposes, maybe by migrating type to purpose instead
+    // (...once purpose is a proper class :/ )
     private _currentPurposeKey: string = null;
     // this should be managed as a 'dynmic' property ... 
     // we're only attaching it to the character because we want it garbage collected there
