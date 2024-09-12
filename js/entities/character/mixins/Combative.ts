@@ -11,16 +11,7 @@ import Entity, { CharacterFilterOptions } from "../Entity";
 import { Equipped, IsEquipped } from "./Equipped";
 import { IsLiving, Living } from "./Living";
 
-Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 Events.List.CharacterAttacked = "CharacterAttacked";
-
-// TODO: use the type when raising the event
-// which is currently in SentientEntity.target.set
-export interface CharacterTargetChangedEvent extends GameEvent {
-    character: Entity;
-    from: Entity | WorldCoordinate;
-    to: Entity | WorldCoordinate;
-}
 
 export interface CharacterAttackedEvent extends GameEvent {
     attacker: Entity;

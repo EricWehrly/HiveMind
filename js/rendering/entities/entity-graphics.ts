@@ -2,12 +2,13 @@ import Rectangle from '../../baseTypes/rectangle';
 import Events from '../../events';
 import Character from '../../entities/character';
 import Entity, { EntityEvent } from '../../entities/character/Entity';
-import { CharacterTargetChangedEvent, Combative } from '../../entities/character/mixins/Combative';
+import { Combative } from '../../entities/character/mixins/Combative';
 import { IsLiving, Living } from '../../entities/character/mixins/Living';
 import { CHARACTER_LIST } from '../../entities/characters';
 import DomRenderingContext from '../contexts/DomRenderingContext';
 import { CARDINAL_DIRECTION } from '../../baseTypes/Vector';
 import { CharacterUtils } from '../../entities/character/CharacterUtils';
+import { CharacterTargetChangedEvent } from '../../ai/basic';
 
 const entityGraphics = new Map<Entity, HTMLElement>();
 
