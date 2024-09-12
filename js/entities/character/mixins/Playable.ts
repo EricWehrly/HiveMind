@@ -4,7 +4,9 @@ import Events from "../../../events";
 import Character from "../../character";
 import Entity, { CharacterFilterOptions } from "../Entity";
 import { Combative } from "./Combative";
-import { Sentient } from "./Sentient";
+
+Events.List.PlayerChunkChanged = "PlayerChunkChanged";
+Events.List.PlayerMoved = "PlayerMoved";
 
 export interface Playable {
     isPlayer: boolean;
@@ -112,12 +114,3 @@ export function IsPlayable(obj: Entity): obj is Entity & Playable {
         && playable.isPlayer !== undefined
         && playable.isPlayer != null;
 }
-
-const Playable = {
-    get LocalPlayer() {
-        return _LOCAL_PLAYER
-    },
-    MakePlayable
-}
-
-export default Playable;

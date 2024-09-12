@@ -27,6 +27,12 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
         set ai(newValue) { this._ai = newValue; }
         private get targetPosition() { return this.ai.targetPosition; }
         get target() { return this.ai?.targetEntity; }
+        set target(newValue) { 
+            if(this.ai) {
+                this.ai.targetEntity = newValue;
+            }
+            else console.warn('Tried to set target for sentient entity with no ai.');
+        }
 
         constructor(...args: any) {
             super(...args);

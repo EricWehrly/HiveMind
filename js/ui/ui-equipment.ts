@@ -3,9 +3,9 @@ import Events from '../events';
 import { TechnologyTypes } from "../TechnologyTypes";
 import { CooldownCompleteEvent, EquipmentChangedEvent, EquippedTechnology } from "../entities/equipment";
 import { CharacterAttackedEvent } from "../entities/character/mixins/Combative";
-import SentientEntity from "../entities/character/SentientEntity";
 import { Equipped } from "../entities/character/mixins/Equipped";
-import Playable from "../entities/character/mixins/Playable";
+import { Playable } from "../entities/character/mixins/Playable";
+import { CharacterUtils } from "../entities/character/CharacterUtils";
 
 let playerAttack: EquippedTechnology;
 
@@ -16,7 +16,7 @@ export const UI_ELEMENT_ATTACK = new UIElement({
 Events.Subscribe(Events.List.EquipmentChanged, function(details: EquipmentChangedEvent) {
 
     // kind of a temp fix
-    const playerCharacter = details.character as Equipped & SentientEntity;
+    const playerCharacter = details.character as Equipped & Playable;
     if(details.type == TechnologyTypes.ATTACK && playerCharacter.isPlayer == true) {
         // TODO: get the bound key rather than using "magic strings"
         UI_ELEMENT_ATTACK.setText(`[ space ] - ${details.to.name}`);
@@ -27,7 +27,7 @@ Events.Subscribe(Events.List.EquipmentChanged, function(details: EquipmentChange
 function onCooldownComplete(details: CooldownCompleteEvent) {
 
     const character = details.character;
-    const localPlayer = Playable.LocalPlayer;
+    const localPlayer = CharacterUtils.GetLocalPlayer();
     if(character && character.equals(localPlayer)) {
         UI_ELEMENT_ATTACK.removeClass('cooldown');
     }

@@ -4,7 +4,7 @@ import { createMock } from "../../testHelpers/helpers";
 import Entity from "../../../js/entities/character/Entity";
 import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
 import AI from "../../../js/ai/basic";
-import SentientEntity from "../../../js/entities/character/SentientEntity";
+import { MakeSentient, Sentient } from "../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -20,16 +20,16 @@ jest.mock('@/engine/js/ai/basic', () => {
 
 describe('Entity target', () => {
 
-    let entityUnderTest: SentientEntity;
+    let entityUnderTest: Entity & Sentient;
     let secondEntity: Entity;
     beforeEach(() => {
-        entityUnderTest = MakeCharacter([], {
+        entityUnderTest = MakeCharacter([MakeSentient], {
             ai: AI,
             position: {
                 x: 0,
                 y: 0
             }
-        }, SentientEntity) as SentientEntity;
+        }) as Entity & Sentient;
         secondEntity = new Entity({
             position: {
                 x: 1,

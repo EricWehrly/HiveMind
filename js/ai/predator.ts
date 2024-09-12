@@ -69,13 +69,18 @@ export default class PredatorAI extends AI {
 
     #shouldTarget() {
         return this.character.aggression > 0 
-            && (this.character.target == null || !(this.character.target instanceof Character));
+            && this.character.aggressionRange > 0
+            && !this.targetEntity;
     }
 
     #shouldAttack() {
 
-        return this.character.target instanceof Character
-            && this.equippedAttack && this.equippedAttack.damage > 0;
+        const targetRange = this.targetEntity?.position?.distance(this.character.position);
+
+        return this.targetEntity
+            && this.equippedAttack && this.equippedAttack.damage > 0
+            // TODO: better consolidated, consistent, extensible 'range' check
+            && this.equippedAttack.range >= targetRange;
     }
 
     #attack() {
