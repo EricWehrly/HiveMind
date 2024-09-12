@@ -1,13 +1,14 @@
 import Menu from '../engine/js/ui/menu';
-import { RegisterLoopMethod } from '../engine/js/loop.mjs';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import Action from '../engine/js/action';
 import { Living } from '../engine/js/entities/character/mixins/Living';
 import Events from '../engine/js/events';
 import { CharacterUtils } from '../engine/js/entities/character/CharacterUtils';
 import { Sentient } from '../engine/js/entities/character/mixins/Sentient';
+import { CharacterTargetChangedEvent } from '../engine/js/ai/basic';
+import Entity from '../engine/js/entities/character/Entity';
 
-function checkPlayerInteraction() {
+function updatePlayerTooltip(character: Entity) {
 
     const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter & Sentient;
     const closest = localPlayer.ai.targetEntity as HiveMindCharacter & Living;
@@ -43,8 +44,10 @@ function checkPlayerInteraction() {
     localPlayer.toolTip.message = closest.toolTipMessage || '';
 }
 
-// we can limit this to when local player moves
-// this implementation is lazy but should technically work fine
-Events.Subscribe(Events.List.GameStart, () => {
-    RegisterLoopMethod(checkPlayerInteraction, false);
-});
+function onCharacterTargetChanged(event: CharacterTargetChangedEvent) {
+    if(CharacterUtils.IsLocalPlayer(event.character)) {
+        updatePlayerTooltip(event.character);
+    }
+}
+
+Events.Subscribe(Events.List.CharacterTargetChanged, onCharacterTargetChanged);

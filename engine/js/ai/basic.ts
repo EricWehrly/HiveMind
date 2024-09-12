@@ -4,13 +4,19 @@ import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Entity from "../entities/character/Entity";
 import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
 import { Sentient } from "../entities/character/mixins/Sentient";
-import Events from "../events";
+import Events, { GameEvent } from "../events";
 import { Defer } from '../loop.mjs';
 
 const MS_BETWEEN_WANDER_DESTINATIONS = 30000;   // 30 seconds
 const MS_LEASH_COOLDOWN = 3000;
 
-// declare CharacterTargetChanged ? 
+Events.List.CharacterTargetChanged = "CharacterTargetChanged";
+
+export interface CharacterTargetChangedEvent extends GameEvent {
+    character: Entity;
+    from: Entity | WorldCoordinate;
+    to: Entity | WorldCoordinate;
+}
 
 export enum EntityRelationshipType {
     Friendly,
@@ -54,12 +60,14 @@ export default class AI {
 
         const oldValue = this._targetEntity;
         this._targetEntity = newValue;
-
-        Events.RaiseEvent(Events.List.CharacterTargetChanged, {
-            character: this,
+        const options: CharacterTargetChangedEvent = {
+            id: null,
+            character: this.character,
             from: oldValue,
             to: this._targetEntity
-        });
+        }
+
+        Events.RaiseEvent(Events.List.CharacterTargetChanged, options);
     }
 
     constructor(character: Entity & Sentient) {
