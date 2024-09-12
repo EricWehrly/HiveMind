@@ -37,6 +37,7 @@ import './characterStats';
 import "./ui/goal";
 import { MakePlayable } from '../engine/js/entities/character/mixins/Playable';
 import PlayerAI from '../engine/js/ai/Player';
+import { MakeSentient } from '../engine/js/entities/character/mixins/Sentient';
 
 new MessageLog({
     name: "Combat",
@@ -72,7 +73,7 @@ const food = new Resource({
 // maybe this number should scale over time
 food.reserve(100, {});
 
-const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative], {
+const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative, MakeSentient], {
     name: "Local Player",
     color: "blue",
     speed: 5,

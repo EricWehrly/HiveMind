@@ -1,4 +1,3 @@
-import Character from '../../engine/js/entities/character';
 import CharacterType from './CharacterType';
 import Menu, { MenuAction } from '../../engine/js/ui/menu';
 import { SCREEN_ZONE, UI_ELEMENT_TYPE } from '../../engine/js/ui/ui-element';
@@ -8,8 +7,9 @@ import NodeAI, { BuildingDesiredEvent } from '../ai/node';
 import Building from './building';
 import MenuItem from '../../engine/js/ui/MenuItem';
 import MakeCharacterType from './CharacterTypeFactory';
-import Playable from '../../engine/js/entities/character/mixins/Playable';
 import { Combative } from '../../engine/js/entities/character/mixins/Combative';
+import { CharacterUtils } from '../../engine/js/entities/character/CharacterUtils';
+import Entity from '../../engine/js/entities/character/Entity';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
@@ -25,7 +25,7 @@ const BuildFromMenu = function (context: MenuAction) {
         return;
     }
 
-    const player = Playable.LocalPlayer as Character & Combative;
+    const player = CharacterUtils.GetLocalPlayer() as Entity & Combative;
 
     const options = {
         position: player.position,

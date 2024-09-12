@@ -1,6 +1,6 @@
+import { CharacterUtils } from "../../engine/js/entities/character/CharacterUtils";
 import Entity from "../../engine/js/entities/character/Entity";
 import { Combative } from "../../engine/js/entities/character/mixins/Combative";
-import Playable from "../../engine/js/entities/character/mixins/Playable";
 import StatusEffect from "../../engine/js/StatusEffect";
 import Technology from "../../engine/js/technology";
 import { TechnologyTypes } from "../../engine/js/TechnologyTypes";
@@ -70,7 +70,7 @@ new Technology({
 
 function makeThornier() {
 
-    const combativePlayer = Playable.LocalPlayer as unknown as Entity & Combative;
+    const combativePlayer = CharacterUtils.GetLocalPlayer() as unknown as Entity & Combative;
 
     combativePlayer.thornMultiplier++;
 }

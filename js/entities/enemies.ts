@@ -8,6 +8,7 @@ import { MakeLiving } from '../../engine/js/entities/character/mixins/Living';
 import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative';
 import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped';
 import MakeCharacterType from './CharacterTypeFactory';
+import { MakeSentient } from '../../engine/js/entities/character/mixins/Sentient';
 
 MakeCharacterType({
     name: "Animal",
@@ -81,7 +82,7 @@ function spawnFauna(event: ChunkEvent) {
             ai: PredatorAI
         };
         Object.assign(spawnOpts, characterOpts);
-        MakeHiveMindCharacter([MakeLiving, MakeCombative, MakeEquipped], spawnOpts);
+        MakeHiveMindCharacter([MakeLiving, MakeCombative, MakeEquipped, MakeSentient], spawnOpts);
     }
 }
 

@@ -2,11 +2,11 @@ import mockEvents from "../../testHelpers/mockEvents";
 import mockMap from "../../testHelpers/mockMap";
 import { createMock } from "../../testHelpers/helpers";
 import Entity from "../../../js/entities/character/Entity";
-import SentientEntity from "../../../js/entities/character/SentientEntity";
 import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
 import PlayerAI from "../../../js/ai/Player";
 import { MakeEquipped } from "../../../js/entities/character/mixins/Equipped";
-import AI from "../../../js/ai/basic";
+import { MakeSentient, Sentient } from "../../../js/entities/character/mixins/Sentient";
+import { Playable } from "../../../js/entities/character/mixins/Playable";
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/events', () => mockEvents);
@@ -24,13 +24,13 @@ jest.mock('@/engine/js/entities/character', () => createMock);
 
 describe('Player.think', () => {
 
-    let entityUnderTest: Entity & SentientEntity;
+    let entityUnderTest: Entity & Sentient & Playable;
     let secondEntity: Entity;
     beforeEach(() => {
-        entityUnderTest = MakeCharacter([MakeEquipped], {
+        entityUnderTest = MakeCharacter([MakeEquipped, MakeSentient], {
             ai: PlayerAI,
             isPlayer: true
-        }, SentientEntity) as Entity & SentientEntity
+        }) as Entity & Sentient & Playable;
         secondEntity = MakeCharacter([], {});
     });
     

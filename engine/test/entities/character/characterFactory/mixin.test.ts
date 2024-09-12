@@ -1,6 +1,5 @@
 import mockMap from "../../../testHelpers/mockMap";
 import { Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
-import SentientEntity from "../../../../js/entities/character/SentientEntity";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
 
@@ -92,11 +91,14 @@ describe('ChacterFactory.MakeCharacter', () => {
     });
 
     describe('extended class', () => {
+
+        class TestExtendedEntity extends Entity {};
+
         it('should instantiate as a class that extends the base', () => {
             const character = MakeCharacter([MakeLiving], {
                 cost: 1
-            }, SentientEntity);
-            expect(character instanceof SentientEntity).toBeTruthy();
+            }, TestExtendedEntity);
+            expect(character instanceof TestExtendedEntity).toBeTruthy();
         });
     });
 });

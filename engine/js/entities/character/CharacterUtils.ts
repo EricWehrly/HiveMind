@@ -4,10 +4,10 @@ import Character from "../character";
 import { EquippedTechnology } from "../equipment";
 import Entity from "./Entity";
 import { Equipped } from "./mixins/Equipped";
-import Playable from "./mixins/Playable";
+import { GetLocalPlayer as getLocalPlayer } from './mixins/Playable';
 
 function GetLocalPlayer(): Entity {
-    return Playable.LocalPlayer;
+    return getLocalPlayer();
 }
 
 function IsLocalPlayer(player: Entity): boolean {

@@ -2,7 +2,6 @@ import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import { EntityMixin, MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
 import Entity from "../../../../../js/entities/character/Entity";
-import PlayableEntity from "../../../../../js/entities/character/PlayableEntity";
 import { Combative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
 import { Equipped, MakeEquipped } from "../../../../../js/entities/character/mixins/Equipped";
 import Technology from "../../../../../js/technology";
@@ -25,7 +24,7 @@ describe('Combative', () => {
                 name: 'Player',
                 isPlayer: true
             });
-            let attacker: PlayableEntity & Combative & Equipped;
+            let attacker: Entity & Combative & Equipped;
             let target: Entity;
             const tech: Technology = new Technology({
                 name: 'Test',
