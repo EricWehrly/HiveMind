@@ -1,6 +1,4 @@
-import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
 import HiveMindCharacter from "../character/HiveMindCharacter";
-import { IsEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 import CharacterPurpose from "./CharacterPurpose";
 import { CharacterUtils } from "../../../engine/js/entities/character/CharacterUtils";
 import { Combative } from "../../../engine/js/entities/character/mixins/Combative";
@@ -15,22 +13,24 @@ new CharacterPurpose({
     amount: 5,
     think(character: HiveMindCharacter, elapsed: number) {
 
+        const that = this as CharacterPurpose;
+
         const timeSinceLastHeal = performance.now() - character.lastHeal;
         if (character.lastHeal != null
-            && timeSinceLastHeal < this.interval) {
+            && timeSinceLastHeal < that.interval) {
             return;
         }
 
         const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter & Combative;
         const closest = character.getClosestEntity({
-            distance: this.range,
+            distance: that.range,
             // TODO: 'faction' has to be pushed further down the stack for this to work <3
             faction: localPlayer.faction
         }) as Entity & Living;
 
         if(closest && IsLiving(closest)) {
             const maxHeal = closest.maxHealth - closest.health;
-            const amountToHeal = Math.min(maxHeal, this.amount);
+            const amountToHeal = Math.min(maxHeal, that.amount);
             if(amountToHeal < 1) return;
 
             const food = Resource.Get("food")?.value || 0;
