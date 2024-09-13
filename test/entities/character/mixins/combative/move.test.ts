@@ -3,9 +3,9 @@ import mockEvents from '../../../../testHelpers/mockEvents';
 import { createMock } from '../../../../testHelpers/helpers';
 import mockMap from '../../../../testHelpers/mockMap';
 import AI from '../../../../../js/ai/basic';
-import Entity from '../../../../../js/entities/character/Entity';
+import Entity, { EntityOptions } from '../../../../../js/entities/character/Entity';
 import { MakeCharacter } from '../../../../../js/entities/character/CharacterFactory';
-import { MakeSentient, Sentient } from '../../../../../js/entities/character/mixins/Sentient';
+import { MakeSentient, Sentient, SentientOptions } from '../../../../../js/entities/character/mixins/Sentient';
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -20,13 +20,14 @@ describe('Combative.move', () => {
     let sentientEntity_underTest: Entity & Sentient;
     let secondEntity: Entity;
     beforeEach(() => {
-        sentientEntity_underTest = MakeCharacter([MakeSentient], {
+        const options: EntityOptions & SentientOptions = {
             ai: AI,
             position: {
                 x: 0,
                 y: 0
             }
-        }) as Entity & Sentient;
+        }
+        sentientEntity_underTest = MakeCharacter([MakeSentient], options) as Entity & Sentient;
         secondEntity = MakeCharacter([], {
             position: {
                 x: 2,

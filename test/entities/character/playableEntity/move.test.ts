@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import Vector from '../../../../js/baseTypes/Vector';
 import { MakeCharacter } from '../../../../js/entities/character/CharacterFactory';
-import { MakePlayable, Playable } from '../../../../js/entities/character/mixins/Playable';
-import Entity from '../../../../js/entities/character/Entity';
+import { MakePlayable, Playable, PlayableOptions } from '../../../../js/entities/character/mixins/Playable';
+import Entity, { EntityOptions } from '../../../../js/entities/character/Entity';
 
 // TODO: fix this mocking when we move events to ts
 jest.mock('@/engine/js/events', () => {
@@ -42,13 +42,14 @@ describe('Playable.move', () => {
     let entity: Entity & Playable;
 
     beforeEach(() => {
-        entity = MakeCharacter([MakePlayable], {
+        const options: EntityOptions & PlayableOptions = {
             isPlayer: true,
             position: {
                 x: 1,
                 y: 1
             }
-        }) as Entity & Playable;
+        }
+        entity = MakeCharacter([MakePlayable], options) as Entity & Playable;
         entity.desiredMovementVector = new Vector(1, 1);
         entity.isPlayer = true;
     });
