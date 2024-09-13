@@ -18,13 +18,14 @@ export interface CharacterFilterOptions {
     characterProperties?: { [key: string]: any };
 }
 
-export interface EntityOptions { 
+export interface EntityOptions extends WorldObjectOptions {
     id?: string;
     name?: string;
     speed?: number;
     characterType?: CharacterType;
     entityRenderingSettings?: EntityRenderingSettings;
     color?: string;
+    cost?: number;
 }
 
 interface SortingEntity {

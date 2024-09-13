@@ -1,13 +1,14 @@
 import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import { EntityMixin, MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import Entity from "../../../../../js/entities/character/Entity";
+import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
 import { Combative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
-import { Equipped, MakeEquipped } from "../../../../../js/entities/character/mixins/Equipped";
+import { Equipped, EquippedOptions, MakeEquipped } from "../../../../../js/entities/character/mixins/Equipped";
 import Technology from "../../../../../js/technology";
 import { TechnologyTypes } from "../../../../../js/TechnologyTypes";
-import { MakeLiving } from "../../../../../js/entities/character/mixins/Living";
-import { MakePlayable } from "../../../../../js/entities/character/mixins/Playable";
+import { LivingOptions, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
+import { MakePlayable, PlayableOptions } from "../../../../../js/entities/character/mixins/Playable";
+import { SentientOptions } from "../../../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -20,10 +21,11 @@ jest.mock('@/engine/js/loop.mjs', () => ({
 describe('Combative', () => {
     describe('attack', () => {
         describe('volume', () => {
-            const localPlayer = MakeCharacter([MakePlayable], {
+            const options: EntityOptions & PlayableOptions = {
                 name: 'Player',
                 isPlayer: true
-            });
+            }
+            const localPlayer = MakeCharacter([MakePlayable], options);
             let attacker: Entity & Combative & Equipped;
             let target: Entity;
             const tech: Technology = new Technology({
@@ -32,8 +34,8 @@ describe('Combative', () => {
             });
             const playSoundSpy = jest.spyOn(tech, 'playSound');//.mockImplementation(() => {});
 
-            function makeAttacker(distance: number) {                
-                attacker = MakeCharacter([MakeEquipped, MakeCombative as EntityMixin], {
+            function makeAttacker(distance: number) {
+                const options: EntityOptions & SentientOptions & EquippedOptions = {
                     ai: null,
                     name: 'Reference',
                     position: {
@@ -43,18 +45,20 @@ describe('Combative', () => {
                     technologies: [
                         tech
                     ],
-                    range: 5
-                });
+                    // range: 5
+                }
+                attacker = MakeCharacter([MakeEquipped, MakeCombative as EntityMixin], options);
             }
             function makeTarget(distance: number) {
-                target = MakeCharacter([MakeLiving, MakeCombative as EntityMixin], {
+                const options: EntityOptions & LivingOptions = {
                     name: 'targetEntity',
                     health: 100,
                     position: {
                         x: distance,
                         y: 0
                     }
-                });
+                }
+                target = MakeCharacter([MakeLiving, MakeCombative as EntityMixin], options);
             }
         
             it('should be 0 at distance 100', () => {

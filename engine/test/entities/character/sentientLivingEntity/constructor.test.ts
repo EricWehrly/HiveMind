@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import mockMap from '../../../testHelpers/mockMap';
 import AI from '../../../../js/ai/basic';
 import { MakeCharacter } from '../../../../js/entities/character/CharacterFactory';
-import { MakeSentient, Sentient } from '../../../../js/entities/character/mixins/Sentient';
-import Entity from '../../../../js/entities/character/Entity';
+import { MakeSentient, Sentient, SentientOptions } from '../../../../js/entities/character/mixins/Sentient';
+import Entity, { EntityOptions } from '../../../../js/entities/character/Entity';
 
 jest.mock('@/engine/js/ai/basic', () => {
     return {
@@ -39,9 +39,10 @@ jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('SentientEntity.ctor', () => {
     it('should have no ai if null is passed', () => {
-        const sentientEntity = MakeCharacter([MakeSentient], {
+        const options: EntityOptions & SentientOptions = {
             ai: null
-        }) as Entity & Sentient;
+        }
+        const sentientEntity = MakeCharacter([MakeSentient], options) as Entity & Sentient;
 
         expect(sentientEntity.ai).toBeUndefined();
     });
@@ -53,9 +54,10 @@ describe('SentientEntity.ctor', () => {
     });
 
     it('should make a new ai instance if a type is passed', () => {
-        const sentientEntity = MakeCharacter([MakeSentient], {
+        const options: EntityOptions & SentientOptions = {
             ai: AI
-        }) as Entity & Sentient;;
+        }
+        const sentientEntity = MakeCharacter([MakeSentient], options) as Entity & Sentient;;
 
         expect(sentientEntity.ai instanceof AI).toBe(true);
     });

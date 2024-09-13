@@ -2,6 +2,7 @@ import mockMap from "../../../testHelpers/mockMap";
 import { Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
+import { SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => {
     return {
@@ -38,10 +39,11 @@ jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('ChacterFactory.MakeCharacter', () => {
 
-    const referenceEntity = MakeCharacter([], {
+    const options: EntityOptions & SentientOptions = {
         ai: null,
         name: 'Reference'
-    });
+    }
+    const referenceEntity = MakeCharacter([], options);
 
     describe('no mixins', () => {
         it('should construct a valid entity', () => {
@@ -95,9 +97,10 @@ describe('ChacterFactory.MakeCharacter', () => {
         class TestExtendedEntity extends Entity {};
 
         it('should instantiate as a class that extends the base', () => {
-            const character = MakeCharacter([MakeLiving], {
+            const options: EntityOptions = {
                 cost: 1
-            }, TestExtendedEntity);
+            };
+            const character = MakeCharacter([MakeLiving], options, TestExtendedEntity);
             expect(character instanceof TestExtendedEntity).toBeTruthy();
         });
     });
