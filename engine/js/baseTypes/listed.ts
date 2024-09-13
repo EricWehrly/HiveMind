@@ -4,12 +4,17 @@ export default class Listed {
 
     static Get<T extends Listed>(this: new (...args: any[]) => T, item: string | { name: string }): T | null {
         const list = (this as any).List;
+        const lowerCaseList = Object.keys(list).reduce((acc, key) => {
+            acc[key.toLowerCase()] = list[key];
+            return acc;
+        }, {} as { [key: string]: T });
         if(typeof item == "string") {
-            if(!list.hasOwnProperty(item)) {
+            const lowerCaseItem = item.toLowerCase();
+            if(!lowerCaseList.hasOwnProperty(lowerCaseItem)) {
                 console.warn(`Listed ${this.name} does not contain ${item}.`);
                 return null;
             }
-            return list[item] as T;
+            return lowerCaseList[lowerCaseItem] as T;
         }
         else if(item?.name) return list[item.name] as T;
         else {
