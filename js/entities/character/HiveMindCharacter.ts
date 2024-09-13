@@ -1,7 +1,6 @@
 import CharacterAttribute from '../../../engine/js/entities/character-attribute';
 import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
-import Purposes from '../purposes/character-purposes';
 import Entity, { EntityOptions } from '../../../engine/js/entities/character/Entity';
 import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/Living';
 import { IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
@@ -9,6 +8,7 @@ import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equippe
 import { CharacterUtils } from '../../../engine/js/entities/character/CharacterUtils';
 import { IsSentient, Sentient } from '../../../engine/js/entities/character/mixins/Sentient';
 import { IsPlayable, Playable } from '../../../engine/js/entities/character/mixins/Playable';
+import CharacterPurpose from '../purposes/CharacterPurpose';
 
 export interface HivemindCharacterOptions {
     calledByFactory: boolean;
@@ -19,11 +19,10 @@ export default class HiveMindCharacter extends Character {
 
     static get SUBDIVIDE_COST() { return 10; }
 
-    static Purposes = Purposes;
-
     // TODO: constrain this to possible purposes, maybe by migrating type to purpose instead
     // (...once purpose is a proper class :/ )
     private _currentPurposeKey: string = null;
+    private _purpose: CharacterPurpose;
     // this should be managed as a 'dynmic' property ... 
     // we're only attaching it to the character because we want it garbage collected there
     lastHeal: number = 0;
@@ -34,8 +33,14 @@ export default class HiveMindCharacter extends Character {
         return this.#spawnTargets;
     }
 
-    get purpose () { return HiveMindCharacter.Purposes[this._currentPurposeKey]; }
-    set currentPurposeKey(value: string) { this._currentPurposeKey = value; }
+    get purpose() { return this._purpose; }
+    // just use purpose setter that takes string or characterpurpose?
+    set currentPurposeKey(value: string) {
+        if(value == undefined) return;
+
+        this._currentPurposeKey = value;
+        this._purpose = CharacterPurpose.Get(this._currentPurposeKey);
+    }
 
     // TODO: Mark this private and use a static create (makes the class not extensible)
     // once we've turned Building into a mixin ... maybe?
@@ -44,11 +49,11 @@ export default class HiveMindCharacter extends Character {
             debugger;
             console.warn(`HiveMindCharacter should be created by the factory.`);
         }
-        const key = options.currentPurposeKey;
-        delete options.currentPurposeKey;
+        // const key = JSON.stringify(options.currentPurposeKey);
+        // delete options.currentPurposeKey;
         super(options);
 
-        this._currentPurposeKey = key;
+        this.currentPurposeKey = options.currentPurposeKey;
 
         this.addAttribute(new CharacterAttribute({
             name: 'Strength',
@@ -117,10 +122,6 @@ export default class HiveMindCharacter extends Character {
         }
 
         return toolTipMessage;
-    }
-
-    SetCurrentPurpose = function (newPurpose: string) {
-        this._currentPurposeKey = newPurpose;
     }
 
     canAfford(amount: number) {

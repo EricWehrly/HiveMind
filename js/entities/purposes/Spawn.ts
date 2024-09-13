@@ -1,36 +1,19 @@
+import Entity from "../../../engine/js/entities/character/Entity";
 import Technology from "../../../engine/js/technology";
 import HiveMindCharacter from "../character/HiveMindCharacter";
-import Purposes from "./character-purposes";
-import CharacterType from "../CharacterType";
-import { Slimey } from "../character/mixins/Slimey";
 import { Grower } from "../character/mixins/Grower";
-import { Sentient } from "../../../engine/js/entities/character/mixins/Sentient";
+import { Slimey } from "../character/mixins/Slimey";
+import CharacterType from "../CharacterType";
+import CharacterPurpose from "./CharacterPurpose";
 
-Purposes["return"] = {
-    // do not show this one in menus!
-    name: "return",
-    // TODO: remove the need for "slime" purpose, and purpose needs to be pushed down to 'character'
-    think: function (character: HiveMindCharacter & Slimey & Sentient, elapsed: number) {
-
-        if (!character.target) {
-            character.target = character.parent;
-        }
-        character.pointAtTarget(character.ai.targetPosition);
-
-        // TODO: if collision boxes overlap ..
-        // if(character.targetEntity.area.contains(character.position)) {
-        if (character.position.near(character.ai.targetPosition)) {
-            character.Reabsorb();
-        }
-    }
-};
-
-// TODO: structure this better so that it can be tested
+// TODO: write a test for this
 // we kind of need to be able to "ask" if the thing to be spawned can do what it's purpose should be
-Purposes["spawn"] = {
-    name: "spawn",
+new CharacterPurpose({
+    name: "Spawn",
     interval: 3000,
-    think: function (character: HiveMindCharacter & Slimey & Grower, elapsed: number) {
+    think(entity: Entity, elapsed: number) {
+
+        const character = entity as HiveMindCharacter & Grower & Slimey;
 
         // we could probably track "amount elapsed" in the character, 
         // rather than needing to call performance.now here
@@ -68,6 +51,6 @@ Purposes["spawn"] = {
             }
         }
 
-        character.lastSpawn = performance.now();
-    }
-}
+        character.lastSpawn = performance.now();        
+    },
+});

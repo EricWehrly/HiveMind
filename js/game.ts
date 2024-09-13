@@ -7,7 +7,6 @@ import './data/biomeTypes'
 
 // Functionality
 import KeyboardController from './controls/keyboard-controller.mjs';
-import Character from '../engine/js/entities/character';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import { MakeSlimey } from './entities/character/mixins/Slimey';
 import { MakeHiveMindCharacter } from './entities/character/HivemindCharacterFactory';
@@ -26,8 +25,7 @@ import MessageLog from '../engine/js/core/messageLog.mjs';
 // hack, until we convert Actions to proper ts
 import './actions';
 import './interaction';
-import './entities/purposes/slime-purposes';
-import './entities/purposes/growth-purposes';
+import './entities/purposes/CharacterPurposes';
 import { MakeLiving } from '../engine/js/entities/character/mixins/Living';
 import { Equipped, MakeEquipped } from '../engine/js/entities/character/mixins/Equipped';
 import { MakeCombative } from '../engine/js/entities/character/mixins/Combative';

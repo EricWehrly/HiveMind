@@ -1,3 +1,6 @@
+are 'node's not growing? not thinking?
+only the first seems to 'do', maybe?
+
 only play 'wrong' sound for player actions
 
 spawned by player seems to be unable to consume

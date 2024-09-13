@@ -1,10 +1,9 @@
 // TODO: Can we figure out a way to import these from 'data' better?
-
-import Purposes from "./entities/purposes/character-purposes";
 import Action from "../engine/js/action";
 import Entity from "../engine/js/entities/character/Entity";
 import { Slimey } from "./entities/character/mixins/Slimey";
 import { CharacterUtils } from "../engine/js/entities/character/CharacterUtils";
+import CharacterPurpose from "./entities/purposes/CharacterPurpose";
 
 // this should move down to the engine once we ts it
 interface ActionOptions {
@@ -33,8 +32,10 @@ new Action({
     delay: 1000,
     callback: function (options: ActionOptions) {
 
+        const purpose = CharacterPurpose.Get("study");
+
         const piece = options.character.Subdivide({
-            purpose: Purposes["study"],
+            purpose,
             target: ActionList["study"].target
         });
     }
@@ -50,9 +51,10 @@ new Action({
     callback: function (options: ActionOptions) {
 
         const playerAttack = CharacterUtils.GetPlayerEquippedAttack();
+        const purpose = CharacterPurpose.Get("study");
 
         options.character.Subdivide({
-            purpose: Purposes["consume"],
+            purpose,
             target: ActionList["consume"].target,
             technologies: [playerAttack]
         });

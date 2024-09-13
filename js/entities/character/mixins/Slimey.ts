@@ -7,6 +7,7 @@ import Entity, { CharacterFilterOptions } from "../../../../engine/js/entities/c
 import { Combative, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
 import { MakeSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 import { HiveMindCharacterAI } from "../../../ai/HivemindCharacterAi";
+import CharacterPurpose from "../../purposes/CharacterPurpose";
 
 export interface SubdivideOptions {
     amount?: number;
@@ -40,7 +41,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
     
             const amount = options.amount || HiveMindCharacter.SUBDIVIDE_COST;
             let purpose;
-            if (options.purposeKey) purpose = HiveMindCharacter.Purposes[options.purposeKey];
+            if (options.purposeKey) purpose = CharacterPurpose.Get(options.purposeKey);
             else if (options.purpose) purpose = options.purpose;
             // else if not in that array ...
             else purpose = this.purpose;

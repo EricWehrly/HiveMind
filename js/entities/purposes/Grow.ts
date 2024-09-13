@@ -1,15 +1,16 @@
+import Point from "../../../engine/js/coordinates/point";
 import WorldCoordinate from "../../../engine/js/coordinates/WorldCoordinate";
 import Entity from "../../../engine/js/entities/character/Entity";
 import { MakeCombative } from "../../../engine/js/entities/character/mixins/Combative";
 import { MakeEquipped } from "../../../engine/js/entities/character/mixins/Equipped";
 import { MakeLiving } from "../../../engine/js/entities/character/mixins/Living";
+import { MakeSentient } from "../../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../../engine/js/entities/resource";
-import { MakeHiveMindCharacter } from "../character/HivemindCharacterFactory";
 import HiveMindCharacter from "../character/HiveMindCharacter";
+import { MakeHiveMindCharacter } from "../character/HivemindCharacterFactory";
 import { Growable, MakeGrowable } from "../character/mixins/Growable";
 import { Grower } from "../character/mixins/Grower";
-import Purposes from "./character-purposes";
-import Point from "../../../engine/js/coordinates/point";
+import CharacterPurpose from "./CharacterPurpose";
 
 function randomPositionOffset(source: Readonly<Point>, offsetAmountPerAxis: number) {
 
@@ -21,17 +22,19 @@ function randomPositionOffset(source: Readonly<Point>, offsetAmountPerAxis: numb
     return new WorldCoordinate(source.x + xOffset, source.y + yOffset);
 }
 
-Purposes["grow"] = {
-    name: "grow",
-    think: function (character: Entity & Grower, elapsed: number) {
+new CharacterPurpose({
+    name: "Grow",
+    think(character: Entity, elapsed) {
 
-        if (!character.growing) character.growing = [];
-        const growing = character.growing.filter(growing => growing.growth < 100)
+        const grower = character as Entity & Grower;
+
+        if (!grower.growing) grower.growing = [];
+        const growing = grower.growing.filter(growing => growing.growth < 100)
             || [];
-        if (growing.length < character.growerConfig.batchSize
-            && character.growing.length < character.growerConfig.max) {
+        if (growing.length < grower.growerConfig.batchSize
+            && grower.growing.length < grower.growerConfig.max) {
 
-            const subject = character.growerConfig.subject;
+            const subject = grower.growerConfig.subject;
 
             const food = Resource.Get("food");
             // Building.#FOOD_THRESHOLD ?
@@ -42,22 +45,23 @@ Purposes["grow"] = {
             }
 
             // TODO: need to instrument range, maybe growConfig.range?
-            const position = randomPositionOffset(character.position, 5)
+            const position = randomPositionOffset(grower.position, 5)
             // check if we have the food to do this
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
             const options = {
-                characterType: character.growerConfig.subject,
+                characterType: grower.growerConfig.subject,
                 position,
-                ...character.growerConfig.subject
+                ...grower.growerConfig.subject
             };
-            const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving, MakeCombative, MakeEquipped], options) as HiveMindCharacter & Growable;
+            // does this really need to be sentient tho?
+            const newGrow = MakeHiveMindCharacter([MakeGrowable, MakeLiving, MakeCombative, MakeEquipped, MakeSentient], options) as HiveMindCharacter & Growable;
             if(!food.reserve(subject.characterType.health, newGrow)) {
                 console.warn(`The food was available but isn't now?`);
                 return;
             }
-            newGrow.grow(character.growerConfig.interval);
-            character.growing.push(newGrow);
-        }
-    }
-}
+            newGrow.grow(grower.growerConfig.interval);
+            grower.growing.push(newGrow);
+        }        
+    },
+});

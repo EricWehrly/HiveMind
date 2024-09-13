@@ -19,7 +19,7 @@ export class HiveMindCharacterAI extends AI {
         // maybe the purposes should be specific AI implementations instead ...
         if (this.hiveMindCharacter.purpose) {
             if(origTarget) this.targetEntity = origTarget;
-            this.hiveMindCharacter.purpose.think(this, elapsed);
+            this.hiveMindCharacter.purpose.think(this.hiveMindCharacter, elapsed);
         }
     }
 
