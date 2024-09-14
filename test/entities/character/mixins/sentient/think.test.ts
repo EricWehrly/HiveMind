@@ -3,7 +3,8 @@ import mockMap from "../../../../testHelpers/mockMap";
 import HiveMindCharacter from "../../../../../../js/entities/character/HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../../../../../../js/entities/character/HivemindCharacterFactory";
 import AI from "../../../../../js/ai/basic";
-import { MakeSentient, Sentient } from "../../../../../js/entities/character/mixins/Sentient";
+import { MakeSentient, Sentient, SentientOptions } from "../../../../../js/entities/character/mixins/Sentient";
+import { EntityOptions } from "../../../../../js/entities/character/Entity";
 
 let mockCalled = false;
 
@@ -20,9 +21,10 @@ describe('Sentient.think', () => {
 
     it('will call think if it has ai', () => {
         
-        const sentientEntity = MakeHiveMindCharacter([MakeSentient], {
+        const options: EntityOptions & SentientOptions = {
             ai: mockAI
-        }) as HiveMindCharacter & Sentient;
+        };
+        const sentientEntity = MakeHiveMindCharacter([MakeSentient], options) as HiveMindCharacter & Sentient;
         expect(sentientEntity.ai).toBeDefined();
         sentientEntity.ai.think(0);
         expect(mockCalled).toBe(true);
