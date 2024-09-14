@@ -26,16 +26,17 @@ import MessageLog from '../engine/js/core/messageLog.mjs';
 import './actions';
 import './interaction';
 import './entities/purposes/CharacterPurposes';
-import { MakeLiving } from '../engine/js/entities/character/mixins/Living';
+import { LivingOptions, MakeLiving } from '../engine/js/entities/character/mixins/Living';
 import { Equipped, MakeEquipped } from '../engine/js/entities/character/mixins/Equipped';
-import { MakeCombative } from '../engine/js/entities/character/mixins/Combative';
+import { CombativeOptions, MakeCombative } from '../engine/js/entities/character/mixins/Combative';
 import { MakeGrower } from './entities/character/mixins/Grower';
 
 import './characterStats';
 import "./ui/goal";
-import { MakePlayable } from '../engine/js/entities/character/mixins/Playable';
+import { MakePlayable, PlayableOptions } from '../engine/js/entities/character/mixins/Playable';
 import PlayerAI from '../engine/js/ai/Player';
-import { MakeSentient } from '../engine/js/entities/character/mixins/Sentient';
+import { MakeSentient, SentientOptions } from '../engine/js/entities/character/mixins/Sentient';
+import { EntityOptions } from '../engine/js/entities/character/Entity';
 
 new MessageLog({
     name: "Combat",
@@ -71,7 +72,8 @@ const food = new Resource({
 // maybe this number should scale over time
 food.reserve(100, {});
 
-const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative, MakeSentient], {
+const options: EntityOptions & SentientOptions & PlayableOptions & LivingOptions
+    & { additionalClasses: string} = {
     name: "Local Player",
     color: "blue",
     speed: 5,
@@ -79,7 +81,8 @@ const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower,
     additionalClasses: "player",
     ai: PlayerAI,
     isPlayer: true
-}) as HiveMindCharacter & Equipped;
+}
+const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative, MakeSentient], options) as HiveMindCharacter & Equipped;
 localPlayer.controller = new KeyboardController({ character: localPlayer });
 window.LOCAL_PLAYER = localPlayer;
 

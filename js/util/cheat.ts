@@ -1,10 +1,10 @@
 import Character from "../../engine/js/entities/character";
 import { CharacterUtils } from "../../engine/js/entities/character/CharacterUtils";
-import Entity from "../../engine/js/entities/character/Entity";
-import { Combative, MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
+import Entity, { EntityOptions } from "../../engine/js/entities/character/Entity";
+import { Combative, CombativeOptions, MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
-import { MakeSentient } from "../../engine/js/entities/character/mixins/Sentient";
+import { MakeSentient, SentientOptions } from "../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../engine/js/entities/resource";
 import NodeAI from "../ai/node";
 import CharacterType from "../entities/CharacterType";
@@ -71,12 +71,13 @@ export default class Cheat {
         const characterType = CharacterType.List['Node'];
         const nodes: Entity[] = [];
         let lastPosition = CharacterUtils.GetLocalPlayer().position;
+        const options: EntityOptions & CombativeOptions & SentientOptions = {
+            characterType,
+            faction: playerFaction,
+            ai: NodeAI
+        };
         for(let i = 0; i < nodeCount; i++) {
-            nodes.push(MakeHiveMindCharacter([MakeGrower, MakeLiving, MakeSlimey, MakeCombative, MakeSentient], {
-                characterType,
-                faction: playerFaction,
-                ai: NodeAI
-            }, Building));
+            nodes.push(MakeHiveMindCharacter([MakeGrower, MakeLiving, MakeSlimey, MakeCombative, MakeSentient], options, Building));
             nodes[i].position = {
                 x: lastPosition.x + 1,
                 y: lastPosition.y + 9

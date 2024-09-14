@@ -1,11 +1,11 @@
 import Resource from "../../../../engine/js/entities/resource";
-import HiveMindCharacter from "../HiveMindCharacter";
+import HiveMindCharacter, { HivemindCharacterOptions } from "../HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../HivemindCharacterFactory";
-import { Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
-import { IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
+import { Living, LivingOptions, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
+import { EquippedOptions, IsEquipped, MakeEquipped } from "../../../../engine/js/entities/character/mixins/Equipped";
 import Entity, { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
-import { Combative, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
-import { MakeSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
+import { Combative, CombativeOptions, MakeCombative } from "../../../../engine/js/entities/character/mixins/Combative";
+import { MakeSentient, Sentient, SentientOptions } from "../../../../engine/js/entities/character/mixins/Sentient";
 import { HiveMindCharacterAI } from "../../../ai/HivemindCharacterAi";
 import CharacterPurpose from "../../purposes/CharacterPurpose";
 
@@ -63,7 +63,7 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 renderedName: purpose.name
             };
             const faction = (this as unknown as Combative).faction;
-            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient], {            
+            const characterOptions: HivemindCharacterOptions & LivingOptions & CombativeOptions & EquippedOptions & SlimeyOptions & SentientOptions = {
                 name,
                 health: amount,
                 maxHealth: amount * 2,  // only if consume? or in general is probly fine ... for now ...
@@ -74,7 +74,8 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
                 entityRenderingSettings,
                 parent: this,
                 ai: HiveMindCharacterAI
-            }) as HiveMindCharacter & Sentient;
+            }
+            const spawnedCharacter = MakeHiveMindCharacter([MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient], characterOptions) as HiveMindCharacter & Sentient;
             if (options.target instanceof Entity) spawnedCharacter.ai.targetEntity = options.target;
             console.debug(`Subdivided new character for ${spawnedCharacter.purpose.name}`);        
     

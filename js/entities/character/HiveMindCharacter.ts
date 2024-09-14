@@ -6,13 +6,12 @@ import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/L
 import { IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
 import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equipped';
 import { CharacterUtils } from '../../../engine/js/entities/character/CharacterUtils';
-import { IsSentient, Sentient } from '../../../engine/js/entities/character/mixins/Sentient';
-import { IsPlayable, Playable } from '../../../engine/js/entities/character/mixins/Playable';
+import { IsSentient } from '../../../engine/js/entities/character/mixins/Sentient';
+import { IsPlayable } from '../../../engine/js/entities/character/mixins/Playable';
 import CharacterPurpose from '../purposes/CharacterPurpose';
 
-export interface HivemindCharacterOptions {
-    calledByFactory: boolean;
-    currentPurposeKey: string;
+export interface HivemindCharacterOptions extends EntityOptions {
+    currentPurposeKey?: string;
 }
 
 export default class HiveMindCharacter extends Character {
@@ -44,7 +43,8 @@ export default class HiveMindCharacter extends Character {
 
     // TODO: Mark this private and use a static create (makes the class not extensible)
     // once we've turned Building into a mixin ... maybe?
-    constructor(options: EntityOptions & HivemindCharacterOptions) {
+    constructor(options: HivemindCharacterOptions) {
+        // @ts-expect-error
         if(!options.calledByFactory) {
             debugger;
             console.warn(`HiveMindCharacter should be created by the factory.`);

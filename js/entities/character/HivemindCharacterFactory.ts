@@ -1,5 +1,5 @@
 import { RunPostConstructMethods } from "../../../engine/js/entities/character/CharacterFactory";
-import HiveMindCharacter from "./HiveMindCharacter";
+import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter";
 
 // double check these values and then we can start using them ...
 // export const HivemindCharacter_Default_Classes = [MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient];
@@ -9,7 +9,7 @@ type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: 
 
 export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     mixins: EntityMixin[], 
-    options: any, 
+    options: HivemindCharacterOptions, 
     SuperClass: new (...args: any[]) => T = HiveMindCharacter as any
 ): T {
     let ExtendedCharacter = SuperClass;
@@ -17,6 +17,7 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
         ExtendedCharacter = mixin(ExtendedCharacter, options);
     }
     if(!options) options = {};
+    // @ts-expect-error
     options.calledByFactory = true;
     const character = new ExtendedCharacter(options) as T;
     RunPostConstructMethods(character);

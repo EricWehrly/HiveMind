@@ -6,7 +6,7 @@ import { MakeEquipped } from "../../../engine/js/entities/character/mixins/Equip
 import { MakeLiving } from "../../../engine/js/entities/character/mixins/Living";
 import { MakeSentient } from "../../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../../engine/js/entities/resource";
-import HiveMindCharacter from "../character/HiveMindCharacter";
+import HiveMindCharacter, { HivemindCharacterOptions } from "../character/HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../character/HivemindCharacterFactory";
 import { Growable, MakeGrowable } from "../character/mixins/Growable";
 import { Grower } from "../character/mixins/Grower";
@@ -49,8 +49,8 @@ new CharacterPurpose({
             // check if we have the food to do this
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
-            const options = {
-                characterType: grower.growerConfig.subject,
+            const options: HivemindCharacterOptions = {
+                characterType: grower.growerConfig.subject.characterType,
                 position,
                 ...grower.growerConfig.subject
             };
