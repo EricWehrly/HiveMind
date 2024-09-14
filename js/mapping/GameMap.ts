@@ -135,6 +135,7 @@ export default class GameMap {
             }
         }
         // TODO: determine BiomeType to use based on adjacent biomes
+        // TODO: This breaks if grasslands is not defined, which is wrong design in more than a few ways
         const biomeType = BiomeType.Get("Grasslands");
         const width = Math.round(this.Seed.Random(biomeType.minWidth, biomeType.maxWidth));
         const height = Math.round(this.Seed.Random(biomeType.minHeight, biomeType.maxHeight));
