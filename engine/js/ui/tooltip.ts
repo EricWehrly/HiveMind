@@ -32,10 +32,10 @@ export default class Tooltip extends UIElement {
     }
 
     set message(newValue) {
-        if(newValue == this._message) return;
-
-        this._message = newValue;
-        this.setText(this.message);
+        if(newValue != this._message) {
+            this._message = newValue;
+            this.setText(this.message);
+        }
         
         this.visible = this.message != "";
     }
