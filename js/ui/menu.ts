@@ -1,7 +1,6 @@
-import UIElement, { SCREEN_ZONE, UIElementOptions } from './ui-element';
+import UIElement, { UIElementOptions } from './ui-element';
 import Events from '../events';
 import Action from '../action';
-import UI from './ui';
 import MenuItem from './MenuItem';
 
 Events.List.MenuOpened = "MenuOpened";
