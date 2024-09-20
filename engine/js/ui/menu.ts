@@ -148,8 +148,8 @@ export default class Menu extends UIElement {
 
         if(options.menuAction) this.#menuAction = options.menuAction;
 
-        this._collapsed = options.collapsed;
-        this._collapsible = options.collapsed || options.collapsible;        
+        this.collapsed = options.collapsed;
+        this._collapsible = options.collapsed || options.collapsible;
         if (this._collapsible) this.addClass("collapsible");
 
         if(options.icon) {
