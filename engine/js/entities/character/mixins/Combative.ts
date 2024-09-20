@@ -1,7 +1,7 @@
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import GameSound from "../../../audio/GameSound";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
-import MessageLog from "../../../core/messageLog.mjs";
+import MessageLog from "../../../core/MessageLog";
 import Events, { GameEvent } from "../../../events";
 import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";

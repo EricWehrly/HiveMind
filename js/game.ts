@@ -20,7 +20,7 @@ import './entities/entities';
 import Resource from '../engine/js/entities/resource';
 
 import Cheat from './util/cheat';
-import MessageLog from '../engine/js/core/messageLog.mjs';
+import MessageLog, { RETENTION_STRATEGY } from '../engine/js/core/MessageLog';
 
 // hack, until we convert Actions to proper ts
 import './actions';
@@ -40,7 +40,7 @@ import { EntityOptions } from '../engine/js/entities/character/Entity';
 
 new MessageLog({
     name: "Combat",
-    retentionStrategy: MessageLog.RETENTION_STRATEGY.MESSAGE_COUNT,
+    retentionStrategy: RETENTION_STRATEGY.MESSAGE_COUNT,
     maxMessages: 5
 });
 
