@@ -1,28 +1,3 @@
-// I'm not really sure this is javascript language extension anymore ...
-export function AssignWithUnderscores(target, source) {
-
-  for (var key of Object.keys(source)) {
-
-    if (target["_" + key]) {
-
-      // this doesn't work correctly with values passed in that are instantiated objects.
-      target["_" + key] = source[key];
-      try {
-        delete source[key];
-      } catch (ex) {
-        // TODO: log
-      }
-    }
-
-    // TODO: if source[key] has keys
-    // object assign the value
-    // recursively ...
-  }
-
-  mergeDeep(target, source);
-  // Object.assign(target, source);
-}
-
 /**
  * Simple object check.
  * @param item

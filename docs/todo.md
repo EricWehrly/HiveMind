@@ -1,16 +1,90 @@
+are 'node's not growing? not thinking?
+only the first seems to 'do', maybe?
+
+only play 'wrong' sound for player actions
+
+spawned by player seems to be unable to consume
+spawned by eater seems to consume immediately
+why does eater take so long to spawn workers?
+
+debounce spacebar attack
+
+why are food starting with 0 health?
+    (constructor seems to provide health ...)
+
+We gotta stop this jiggling that characters are doing
+
+sound doesn't seem to be dropping off at a distance
+
+I'm pretty sure non-menu actions are still enabled / firing when menus are open
+
+Tiles: {
+    need to start having (and drawing) individual tiles
+
+    Debug menu ...
+    with option to enable writing on tiles
+    tiles contain "x,y <br > graphic <br> modifiers"
+
+    get player and other slimes to "mark" the ground
+        later, let player travel through any slimed ground
+        travel ability should have a cooldown after doing it before starting again
+        (later) also have a stamina affect duration
+}
+
+draw equipment menu
+
+we're in the middle of reworking the way things get built
+grown could use some love
+then we also started on character movement -_-
+    we should add a unit test that characters will stop moving when they arrive at their destination with extra time elapsed
+
+allow 'down' and 'up' on menu (but don't need to enable by default)
+
+- (fix) node position selection for stuff to build
+    buildings shouldn't be able to build close together. Need a way to visualize this and some tests for it
+
+we need the stuff the player builds directly to grow
+    just like what is built by the 'ai'
+
+Creatures close to spawn origin should:
+    - have fewer 'points' overall
+    - have many of their 'points' allocated to health or armor (or something else?)
+    - not be very fast, so they cannot outrun the default player
+    - not be able to see (or sense) very far, to react to run from the player threat
+As you get further out, you should very quickly start seeing animals with some actual defense / survival
+
+we want player to be able to travel "through" nodes to an edge,
+    and essentially excrete themselves a form
+    travel speed should be based on the "transfer rate" of nutrients within the hivemind
+
+We should try creating an enemy ant colony to fight
+    and 'testing' how that interaction feels with current mechanics
+
+attributes of a biome:
+    how mountainous is this biome?
+        (expressed as a percentage, 50 is 'a normal amount', 100 is 'as many as possible')
+        initialize at 25
+        implemented as the chance (in 10000 square grid tiles) of there being a mountain
+    what is the biome's average height?
+        (expressed as a literal number, negatives will be beneath sea level)
+        defaults to 0
+    what is the average lake size?
+        for bodes of water in this biome, will they be small and numerous, or large and infrequent?
+        (expressed as a percentage from 0 to 100, 100 disables land, 0 disables water)
+
+when implementing mountains,
+    they're given a height upon creation
+        (random range from seed based on biome average height)
+    and should 'march down' (making tall tiles around), (also random ranged amounts based on seed)
+
+dont start growing new food if cant reserve enough to grow it to completion
+can we make this generic to all growing?
+
+Are spawns having trouble moving when their y is 0?
+
 In Builds.mjs:Build, we should probably call grow()
 
 one seeder per node
-
-we have notes below on the whole mountain thing which seems like it should be more of a priority
-
-debug ui
-    show how many characters are and are not thinking right now
-    need to be able to show/hide ui sections like the build queue
-
-debug click on character to get more info about them ...
-    last thought age (how many seconds ago)
-    current task, etc.
 
 nodes should take some time to grow when first placed (by player or by another node)
 
@@ -20,39 +94,43 @@ variable to limit how quickly nodes can "act"
 
 Need to instantiate nearby chunks on player spawn
 
-debug console command:
-list of everything currently growing
-    need to find out why reservations + food threshold aren't keeping a steady minimum
-
-dont start growing new food if cant reserve enough to grow it to completion
-can we make this generic to all growing?
-
 buildings issues:
     - consumer slimes too quick
     - too easy to get stuck in not having enough food
         - if we don't have enough food, limit what's grown
     - new nodes have a tendency to 'stack' position
 
-events like 'character created' fire in the base class but don't let the super classes finish
-    we need some kind of "post constructor" pattern to fire these events for classes that have derivatives
-
 when food levels get low, start siphoning "spare" food off buildings like eaters / seeders
 
-Are spawns having trouble moving when their y is 0?
+- after killing an enemy
+    they should leave behind a corpse
+    that needs to be dissolved / broken up
+    before being digested
+    (maybe eaters 'attach' to something like a corpse and slowly break it down)
 
 - we should reduce the interval for spawning for subdivide
 
 - buildings for: defending
     defense can later break out to either turrets or unit spawners
-    Once 1 research, can research research and unlock research node which speeds up research
-
 Defense building should look tougher, more callous:
     Less opaque
     Thicker border
 
-Maybe spawner should look wide and short 
+- Once 1 research, can research research and unlock research node which speeds up research
 
 - need visual indicator for cooldown(s)
+
+- Hivemind should be gradually building 'towards' or in the direction of the player,
+    from wherever it is
+    'prioritizing' the nearest nodes, 
+    and expanding nodes towards player when nodes would be selected
+
+- player should slowly gain "influence" over the hive mind
+    it should start out very 'rough' at first -- sending commands and stuff should be difficult
+    the player's ability to interact with the hivemind,
+        as well as the hivemind's ability to function autonomously
+        should need to grow from a base state to where we have it now(ish)
+    these should work like passive upgrades (and we should ideally describe this very thing less generically)
 
 - Enemy technologies:
     - poison,
@@ -62,17 +140,10 @@ Maybe spawner should look wide and short
     (after a little physics / collision maybe?)
     we also probably need methods for comparing areas rather than points
 
-- need to finish implementing biomes
-
 - maybe some terrain variety? Mountains, valleys, water
     obstacles like trees, rocks
 
 - need to have some collision
-
-- Camera controls & following player
-    rendering controller or something for other entities
-    smooth movement? tweening? speed and accel?
-    when player faces a direction, the camera should "shift" in that direction, such that the player is off-center on the screen, with the 'peeked' direction taking some amount
 
 - The more evolved an attack is, the longer it takes the player to switch to it.
 Should be able to switch to a new attack even if switch in progress is not complete
@@ -95,29 +166,19 @@ Should be able to switch to a new attack even if switch in progress is not compl
     add an "ignoreInput" menu property, to allow it to open without stealing focus
 
 - priorities for targets for player acquisition
-    Animal > Native Flora > Player Spawns
+    Animal > Native Flora > Player Spawns (maybe just use a "whose hostility property is highest"?)
 
-Rather than a broad Ai, each 'node' (or structure) should only be able to think about either 
-    doings it's job, or building another node 
-    Until whichever it chooses has finished, and it can reconsider
+status effect applications (fear, running) in combat log?
 
 ---
-
-- I think starting a 2nd research screws up one already researching?
-
-- shouldn't be able to open a menu when another menu is already open
 
 - I think we need to have min and max aggression (and other things that get random)
 in part to be able to determine what % of max aggression a creature is
 (which will help us "paint it redder" to visually indicate)
 
-- time to try networking with webrtc signal and turn ... can probably just stand up a docker on localhost for now
-
-- Upgrade that let's you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
+- Upgrade that lets you make spawned slimes stronger (more health, speed, yield when gathering) in exchange for being more expensive
 
 - Research to be able to automatically absorb things X smaller than you
-
-- I think the "chunk" graphic could be a bordered-box that's sized and colored to the chunk ...
 
 - list of entities targeting the player?
     very helpful for debug

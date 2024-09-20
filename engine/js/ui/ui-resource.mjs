@@ -1,6 +1,6 @@
-import UIElement from "./ui-element.mjs";
-import Resource from "../entities/resource.mjs";
-import Events from "../events.mjs";
+import UIElement, { SCREEN_ZONE } from "./ui-element.ts";
+import Resource from "../entities/resource.ts";
+import Events from "../events.ts";
 
 // TODO: get this from some configuration ...
 // (and maybe allow us to configure per resource ... or override a default per resource ...)
@@ -9,7 +9,7 @@ const RENDER_RESERVED = true;
 function createResourceUI(resource) {
 
     resource.UIElement = new UIElement({
-        screenZone: UIElement.SCREEN_ZONE.TOP_RIGHT,
+        screenZone: SCREEN_ZONE.TOP_RIGHT,
         classes: [ 'Resource' ]
     });
 

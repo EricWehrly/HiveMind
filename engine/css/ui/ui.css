@@ -27,38 +27,38 @@
 
 .ui.top {
     position: absolute;
-    top: 5px;
+    top: 4px;
 }
 
 .ui.bottom {
     position: absolute;
-    bottom: 5px;
+    bottom: 4px;
     align-self: flex-end;
 }
 
 .ui.left {
-    left: 5px;
+    left: 4px;
 }
 
 .ui.right {
-    right: 5px;
+    right: 4px;
 }
 
 .ui.center {    
     /* align-self: center; */
+    position: absolute;
     left: 50%;                  
     transform: translateX(-50%);
 }
 
-.ui.bottom.center {
+.ui.middle {
+    transform: translateY(-50%);
     position: absolute;
-    bottom: 5px;                
+    top: 50%;
 }
 
-.ui.middle.right {
-    position: absolute;        
-    top: 50%;                  
-    transform: translateY(-50%);
+.ui.middle.center {
+    transform: translate(-50%, -50%);
 }
 
 .ui.h3 {
@@ -74,10 +74,17 @@
     font-size: 1.3em;
 }
 
+.collapsible {
+    padding-right: 10px;
+}
+
 .collapse-handler {
     position: absolute;
     right: 2px;
     top: 2px;
+
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .collapse-handler:after {
@@ -86,4 +93,30 @@
 
 .collapse > div {
     display: none;
+}
+
+.ui.close {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    padding: .1em .2em;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.ui.menu { 
+    /* TODO: these should be stored / var'd somewhere ...
+    maybe we can get away with "calc ui + 100"? */
+    z-index: 1100;
+}
+
+.menu button {
+    cursor: pointer;
+    margin-top: 4px;
+    text-align: center;
+}
+
+.ui input[type="checkbox"] {
+    margin-left: 1em;
 }

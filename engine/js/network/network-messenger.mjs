@@ -1,5 +1,5 @@
 import Client from './client.mjs';
-import Events from '../events.mjs';
+import Events from '../events.ts';
 
 export default class NetworkMessenger {
 

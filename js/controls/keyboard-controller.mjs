@@ -1,6 +1,6 @@
 import { RegisterLoopMethod } from '../../engine/js/loop.mjs';
-
-import Action from '../../engine/js/action.mjs';
+import Vector from '../../engine/js/baseTypes/Vector.ts';
+import Action from '../../engine/js/action.ts';
 const Actions = Action.List;
 
 // we can use extends and a base class to share common methods
@@ -15,6 +15,8 @@ const Actions = Action.List;
 // Key down/up events should change a state that is transmitted to the server ...
 
 export default class KeyboardController {
+
+    static #instance;
 
     static #List = [];
 
@@ -38,6 +40,10 @@ export default class KeyboardController {
         // press F to break off a piece to study something (in front of the player)
     }
 
+    // TODO: Maybe when we convert to typescript,
+    // we can leave this open to accept strings (good for modding)
+    // but add another overload that takes Action obj instead of name,
+    // and use that wherever possible
     static AddDefaultBinding(name, button) {
 
         // TODO: warn button is already bound
@@ -46,12 +52,17 @@ export default class KeyboardController {
             console.warn(`Action ${name} might already be bound?`);
         }
 
-        KeyboardController.Default_Bindings[name] = button
+        if(!Object.keys(KeyboardController.Default_Bindings).includes(name)) {
+            KeyboardController.Default_Bindings[name] = [];
+        }
+        KeyboardController.Default_Bindings[name].push(button);
 
-        // I think this isn't currently used, so log to debug
-        // console.log(`I think there are currently ${KeyboardController.#List.length} keyboard controllers ...`);
-        for(var controller of KeyboardController.#List) {
-            controller.Bindings[name] = button;
+        const instanceBindings = KeyboardController.#instance?.Bindings;
+
+        // if we've already copied bindings over
+        if(instanceBindings && Object.keys(instanceBindings).length > 0) {
+            if(instanceBindings[name]) instanceBindings[name].push(button);
+            else instanceBindings[name] = [button];
         }
     }
 
@@ -60,6 +71,8 @@ export default class KeyboardController {
     _keys_down = {};
 
     constructor(options = {}) {
+
+        KeyboardController.#instance = this;
 
         Object.assign(this.Bindings, KeyboardController.Default_Bindings);
         // TODO: Take bindings from options?
@@ -103,13 +116,12 @@ export default class KeyboardController {
 
     loopMethod() {
 
-        this.character.velocity.x = 0;
-        this.character.velocity.y = 0;
+        this.character.desiredMovementVector = new Vector(0, 0);
 
+        // TODO: (Performance) we can cache actions that should be fired
+        // (rather than iterate the entire object.keys)
         for (var action of Object.keys(Actions)) {
-            if (Actions[action].enabled !== false
-                && this.Bindings[action]
-                && Actions[action].oncePerPress !== true) {
+            if (this.shouldFireAction(action)) {
                 for (var binding of this.Bindings[action]) {
                     if (this.isKeyDown(binding)) {
                         Actions[action].callback({
@@ -121,6 +133,12 @@ export default class KeyboardController {
         }
     }
 
+    shouldFireAction(action) {
+        return Actions[action].enabled !== false
+            && this.Bindings[action]
+            && Actions[action].oncePerPress !== true;
+    }
+
     #performActions(key) {
 
         // TODO: loopMethod needs to be refactored now, right?
@@ -129,13 +147,14 @@ export default class KeyboardController {
             if(bindingKeys.includes(key)) {
                 const actionParams = action.split("/");
                 const coreAction = Actions[actionParams[0]];
-                if(coreAction.enabled) {
+                if(coreAction?.enabled && coreAction?.callback) {
                     coreAction.callback({
                         character: this.character,
                         parameters: actionParams
                     });
                 }
             }
+            // else console.log(key);
         }
     }
 }
