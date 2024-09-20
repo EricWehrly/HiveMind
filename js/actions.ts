@@ -51,12 +51,12 @@ new Action({
     callback: function (options: ActionOptions) {
 
         const playerAttack = CharacterUtils.GetPlayerEquippedAttack();
-        const purpose = CharacterPurpose.Get("study");
+        const purpose = CharacterPurpose.Get("consume");
 
         options.character.Subdivide({
             purpose,
             target: ActionList["consume"].target,
-            technologies: [playerAttack]
+            technologies: [playerAttack.technology]
         });
     }
 });

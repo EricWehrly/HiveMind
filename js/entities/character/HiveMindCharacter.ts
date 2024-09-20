@@ -3,7 +3,7 @@ import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
 import Entity, { EntityOptions } from '../../../engine/js/entities/character/Entity';
 import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/Living';
-import { IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
+import { Combative, IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
 import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equipped';
 import { CharacterUtils } from '../../../engine/js/entities/character/CharacterUtils';
 import { IsSentient } from '../../../engine/js/entities/character/mixins/Sentient';
@@ -93,7 +93,7 @@ export default class HiveMindCharacter extends Character {
 
     get toolTipMessage() {
 
-        const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter;
+        const localPlayer = CharacterUtils.GetLocalPlayer() as HiveMindCharacter & Combative;
 
         let toolTipMessage = "";
 
@@ -108,7 +108,8 @@ export default class HiveMindCharacter extends Character {
         }
         
         if(IsCombative(this)) {
-            if(this.aggression != null) {
+            if(this.faction != localPlayer.faction
+                && this.aggression != null) {
                 toolTipMessage += `Aggression Range: ${Math.round(this.aggressionRange)}<br />`;
             }
         }
