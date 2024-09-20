@@ -56,7 +56,7 @@ new Action({
         options.character.Subdivide({
             purpose,
             target: ActionList["consume"].target,
-            technologies: [playerAttack]
+            technologies: [playerAttack.technology]
         });
     }
 });

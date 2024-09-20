@@ -8,14 +8,15 @@ import { Combative, CombativeOptions, MakeCombative } from "../../../../engine/j
 import { MakeSentient, Sentient, SentientOptions } from "../../../../engine/js/entities/character/mixins/Sentient";
 import { HiveMindCharacterAI } from "../../../ai/HivemindCharacterAi";
 import CharacterPurpose from "../../purposes/CharacterPurpose";
+import Technology from "../../../../engine/js/technology";
 
 export interface SubdivideOptions {
     amount?: number;
     purposeKey?: string;
-    purpose?: any;
+    purpose?: CharacterPurpose;
     name?: string;
-    technologies?: any;
-    target?: any;
+    technologies?: Technology[];
+    target?: Entity;
 }
 
 export interface Slimey {
