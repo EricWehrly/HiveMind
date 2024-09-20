@@ -1,4 +1,3 @@
-import { TechnologyTypes } from "../../../engine/js/TechnologyTypes";
 import HiveMindCharacter from "../character/HiveMindCharacter";
 import { Living } from "../../../engine/js/entities/character/mixins/Living";
 import { IsCombative } from "../../../engine/js/entities/character/mixins/Combative";
@@ -13,14 +12,12 @@ new CharacterPurpose({
             character.pointAtTarget(character.ai.targetPosition);
 
             if(IsEquipped(character) && IsCombative(character)) {
-                const attack = character.getEquipped(TechnologyTypes.ATTACK);
-                // if(attack == null) console.warn(`Attack is null.`);
                 if (character.target == null || (character.target as Living).dead) {
                     character.target = null;
                     character.currentPurposeKey = "return";
-                } else if (attack && character.position.distance(character.ai.targetPosition) < attack.range
-                    && (character.target as Living).dead != true) {
+                } else if(character.canAttack) {
                     const attackAmount = character.attack(character.ai.targetEntity);
+                    // this multiplier should be defined somewhere ...
                     character.health += 2 * attackAmount;
                 }
             }
