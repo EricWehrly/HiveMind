@@ -79,5 +79,3 @@ export default class GameSound extends Listed {
         }
     }
 }
-
-import './AudioSetup';
