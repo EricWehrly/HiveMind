@@ -11,6 +11,9 @@ import './entities/equipment';
 // and the same error again at the end of ui-equipment
 import './entities/character/mixins/Combative';
 
+// audio
+import './audio/AudioSetup';
+
 // ui
 // we could change so that the root 'engine/ui/' index does the imports (and returns the current "UI" object)
 // but that doesn't buy us much, besides grouping the following two imports in a parent
