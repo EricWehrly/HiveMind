@@ -6,6 +6,9 @@ import GameMap from './mapping/GameMap';
 // functionality
 import './mapping/tile-manager';
 
+// entities
+import './entities/characters';
+
 // hack to fix a dumb error caused by subscription to not-yet-declared event in ui-equipment
 import './entities/equipment';
 // and the same error again at the end of ui-equipment
