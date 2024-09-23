@@ -1,6 +1,5 @@
 import CharacterType from "../../../../../js/entities/CharacterType";
 import Events, { GameEvent } from "../../../events";
-import { RemoveCharacterFromList } from "../../characters";
 import Entity from "../Entity";
 
 Events.List.CharacterDamaged = "CharacterDamaged";

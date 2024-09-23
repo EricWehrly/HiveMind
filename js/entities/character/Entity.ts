@@ -2,7 +2,6 @@ import CharacterType from "../../../../js/entities/CharacterType";
 import Events, { GameEvent } from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
 import CharacterAttribute from "../character-attribute";
-import { AddCharacterToList, CHARACTER_LIST, RemoveCharacterFromList } from "../characters";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import EntityRenderingSettings from './EntityRenderingSettings';
 import Faction from '../faction';
@@ -52,11 +51,17 @@ export interface EntityEvent extends GameEvent {
 
 export default class Entity extends WorldObject {
 
+    private static _CHARACTER_LIST: Entity[] = [];
+    static get List() { return Entity._CHARACTER_LIST; }
+
     static get(options: any) {
-        let charList = CHARACTER_LIST;
+        let charList = Entity._CHARACTER_LIST;
         for(var key of Object.keys(options)) {
             // @ts-expect-error
             charList = charList.filter(x => x[key] == options[key]);
+        }
+        if(charList.length == Entity._CHARACTER_LIST.length) {
+            console.log('oops?');
         }
         return charList;
     }
@@ -133,7 +138,7 @@ export default class Entity extends WorldObject {
 
         this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
 
-        AddCharacterToList(this);
+        Entity._CHARACTER_LIST.push(this);
 
         Defer(this.postConstruct.bind(this));
     }
@@ -211,7 +216,7 @@ export default class Entity extends WorldObject {
 
         const nearbyEntities = [];
 
-        for (var character of CHARACTER_LIST) {
+        for (var character of Entity._CHARACTER_LIST) {
 
             if(character.equals(this)
                 || this.shouldFilterCharacter(character, options)) {
@@ -325,8 +330,10 @@ export default class Entity extends WorldObject {
         return entity._id == this._id;
     }
 
-    destroy() {   
-        RemoveCharacterFromList(this);
+    destroy() {
+        Entity._CHARACTER_LIST.splice(Entity._CHARACTER_LIST.indexOf(this), 1);
         // TODO: probably raise event to get graphics removed
     }
 }
+
+if(window) window.CHARACTER_LIST = Entity.List;

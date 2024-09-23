@@ -4,7 +4,6 @@ import Character from '../../entities/character';
 import Entity, { EntityEvent } from '../../entities/character/Entity';
 import { Combative } from '../../entities/character/mixins/Combative';
 import { IsLiving, Living } from '../../entities/character/mixins/Living';
-import { CHARACTER_LIST } from '../../entities/characters';
 import DomRenderingContext from '../contexts/DomRenderingContext';
 import { CARDINAL_DIRECTION } from '../../baseTypes/Vector';
 import { CharacterUtils } from '../../entities/character/CharacterUtils';
@@ -160,7 +159,7 @@ function dom_handle_facing(entity: Entity) {
 function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
 
     // despite the name, these are entities
-    for(var character of CHARACTER_LIST) {
+    for(var character of Entity.List) {
         // if character in screenRect
         redraw(character, screenRect, domRoot);
     }

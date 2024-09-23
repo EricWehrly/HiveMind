@@ -2,22 +2,9 @@ import { RegisterLoopMethod } from '../loop.mjs';
 import Entity from './character/Entity';
 import { IsSentient } from './character/mixins/Sentient';
 
-export const CHARACTER_LIST: Entity[] = [];
-if(window) window.CHARACTER_LIST = CHARACTER_LIST;
-
-export function AddCharacterToList(character: Entity) {
-
-    CHARACTER_LIST.push(character);
-}
-
-export function RemoveCharacterFromList(character: Entity) {
-
-    CHARACTER_LIST.splice(CHARACTER_LIST.indexOf(character), 1);
-}
-
 function characterLoop(elapsed: number) {
 
-    for(var character of CHARACTER_LIST) {
+    for(var character of Entity.List) {
         // TODO: we could precompute this
         if(character?.position?.chunk?.active == false
             // @ts-expect-error
