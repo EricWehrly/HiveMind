@@ -1,4 +1,5 @@
 import AI from "../../../ai/basic";
+import { RegisterLoopMethod } from "../../../loop.mjs";
 import { CharacterUtils } from "../CharacterUtils";
 import Entity, { EntityOptions } from "../Entity";
 
@@ -17,6 +18,27 @@ type Axis = 'x' | 'y';
 const axes: Axis[] = ['x', 'y'];
 
 type Constructor<T = {}> = new (...args: any[]) => T;
+
+// TODO: recompute this when chunk active changes
+// TODO: remove characters from list when they die
+const CreaturesThatShouldThink: Record<string, AI> = {};
+
+function thinkOnSlowLoop(elapsed: number) {
+    for(const [id, ai] of Object.entries(CreaturesThatShouldThink)) {
+
+        const character = ai.character;
+
+        if(character?.position?.chunk?.active == false
+            // @ts-expect-error
+            || character?.dead == true) {
+            continue;
+        }
+
+        ai.think(elapsed);
+    }
+};
+
+RegisterLoopMethod(thinkOnSlowLoop, true);
 
 export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: EntityOptions & SentientOptions) 
 : T & Constructor<Sentient> {
@@ -49,6 +71,8 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
             else if (ai != null) {
                 this._ai = new ai(this);
             }
+
+            CreaturesThatShouldThink[this.id] = this.ai;
         }
 
         // TODO: this amount needs to be broken down by axis, rather than used for each
