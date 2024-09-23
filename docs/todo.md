@@ -1,16 +1,9 @@
 are 'node's not growing? not thinking?
 only the first seems to 'do', maybe?
 
-only play 'wrong' sound for player actions
-
 spawned by player seems to be unable to consume
 spawned by eater seems to consume immediately
 why does eater take so long to spawn workers?
-
-debounce spacebar attack
-
-why are food starting with 0 health?
-    (constructor seems to provide health ...)
 
 We gotta stop this jiggling that characters are doing
 
@@ -32,6 +25,8 @@ Tiles: {
 }
 
 draw equipment menu
+
+debounce spacebar attack
 
 we're in the middle of reworking the way things get built
 grown could use some love
