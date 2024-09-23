@@ -60,9 +60,6 @@ export default class Entity extends WorldObject {
             // @ts-expect-error
             charList = charList.filter(x => x[key] == options[key]);
         }
-        if(charList.length == Entity._CHARACTER_LIST.length) {
-            console.log('oops?');
-        }
         return charList;
     }
 
@@ -171,6 +168,7 @@ export default class Entity extends WorldObject {
         this._attributes[characterAttribute.name] = characterAttribute;
     }
 
+    // handle defaults?
     getAttribute(name: string) {
 
         return this._attributes[name];
