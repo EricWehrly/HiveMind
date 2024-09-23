@@ -1,6 +1,5 @@
 import { RegisterLoopMethod } from '../loop.mjs';
 import Entity from './character/Entity';
-import { IsSentient } from './character/mixins/Sentient';
 
 function characterLoop(elapsed: number) {
 
@@ -10,9 +9,6 @@ function characterLoop(elapsed: number) {
             // @ts-expect-error
             || character?.dead == true) {
             continue;
-        }
-        if(IsSentient(character)) {
-            character.ai.think(elapsed);
         }
 
         character.move(elapsed / 1000);
