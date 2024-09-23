@@ -1,5 +1,5 @@
 import { generateId } from "./util/javascript-extensions.mjs";
-import NetworkMessenger from './network/network-messenger.mjs';
+// import NetworkMessenger from './network/network-messenger.mjs';
 
 export interface SubscribeOptions {
     callback?: Function;
@@ -89,7 +89,7 @@ export default class Events {
         };
 
         if (options?.isNetworkBoundEvent) {
-            NetworkMessenger.TransmitEvent(eventName, propgatedDetails);
+            // NetworkMessenger.TransmitEvent(eventName, propgatedDetails);
         }
 
         if (options?.finalFire == true) {
