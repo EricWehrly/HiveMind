@@ -1,5 +1,4 @@
 import Entity, { EntityEvent } from "../../../../engine/js/entities/character/Entity";
-import { CHARACTER_LIST } from "../../../../engine/js/entities/characters";
 import Events from "../../../../engine/js/events";
 import HiveMindCharacter from "../HiveMindCharacter";
 import { Growable } from "./Growable";
@@ -37,7 +36,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, op
         // I think we need to unit test this
         onEntityDied(event: EntityEvent) {
             const deadGuy = event.entity as HiveMindCharacter & Growable;
-            for (var char of CHARACTER_LIST) {
+            for (var char of Entity.List) {
                 const character = char as HiveMindCharacter & Grower;
                 const index = character?.growing?.indexOf(deadGuy);
                 if (index > -1) character.growing.splice(index, 1);

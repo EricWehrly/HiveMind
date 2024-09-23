@@ -118,8 +118,10 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
             if(target.character) target = target.character;
 
             if(!this.canAttack(target)) {
-                const wrongSound = GameSound.Get('wrong');
-                wrongSound.Play();
+                if(CharacterUtils.IsLocalPlayer(this)) {
+                    const wrongSound = GameSound.Get('wrong');
+                    wrongSound.Play();
+                }
                 return 0;
             }
             if(!IsEquipped(this)) return 0;
