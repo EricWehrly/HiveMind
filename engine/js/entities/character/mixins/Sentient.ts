@@ -33,17 +33,20 @@ function thinkOnSlowLoop(elapsed: number) {
             || character?.dead == true) {
             continue;
         }
-
+        
         ai.think(elapsed);
     }
 };
 
 RegisterLoopMethod(thinkOnSlowLoop, true);
 
-export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: EntityOptions & SentientOptions) 
-: T & Constructor<Sentient> {
-    return class SentientClass extends Base implements Sentient {
+let sentientClass: any;
 
+export function MakeSentient<T extends Constructor<Entity>>(Base: T) 
+: T & Constructor<Sentient> {
+    if(!sentientClass) {
+    sentientClass = class SentientClass extends Base implements Sentient {
+    
         private _ai: AI;
         get ai() { return this._ai; }
         set ai(newValue) { this._ai = newValue; }
@@ -55,14 +58,16 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
             }
             else console.warn('Tried to set target for sentient entity with no ai.');
         }
-
+    
         constructor(...args: any) {
             super(...args);
-
+    
+            const [options]: (EntityOptions & SentientOptions)[] = args;
+    
             const ai = options.ai !== undefined ? options.ai : options.characterType?.ai;
             this.setupAI(ai);
         }
-
+    
         private setupAI(ai: new (...args: any[]) => AI) {
             // TODO: let's default to no AI at all unless prescribed ...
             if (ai === undefined) this._ai = new AI(this);
@@ -71,10 +76,10 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
             else if (ai != null) {
                 this._ai = new ai(this);
             }
-
+    
             CreaturesThatShouldThink[this.id] = this.ai;
         }
-
+    
         // TODO: this amount needs to be broken down by axis, rather than used for each
             // (broken down, based on the desiredVector ratio)
             // (or, if necessary, distance across axes)
@@ -86,7 +91,7 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
                     x: this.position.x,
                     y: this.position.y
                 }
-
+    
                 for (const axis of axes) {
                     if (!this.atTarget(axis)) {
                         const newAxisPos = desiredPosition[axis] + (this.desiredMovementVector[axis] * this.speed * amount);
@@ -115,7 +120,9 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T, options: En
         atTarget(axis: Axis) {
             return this.targetPosition != null && this.targetPosition[axis] == this.position[axis];
         }
-    }
+    };
+}
+    return sentientClass;
 };
 
 export function IsSentient(obj: Entity): obj is Entity & Sentient {

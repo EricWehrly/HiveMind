@@ -1,4 +1,4 @@
-import { RunPostConstructMethods } from "../../../engine/js/entities/character/CharacterFactory";
+import { RunPostConstructMethods } from "../../../engine/ts/decorators/PostConstruct";
 import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter";
 
 // double check these values and then we can start using them ...
@@ -12,14 +12,17 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     options: HivemindCharacterOptions, 
     SuperClass: new (options: HivemindCharacterOptions) => T = HiveMindCharacter as any
 ): T {
+    const classNames = [];
+    classNames.push(SuperClass.name);
     let ExtendedCharacter = SuperClass;
     for (const mixin of mixins) {
         ExtendedCharacter = mixin(ExtendedCharacter, options);
+        classNames.push(ExtendedCharacter.name);
     }
     if(!options) options = {};
     // @ts-expect-error
     options.calledByFactory = true;
     const character = new ExtendedCharacter(options) as T;
-    RunPostConstructMethods(character);
+    RunPostConstructMethods(character, classNames);
     return character;
 }
