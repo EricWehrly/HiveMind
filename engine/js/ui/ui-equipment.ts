@@ -26,9 +26,9 @@ Events.Subscribe(Events.List.EquipmentChanged, function(details: EquipmentChange
 
 function onCooldownComplete(details: CooldownCompleteEvent) {
 
-    const character = details.character;
-    const localPlayer = CharacterUtils.GetLocalPlayer();
-    if(character && character.equals(localPlayer)) {
+    const isLocalPlayer = CharacterUtils.IsLocalPlayer(details.character);
+    
+    if(isLocalPlayer) {
         UI_ELEMENT_ATTACK.removeClass('cooldown');
     }
 }
