@@ -6,8 +6,8 @@ import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import EntityRenderingSettings from './EntityRenderingSettings';
 import Faction from '../faction';
 import Vector from "../../baseTypes/Vector";
-import { Defer } from "../../loop.mjs";
 import WorldObject, { WorldObjectOptions } from "../../baseTypes/WorldObject";
+import PostConstruct from "../../../ts/decorators/PostConstruct";
 
 Events.List.CharacterCreated = "CharacterCreated";
 
@@ -50,6 +50,10 @@ export interface EntityEvent extends GameEvent {
 }
 
 export default class Entity extends WorldObject {
+
+    static {
+        PostConstruct(Entity, Entity.prototype.postConstruct);
+    }
 
     private static _CHARACTER_LIST: Entity[] = [];
     static get List() { return Entity._CHARACTER_LIST; }
@@ -137,7 +141,7 @@ export default class Entity extends WorldObject {
 
         Entity._CHARACTER_LIST.push(this);
 
-        Defer(this.postConstruct.bind(this));
+        // Defer(this.postConstruct.bind(this));
     }
 
     private onDirectionVectorChanged(vector: Vector) {
