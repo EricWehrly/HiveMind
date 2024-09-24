@@ -4,13 +4,13 @@ import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter
 // double check these values and then we can start using them ...
 // export const HivemindCharacter_Default_Classes = [MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient];
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = new (options: HivemindCharacterOptions) => T;
 type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
 
 export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     mixins: EntityMixin[], 
     options: HivemindCharacterOptions, 
-    SuperClass: new (...args: any[]) => T = HiveMindCharacter as any
+    SuperClass: new (options: HivemindCharacterOptions) => T = HiveMindCharacter as any
 ): T {
     let ExtendedCharacter = SuperClass;
     for (const mixin of mixins) {
