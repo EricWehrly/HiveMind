@@ -163,7 +163,7 @@ export default class Events {
      * @returns null if the event has already fired for the last time
      * but in that case it fires the subscription immediately
      */
-    private static _subscribe(eventName: string, callback: Function, options: Object): string {
+    private static _subscribe(eventName: string, callback: Function, options: SubscribeOptions): string {
 
         if (eventName == undefined) debugger;
 
@@ -180,12 +180,12 @@ export default class Events {
         const subscriptionId = generateId();
 
         if (!(eventName in Events.#Subscriptions)) Events.#Subscriptions[eventName] = [];
-        var length = Events.#Subscriptions[eventName].push({
+        const subscriptionCount = Events.#Subscriptions[eventName].push({
             subscriptionId,
             callback
         });
         // these options are not used
-        if (options) Object.assign(Events.#Subscriptions[eventName][length - 1], options);
+        // if (options) Object.assign(Events.#Subscriptions[eventName][length - 1], options);
 
         Events.#Subscriptions[eventName].sort(Events.#sortEventsArray);
 
