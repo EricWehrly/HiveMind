@@ -17,6 +17,7 @@ function IsLocalPlayer(player: Entity): boolean {
 // TODO: Would love a limited integration test for this
 function GetPlayerEquippedAttack(player?: Character): EquippedTechnology {
     if(!player) player = GetLocalPlayer() as Character;
+    if(!player) return null;
     const equippedCharacter = player as Character & Equipped;
     const equipped = equippedCharacter.getEquipped(TechnologyTypes.ATTACK);
     return equipped;
@@ -24,6 +25,7 @@ function GetPlayerEquippedAttack(player?: Character): EquippedTechnology {
 
 function GetDistanceToPlayer(point: Readonly<Point>, player?: Character): number {
     if(!player) player = GetLocalPlayer() as Character;
+    if(!player) return null;
     return point.distance(player.position);
 }
 
