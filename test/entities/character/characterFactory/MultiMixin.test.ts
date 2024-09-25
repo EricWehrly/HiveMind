@@ -1,4 +1,4 @@
-import mockEvents from "../../../testHelpers/mockEvents";
+import { eventCount, mockEvents, resetTrackedEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
 import { IsLiving, Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
@@ -6,6 +6,8 @@ import Entity, { EntityOptions } from "../../../../js/entities/character/Entity"
 import { IsSentient, MakeSentient, Sentient, SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
 import { Equipped, IsEquipped, MakeEquipped } from "../../../../js/entities/character/mixins/Equipped";
 import { Combative, IsCombative, MakeCombative } from "../../../../js/entities/character/mixins/Combative";
+import { Dummy, DummyMixin } from "../../../fakeClasses/DummyMixin";
+import { GetLocalPlayer, MakePlayable, Playable, PlayableOptions } from "../../../../js/entities/character/mixins/Playable";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {
@@ -26,14 +28,15 @@ jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 
 describe('ChacterFactory.MakeCharacter', () => {
 
+    beforeEach(() => {
+        resetTrackedEvents();
+    });
+
     const options: EntityOptions & SentientOptions = {
         ai: null,
         name: 'Reference'
     }
     const referenceEntity = MakeCharacter([], options);
-
-    it('should call postConstruct exactly once for each mixin', () => {
-    });
 
     // just use a custom class for these tests: --->
     describe('should create a character with multiple mixins', () => {
@@ -75,21 +78,22 @@ describe('ChacterFactory.MakeCharacter', () => {
         });
     });
 
-    // each postconstruct only once, multiple mixins
+    it('should call postConstruct exactly once for each mixin type', () => {
+        const mixins = [MakePlayable, DummyMixin];
+        const options: EntityOptions & PlayableOptions = {
+            isPlayer: true
+        }
 
-    // static block only once
-    // <--
+        const characterUnderTest = MakeCharacter(mixins, options);
+        const typedCharacter = characterUnderTest as Entity & Playable & Dummy;
+        const localPlayer = GetLocalPlayer();
 
-    describe('extended class', () => {
-
-        class TestExtendedEntity extends Entity {};
-
-        it('should instantiate as a class that extends the base', () => {
-            const options: EntityOptions = {
-                cost: 1
-            };
-            const character = MakeCharacter([MakeLiving], options, TestExtendedEntity);
-            expect(character instanceof TestExtendedEntity).toBeTruthy();
-        });
+        expect(typedCharacter.postConstructCallCount).toBe(1);
+        expect(eventCount('EntityCreated')).toBe(1);
+        expect(characterUnderTest.equals(localPlayer)).toBe(true);
+    });
+    
+    it('should call static constructor exactly once for each mixin type', () => {
+        // can we spy Postconstruct method?
     });
 });
