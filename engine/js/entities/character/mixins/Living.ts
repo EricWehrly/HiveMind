@@ -28,12 +28,12 @@ export interface CharacterDamagedEvent extends GameEvent {
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 
-export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: LivingOptions) {
+export function MakeLiving<T extends Constructor<Entity>>(Base: T) {
     return class LivingClass extends Base implements Living {
 
         // TODO: value of health when options is null
-        private _health = options?.health || options.characterType?.health;
-        private _initialHealth = options?.maxHealth || options.characterType?.maxHealth || this._health;
+        private _health: number;
+        private _initialHealth: number;
     
         get size() { 
             // TODO: address this magic number
@@ -68,6 +68,15 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
             return !this.dead
         }
 
+        constructor(...args: any) {
+            super(...args);
+
+            const [ options ] = args;
+
+            this._health = options?.health || options.characterType?.health || 0;
+            this._initialHealth = this._health;
+        }
+
         damage(amount: number, attacker: Entity) {
             this.health -= amount;
 
@@ -91,5 +100,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T, options: Livi
 
 export function IsLiving(obj: Entity): obj is Entity & Living {
     const living = obj as Living;
-    return living && living.health !== undefined;
+    return living 
+        && living.health !== undefined
+        && living.health !== null;
 }

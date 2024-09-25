@@ -1,6 +1,6 @@
 import { eventCount, mockEvents, resetTrackedEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
-import { IsLiving, Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
+import { IsLiving, Living, LivingOptions, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
 import { IsSentient, MakeSentient, Sentient, SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
@@ -42,15 +42,16 @@ describe('ChacterFactory.MakeCharacter', () => {
     describe('should create a character with multiple mixins', () => {
         const mixins = [MakeLiving, MakeSentient, MakeEquipped, MakeCombative];
 
-        const characterOptions: EntityOptions = {
-            speed: 3
+        const characterOptions: EntityOptions & LivingOptions = {
+            speed: 3,
+            health: 10
         };
         const character = MakeCharacter(mixins, characterOptions);
         const typedCharacter = character as Entity & Living & Sentient & Combative & Equipped;
 
         it('should be valid for each Mixin', () => {
             expect(character).not.toBeNull();
-            // expect(IsLiving(character)).toBeTruthy();
+            expect(IsLiving(character)).toBeTruthy();
             expect(IsSentient(character)).toBeTruthy();
             expect(IsCombative(character)).toBeTruthy();
             expect(IsEquipped(character)).toBeTruthy();
