@@ -23,7 +23,8 @@ interface RenderMethodOptions {
 
 type PrioritizedRenderMethods = { [key: number]: RenderMethodOptions };
 
-const DEFAULT_RENDERER_NAME = "default";
+let DEFAULT_RENDERER_NAME = "default";
+const INITIAL_DEFAULT_RENDERER = DEFAULT_RENDERER_NAME;
 
 export default class Renderer {
 
@@ -33,9 +34,7 @@ export default class Renderer {
     // private static _renderMethodPriorities: { [key: number]: RenderMethodOptions } = {};
 
     static Render(screenRect: Rectangle) { 
-        // for each render context
-        const methods = Renderer._renderMethods;
-        const prioritizedMethods = Renderer._contextPrioritizedMethods;
+
         for(const [key, context] of Renderer._renderContexts.entries()) {
             // get the prioritized render methods for that context
             const prioritizedMethods = Renderer._contextPrioritizedMethods.get(key);
@@ -54,13 +53,23 @@ export default class Renderer {
         }
         else Renderer._renderContexts.set(name, context);
 
-
-        if(!Renderer._renderContexts.has(DEFAULT_RENDERER_NAME)) {
-            Renderer._renderContexts.set(DEFAULT_RENDERER_NAME, context);
-            Renderer.PrioritizedRendering("default");
-        }
+        Renderer._assignDefaultContext(context);
 
         Renderer.PrioritizedRendering(context.name);
+    }
+
+    private static _assignDefaultContext = function(context: RenderContextInterface) {
+        
+        if(DEFAULT_RENDERER_NAME == INITIAL_DEFAULT_RENDERER) {
+            DEFAULT_RENDERER_NAME = context.name;
+            console.debug(`Default renderer context set to ${DEFAULT_RENDERER_NAME}`);
+
+            for(const method of Renderer._renderMethods) {
+                if(method.context === INITIAL_DEFAULT_RENDERER) {
+                    method.context = DEFAULT_RENDERER_NAME;
+                }
+            }
+        }
     }
 
     static RegisterRenderMethod(priority: number, method: Function, options?: RenderMethodConstructorOptions) {
@@ -95,7 +104,7 @@ export default class Renderer {
         // pull everything out of the "holding" context
 
         const methodPriorityOptions: RenderMethodOptions = {
-            context: options?.context || "default",   // TODO: better handling for method registration prior to context
+            context: options?.context || DEFAULT_RENDERER_NAME,   // TODO: better handling for method registration prior to context
             layer: options?.layer || "main",
             frameLimit: options?.frameLimit || -1,
             id: generateId(6),
