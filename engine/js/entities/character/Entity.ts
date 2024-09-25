@@ -72,6 +72,7 @@ export default class Entity extends WorldObject {
     get id() { return this._id; }
     get name() { return this._name; }
     
+    // 'attributed' mixin?
     private _attributes: { [key: string]: CharacterAttribute } = {};
     private _desiredMovementVector: Vector = new Vector(0, 0);
     private _color: string;
@@ -329,7 +330,7 @@ export default class Entity extends WorldObject {
     }
 
     equals(entity: Entity) {
-        return entity._id == this._id;
+        return entity && entity._id == this._id;
     }
 
     destroy() {
