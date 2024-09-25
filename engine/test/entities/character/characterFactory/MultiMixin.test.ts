@@ -8,6 +8,7 @@ import { Equipped, IsEquipped, MakeEquipped } from "../../../../js/entities/char
 import { Combative, IsCombative, MakeCombative } from "../../../../js/entities/character/mixins/Combative";
 import { Dummy, DummyMixin } from "../../../fakeClasses/DummyMixin";
 import { GetLocalPlayer, MakePlayable, Playable, PlayableOptions } from "../../../../js/entities/character/mixins/Playable";
+import PostConstruct from "../../../../ts/decorators/PostConstruct";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {
@@ -95,6 +96,25 @@ describe('ChacterFactory.MakeCharacter', () => {
     });
     
     it('should call static constructor exactly once for each mixin type', () => {
-        // can we spy Postconstruct method?
+
+        /* none of this works, so we did it manually. TODO, of course
+        jest.resetModules();
+
+        const mockPostConstruct = jest.fn();
+        jest.mock('@/engine/ts/decorators/PostConstruct', () => mockPostConstruct);
+
+        jest.resetModules();
+        
+        const mixins = [MakePlayable, DummyMixin];
+        const options: EntityOptions & PlayableOptions = {
+            isPlayer: true
+        }
+        const characterUnderTest = MakeCharacter(mixins, options);
+
+        // once eachfor entity, for playable, and for dummy
+        expect(mockPostConstruct).toHaveBeenCalledTimes(3);
+
+        jest.restoreAllMocks();
+        */
     });
 });
