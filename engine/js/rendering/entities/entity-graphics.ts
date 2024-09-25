@@ -15,6 +15,8 @@ export function GetEntityGraphic(entity: Entity) {
     return entityGraphics.get(entity);
 }
 
+export const FLAG_SKIP_DOM_RENDERING = 'noGraphic';
+
 function createGraphic(entity: Entity, domRoot: HTMLElement) {
 
     // TODO: migrate type to entity
@@ -94,6 +96,9 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
 
     // how to check if the character is off screen?
 
+    // TODO: pre-cache this for redraw loop
+    if(entity.hasFlag(FLAG_SKIP_DOM_RENDERING)) return;
+
     if(!entityGraphics.has(entity)) createGraphic(entity, domRoot);
     const graphic = entityGraphics.get(entity);
     
@@ -165,13 +170,16 @@ function redraw_loop(screenRect: Rectangle, domRoot: HTMLElement) {
     }
 }
 
-function characterDied(event: EntityEvent) {
-    const entity = event.entity;
+export function RemoveEntityGraphic(entity: Entity) {
     const graphic = entityGraphics.get(entity);
     if(graphic) {
         graphic.parentNode.removeChild(graphic);
         entityGraphics.delete(entity);
     }
+}
+
+function characterDied(event: EntityEvent) {
+    RemoveEntityGraphic(event.entity);
 }
 
 Events.Subscribe(Events.List.GameStart, function() {
