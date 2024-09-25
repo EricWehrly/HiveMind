@@ -26,7 +26,7 @@ export function GetLocalPlayer(): Entity {
 let playableClass: any;
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOptions: PlayableOptions)
+export function MakePlayable<T extends Constructor<Entity>>(Base: T)
     : T & Constructor<Playable>  {
         if(!playableClass) {
             playableClass = class PlayableClass extends Base implements Playable {
@@ -46,18 +46,16 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T, playableOpt
                 isPlayer: boolean;
                 private _lastPosition: Readonly<WorldCoordinate> = null;
                 
-                // since we can't do (postconstructor) decorator, 
                 constructor(...args: any) {
                     super(...args);
+
+                    const [ isPlayer ] = args;
+                    this.isPlayer = isPlayer || false;
         
                     if(this.position) this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
-        
-                    // PostConstruct(this, 'initialize');
                 }
         
                 initialize(): void {
-        
-                    this.isPlayer = playableOptions?.isPlayer || false;
         
                     if(this.isPlayer) {
                         if(_LOCAL_PLAYER) console.warn(`Setting the local player when one is already set.`);
