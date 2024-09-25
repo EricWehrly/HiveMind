@@ -18,7 +18,7 @@ export interface EquippedOptions {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
-    return class extends Base implements Equipped {
+    return class EquippedEntity extends Base implements Equipped {
         
         private _equipment: Equipment = new Equipment(this);
         private _technologies: Technology[] = [];
