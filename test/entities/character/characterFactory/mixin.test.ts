@@ -1,26 +1,11 @@
+import { mockEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
 import { Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
 import { SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
 
-jest.mock('@/engine/js/events', () => {
-    return {
-        __esModule: true, // this property makes it work
-        default: {
-            Subscribe: jest.fn().mockImplementation(() => { }),
-            RaiseEvent: jest.fn().mockImplementation(() => { }),
-            List: new Proxy({}, {
-                get: function(target, name) {
-                    return name;
-                },
-                set: function(target, name, value) {
-                    return true;  // Indicate that the assignment succeeded
-                }
-            })
-        }
-    };
-});
+jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {
     return {
         __esModule: true, // this property makes it work
@@ -86,10 +71,6 @@ describe('ChacterFactory.MakeCharacter', () => {
         it('should apply functionality from mixin to entity', () => {
             expect(livin.damage).toBeDefined();
         });
-    });
-
-    describe('multiple mixins', () => {
-        // TODO
     });
 
     describe('extended class', () => {
