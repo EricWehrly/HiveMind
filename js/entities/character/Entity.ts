@@ -9,7 +9,7 @@ import Vector from "../../baseTypes/Vector";
 import WorldObject, { WorldObjectOptions } from "../../baseTypes/WorldObject";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
 
-Events.List.CharacterCreated = "CharacterCreated";
+Events.List.EntityCreated = "CharacterCreated";
 
 export interface CharacterFilterOptions {
     exclude?: Entity[];
@@ -156,7 +156,7 @@ export default class Entity extends WorldObject {
             id: null,
             entity: this
         };
-        Events.RaiseEvent(Events.List.CharacterCreated, entityEvent, {
+        Events.RaiseEvent(Events.List.EntityCreated, entityEvent, {
             isNetworkBoundEvent: true
         });
     }
