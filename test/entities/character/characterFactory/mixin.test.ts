@@ -1,6 +1,6 @@
 import { mockEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
-import { Living, MakeLiving } from "../../../../js/entities/character/mixins/Living";
+import { Living, LivingOptions, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
 import { SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
@@ -45,8 +45,9 @@ describe('ChacterFactory.MakeCharacter', () => {
     describe('one mixin', () => {
         const livingMixin = [MakeLiving];
 
-        const characterOptions: EntityOptions = {
-            speed: 3
+        const characterOptions: EntityOptions & LivingOptions = {
+            speed: 3,
+            health: 1
         };
         const character = MakeCharacter(livingMixin, characterOptions);
         const livin = character as Entity & Living;
