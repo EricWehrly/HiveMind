@@ -23,6 +23,10 @@ function resetTrackedEvents() {
     raisedEvents = [];
 }
 
+function eventCount(event: string): number {
+    return raisedEvents.filter(e => e === event).length;
+}
+
 // for now
 export default mockEvents;
 
@@ -30,5 +34,6 @@ export {
     mockEvents,
     resetTrackedEvents,
     // TODO: wrap in getter?
-    raisedEvents
+    raisedEvents,
+    eventCount
 }
