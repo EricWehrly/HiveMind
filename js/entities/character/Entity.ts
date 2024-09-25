@@ -25,6 +25,7 @@ export interface EntityOptions extends WorldObjectOptions {
     entityRenderingSettings?: EntityRenderingSettings;
     color?: string;
     cost?: number;
+    flags?: string[];
 }
 
 interface SortingEntity {
@@ -77,6 +78,7 @@ export default class Entity extends WorldObject {
     private _desiredMovementVector: Vector = new Vector(0, 0);
     private _color: string;
     private _characterType: CharacterType;
+    private readonly _flags: string[] = [];
 
     // one dimension, rather than height and width, for now
     get size() { return 1 }
@@ -327,6 +329,14 @@ export default class Entity extends WorldObject {
         }
         
         return false;
+    }
+
+    addFlag(flag: string) { 
+        this._flags.push(flag);
+    }
+
+    hasFlag(flag: string) { 
+        return this._flags.includes(flag);
     }
 
     equals(entity: Entity) {
