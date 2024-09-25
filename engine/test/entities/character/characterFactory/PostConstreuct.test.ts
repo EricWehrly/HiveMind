@@ -24,7 +24,7 @@ describe('ChacterFactory.MakeCharacter', () => {
             name: 'entityUnderTest'
         }
         MakeCharacter([], options);
-        expect(raisedEvents).toContain('CharacterCreated');
+        expect(raisedEvents).toContain('EntityCreated');
         // expect(postConstructSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -42,6 +42,6 @@ describe('ChacterFactory.MakeCharacter', () => {
         // this is maybe the closest we can do instead for right now, unfortunately
         expect(entityUnderTest.isPlayer).toBeDefined();
 
-        expect(raisedEvents).toContain('CharacterCreated');
+        expect(raisedEvents).toContain('EntityCreated');
     });
 });

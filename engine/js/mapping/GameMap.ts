@@ -60,7 +60,7 @@ export default class GameMap {
 
         this._seed = new Seed(seed.Random());
         
-        Events.Subscribe(Events.List.CharacterCreated, this._characterCreated.bind(this));
+        Events.Subscribe(Events.List.EntityCreated, this._characterCreated.bind(this));
         Events.Subscribe(Events.List.PlayerChunkChanged, this._playerChunkChanged.bind(this));
     }
 
