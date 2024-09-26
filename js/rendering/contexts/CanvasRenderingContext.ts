@@ -2,7 +2,7 @@ import Rectangle from "../../baseTypes/rectangle";
 import RenderContext from "../RenderContext";
 import Renderer, { RenderMethodConstructorOptions } from "../renderer";
 
-type RenderMethod = (context: CanvasRenderingContext2D) => void;
+type RenderMethod = (canvas: HTMLCanvasElement) => void;
 
 export default class CanvasRenderingContext extends RenderContext {
 
@@ -44,7 +44,7 @@ export default class CanvasRenderingContext extends RenderContext {
         for(var index in renderMethods) {
             var renderMethod = renderMethods[index];
             try {
-                renderMethod(this._context);
+                renderMethod(this._canvasElement);
             } catch(ex) {
                 console.error(ex);
             }
