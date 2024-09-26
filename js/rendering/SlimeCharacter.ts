@@ -5,7 +5,9 @@ import { FLAG_SKIP_DOM_RENDERING, RemoveEntityGraphic } from "../../engine/js/re
 
 let localPlayer: Entity;
 
-function redraw_loop(context: CanvasRenderingContext2D) {
+function redraw_loop(canvas: HTMLCanvasElement) {
+
+    const context = canvas.getContext('2d');
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
@@ -15,7 +17,7 @@ function redraw_loop(context: CanvasRenderingContext2D) {
     };
 
     const boxSize = 100;
-    const color = localPlayer.color;
+    const color = 'green'// localPlayer.color;
 
     const x = (context.canvas.width - boxSize) / 2;
     const y = (context.canvas.height - boxSize) / 2;// Set fill style to green with semi transparency
