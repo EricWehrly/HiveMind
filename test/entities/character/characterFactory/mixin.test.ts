@@ -76,7 +76,14 @@ describe('ChacterFactory.MakeCharacter', () => {
 
     describe('extended class', () => {
 
-        class TestExtendedEntity extends Entity {};
+        class TestExtendedEntity extends Entity {
+            constructorCalls = 0;
+
+            constructor(options: EntityOptions) {
+                super(options);
+                this.constructorCalls++;
+            }
+        };
 
         it('should instantiate as a class that extends the base', () => {
             const options: EntityOptions = {
@@ -84,6 +91,7 @@ describe('ChacterFactory.MakeCharacter', () => {
             };
             const character = MakeCharacter([MakeLiving], options, TestExtendedEntity);
             expect(character instanceof TestExtendedEntity).toBeTruthy();
+            expect(character.constructorCalls).toBe(1);
         });
     });
 });
