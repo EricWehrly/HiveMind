@@ -1,44 +1,88 @@
 import { CharacterUtils } from "../../engine/js/entities/character/CharacterUtils";
 import Entity from "../../engine/js/entities/character/Entity";
-import CanvasRenderingContext from "../../engine/js/rendering/contexts/CanvasRenderingContext";
 import { FLAG_SKIP_DOM_RENDERING, RemoveEntityGraphic } from "../../engine/js/rendering/entities/entity-graphics";
+import WebGLRenderer from "../../engine/js/rendering/contexts/WebGLRenderer";
+
+import vertexShaderSource from './SlimeVertex.glsl';
+import fragmentShaderSource from './SlimeFragment.glsl';
 
 let localPlayer: Entity;
 
-function redraw_loop(canvas: HTMLCanvasElement) {
+let shaderProgram: WebGLProgram;
 
-    const context = canvas.getContext('2d');
-
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+function redraw_loop(context: WebGL2RenderingContext) {
+    if(!context) {
+        return;
+    }
 
     if(!localPlayer) {
-        onGameStart();
+        onGameStart(context);
         return;
     };
 
-    const boxSize = 100;
-    const color = 'green'// localPlayer.color;
 
-    const x = (context.canvas.width - boxSize) / 2;
-    const y = (context.canvas.height - boxSize) / 2;// Set fill style to green with semi transparency
+    const cubeVertices = [
+        // Front face
+        -1.0, -1.0,  1.0,
+         1.0, -1.0,  1.0,
+         1.0,  1.0,  1.0,
+        -1.0,  1.0,  1.0,
+        // ... define the rest of the cube vertices here
+    ];
 
-    context.globalAlpha = 0.5; // Adjust this value between 0 (fully transparent) and 1 (fully opaque) to get the desired transparency
-    context.fillStyle = color;
-    context.fillRect(x, y, boxSize, boxSize);
+    const cubeVertexBuffer = context.createBuffer();
+    context.bindBuffer(context.ARRAY_BUFFER, cubeVertexBuffer);
+    context.bufferData(context.ARRAY_BUFFER, new Float32Array(cubeVertices), context.STATIC_DRAW);
 
-    // Reset globalAlpha to have a solid outline
-    context.globalAlpha = 1;
-    context.strokeStyle = color;
-    context.lineWidth = 2; // Set line width for the stroke
-    context.strokeRect(x, y, boxSize, boxSize); // Draw the outline
+    const positionAttributeLocation = context.getAttribLocation(shaderProgram, 'aVertexPosition');
+    context.enableVertexAttribArray(positionAttributeLocation);
+    context.vertexAttribPointer(positionAttributeLocation, 3, context.FLOAT, false, 0, 0);
+
+    context.useProgram(shaderProgram);
+    context.drawArrays(context.TRIANGLES, 0, cubeVertices.length / 3);
+
 }
 
-function onGameStart() {
+function onGameStart(context: WebGL2RenderingContext) {
     localPlayer = CharacterUtils.GetLocalPlayer();
     if(localPlayer) {
         RemoveEntityGraphic(localPlayer);
         localPlayer.addFlag(FLAG_SKIP_DOM_RENDERING);
+
+        shaderProgram = initShaderProgram(context, vertexShaderSource, fragmentShaderSource);
     }
 }
 
-CanvasRenderingContext.RegisterRenderMethod(10, redraw_loop);
+function initShaderProgram(gl: WebGL2RenderingContext, vsSource: string, fsSource: string) {
+    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+    const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  
+    const shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+  
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+      alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram));
+      return null;
+    }
+  
+    return shaderProgram;
+  }
+
+  function loadShader(gl: WebGLRenderingContext, type: number, source: string) {
+    const shader = gl.createShader(type);
+  
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+  
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+  
+    return shader;
+  }
+
+  WebGLRenderer.RegisterRenderMethod(10, redraw_loop);

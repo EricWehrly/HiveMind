@@ -2,12 +2,12 @@ import Rectangle from "../../baseTypes/rectangle";
 import RenderContext from "../RenderContext";
 import Renderer, { RenderMethodConstructorOptions } from "../renderer";
 
-type RenderMethod = (context: CanvasRenderingContext2D) => void;
+type RenderMethod = (context: WebGL2RenderingContext) => void;
 
-export default class CanvasRenderingContext extends RenderContext {
+export default class WebGLRenderer extends RenderContext {
 
     private _canvasElement: HTMLCanvasElement;
-    private _context: CanvasRenderingContext2D;
+    private _context: WebGL2RenderingContext;
 
     get context() { return this._context; }
 
@@ -17,7 +17,7 @@ export default class CanvasRenderingContext extends RenderContext {
         this._canvasElement = document.createElement('canvas');
         this.styleCanvasElement();
         document.body.appendChild(this._canvasElement);
-        this._context = this._canvasElement.getContext('2d');
+        this._context = this._canvasElement.getContext('webgl2');
     }
 
     private styleCanvasElement() {
@@ -34,8 +34,11 @@ export default class CanvasRenderingContext extends RenderContext {
     }
 
     static RegisterRenderMethod(priority: number, method: RenderMethod, options?: RenderMethodConstructorOptions): void {
+        if(!options?.context && !Renderer.HasRenderContext('WebGLRenderer')) {
+            new WebGLRenderer();
+        }
         options = {
-            context: options?.context || 'CanvasRenderingContext'
+            context: options?.context || 'WebGLRenderer'
         };
         Renderer.RegisterRenderMethod(priority, method, options);
     }

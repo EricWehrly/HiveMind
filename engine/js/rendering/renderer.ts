@@ -58,6 +58,10 @@ export default class Renderer {
         Renderer.PrioritizedRendering(context.name);
     }
 
+    static HasRenderContext(name: string) {
+        return Renderer._renderContexts.has(name);
+    }
+
     private static _assignDefaultContext = function(context: RenderContextInterface) {
         
         if(DEFAULT_RENDERER_NAME == INITIAL_DEFAULT_RENDERER) {
