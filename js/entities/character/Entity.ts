@@ -79,6 +79,7 @@ export default class Entity extends WorldObject {
     private _color: string;
     private _characterType: CharacterType;
     private readonly _flags: string[] = [];
+    private debugInfo: { [key: string]: any } = {}; // we don't want to use underscore because it hides the property from the inspector, which means we can't actually use it for debug
 
     // one dimension, rather than height and width, for now
     get size() { return 1 }
@@ -337,6 +338,15 @@ export default class Entity extends WorldObject {
 
     hasFlag(flag: string) { 
         return this._flags.includes(flag);
+    }
+
+    addDebugInfo(propertyName: string, value: any) {
+
+        if(this.debugInfo[propertyName] != undefined) {
+            console.warn(`Overwriting debug property ${propertyName} on ${this.name}`);
+        }
+
+        this.debugInfo[propertyName] = value;
     }
 
     equals(entity: Entity) {
