@@ -23,6 +23,7 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     // @ts-expect-error
     options.calledByFactory = true;
     const character = new ExtendedCharacter(options) as T;
+    character.addDebugInfo('factoryClasses', classNames);
     RunPostConstructMethods(character, classNames);
     return character;
 }
