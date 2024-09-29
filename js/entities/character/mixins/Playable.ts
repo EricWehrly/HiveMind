@@ -1,5 +1,6 @@
 import PostConstruct from "../../../../ts/decorators/PostConstruct";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
+import Logger from "../../../core/Logger";
 import Events from "../../../events";
 import Character from "../../character";
 import Entity, { CharacterFilterOptions } from "../Entity";
@@ -56,7 +57,7 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T)
         initialize(): void {
 
             if (this.isPlayer) {
-                if (_LOCAL_PLAYER) console.warn(`Setting the local player when one is already set.`);
+                if (_LOCAL_PLAYER) Logger.warn(`Setting the local player when one is already set.`);
                 _LOCAL_PLAYER = this as unknown as Character & Playable & Combative;
             }
         }

@@ -1,4 +1,5 @@
 import { TechnologyTypes } from "../../../TechnologyTypes";
+import Logger from "../../../core/Logger";
 import Technology from "../../../technology";
 import Equipment, { EquippedTechnology } from "../../equipment";
 import Entity from "../Entity";
@@ -64,7 +65,7 @@ export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
             } else {
                 technology = tech as Technology;
             }
-            console.debug(`Adding technology ${technology.name} to character ${this.name}`);
+            Logger.debug(`Adding technology ${technology.name} to character ${this.name}`);
             this._technologies.push(technology);
     
             if(technology.type) {
@@ -72,7 +73,7 @@ export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
                     this.equip(technology);
                 }
     
-                console.debug(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
+                Logger.debug(`${technology.type} equipped: ${this.getEquipped(technology.type).name}`);
             }
             
             // CharacterType[character.target.characterType].isStudied = true;

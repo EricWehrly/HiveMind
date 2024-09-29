@@ -1,5 +1,6 @@
 import Listed from "./baseTypes/listed";
 import WorldCoordinate from "./coordinates/WorldCoordinate";
+import Logger from "./core/Logger";
 import Entity from "./entities/character/Entity";
 import { CharacterAttackedEvent, Combative } from "./entities/character/mixins/Combative";
 import Events from "./events";
@@ -98,7 +99,7 @@ export default class Technology extends Listed {
 
         if(options.statusEffect) {
             if(Number.isNaN(options.statusEffect.duration)) {
-                console.warn("You can't (currently) apply a status effect without a duration.");
+                Logger.warn("You can't (currently) apply a status effect without a duration.");
             }
             else this._statusEffect = options.statusEffect;
         }
@@ -157,21 +158,21 @@ export default class Technology extends Listed {
                 while(options.volume > 1) options.volume = options.volume / 10;
                 sound.volume = options.volume / 2;
             } else {
-                console.warn(`No volume for sound ${soundName}`);
+                Logger.warn(`No volume for sound ${soundName}`);
             }
             // we may need to have a more robust way of checking
             // if the file is properly loaded before playing it
             if(sound.readyState > 0) {
                 try {
-                    // console.log(`Playing sound ${sound.src} for ${this.name} at ${sound.volume}`);
+                    // Logger.log(`Playing sound ${sound.src} for ${this.name} at ${sound.volume}`);
                     sound.play();
                 } catch(ex) {
-                    console.warn(ex);
+                    Logger.warn(ex);
                 } 
             } else {
-                console.warn(`Sound ${sound.src} not ready for ${this.name}. State: ${sound.readyState}`, sound);
+                Logger.warn(`Sound ${sound.src} not ready for ${this.name}. State: ${sound.readyState}`, sound);
             }
         }
-        else console.warn(`No sound for ${this.name}`);
+        else Logger.warn(`No sound for ${this.name}`);
     }
 }
