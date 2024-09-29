@@ -12,8 +12,8 @@ import { MakeSlimey } from "./character/mixins/Slimey";
 import Faction from "../../engine/js/entities/faction";
 import { MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 import { HiveMindCharacterAI } from "../ai/HivemindCharacterAi";
-import { MakeSentient, Sentient, SentientOptions } from "../../engine/js/entities/character/mixins/Sentient";
-import { EntityOptions } from "../../engine/js/entities/character/Entity";
+import { MakeSentient, SentientOptions } from "../../engine/js/entities/character/mixins/Sentient";
+import Logger from "../../engine/js/core/Logger";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
 
@@ -49,12 +49,12 @@ export default class Building extends HiveMindCharacter {
         if(cost) {
             const food = Resource.Get("food");
             if(!food.pay(cost)) {
-                console.log(`You can't afford to build ${characterType.name} for ${cost}`);
-                console.log(`You got ${food.value}, son.`);
+                Logger.log(`You can't afford to build ${characterType.name} for ${cost}`);
+                Logger.log(`You got ${food.value}, son.`);
                 return null;
             }
         } else {
-            console.warn(`No cost!`);
+            Logger.warn(`No cost!`);
         }
         
         return MakeHiveMindCharacter([MakeGrowable, MakeGrower, MakeLiving, MakeSlimey, MakeCombative, MakeSentient], characterOptions, Building);
@@ -137,7 +137,7 @@ export default class Building extends HiveMindCharacter {
                     }
                 }
 
-                // console.debug(`Character ${characterType.name} zone position: ${x}, ${y}`);
+                // Logger.debug(`Character ${characterType.name} zone position: ${x}, ${y}`);
                 return new WorldCoordinate(x, y);
             }
         }
@@ -166,7 +166,7 @@ export default class Building extends HiveMindCharacter {
                     }
                 }
                 
-                // console.debug(`Character ${characterType.name} position: ${x}, ${y}`);
+                // Logger.debug(`Character ${characterType.name} position: ${x}, ${y}`);
                 return new WorldCoordinate(x, y);
             }
         }

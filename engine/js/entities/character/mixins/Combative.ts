@@ -1,6 +1,7 @@
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import GameSound from "../../../audio/GameSound";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
+import Logger from "../../../core/Logger";
 import MessageLog from "../../../core/MessageLog";
 import Events, { GameEvent } from "../../../events";
 import Technology from "../../../technology";
@@ -162,7 +163,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
                     damage
                 });
             } catch(ex) {
-                console.warn(`Couldn't write to combat log: ${ex}`);
+                Logger.warn(`Couldn't write to combat log: ${ex}`);
             }
     
             if(IsCombative(target) && IsEquipped(target)) {
