@@ -1,9 +1,9 @@
 import { mockEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
-import { Living, LivingOptions, MakeLiving } from "../../../../js/entities/character/mixins/Living";
+import { IsLiving, Living, LivingOptions, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
-import { SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
+import { IsSentient, MakeSentient, Sentient, SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {
@@ -92,6 +92,30 @@ describe('ChacterFactory.MakeCharacter', () => {
             const character = MakeCharacter([MakeLiving], options, TestExtendedEntity);
             expect(character instanceof TestExtendedEntity).toBeTruthy();
             expect(character.constructorCalls).toBe(1);
+        });
+
+        it('should subsequently default to the base', () => {
+            const options: EntityOptions = {
+                cost: 1
+            };
+            const character = MakeCharacter([MakeLiving], options, TestExtendedEntity);
+            const characterUnderTest = MakeCharacter([], options);
+
+            expect(IsLiving(character)).toBe(true);
+            expect(characterUnderTest instanceof TestExtendedEntity).toBe(false);
+            expect(IsLiving(characterUnderTest)).toBe(false);
+        });
+    });
+
+    describe(('on reuse'), () => {
+        it('should not share state between instances', () => {
+            const character = MakeCharacter([MakeLiving], {}) as Entity & Living;
+            const character2 = MakeCharacter([MakeSentient], {}) as Entity & Sentient;
+
+            expect(IsLiving(character)).toBe(true);
+            expect(IsSentient(character2)).toBe(true);
+            expect(IsLiving(character2)).toBe(false);
+            expect(IsSentient(character)).toBe(false);
         });
     });
 });
