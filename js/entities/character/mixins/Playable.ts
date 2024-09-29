@@ -23,101 +23,95 @@ export function GetLocalPlayer(): Entity {
     return _LOCAL_PLAYER;
 }
 
-let playableClass: any;
-
 type Constructor<T = {}> = new (...args: any[]) => T;
 export function MakePlayable<T extends Constructor<Entity>>(Base: T)
-    : T & Constructor<Playable>  {
-        if(!playableClass) {
-            playableClass = class PlayableClass extends Base implements Playable {
+    : T & Constructor<Playable> {
+    return class PlayableClass extends Base implements Playable {
 
-                static get LOCAL_PLAYER() {
-                    return _LOCAL_PLAYER;
-                }
-        
-                static set LOCAL_PLAYER(value) {
-                    _LOCAL_PLAYER = value;
-                }
-        
-                static {
-                    PostConstruct(PlayableClass, PlayableClass.prototype.initialize);
-                }
-        
-                isPlayer: boolean;
-                private _lastPosition: Readonly<WorldCoordinate> = null;
-                
-                constructor(...args: any) {
-                    super(...args);
+        static get LOCAL_PLAYER() {
+            return _LOCAL_PLAYER;
+        }
 
-                    const [ isPlayer ] = args;
-                    this.isPlayer = isPlayer || false;
-        
-                    if(this.position) this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
-                }
-        
-                initialize(): void {
-        
-                    if(this.isPlayer) {
-                        if(_LOCAL_PLAYER) console.warn(`Setting the local player when one is already set.`);
-                        _LOCAL_PLAYER = this as unknown as Character & Playable & Combative;
-                    }
-                }
-        
-                move(amount: number) {
-                    super.move(amount);
-        
-                    this.afterMove();
-                }
-                    
-                afterMove() {
-                    // TODO: We can probly extract to a callback (#positionUpdated)
-                    // and call from within the position setter (in Entity)
-                    if(!this.position.equals(this._lastPosition)) {
-                        if(this.isPlayer) {
-                            Events.RaiseEvent(Events.List.PlayerMoved, {
-                                character: this,
-                                from: this._lastPosition,
-                                to: this.position
-                                }, {
-                                isNetworkBoundEvent: true
-                            });
-                            
-                            if(!this.position.chunk.equals(this._lastPosition?.chunk)) {
-                                Events.RaiseEvent(Events.List.PlayerChunkChanged, {
-                                    character: this,
-                                    from: this._lastPosition?.chunk,
-                                    to: this.position.chunk
-                                }, {
-                                    isNetworkBoundEvent: true
-                                });
-                            }
-                        }
-                    }
-        
-                    if(this._lastPosition == null) { 
-                        this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
-                    }
-                    else if(!this.position.equals(this._lastPosition)) {
-                        this._lastPosition.update(this.position);
-                    }
-                }
-                
-                shouldFilterCharacter(character: Entity & Playable, options: CharacterFilterOptions & PlayableOptions) {
-        
-                    if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
-                        return true;
-                    }
-                    
-                    return super.shouldFilterCharacter(character, options);
-                }
+        static set LOCAL_PLAYER(value) {
+            _LOCAL_PLAYER = value;
+        }
+
+        static {
+            // TODO: static only once, not with each Playable Mixin
+            PostConstruct(PlayableClass, PlayableClass.prototype.initialize);
+        }
+
+        isPlayer: boolean;
+        private _lastPosition: Readonly<WorldCoordinate> = null;
+
+        constructor(...args: any) {
+            super(...args);
+
+            const { isPlayer } = args[0] || undefined;
+            this.isPlayer = isPlayer || false;
+
+            if (this.position) this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
+        }
+
+        initialize(): void {
+
+            if (this.isPlayer) {
+                if (_LOCAL_PLAYER) console.warn(`Setting the local player when one is already set.`);
+                _LOCAL_PLAYER = this as unknown as Character & Playable & Combative;
             }
         }
-    return playableClass;
+
+        move(amount: number) {
+            super.move(amount);
+
+            this.afterMove();
+        }
+
+        afterMove() {
+            // TODO: We can probly extract to a callback (#positionUpdated)
+            // and call from within the position setter (in Entity)
+            if (!this.position.equals(this._lastPosition)) {
+                if (this.isPlayer) {
+                    Events.RaiseEvent(Events.List.PlayerMoved, {
+                        character: this,
+                        from: this._lastPosition,
+                        to: this.position
+                    }, {
+                        isNetworkBoundEvent: true
+                    });
+
+                    if (!this.position.chunk.equals(this._lastPosition?.chunk)) {
+                        Events.RaiseEvent(Events.List.PlayerChunkChanged, {
+                            character: this,
+                            from: this._lastPosition?.chunk,
+                            to: this.position.chunk
+                        }, {
+                            isNetworkBoundEvent: true
+                        });
+                    }
+                }
+            }
+
+            if (this._lastPosition == null) {
+                this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
+            }
+            else if (!this.position.equals(this._lastPosition)) {
+                this._lastPosition.update(this.position);
+            }
+        }
+
+        shouldFilterCharacter(character: Entity & Playable, options: CharacterFilterOptions & PlayableOptions) {
+
+            if (options.isPlayer != null && character.isPlayer != options.isPlayer) {
+                return true;
+            }
+
+            return super.shouldFilterCharacter(character, options);
+        }
+    }
 }
 
-export function IsPlayable(obj: Entity): obj is Entity & Playable {
-    const playable = obj as unknown as Playable;
-    return playable 
-        && playable.isPlayer !== undefined
-        && playable.isPlayer != null;
+export function IsPlayable(entity: Entity): entity is Entity & Playable {
+    const playable = entity as Entity & Playable;
+    return typeof playable.isPlayer === 'boolean';
 }
