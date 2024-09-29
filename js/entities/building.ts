@@ -3,7 +3,7 @@ import CharacterType from "./CharacterType";
 import Events from "../../engine/js/events";
 import Rectangle from "../../engine/js/baseTypes/rectangle";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
-import HiveMindCharacter from "./character/HiveMindCharacter";
+import HiveMindCharacter, { HivemindCharacterOptions } from "./character/HiveMindCharacter";
 import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import { MakeHiveMindCharacter } from "./character/HivemindCharacterFactory";
 import { MakeGrowable } from "./character/mixins/Growable";
@@ -75,16 +75,13 @@ export default class Building extends HiveMindCharacter {
 
     isBuilding: boolean;
     range: number;
-    // TODO: Temporary property to appease mixin
-    grow: (amount: number) => void;
 
-    // we may be able to do all this in the base class
-    constructor(options: any) {
+    constructor(options: HivemindCharacterOptions & BuildingOptions) {
 
         // TODO: there are a LOT of undefined variables on these
         // 'name' is actually unset/undefined
         // but color and cost are getting assigned the VALUE of undefined
-        const characterType = (options.characterType || CharacterType.List[options.characterType || options.name]) as BuildingCharacterType;
+        const characterType = (options.characterType || CharacterType.List[options.name]) as BuildingCharacterType;
 
         // does this fix it moving?
         options.speed = 0;
