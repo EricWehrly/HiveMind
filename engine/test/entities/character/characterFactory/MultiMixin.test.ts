@@ -8,7 +8,6 @@ import { Equipped, IsEquipped, MakeEquipped } from "../../../../js/entities/char
 import { Combative, IsCombative, MakeCombative } from "../../../../js/entities/character/mixins/Combative";
 import { Dummy, DummyMixin } from "../../../fakeClasses/DummyMixin";
 import { GetLocalPlayer, MakePlayable, Playable, PlayableOptions } from "../../../../js/entities/character/mixins/Playable";
-import PostConstruct from "../../../../ts/decorators/PostConstruct";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {
