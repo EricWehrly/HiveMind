@@ -41,5 +41,7 @@ describe('character factory', () => {
 
         expect(IsLiving(character)).toBe(true);
         expect(IsLiving(characterUnderTest)).toBe(false);
+        expect(IsSentient(character)).toBe(true);
+        expect(IsSentient(characterUnderTest)).toBe(true);
     });
 });
