@@ -136,3 +136,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
         }
     }
 };
+
+export function IsGrowable(character: HiveMindCharacter): character is HiveMindCharacter & Growable {
+    return (character as HiveMindCharacter & Growable).growth !== undefined;
+}

@@ -44,3 +44,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, op
         }
     }
 }
+
+export function IsGrower(character: HiveMindCharacter): character is HiveMindCharacter & Grower {
+    return (character as HiveMindCharacter & Grower).growing !== undefined;
+}
