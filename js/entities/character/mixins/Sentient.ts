@@ -40,12 +40,9 @@ function thinkOnSlowLoop(elapsed: number) {
 
 RegisterLoopMethod(thinkOnSlowLoop, true);
 
-let sentientClass: any;
-
 export function MakeSentient<T extends Constructor<Entity>>(Base: T) 
 : T & Constructor<Sentient> {
-    if(!sentientClass) {
-    sentientClass = class SentientClass extends Base implements Sentient {
+    return class SentientClass extends Base implements Sentient {
     
         private _ai: AI;
         get ai() { return this._ai; }
@@ -121,8 +118,6 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
             return this.targetPosition != null && this.targetPosition[axis] == this.position[axis];
         }
     };
-}
-    return sentientClass;
 };
 
 export function IsSentient(obj: Entity): obj is Entity & Sentient {
