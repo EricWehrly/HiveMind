@@ -98,9 +98,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T) {
     }
 }
 
-export function IsLiving(obj: Entity): obj is Entity & Living {
-    const living = obj as Living;
-    return living 
-        && living.health !== undefined
-        && living.health !== null;
+export function IsLiving(character: Entity): character is Entity & Living {
+    const living = character as Entity & Living;
+    return typeof living.health === 'number';
 }

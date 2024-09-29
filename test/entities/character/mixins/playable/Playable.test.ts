@@ -1,27 +1,12 @@
 import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
-import { EntityMixin, MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
 import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
-import { Combative, CombativeOptions, IsCombative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
-import Faction from "../../../../../js/entities/faction";
+import { MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
+import { IsPlayable, MakePlayable, Playable } from "../../../../../js/entities/character/mixins/Playable";
 import { IsLiving, Living, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
-
-describe('Combative', () => {
-    describe('constructor', () => {
-        it('should assign faction', () => {
-            const faction = new Faction({ name: 'test', color: 'red' });
-            const characterOptions: EntityOptions & CombativeOptions = {
-                faction
-            }
-            const combative = MakeCharacter([MakeCombative as EntityMixin], characterOptions) as Entity & Combative;
-
-            expect(combative.faction).toEqual(faction);
-        });
-    });
-});
 
 describe('character factory', () => {
 
@@ -39,24 +24,24 @@ describe('character factory', () => {
         const options: EntityOptions = {
             cost: 1
         };
-        const character = MakeCharacter([MakeCombative], options, TestExtendedEntity);
+        const character = MakeCharacter([MakePlayable], options, TestExtendedEntity);
         const characterUnderTest = MakeCharacter([], options);
 
-        expect(IsCombative(character)).toBe(true);
+        expect(IsPlayable(character)).toBe(true);
         expect(characterUnderTest instanceof TestExtendedEntity).toBe(false);
-        expect(IsCombative(characterUnderTest)).toBe(false);
+        expect(IsPlayable(characterUnderTest)).toBe(false);
 
         expect(character.constructorCalls).toBe(1);
         expect((characterUnderTest as TestExtendedEntity).constructorCalls).toBeUndefined();
     });
     
     it('should not share state between instances', () => {
-        const character = MakeCharacter([MakeLiving, MakeCombative], {}) as Entity & Combative & Living;
-        const characterUnderTest = MakeCharacter([MakeCombative], {}) as Entity & Combative & Living;
+        const character = MakeCharacter([MakeLiving, MakePlayable], {}) as Entity & Playable & Living;
+        const characterUnderTest = MakeCharacter([MakePlayable], {}) as Entity & Playable & Living;
 
         expect(IsLiving(character)).toBe(true);
         expect(IsLiving(characterUnderTest)).toBe(false);
-        expect(IsCombative(character)).toBe(true);
-        expect(IsCombative(characterUnderTest)).toBe(true);
+        expect(IsPlayable(character)).toBe(true);
+        expect(IsPlayable(characterUnderTest)).toBe(true);
     });
 });

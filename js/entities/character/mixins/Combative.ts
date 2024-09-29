@@ -35,9 +35,6 @@ export interface CombativeOptions {
     faction: Faction;
 }
 
-type Axis = 'x' | 'y';
-const axes: Axis[] = ['x', 'y'];
-
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: Maybe, ultimately, combative needs to extend equipped?
@@ -216,7 +213,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
     }
 }
 
-export function IsCombative(obj: Entity): obj is Entity & Combative {
-    // TODO: do they have an attack method?
-    return (obj as unknown) as Combative !== undefined;
+export function IsCombative(entity: Entity): entity is Entity & Combative {
+    const combative = entity as Entity & Combative;
+    return typeof combative.attack === 'function';
 }
