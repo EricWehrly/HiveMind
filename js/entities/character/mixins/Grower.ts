@@ -20,7 +20,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
 export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
-    return class extends Base implements Grower {
+    return class GrowerClass extends Base implements Grower {
         growing: (HiveMindCharacter & Growable)[] = [];
         lastSpawn: number;
         growerConfig: GrowerConfig = options?.growerConfig || {};
