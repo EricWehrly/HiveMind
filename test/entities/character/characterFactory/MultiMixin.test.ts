@@ -95,9 +95,10 @@ describe('ChacterFactory.MakeCharacter', () => {
         expect(characterUnderTest.equals(localPlayer)).toBe(true);
     });
     
+    /*
+        TODO: none of this works, so we did it manually.
     it('should call static constructor exactly once for each mixin type', () => {
 
-        /* none of this works, so we did it manually. TODO, of course
         jest.resetModules();
 
         const mockPostConstruct = jest.fn();
@@ -115,6 +116,6 @@ describe('ChacterFactory.MakeCharacter', () => {
         expect(mockPostConstruct).toHaveBeenCalledTimes(3);
 
         jest.restoreAllMocks();
-        */
     });
+    */
 });
