@@ -117,8 +117,6 @@ export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, op
     }
 }
 
-export function IsSlimey(obj: Entity): obj is Entity & Slimey {
-    const slimey = obj as Partial<Slimey>;
-    return slimey 
-        && slimey.Reabsorb !== undefined;
+export function IsSlimey(hiveMindCharacter: HiveMindCharacter): hiveMindCharacter is HiveMindCharacter & Slimey {
+    return (hiveMindCharacter as HiveMindCharacter & Slimey).Reabsorb !== undefined;
 }
