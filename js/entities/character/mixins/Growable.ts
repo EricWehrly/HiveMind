@@ -2,6 +2,7 @@ import { CharacterFilterOptions } from "../../../../engine/js/entities/character
 import { Living } from "../../../../engine/js/entities/character/mixins/Living";
 import { IsSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../../../engine/js/entities/resource";
+import PostConstruct from "../../../../engine/ts/decorators/PostConstruct";
 import HiveMindCharacter from "../HiveMindCharacter";
 
 // TODO: I'm not sure we wanted this exported from here ...
@@ -22,6 +23,10 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
     return class GrowableClass extends Base implements Growable {
 
+        static {
+            PostConstruct(GrowableClass, GrowableClass.prototype.postConstruct);
+        }
+
         growth: number = null;
         growConfig: GrowableConfig = options?.growConfig || {};
 
@@ -41,14 +46,12 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             return super.toolTipMessage;
         }
 
-        constructor(...args: any) {
-            super(...args);
-
+        postConstruct(): void {
             if(IsSentient(this)) {
                 const sentient = this as Sentient;
                 // sentient.ai.OnThink += this.onThink;
                 sentient.ai.OnThink = this.onThink;
-            }
+            }            
         }
 
         // TODO: unit test this

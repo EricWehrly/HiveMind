@@ -2,8 +2,10 @@ import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
 import { MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import { IsEquipped, MakeEquipped, Equipped } from "../../../../../js/entities/character/mixins/Equipped";
+import { IsEquipped, MakeEquipped, Equipped, EquippedOptions } from "../../../../../js/entities/character/mixins/Equipped";
 import { IsLiving, Living, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
+import Technology from "../../../../../js/technology";
+import { TechnologyTypes } from "../../../../../js/TechnologyTypes";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -18,7 +20,19 @@ describe('character factory', () => {
             super(options);
             this.constructorCalls++;
         }
-    };    
+    };
+
+    it('should digest all constructor parameters', () => {
+        const testTech = new Technology({ name: 'test', type: TechnologyTypes.BUFF});
+
+        const options: EntityOptions & EquippedOptions = {
+            cost: 1,
+            technologies: [testTech]
+        };
+        const character = MakeCharacter([MakeEquipped], options) as Entity & Equipped;
+
+        expect(character.technologies.includes(testTech)).toBe(true);
+    });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {

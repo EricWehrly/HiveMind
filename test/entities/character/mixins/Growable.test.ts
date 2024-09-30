@@ -4,7 +4,8 @@ import { EntityOptions } from "../../../../engine/js/entities/character/Entity";
 import HiveMindCharacter from "../../../../js/entities/character/HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../../../../js/entities/character/HivemindCharacterFactory";
 import { IsLiving, Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
-import { Growable, IsGrowable, MakeGrowable } from "../../../../js/entities/character/mixins/Growable";
+import { Growable, GrowableConfig, IsGrowable, MakeGrowable } from "../../../../js/entities/character/mixins/Growable";
+import { MakeSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -19,7 +20,15 @@ describe('character factory', () => {
             super(options);
             this.constructorCalls++;
         }
-    };    
+    };
+
+    it('should digest all constructor parameters', () => {
+        const options: EntityOptions & GrowableConfig = {
+            cost: 1,
+        };
+        const character = MakeHiveMindCharacter([MakeGrowable, MakeSentient], options) as HiveMindCharacter & Growable & Sentient;
+        expect(character.ai.OnThink).toBeDefined();
+    });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {

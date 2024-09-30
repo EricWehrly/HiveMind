@@ -2,7 +2,7 @@ import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
 import { MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import { IsPlayable, MakePlayable, Playable } from "../../../../../js/entities/character/mixins/Playable";
+import { IsPlayable, MakePlayable, Playable, PlayableOptions } from "../../../../../js/entities/character/mixins/Playable";
 import { IsLiving, Living, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
 
 jest.mock('@/engine/js/events', () => mockEvents);
@@ -18,7 +18,23 @@ describe('character factory', () => {
             super(options);
             this.constructorCalls++;
         }
-    };    
+    };
+
+    it('should digest all constructor parameters', () => {
+        const options: EntityOptions & PlayableOptions = {
+            cost: 1,
+            isPlayer: true,
+            position: { x: 5, y: -3 }
+        };
+        const character = MakeCharacter([MakePlayable], options) as Entity & Playable;
+
+        expect(character.isPlayer).toBe(true);
+        // cheat and use private properties to assert, rather than exposing something
+        // @ts-expect-error
+        expect(character._lastPosition.x).toEqual(5);
+        // @ts-expect-error
+        expect(character._lastPosition.y).toEqual(-3);
+    });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {
