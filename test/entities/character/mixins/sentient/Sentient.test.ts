@@ -2,8 +2,9 @@ import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
 import { MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import { IsSentient, MakeSentient, Sentient } from "../../../../../js/entities/character/mixins/Sentient";
+import { IsSentient, MakeSentient, Sentient, SentientOptions } from "../../../../../js/entities/character/mixins/Sentient";
 import { IsLiving, Living, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
+import PredatorAI from "../../../../../js/ai/predator";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -18,7 +19,17 @@ describe('character factory', () => {
             super(options);
             this.constructorCalls++;
         }
-    };    
+    };
+
+    it('should digest all constructor parameters', () => {
+        const options: EntityOptions & SentientOptions = {
+            cost: 1,
+            ai: PredatorAI
+        };
+        const character = MakeCharacter([MakeSentient], options) as Entity & Sentient;
+
+        expect(character.ai instanceof PredatorAI).toBe(true);
+    });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {

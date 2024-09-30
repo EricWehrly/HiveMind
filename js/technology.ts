@@ -7,6 +7,7 @@ import Events from "./events";
 import { Defer } from "./loop.mjs";
 import Research from "./research";
 import StatusEffect from "./StatusEffect";
+import { TechnologyTypes } from "./TechnologyTypes";
 
 export interface TechnologyOptions {
     statusEffectDuration?: any;
@@ -21,13 +22,13 @@ export interface TechnologyOptions {
         callback?: Function
     };
     name: string;
-    type?: any;
+    type: TechnologyTypes;
 }
 
 export default class Technology extends Listed {
 
     private static _sounds: Record<string, HTMLAudioElement> = {};
-    private _type: any;
+    private _type: TechnologyTypes;
     private _thorns: any;
 
     static #getSound(name: string) {
@@ -66,10 +67,6 @@ export default class Technology extends Listed {
     }
 
     constructor(options: TechnologyOptions) {
-
-        // TODO: reject if missing required options
-        if(!options.name) throw `Technology needs name!`;
-        if(!options.type) throw `Technology ${options.name} needs type!`;
         super(options);
 
         if(options.research) {

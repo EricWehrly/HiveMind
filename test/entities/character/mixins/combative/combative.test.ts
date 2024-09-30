@@ -5,6 +5,7 @@ import Entity, { EntityOptions } from "../../../../../js/entities/character/Enti
 import { Combative, CombativeOptions, IsCombative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
 import Faction from "../../../../../js/entities/faction";
 import { IsLiving, Living, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
+import { PlayableOptions } from "../../../../../js/entities/character/mixins/Playable";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -33,7 +34,30 @@ describe('character factory', () => {
             super(options);
             this.constructorCalls++;
         }
-    };    
+    };
+
+    it('should digest all constructor parameters', () => {
+        const testFaction = new Faction({ name: 'test', color: 'red' });
+
+        const options: EntityOptions & CombativeOptions = {
+            cost: 1,
+            faction: testFaction
+        };
+        const character = MakeCharacter([MakeCombative], options) as Entity & Combative;
+
+        expect(character.faction).toEqual(testFaction);
+    });
+
+    it('should build a player faction', () => {
+        const options: EntityOptions & CombativeOptions & PlayableOptions = {
+            cost: 1,
+            isPlayer: true,
+            color: 'cygenta'
+        };
+        const character = MakeCharacter([MakeCombative], options) as Entity & Combative;
+
+        expect(character.faction.color).toEqual(options.color);
+    });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {

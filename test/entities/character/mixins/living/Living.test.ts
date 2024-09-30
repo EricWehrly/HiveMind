@@ -2,7 +2,7 @@ import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
 import { MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import { IsLiving, MakeLiving, Living } from "../../../../../js/entities/character/mixins/Living";
+import { IsLiving, MakeLiving, Living, LivingOptions } from "../../../../../js/entities/character/mixins/Living";
 import { IsSentient, Sentient, MakeSentient } from "../../../../../js/entities/character/mixins/Sentient";
 
 jest.mock('@/engine/js/events', () => mockEvents);
@@ -18,7 +18,18 @@ describe('character factory', () => {
             super(options);
             this.constructorCalls++;
         }
-    };    
+    };
+
+    it('should digest all constructor parameters', () => {
+        const options: EntityOptions & LivingOptions = {
+            cost: 1,
+            health: 72,
+        };
+        const character = MakeCharacter([MakeLiving], options) as Entity & Living;
+
+        expect(character.health).toBe(72);
+        expect(character.maxHealth).toBe(72);
+    });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {

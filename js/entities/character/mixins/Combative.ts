@@ -33,7 +33,7 @@ export interface Combative {
 
 export interface CombativeOptions {
     aggression?: number;
-    faction: Faction;
+    faction?: Faction;
 }
 
 type Constructor<T = {}> = new (...args: any[]) => T;
