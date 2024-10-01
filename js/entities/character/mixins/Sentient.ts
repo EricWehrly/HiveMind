@@ -1,5 +1,5 @@
 import AI from "../../../ai/basic";
-import { RegisterLoopMethod } from "../../../loop.mjs";
+import { RegisterLoopMethod } from "../../../Loop";
 import { CharacterUtils } from "../CharacterUtils";
 import Entity, { EntityOptions } from "../Entity";
 

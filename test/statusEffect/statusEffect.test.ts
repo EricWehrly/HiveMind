@@ -3,12 +3,12 @@ import mockMap from '../testHelpers/mockMap';
 import StatusEffect, { StatusEffectCallbackOptions, StatusEffectOptions } from '../../js/StatusEffect';
 import { MakeCharacter } from '../../js/entities/character/CharacterFactory';
 import Entity from '../../js/entities/character/Entity';
-import { Defer } from '../../js/loop.mjs';
+import { Defer } from '../../js/Loop';
 import { Living, LivingOptions, MakeLiving } from '../../js/entities/character/mixins/Living';
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
-jest.mock('@/engine/js/loop.mjs', () => ({
+jest.mock('@/engine/js/Loop.ts', () => ({
     Defer: jest.fn(),
     RegisterLoopMethod: jest.fn(),
 }));
