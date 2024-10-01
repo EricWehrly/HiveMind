@@ -1,6 +1,6 @@
 import { TechnologyTypes } from "../TechnologyTypes";
 import Events, { GameEvent } from "../events";
-import { Defer } from "../loop.mjs";
+import { Defer } from "../Loop";
 import Technology from "../technology";
 import Entity from "./character/Entity";
 import { Equipped } from "./character/mixins/Equipped";

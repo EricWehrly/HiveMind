@@ -1,4 +1,4 @@
-import { RegisterLoopMethod } from '../../engine/js/loop.mjs';
+import { RegisterLoopMethod } from '../../engine/js/Loop.ts';
 import Vector from '../../engine/js/baseTypes/Vector.ts';
 import Action from '../../engine/js/action.ts';
 const Actions = Action.List;

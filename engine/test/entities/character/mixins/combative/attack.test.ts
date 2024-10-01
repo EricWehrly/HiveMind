@@ -13,8 +13,8 @@ import { SentientOptions } from "../../../../../js/entities/character/mixins/Sen
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 // make defer fire immediately
-jest.mock('@/engine/js/loop.mjs', () => ({
-    ...jest.requireActual('@/engine/js/loop.mjs'),
+jest.mock('@/engine/js/Loop.ts', () => ({
+    ...jest.requireActual('@/engine/js/Loop.ts'),
     Defer: (callback: Function, ms: number) => callback(),
   }));
 

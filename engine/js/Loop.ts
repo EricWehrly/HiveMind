@@ -1,14 +1,22 @@
-import Events from "./events.ts";
+import Events from "./events";
 
-const LOOP_METHODS_SLOW = [];
-const LOOP_METHODS_FAST = [];
-const DEFERRALS = [];
-let LOOP_METHODS_REQUESTED = [];
+type LoopMethod = { 
+    (elapsed?: number, lastLoop?: number): void; // Method that can accept two optional parameters
+    // (elapsed: number, lastLoop: number): void; // Method that accepts two parameters
+    // (): void; // Method that accepts no parameters
+};
+type Deferral = { remainingMs: number; callback: LoopMethod; };
+
+const LOOP_METHODS_SLOW: LoopMethod[] = [];
+const LOOP_METHODS_FAST: LoopMethod[] = [];
+const DEFERRALS: Deferral[] = [];
+let LOOP_METHODS_REQUESTED: LoopMethod[] = [];
 
 let LAST_SLOW_LOOP = performance.now();
 let LAST_FAST_LOOP = performance.now();
 
-export function RegisterLoopMethod (callback, needsFast = false) {
+
+export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
     if(needsFast == true
         && !LOOP_METHODS_FAST.includes(callback)) {
         LOOP_METHODS_FAST.push(callback);
@@ -17,7 +25,7 @@ export function RegisterLoopMethod (callback, needsFast = false) {
     }
 }
 
-export function RequestMethod(callback) 
+export function RequestMethod(callback: LoopMethod) 
 {
     if(!LOOP_METHODS_REQUESTED.includes(callback))
     {
@@ -26,7 +34,7 @@ export function RequestMethod(callback)
 }
 
 // try to act like "setTimeout" but for the game loop
-export function Defer(callback, remainingMs) {
+export function Defer(callback: LoopMethod, remainingMs?: number) {
 
     DEFERRALS.push({
         remainingMs: remainingMs || 0,
