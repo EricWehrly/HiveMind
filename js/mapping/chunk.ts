@@ -139,7 +139,7 @@ export default class Chunk {
         if(options.x) this.#x = options.x;
         if(options.y) this.#y = options.y;
         if(options.active) this.active = options.active;
-        this._seed = new Seed(GameMap.Instance.Seed.Random());
+        this._seed = new Seed(options.gameMap.Seed.Random());
         const seed = this._seed;
 
         this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
@@ -157,7 +157,7 @@ export default class Chunk {
         };
         const eventOptions = {
             isNetworkBoundEvent: true
-        }        
+        }
         Defer(() => {
             Events.RaiseEvent(Events.List.ChunkCreated, createdEvent, eventOptions);
         });
