@@ -53,7 +53,7 @@ export interface EntityEvent extends GameEvent {
 export default class Entity extends WorldObject {
 
     static {
-        PostConstruct(Entity, Entity.prototype.postConstruct);
+        PostConstruct(Entity, [Entity.prototype.postConstruct]);
     }
 
     private static _CHARACTER_LIST: Entity[] = [];
