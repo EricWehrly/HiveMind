@@ -8,7 +8,7 @@ import { MakeSentient } from "../../../engine/js/entities/character/mixins/Senti
 import Resource from "../../../engine/js/entities/resource";
 import HiveMindCharacter, { HivemindCharacterOptions } from "../character/HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../character/HivemindCharacterFactory";
-import { Growable, MakeGrowable } from "../character/mixins/Growable";
+import { Growable, GrowableConfig, MakeGrowable } from "../character/mixins/Growable";
 import { Grower } from "../character/mixins/Grower";
 import CharacterPurpose from "./CharacterPurpose";
 
@@ -49,9 +49,10 @@ new CharacterPurpose({
             // check if we have the food to do this
             // should we wait until we "have had" food for X "cycles"
             // or implement some kind of priority queuing system? ("want to grow")
-            const options: HivemindCharacterOptions = {
+            const options: HivemindCharacterOptions & GrowableConfig = {
                 characterType: grower.growerConfig.subject.characterType,
                 position,
+                interval: grower.growerConfig.interval,
                 ...grower.growerConfig.subject
             };
             // does this really need to be sentient tho?
