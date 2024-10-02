@@ -24,7 +24,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
     return class GrowableClass extends Base implements Growable {
 
         static {
-            PostConstruct(GrowableClass, GrowableClass.prototype.postConstruct);
+            PostConstruct(GrowableClass, [ GrowableClass.prototype.postConstruct ]);
         }
 
         growth: number = null;

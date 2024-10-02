@@ -2,14 +2,10 @@ import Entity from "../../js/entities/character/Entity";
 
 const PostConstructMethods = new Map<string, Function[]>();
 
-export default function PostConstruct(target: any, method: Function) {
-    if(!PostConstructMethods.has(target.name)) {
-        PostConstructMethods.set(target.name, []);
-    }
-   const methods = PostConstructMethods.get(target.name);
-   if(!methods.includes(method)) {
-        PostConstructMethods.get(target.name).push(method);
-   }
+// currently, mixin static calls get repeated unintentionally
+// so we need to write this a little differently as an accommodation
+export default function PostConstruct(target: any, methods: Function[]) {
+    PostConstructMethods.set(target.name, methods);
 }
 
 export function RunPostConstructMethods(entity: Entity, classNames: string[]) {    
