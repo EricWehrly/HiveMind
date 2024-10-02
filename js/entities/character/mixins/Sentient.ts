@@ -47,7 +47,7 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
         private _ai: AI;
         get ai() { return this._ai; }
         set ai(newValue) { this._ai = newValue; }
-        private get targetPosition() { return this.ai.targetPosition; }
+        private get targetPosition() { return this.ai?.targetPosition; }
         get target() { return this.ai?.targetEntity; }
         set target(newValue) { 
             if(this.ai) {
