@@ -7,7 +7,7 @@ export type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any)
 export function MakeCharacter<T extends Entity>(
     mixins: EntityMixin[], 
     options: EntityOptions, 
-    SuperClass: new (...args: any[]) => T = Entity as any
+    SuperClass: new (...args: EntityOptions[]) => T = Entity as any
 ): T {
     const classNames = [];
     classNames.push(SuperClass.name);
