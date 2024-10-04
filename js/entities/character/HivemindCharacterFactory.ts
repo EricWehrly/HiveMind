@@ -1,3 +1,4 @@
+import Debug from "../../../engine/js/util/Debug";
 import { RunPostConstructMethods } from "../../../engine/ts/decorators/PostConstruct";
 import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter";
 
@@ -33,7 +34,7 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
 }
 
 function checkMixinForMethodConflicts(Mixed: any, mixinName: string, methodConflictReference: Map<string, string>) {
-    // if(!Debug.Enabled) return;
+    if(!Debug.Enabled) return;
     for (const key of Object.getOwnPropertyNames(Mixed.prototype)) {
         const value = Mixed.prototype[key];
         if (typeof value === 'function' && key !== 'constructor') {
