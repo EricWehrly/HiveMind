@@ -61,7 +61,6 @@ new CharacterPurpose({
                 console.warn(`The food was available but isn't now?`);
                 return;
             }
-            newGrow.grow(grower.growerConfig.interval);
             grower.growing.push(newGrow);
         }        
     },

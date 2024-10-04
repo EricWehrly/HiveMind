@@ -5,10 +5,11 @@ import Events, { GameEvent } from "../../engine/js/events";
 import Building from "../entities/building";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import { Living } from "../../engine/js/entities/character/mixins/Living";
-import { Growable } from "../entities/character/mixins/Growable";
+import { Growable, GrowableConfig } from "../entities/character/mixins/Growable";
 import { Grower } from "../entities/character/mixins/Grower";
 import { Combative } from "../../engine/js/entities/character/mixins/Combative";
 import { Sentient } from "../../engine/js/entities/character/mixins/Sentient";
+import { HiveMindCharacterAI } from "./HivemindCharacterAi";
 
 Events.List.BuildingDesired = "BuildingDesired";
 Events.List.BuildingDesireFulfilled = "BuildingDesireFulfilled";
@@ -27,7 +28,7 @@ interface Positioned {
     position: WorldCoordinate;
 }
 
-export default class NodeAI extends AI {
+export default class NodeAI extends HiveMindCharacterAI {
 
     static #FOOD_THRESHOLD = 100;
     static #BUILDING_PADDING = 10;
@@ -246,22 +247,21 @@ export default class NodeAI extends AI {
         // TODO: take some time to construct (grow)
         // (we are, though, aren't we? just below?)
         console.log(`Node has chosen to build ${wantToBuild.name} at ${buildPosition}`);
+
+        const buildingInterval = wantToBuild.health * .9 * 500;
+        buildOptions.interval = buildingInterval;
         const building = Building.Build(wantToBuild, buildOptions) as Building & Growable & Living;
         // TODO: this should be BEFORE we instantiate, right? or, even, just, a part of?
         // also this is an over-reserve since we're already paying the (initial) health ...
         if(!food.reserve(building.maxHealth, building)) return;
-
-        const healthDiff = building.health * .9;
         building.health = building.health * 0.1;
-        building.grow(healthDiff * 500);
-
         this.character.growing.push(building);
 
         return building;
     }
 
     #getDesiredBuildOptions(wantToBuild: CharacterType)
-        : CharacterType & Living & Positioned {
+        : CharacterType & Living & Positioned & GrowableConfig {
 
         // this needs to be changed entirely
         // const position = NodeAI.#randomPositionOffset(this.character.position, NodeAI.#BUILDING_PADDING / 2);
@@ -274,7 +274,7 @@ export default class NodeAI extends AI {
 
         // TODO: combining charactertype with other types results in properties that can't be traced back to their proper types :(
         // (because of dynamic property definitions)
-        const options = Object.assign({}, wantToBuild) as CharacterType & Living & Positioned;
+        const options = Object.assign({}, wantToBuild) as CharacterType & Living & Positioned & GrowableConfig;
         options.position = position;
         options.faction = this.character.faction;
         options.cost = wantToBuild.health;

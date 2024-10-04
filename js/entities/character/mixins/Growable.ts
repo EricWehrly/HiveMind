@@ -1,4 +1,4 @@
-import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
+import { CharacterFilterOptions, EntityOptions } from "../../../../engine/js/entities/character/Entity";
 import { Living } from "../../../../engine/js/entities/character/mixins/Living";
 import { IsSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../../../engine/js/entities/resource";
@@ -7,14 +7,13 @@ import HiveMindCharacter from "../HiveMindCharacter";
 
 // TODO: I'm not sure we wanted this exported from here ...
 export interface GrowableConfig {
-    interval?: number;
+    interval: number;
 }
 
 export interface Growable {
     growth: number;
     growConfig: GrowableConfig;
     isGrown: boolean;
-    grow(interval: number): void;
 }
 
 type Constructor<T = {}> = new (...args: any[]) => T;
@@ -24,7 +23,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
     return class GrowableClass extends Base implements Growable {
 
         static {
-            PostConstruct(GrowableClass, [ GrowableClass.prototype.postConstruct ]);
+            PostConstruct(GrowableClass, [GrowableClass.prototype.postConstruct]);
         }
 
         growth: number = null;
@@ -46,12 +45,25 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             return super.toolTipMessage;
         }
 
+        constructor(...args: any) {
+            super(...args);
+
+            const [options]: (EntityOptions & GrowableConfig)[] = args;
+            
+            this.growth = 0;
+            // TODO: I hate this. (have the character start at as close to 0 health as we dare)
+            (this as Living).health = .0001;
+            // growConfig is being overwritten here
+            this.growConfig = {
+                interval: options.interval
+            };
+        }
+
         postConstruct(): void {
             if(IsSentient(this)) {
                 const sentient = this as Sentient;
-                // sentient.ai.OnThink += this.onThink;
-                sentient.ai.OnThink = this.onThink;
-            }            
+                sentient.ai.OnThink = this.onThink_Growable.bind(this);
+            }
         }
 
         // TODO: unit test this
@@ -70,29 +82,12 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
                 && this.isGrown;
         }
 
-        onThink(elapsed: number = 0) {
+        private onThink_Growable(elapsed: number = 0) {
             if (this.growth != null && this.growth < 100) {
                 this.#grow(elapsed);
             }
         }
 
-        // Realistically I think the problem is that "growConfig" is currently being used
-        // for both growing self as well as growing a target
-        grow(interval: number) {
-            this.growth = 0;
-            // TODO: I hate this.
-            (this as Living).health = .0001;
-            // growConfig is being overwritten here
-            this.growConfig = {
-                interval
-            };
-
-            // TODO: instrument and console.log Context.Character
-            // check if it's "this" or not ...
-        }
-
-        // maybe we could expand this to accept a growthconfig
-        // as a means to get growing started
         #grow(elapsed: number) {
 
             if (this.growth == null) return;

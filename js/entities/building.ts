@@ -6,7 +6,7 @@ import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
 import HiveMindCharacter, { HivemindCharacterOptions } from "./character/HiveMindCharacter";
 import { MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import { MakeHiveMindCharacter } from "./character/HivemindCharacterFactory";
-import { MakeGrowable } from "./character/mixins/Growable";
+import { GrowableConfig, MakeGrowable } from "./character/mixins/Growable";
 import { MakeGrower } from "./character/mixins/Grower";
 import { MakeSlimey } from "./character/mixins/Slimey";
 import Faction from "../../engine/js/entities/faction";
@@ -33,11 +33,15 @@ export default class Building extends HiveMindCharacter {
 
     static Build(characterType: BuildingCharacterType, options?: BuildingOptions & SentientOptions) {
 
+        // restore 9% of health twice per second
+        const interval = characterType.health * .9 * 500;
+
         // TODO: food reserve?
         // TODO: placement, collision ... "walk" desired position until nearest non-colliding?
-        const characterOptions = {
+        const characterOptions: HivemindCharacterOptions & SentientOptions & GrowableConfig = {
             name: characterType.name,
             ...characterType,
+            interval,
             ...options,
         }
         if(!characterOptions.ai) {

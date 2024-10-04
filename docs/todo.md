@@ -1,6 +1,3 @@
-are 'node's not growing? not thinking?
-only the first seems to 'do', maybe?
-
 spawned by player seems to be unable to consume
 spawned by eater seems to consume immediately
 why does eater take so long to spawn workers?
