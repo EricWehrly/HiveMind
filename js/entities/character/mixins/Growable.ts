@@ -62,7 +62,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
         postConstruct(): void {
             if(IsSentient(this)) {
                 const sentient = this as Sentient;
-                sentient.ai.OnThink = this.onThink_Growable.bind(this);
+                sentient.ai.RegisterThinkMethod(this.onThink_Growable.bind(this));
             }
         }
 
