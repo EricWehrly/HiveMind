@@ -30,6 +30,8 @@ export interface EntityRelationship {
     amount: number
 };
 
+type ThinkFunction = (elapsed: number) => void;
+
 export default class AI {
 
     private _character: Entity & Sentient;
@@ -41,6 +43,7 @@ export default class AI {
     private _targetPosition: WorldCoordinate;
     private _spawnPosition: Readonly<WorldCoordinate>;
     private _maxWanderDistance = 10;    // we can add setters & options setup later when we want to use them
+    private thinkFunctions: ThinkFunction[] = [];
 
     get leashing() { return this._leashing; }
     get character() { return this._character; }
@@ -88,6 +91,10 @@ export default class AI {
         return this._relationships.get(entity);
     }
 
+    RegisterThinkMethod(func: (elapsed: number) => void) {
+        this.thinkFunctions.push(func);
+    }
+
     think(elapsed: number) {
 
         if(this._fleeing &&
@@ -106,7 +113,7 @@ export default class AI {
 
         this._character.pointAtTarget(this.targetPosition);
 
-        if(this.OnThink) this.OnThink(elapsed);
+        this.thinkFunctions.forEach(func => func(elapsed));
     }
 
     private isPastWanderLimits(): boolean {
