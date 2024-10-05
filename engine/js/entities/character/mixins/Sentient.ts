@@ -38,7 +38,7 @@ function thinkOnSlowLoop(elapsed: number) {
     }
 };
 
-RegisterLoopMethod(thinkOnSlowLoop, true);
+RegisterLoopMethod(thinkOnSlowLoop);
 
 export function MakeSentient<T extends Constructor<Entity>>(Base: T) 
 : T & Constructor<Sentient> {
