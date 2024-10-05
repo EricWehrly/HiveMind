@@ -10,11 +10,9 @@ type Deferral = { remainingMs: number; callback: LoopMethod; };
 const LOOP_METHODS_SLOW: LoopMethod[] = [];
 const LOOP_METHODS_FAST: LoopMethod[] = [];
 const DEFERRALS: Deferral[] = [];
-let LOOP_METHODS_REQUESTED: LoopMethod[] = [];
 
 let LAST_SLOW_LOOP = performance.now();
 let LAST_FAST_LOOP = performance.now();
-
 
 export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
     if(needsFast == true
@@ -22,14 +20,6 @@ export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
         LOOP_METHODS_FAST.push(callback);
     } else if(!LOOP_METHODS_SLOW.includes(callback)) {
         LOOP_METHODS_SLOW.push(callback);
-    }
-}
-
-export function RequestMethod(callback: LoopMethod) 
-{
-    if(!LOOP_METHODS_REQUESTED.includes(callback))
-    {
-        LOOP_METHODS_REQUESTED.push(callback);
     }
 }
 
@@ -57,6 +47,13 @@ function _slowLoop() {
         }
     }
 
+    _runDeferred(elapsed);
+
+    setTimeout(_slowLoop, 300);
+}
+
+function _runDeferred(elapsed: number) {
+
     for(var index = 0; index < DEFERRALS.length; index++) {
         const deferral = DEFERRALS[index];
         deferral.remainingMs -= elapsed;
@@ -67,20 +64,6 @@ function _slowLoop() {
             continue;
         }
     }
-
-    for(var requestedMethod of LOOP_METHODS_REQUESTED) {
-        requestedMethod();
-        /*
-        try {
-        } catch (ex) {
-            console.error("Problem in requested method");
-            debugger;
-        }
-        */
-    }
-    LOOP_METHODS_REQUESTED = [];
-
-    setTimeout(_slowLoop, 300);
 }
 
 function _fastLoop() {
