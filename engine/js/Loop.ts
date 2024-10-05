@@ -1,4 +1,5 @@
 import Events from "./events";
+import Timing from "./util/Timings";
 
 type LoopMethod = { 
     (elapsed?: number, lastLoop?: number): void; // Method that can accept two optional parameters
@@ -40,7 +41,9 @@ function _slowLoop() {
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
 
         try {
+            Timing.StartSegment(`slow${index}`, {type: "loop slow", keepCount: 1000 });
             LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+            Timing.EndSegment(`slow${index}`);
         } catch (ex) {
             console.error(ex);
             debugger;
