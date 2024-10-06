@@ -6,6 +6,7 @@ import { MakeHiveMindCharacter } from "../../../../js/entities/character/Hivemin
 import { IsLiving, Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
 import { Growable, GrowableConfig, IsGrowable, MakeGrowable } from "../../../../js/entities/character/mixins/Growable";
 import { MakeSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
+import AI from "../../../../engine/js/ai/basic";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -25,10 +26,25 @@ describe('character factory', () => {
     it('should digest all constructor parameters', () => {
         const options: EntityOptions & GrowableConfig = {
             cost: 1,
+            interval: 575
         };
         const character = MakeHiveMindCharacter([MakeGrowable, MakeSentient], options) as HiveMindCharacter & Growable & Sentient;
-        expect(character.ai.OnThink).toBeDefined();
+        expect(character.growConfig.interval).toBe(575);
     });
+
+    it('growth should start at 0 (so that it can grow from there)', () => {
+        const character = MakeHiveMindCharacter([MakeGrowable, MakeSentient], {}) as HiveMindCharacter & Growable & Sentient;
+
+        expect(character.growth).toBe(0);
+    });
+    
+    it('should register onThink with AI', () => {
+        const spy = jest.spyOn(AI.prototype, 'RegisterThinkMethod');
+        MakeHiveMindCharacter([MakeGrowable, MakeSentient], {}) as HiveMindCharacter & Growable & Sentient;
+    
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
+      });
 
     it('should subsequently default to the base', () => {
         const options: EntityOptions = {
