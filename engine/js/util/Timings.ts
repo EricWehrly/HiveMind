@@ -37,7 +37,7 @@ export default class Timing {
 
         const segmentCollection = Timing._getSegmentCollection(name, options);
         segmentCollection.segments.push({
-            start: performance.now()
+            start: Timing._getCurrentTime()
         });
     }
 
@@ -59,8 +59,8 @@ export default class Timing {
         const segments = segmentCollection.segments;
         const index = segmentCollection.segments.length - 1;
         const segment = segments[index];
-        segment.end = performance.now();
-        segment.time = segment.end - segment.start;
+        segment.end = Timing._getCurrentTime();
+        segment.time = Timing._formatTime(segment.end - segment.start);
 
         if(keepCount && segments.length > keepCount) {
             segments.splice(0, 1);
@@ -81,6 +81,15 @@ export default class Timing {
         if(slowThreshold && segment.time < slowThreshold) {
             segments.splice(index, 1);
         }
+    }
+
+    private static _getCurrentTime() {
+        // use lower precision timestamps, which are easier for human eyes to scan through
+        return Timing._formatTime(performance.now());
+    }
+
+    private static _formatTime(time: number) {
+        return parseFloat(time.toFixed(2));
     }
 
     static GetSegments() {
