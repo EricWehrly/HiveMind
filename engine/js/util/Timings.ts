@@ -30,7 +30,7 @@ export default class Timing {
 
     static Segments: Record<string, SegmentCollection> = {};
     static SegmentKeys: Record<string, string> = {};
-    static Enabled: boolean = true;
+    static Enabled: boolean = false;
 
     static StartSegment(name: string, options: SegmentOptions) {
         if (!Timing.Enabled) return;
