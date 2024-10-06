@@ -16,11 +16,20 @@ let LAST_SLOW_LOOP = performance.now();
 let LAST_FAST_LOOP = performance.now();
 
 export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
+    const timingOptions: Partial<SegmentOptions> = {
+        keepCount: 1000,
+        slowThreshold: 1
+    }
+
     if(needsFast == true
         && !LOOP_METHODS_FAST.includes(callback)) {
-        LOOP_METHODS_FAST.push(callback);
+        timingOptions.type = "loop fast";
+        const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
+        LOOP_METHODS_FAST.push(timedFunction);
     } else if(!LOOP_METHODS_SLOW.includes(callback)) {
-        LOOP_METHODS_SLOW.push(callback);
+        timingOptions.type = "loop slow";
+        const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
+        LOOP_METHODS_SLOW.push(timedFunction);
     }
 }
 
@@ -38,16 +47,11 @@ function _slowLoop() {
     var elapsed = performance.now() - LAST_SLOW_LOOP;
     LAST_SLOW_LOOP = performance.now();
 
-    const timingOptions: SegmentOptions = {
-        type: "loop slow",
-        keepCount: 1000,
-        slowThreshold: 1
-    }
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
         try {
-            Timing.StartSegment(`slow${index}`, timingOptions);
+            // Timing.StartSegment(`slow${index}`, timingOptions);
             LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
-            Timing.EndSegment(`slow${index}`);
+            // Timing.EndSegment(`slow${index}`);
         } catch (ex) {
             console.error(ex);
             debugger;

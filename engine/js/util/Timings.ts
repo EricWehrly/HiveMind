@@ -32,6 +32,19 @@ export default class Timing {
     static SegmentKeys: Record<string, string> = {};
     static Enabled: boolean = false;
 
+    static TimeFunction<T extends (...args: any[]) => any>(func: T, options: SegmentOptions): T {
+
+        if(!Timing.Enabled) return func;
+
+        if(!func.name) throw new Error('Timing: TimeFunction requires a named function');
+        return ((...args: Parameters<T>): ReturnType<T> => {
+            this.StartSegment(func.name, options);
+            const result = func(...args);
+            this.EndSegment(func.name);
+            return result;
+        }) as T;
+    }
+
     static StartSegment(name: string, options: SegmentOptions) {
         if (!Timing.Enabled) return;
 
