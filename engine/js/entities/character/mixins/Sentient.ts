@@ -28,6 +28,14 @@ function thinkOnSlowLoop(elapsed: number) {
 
         const character = ai.character;
 
+        // The following lines are essentially an 'efficiency' check
+        // in a crazy infinite supercomputer, it would be unnecessary to 
+        // process a potentially unlimited chunks worth of entities
+        // but this is a very (computationally) easy check 
+        // to drastically limit to only exactly where the player is.
+        // We could, in theory, write simple enough AI to support that,
+        // but Rain World has low creature counts to allow complex thinking,
+        // and also we are not making Rain World.
         if(character?.position?.chunk?.active == false
             // @ts-expect-error
             || character?.dead == true) {
@@ -73,8 +81,24 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
             else if (ai != null) {
                 this._ai = new ai(this);
             }
-    
-            CreaturesThatShouldThink[this.id] = this.ai;
+
+            // despite the monologue below,
+            // we should try to track down what circumstances are causing
+            // this.ai to be null
+            // because ultimately, if you can't be sentient without ai,
+            // that's a very good limit for us to deliberately impose
+            // if(this.ai == null) debugger;
+
+            // this 'if' check effectively validates that 
+            // 'null' is a legitimate value for this.ai of a Sentient entity
+            // that doesn't seem right, though? what would be sentient without ai?
+            // is THIS the true base ai class?
+            // I think it's got parts of that
+            // and I think part 'common' space for ALL AIs ...
+            // but why wouldn't that be the base class?
+            if(this.ai) {
+                CreaturesThatShouldThink[this.id] = this.ai;
+            }
         }
     
         // TODO: this amount needs to be broken down by axis, rather than used for each
