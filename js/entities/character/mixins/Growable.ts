@@ -4,9 +4,11 @@ import { IsSentient, Sentient } from "../../../../engine/js/entities/character/m
 import Resource from "../../../../engine/js/entities/resource";
 import PostConstruct from "../../../../engine/ts/decorators/PostConstruct";
 import HiveMindCharacter from "../HiveMindCharacter";
+import { EntityMixin } from "../HivemindCharacterFactory";
 
 // TODO: I'm not sure we wanted this exported from here ...
 export interface GrowableConfig {
+    mixins?: EntityMixin[];
     interval: number;
 }
 
@@ -55,7 +57,8 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             (this as Living).health = .0001;
             // growConfig is being overwritten here
             this.growConfig = {
-                interval: options.interval
+                interval: options.interval,
+                mixins: options.mixins
             };
         }
 

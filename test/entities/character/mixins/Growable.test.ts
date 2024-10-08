@@ -26,10 +26,12 @@ describe('character factory', () => {
     it('should digest all constructor parameters', () => {
         const options: EntityOptions & GrowableConfig = {
             cost: 1,
-            interval: 575
+            interval: 575,
+            mixins: [ MakeGrowable, MakeSentient ]
         };
         const character = MakeHiveMindCharacter([MakeGrowable, MakeSentient], options) as HiveMindCharacter & Growable & Sentient;
         expect(character.growConfig.interval).toBe(575);
+        expect(character.growConfig.mixins).toEqual([MakeGrowable, MakeSentient]);
     });
 
     it('growth should start at 0 (so that it can grow from there)', () => {

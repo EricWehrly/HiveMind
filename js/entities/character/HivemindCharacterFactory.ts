@@ -2,11 +2,21 @@ import Debug from "../../../engine/js/util/Debug";
 import { RunPostConstructMethods } from "../../../engine/ts/decorators/PostConstruct";
 import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter";
 
-// double check these values and then we can start using them ...
-// export const HivemindCharacter_Default_Classes = [MakeSlimey, MakeLiving, MakeCombative, MakeEquipped, MakeSentient];
-
 type Constructor<T = {}> = new (options: HivemindCharacterOptions) => T;
-type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
+export type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
+
+const _defaultMixins: EntityMixin[] = [];
+
+function SetDefaultMixin(mixin: EntityMixin, isDefault: boolean = true) {
+    if(isDefault) {
+        _defaultMixins.push(mixin);
+    } else {
+        const index = _defaultMixins.indexOf(mixin);
+        if(index > -1) {
+            _defaultMixins.splice(index, 1);
+        }
+    }
+}
 
 export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     mixins: EntityMixin[], 
@@ -32,6 +42,14 @@ export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
     RunPostConstructMethods(character, classNames);
     return character;
 }
+
+export const HiveMindCharacterFactory = {
+    MakeCharacter: MakeHiveMindCharacter,
+    SetDefaultMixin,
+    get DefaultMixins() {
+        return _defaultMixins;
+    }
+};
 
 function checkMixinForMethodConflicts(Mixed: any, mixinName: string, methodConflictReference: Map<string, string>) {
     if(!Debug.Enabled) return;
