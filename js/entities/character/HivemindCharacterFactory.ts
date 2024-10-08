@@ -11,10 +11,7 @@ function SetDefaultMixin(mixin: EntityMixin, isDefault: boolean = true) {
     if(isDefault) {
         _defaultMixins.push(mixin);
     } else {
-        const index = _defaultMixins.indexOf(mixin);
-        if(index > -1) {
-            _defaultMixins.splice(index, 1);
-        }
+        _defaultMixins.remove(mixin);
     }
 }
 
