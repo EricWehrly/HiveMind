@@ -2,9 +2,10 @@ import CharacterType from './CharacterType';
 import Events from '../../engine/js/events';
 import Chunk, { ChunkEvent } from '../../engine/js/mapping/chunk';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
-import { MakeGrowable } from './character/mixins/Growable';
-import { MakeLiving } from '../../engine/js/entities/character/mixins/Living';
+import { GrowableConfig, MakeGrowable } from './character/mixins/Growable';
+import { LivingOptions, MakeLiving } from '../../engine/js/entities/character/mixins/Living';
 import MakeCharacterType from './CharacterTypeFactory';
+import { EntityOptions } from '../../engine/js/entities/character/EntityOptions';
 
 // need a definition for character types
 // so the player can study the type and learn how to gain health from it
@@ -54,7 +55,7 @@ export default class Food {
                 const offsetX = Math.randomBetween(-3, 3);
                 const offsetY = Math.randomBetween(-3, 3);
     
-                const opts = {
+                const opts: GrowableConfig & LivingOptions & EntityOptions = {
                     characterType: CharacterType.List['Food'],
                     position: {
                         x: spawnerPosition.x + offsetX,
