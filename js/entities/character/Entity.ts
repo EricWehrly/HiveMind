@@ -77,7 +77,7 @@ export default class Entity extends WorldObject {
     // 'attributed' mixin?
     private _attributes: { [key: string]: CharacterAttribute } = {};
     private _desiredMovementVector: Vector;
-    private _maxPosition?: Point;
+    private _maxPosition?: Readonly<Point>;
     private _color: string;
     private _characterType: CharacterType;
     private readonly _flags: string[] = [];
@@ -111,9 +111,8 @@ export default class Entity extends WorldObject {
         return this._desiredMovementVector as Readonly<Vector>;
     }
 
-    SetDesiredMovementVector(x: number, y: number, maxPosition?: Point) {
-        this._desiredMovementVector.x = x;
-        this._desiredMovementVector.y = y;
+    SetDesiredMovementVector(x: number, y: number, maxPosition?: Readonly<Point>) {
+        this._desiredMovementVector.update(x, y);
         this._maxPosition = maxPosition;
     }
 
@@ -151,7 +150,6 @@ export default class Entity extends WorldObject {
 
     private onDirectionVectorChanged(vector: Vector) {
         if(vector.x != 0 || vector.y != 0) {
-            // TODO: does this mean this should be pushed down to WorldObject?
             this.facing = vector;
         }
     }
@@ -196,8 +194,8 @@ export default class Entity extends WorldObject {
     move(amount: number) {
         if(this.speed != 0) {
             const desiredPosition = new Point(
-                this.position.x + (this._desiredMovementVector.x * this.speed * amount),
-                this.position.y + (this._desiredMovementVector.y * this.speed * amount)
+                this.position.x + (this.desiredMovementVector.x * this.speed * amount),
+                this.position.y + (this.desiredMovementVector.y * this.speed * amount)
             );
             this.clampTargetPosition(this.position, desiredPosition);
             this.position = desiredPosition;
@@ -225,14 +223,12 @@ export default class Entity extends WorldObject {
         if (target) {
             if (this.position.x != target.x
                 || this.position.y != target.y) {
-                if (this.position.x < target.x) this._desiredMovementVector.x = 1;
-                else if (this.position.x > target.x) this._desiredMovementVector.x = -1;
-                if (this.position.y < target.y) this._desiredMovementVector.y = 1;
-                else if (this.position.y > target.y) this._desiredMovementVector.y = -1;
+                    const desiredX = this.position.x < target.x ? 1 : -1;
+                    const desiredY = this.position.y < target.y ? 1 : -1;
+                    this.SetDesiredMovementVector(desiredX, desiredY, target);
             }
         } else {
-            this._desiredMovementVector.x = 0;
-            this._desiredMovementVector.y = 0;
+            this.SetDesiredMovementVector(0, 0);
         }
     }
 
