@@ -49,6 +49,10 @@ export default class AI {
     get character() { return this._character; }
     get fleeing() { return this._fleeing; }
     get targetEntity() { return this._targetEntity; }
+
+    // ideally, we want to only ever return a WorldCoordinate
+    // and with this if/else, we can support targeting either an entity, or a position
+    // (but this does imply that targeted entities are the 'priority')
     get targetPosition() { 
         if(this.targetEntity != null) return this.targetEntity.position;
         return this._targetPosition;
