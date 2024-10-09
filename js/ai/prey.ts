@@ -1,4 +1,3 @@
-import WorldCoordinate from "../coordinates/WorldCoordinate";
 import Point from "../coordinates/point";
 import Entity from "../entities/character/Entity";
 import { Living } from "../entities/character/mixins/Living";
