@@ -3,53 +3,59 @@ import { RunPostConstructMethods } from "../../../engine/ts/decorators/PostConst
 import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter";
 
 type Constructor<T = {}> = new (options: HivemindCharacterOptions) => T;
-export type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any;
+export type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any; 
 
-const _defaultMixins: EntityMixin[] = [];
+export default class HiveMindCharacterFactory {
 
-function SetDefaultMixin(mixin: EntityMixin, isDefault: boolean = true) {
-    if(isDefault) {
-        _defaultMixins.push(mixin);
-    } else {
-        _defaultMixins.remove(mixin);
+    private static _defaultMixins: EntityMixin[] = [];
+
+    static get DefaultMixins() {
+        return this._defaultMixins;
+    }
+
+    static MakeCharacter<T extends HiveMindCharacter>(
+        mixins: EntityMixin[], 
+        options: HivemindCharacterOptions,
+        SuperClass: new (options: HivemindCharacterOptions) => T = HiveMindCharacter as any
+    ): T {
+        const classNames = [];
+        classNames.push(SuperClass.name);
+        let ExtendedCharacter = SuperClass;
+        const methodConflictReference = new Map<string, string>();
+        for (const mixin of mixins) {
+            const mixinName = mixin.name;
+            const Mixed = mixin(ExtendedCharacter, options,);
+            checkMixinForMethodConflicts(Mixed, mixinName, methodConflictReference);
+            ExtendedCharacter = Mixed;
+            classNames.push(ExtendedCharacter.name);
+        }
+        if (!options) options = {};
+        // @ts-expect-error
+        options.calledByFactory = true;
+        const character = new ExtendedCharacter(options) as T;
+        character.addDebugInfo('factoryClasses', classNames);
+        RunPostConstructMethods(character, classNames);
+        return character;
+    }
+
+    static SetDefaultMixin(mixin: EntityMixin, isDefault: boolean = true) {
+        if (isDefault) {
+            this._defaultMixins.push(mixin);
+        } else {
+            this._defaultMixins.remove(mixin);
+        }
     }
 }
+export { HiveMindCharacterFactory } // allow named or default
 
-export function MakeHiveMindCharacter<T extends HiveMindCharacter>(
-    mixins: EntityMixin[], 
-    options: HivemindCharacterOptions, 
-    SuperClass: new (options: HivemindCharacterOptions) => T = HiveMindCharacter as any
-): T {
-    const classNames = [];
-    classNames.push(SuperClass.name);
-    let ExtendedCharacter = SuperClass;
-    const methodConflictReference = new Map<string, string>();
-    for (const mixin of mixins) {
-        const mixinName = mixin.name;
-        const Mixed = mixin(ExtendedCharacter, options,);
-        checkMixinForMethodConflicts(Mixed, mixinName, methodConflictReference)
-        ExtendedCharacter = Mixed;
-        classNames.push(ExtendedCharacter.name);
-    }
-    if(!options) options = {};
-    // @ts-expect-error
-    options.calledByFactory = true;
-    const character = new ExtendedCharacter(options) as T;
-    character.addDebugInfo('factoryClasses', classNames);
-    RunPostConstructMethods(character, classNames);
-    return character;
-}
+// we want to migrate away from this eventually,
+// as we may be able to work towards extending the base CharacterFactory
+export const MakeHiveMindCharacter = HiveMindCharacterFactory.MakeCharacter;
 
-export const HiveMindCharacterFactory = {
-    MakeCharacter: MakeHiveMindCharacter,
-    SetDefaultMixin,
-    get DefaultMixins() {
-        return _defaultMixins;
-    }
-};
-
+// this method belongs outside of the class
+// it is a very specific utility method, but a utility method nonetheless
 function checkMixinForMethodConflicts(Mixed: any, mixinName: string, methodConflictReference: Map<string, string>) {
-    if(!Debug.Enabled) return;
+    if (!Debug.Enabled) return;
     for (const key of Object.getOwnPropertyNames(Mixed.prototype)) {
         const value = Mixed.prototype[key];
         if (typeof value === 'function' && key !== 'constructor') {
