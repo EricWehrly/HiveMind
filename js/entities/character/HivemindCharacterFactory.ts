@@ -3,6 +3,8 @@ import { RunPostConstructMethods } from "../../../engine/ts/decorators/PostConst
 import HiveMindCharacter, { HivemindCharacterOptions } from "./HiveMindCharacter";
 
 type Constructor<T = {}> = new (options: HivemindCharacterOptions) => T;
+// TODO: Ideally HiveMindCharacter is valid as it extends Entity
+// but currently, extends Constructor<Entity> is distinct and I don't know why
 export type EntityMixin = <T extends Constructor<HiveMindCharacter>>(Base: T, options: any) => any; 
 
 export default class HiveMindCharacterFactory {
