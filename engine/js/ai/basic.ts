@@ -57,9 +57,6 @@ export default class AI {
         if(this.targetEntity != null) return this.targetEntity.position;
         return this._targetPosition;
     }
-    
-    // TODO: private value, public ... setter?
-    OnThink: (elapsed: number) => void; 
 
     set targetEntity(newValue) { 
         
