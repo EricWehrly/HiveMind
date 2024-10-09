@@ -6,6 +6,9 @@ import PostConstruct from "../../../../engine/ts/decorators/PostConstruct";
 import HiveMindCharacter from "../HiveMindCharacter";
 import { EntityMixin } from "../HivemindCharacterFactory";
 
+// TODO: extract to global multipliers structure, when it exists
+const GROWTH_MULTIPLIER = 1;
+
 // TODO: I'm not sure we wanted this exported from here ...
 export interface GrowableConfig {
     mixins?: EntityMixin[];
@@ -96,7 +99,8 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             if (this.growth == null) return;
 
             const food = Resource.Get("food");
-            const growthAmount = ((100 / this.growConfig.interval) * elapsed)
+            const intervalPercentage = 100 / this.growConfig.interval;
+            const growthAmount = (intervalPercentage * elapsed * GROWTH_MULTIPLIER)
                 .clamp(0, 100 - this.growth);
             if (food.pay(growthAmount / 2, this)) {
                 this.growth += growthAmount;
