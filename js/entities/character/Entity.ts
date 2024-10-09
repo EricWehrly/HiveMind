@@ -108,7 +108,7 @@ export default class Entity extends WorldObject {
     }
 
     get desiredMovementVector() {
-        return this._desiredMovementVector;
+        return this._desiredMovementVector as Readonly<Vector>;
     }
 
     SetDesiredMovementVector(x: number, y: number, maxPosition?: Point) {
@@ -199,7 +199,7 @@ export default class Entity extends WorldObject {
                 this.position.x + (this._desiredMovementVector.x * this.speed * amount),
                 this.position.y + (this._desiredMovementVector.y * this.speed * amount)
             );
-            this.clampTargetPosition(this.position, desiredPosition)
+            this.clampTargetPosition(this.position, desiredPosition);
             this.position = desiredPosition;
         }
     }
@@ -220,7 +220,7 @@ export default class Entity extends WorldObject {
         }
     }
 
-    pointAtTarget(target?: Readonly<WorldCoordinate>) {
+    pointAtTarget(target?: Readonly<Point>) {
 
         if (target) {
             if (this.position.x != target.x

@@ -24,7 +24,7 @@ export default class PreyAI extends AI {
             //  a yummy snack)
             const targetX = this.targetEntity.position.x * -1;
             const targetY = this.targetEntity.position.y * -1;
-            this.character.pointAtTarget(new WorldCoordinate(targetX, targetY));
+            this.character.pointAtTarget(new Point(targetX, targetY));
         }
     }
 
