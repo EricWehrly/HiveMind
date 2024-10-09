@@ -9,7 +9,8 @@ new CharacterPurpose({
     name: "Consume",
     think(character: HiveMindCharacter & Living & Sentient, elapsed: number) {
         if (character.ai.targetEntity) {
-            character.pointAtTarget(character.ai.targetPosition);
+            const targetPosition = character.ai.targetEntity.position;
+            character.pointAtTarget(targetPosition);
 
             if(IsEquipped(character) && IsCombative(character)) {
                 if (character.target == null || (character.target as Living).dead) {
