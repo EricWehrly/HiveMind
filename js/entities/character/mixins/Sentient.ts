@@ -73,13 +73,13 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
             this.setupAI(ai);
         }
     
-        private setupAI(ai: new (...args: any[]) => AI) {
+        private setupAI(aiType: new (...args: any[]) => AI) {
             // TODO: let's default to no AI at all unless prescribed ...
-            if (ai === undefined) this._ai = new AI(this);
+            if (aiType === undefined) this._ai = new AI(this);
     
             // TODO: Would be better to type-validate aiType (but it's a class, not an instance)
-            else if (ai != null) {
-                this._ai = new ai(this);
+            else if (aiType != null) {
+                this._ai = new aiType(this);
             }
 
             // despite the monologue below,
