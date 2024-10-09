@@ -26,6 +26,12 @@ export default class Vector {
         this.onChanged = () => {};
     }
 
+    update(x: number, y: number) {
+        this._x = x;
+        this._y = y;
+        this.onChanged(this);
+    }
+
     onChanged: (vector: Vector) => void;
 
     add(firstParam: Vector | number, secondParam?: number) {
