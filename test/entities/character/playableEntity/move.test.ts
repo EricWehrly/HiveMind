@@ -29,7 +29,7 @@ describe('Playable.move', () => {
             }
         }
         entity = MakeCharacter([MakePlayable], options) as Entity & Playable;
-        entity.desiredMovementVector = new Vector(1, 1);
+        entity.SetDesiredMovementVector(1, 1);
         entity.isPlayer = true;
 
         resetTrackedEvents();

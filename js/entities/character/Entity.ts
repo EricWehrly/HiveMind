@@ -8,6 +8,7 @@ import Faction from '../faction';
 import Vector from "../../baseTypes/Vector";
 import WorldObject, { WorldObjectOptions } from "../../baseTypes/WorldObject";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
+import Point from "../../coordinates/point";
 
 Events.List.EntityCreated = "CharacterCreated";
 
@@ -75,7 +76,8 @@ export default class Entity extends WorldObject {
     
     // 'attributed' mixin?
     private _attributes: { [key: string]: CharacterAttribute } = {};
-    private _desiredMovementVector: Vector = new Vector(0, 0);
+    private _desiredMovementVector: Vector;
+    private _maxPosition?: Point;
     private _color: string;
     private _characterType: CharacterType;
     private readonly _flags: string[] = [];
@@ -86,9 +88,6 @@ export default class Entity extends WorldObject {
     get color() { return this._color; }
 
     get characterType() { 
-        if(this._characterType == null) {
-            this._characterType = CharacterType.List[this._name];
-        }
         return this._characterType;
     }
 
@@ -112,9 +111,10 @@ export default class Entity extends WorldObject {
         return this._desiredMovementVector;
     }
 
-    set desiredMovementVector(newVal: Vector) {
-        this._desiredMovementVector = newVal;
-       this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
+    SetDesiredMovementVector(x: number, y: number, maxPosition?: Point) {
+        this._desiredMovementVector.x = x;
+        this._desiredMovementVector.y = y;
+        this._maxPosition = maxPosition;
     }
 
     constructor(options: EntityOptions & WorldObjectOptions = {}) {
@@ -141,6 +141,7 @@ export default class Entity extends WorldObject {
             costFunction: this.logarithmicCost
         }));
 
+        this._desiredMovementVector = new Vector(0, 0);
         this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
 
         Entity._CHARACTER_LIST.push(this);
@@ -188,13 +189,34 @@ export default class Entity extends WorldObject {
             + Math.abs(this.position.y - entity.position.y);
     }
     
+    // TODO: this amount needs to be broken down by axis, rather than used for each
+        // (broken down, based on the desiredVector ratio)
+        // (or, if necessary, distance across axes)
+        // (so if we should move 7 of 10 amount on X, but our target is 3 away, the 4 gets 'transfered' to Y)
     move(amount: number) {
         if(this.speed != 0) {
-            const desiredPosition = {
-                x: this.position.x + (this._desiredMovementVector.x * this.speed * amount),
-                y: this.position.y + (this._desiredMovementVector.y * this.speed * amount)
-            }
+            const desiredPosition = new Point(
+                this.position.x + (this._desiredMovementVector.x * this.speed * amount),
+                this.position.y + (this._desiredMovementVector.y * this.speed * amount)
+            );
+            this.clampTargetPosition(this.position, desiredPosition)
             this.position = desiredPosition;
+        }
+    }
+
+    private clampTargetPosition(start: Readonly<WorldCoordinate>, end: Point) {
+
+        if(this._maxPosition) {
+            if(start.x < end.x) {
+                if(end.x > this._maxPosition.x) {
+                    end.x = this._maxPosition.x;
+                }
+            }
+            if(start.y < end.y) {
+                if(end.y > this._maxPosition.y) {
+                    end.y = this._maxPosition.y;
+                }
+            }
         }
     }
 
