@@ -9,7 +9,7 @@ export interface WorldObjectOptions {
 export default class WorldObject {
     
     private _position: WorldCoordinate = new WorldCoordinate(0, 0);
-    private _facing = new Vector(0, 0);
+    private _facing: Readonly<Vector> = new Vector(0, 0);
     private _rotation: number = 0;
     private _area: Rectangle = new Rectangle(0, 0, 0, 0);
 
@@ -18,8 +18,10 @@ export default class WorldObject {
     get y() { return this._position.y; }
 
     get area() { return this._area; }
-    get facing() { return this._facing; }
-    set facing(newValue) { this._facing = newValue; }
+    get facing(): Readonly<Vector> { return this._facing; }
+    set facing(newValue: Vector) { 
+        this._facing.update(newValue.x, newValue.y);
+    }
 
     get position(): Readonly<WorldCoordinate> {
         return this._position;
