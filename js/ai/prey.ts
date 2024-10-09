@@ -1,3 +1,5 @@
+import WorldCoordinate from "../coordinates/WorldCoordinate";
+import Point from "../coordinates/point";
 import Entity from "../entities/character/Entity";
 import { Living } from "../entities/character/mixins/Living";
 import AI from "./basic";
@@ -16,9 +18,13 @@ export default class PreyAI extends AI {
         if(!this.targetEntity) {
             this.wander();
         } else { 
-            this.character.pointAtTarget();
-            this.character.desiredMovementVector.x *= -1;
-            this.character.desiredMovementVector.y *= -1;
+            // if we have a 'target', it's because we want to run away from it
+            // (for now, until target / entity relationships are set up,
+            //  and we can determine if the target is a predator we're running from or 
+            //  a yummy snack)
+            const targetX = this.targetEntity.position.x * -1;
+            const targetY = this.targetEntity.position.y * -1;
+            this.character.pointAtTarget(new WorldCoordinate(targetX, targetY));
         }
     }
 
