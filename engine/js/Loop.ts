@@ -1,32 +1,40 @@
-import Events from "./events.ts";
+import Events from "./events";
+import Timing, { SegmentOptions } from "./util/Timings";
 
-const LOOP_METHODS_SLOW = [];
-const LOOP_METHODS_FAST = [];
-const DEFERRALS = [];
-let LOOP_METHODS_REQUESTED = [];
+type LoopMethod = { 
+    (elapsed?: number, lastLoop?: number): void; // Method that can accept two optional parameters
+    // (elapsed: number, lastLoop: number): void; // Method that accepts two parameters
+    // (): void; // Method that accepts no parameters
+};
+type Deferral = { remainingMs: number; callback: LoopMethod; };
+
+const LOOP_METHODS_SLOW: LoopMethod[] = [];
+const LOOP_METHODS_FAST: LoopMethod[] = [];
+const DEFERRALS: Deferral[] = [];
 
 let LAST_SLOW_LOOP = performance.now();
 let LAST_FAST_LOOP = performance.now();
 
-export function RegisterLoopMethod (callback, needsFast = false) {
+export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
+    const timingOptions: Partial<SegmentOptions> = {
+        keepCount: 1000,
+        slowThreshold: 1
+    }
+
     if(needsFast == true
         && !LOOP_METHODS_FAST.includes(callback)) {
-        LOOP_METHODS_FAST.push(callback);
+        timingOptions.type = "loop fast";
+        const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
+        LOOP_METHODS_FAST.push(timedFunction);
     } else if(!LOOP_METHODS_SLOW.includes(callback)) {
-        LOOP_METHODS_SLOW.push(callback);
-    }
-}
-
-export function RequestMethod(callback) 
-{
-    if(!LOOP_METHODS_REQUESTED.includes(callback))
-    {
-        LOOP_METHODS_REQUESTED.push(callback);
+        timingOptions.type = "loop slow";
+        const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
+        LOOP_METHODS_SLOW.push(timedFunction);
     }
 }
 
 // try to act like "setTimeout" but for the game loop
-export function Defer(callback, remainingMs) {
+export function Defer(callback: LoopMethod, remainingMs?: number) {
 
     DEFERRALS.push({
         remainingMs: remainingMs || 0,
@@ -40,14 +48,22 @@ function _slowLoop() {
     LAST_SLOW_LOOP = performance.now();
 
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
-
         try {
+            // Timing.StartSegment(`slow${index}`, timingOptions);
             LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
+            // Timing.EndSegment(`slow${index}`);
         } catch (ex) {
             console.error(ex);
             debugger;
         }
     }
+
+    _runDeferred(elapsed);
+
+    setTimeout(_slowLoop, 300);
+}
+
+function _runDeferred(elapsed: number) {
 
     for(var index = 0; index < DEFERRALS.length; index++) {
         const deferral = DEFERRALS[index];
@@ -59,20 +75,6 @@ function _slowLoop() {
             continue;
         }
     }
-
-    for(var requestedMethod of LOOP_METHODS_REQUESTED) {
-        requestedMethod();
-        /*
-        try {
-        } catch (ex) {
-            console.error("Problem in requested method");
-            debugger;
-        }
-        */
-    }
-    LOOP_METHODS_REQUESTED = [];
-
-    setTimeout(_slowLoop, 300);
 }
 
 function _fastLoop() {

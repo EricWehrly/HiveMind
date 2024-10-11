@@ -1,7 +1,7 @@
 // at some point, it may make sense to use specific files for music and for sound effects
 
 import Listed from "../baseTypes/listed";
-import { Defer } from "../loop.mjs";
+import { Defer } from "../Loop";
 
 // TODO: configure via implementing Game
 const ROOT_AUDIO_PATH = "audio/";

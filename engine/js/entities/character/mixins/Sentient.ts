@@ -1,5 +1,6 @@
 import AI from "../../../ai/basic";
-import { RegisterLoopMethod } from "../../../loop.mjs";
+import { RegisterLoopMethod } from "../../../Loop";
+import { CharacterUtils } from "../CharacterUtils";
 import Entity from "../Entity";
 import { EntityOptions } from "../EntityOptions";
 
@@ -46,7 +47,7 @@ function thinkOnSlowLoop(elapsed: number) {
     }
 };
 
-RegisterLoopMethod(thinkOnSlowLoop, true);
+RegisterLoopMethod(thinkOnSlowLoop);
 
 export function MakeSentient<T extends Constructor<Entity>>(Base: T) 
 : T & Constructor<Sentient> {

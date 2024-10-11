@@ -4,7 +4,7 @@ import Logger from "./core/Logger";
 import Entity from "./entities/character/Entity";
 import { CharacterAttackedEvent, Combative } from "./entities/character/mixins/Combative";
 import Events from "./events";
-import { Defer } from "./loop.mjs";
+import { Defer } from "./Loop";
 import Research from "./research";
 import StatusEffect from "./StatusEffect";
 import { TechnologyTypes } from "./TechnologyTypes";

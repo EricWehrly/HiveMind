@@ -5,7 +5,7 @@ import Entity from "../entities/character/Entity";
 import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
 import { Sentient } from "../entities/character/mixins/Sentient";
 import Events, { GameEvent } from "../events";
-import { Defer } from '../loop.mjs';
+import { Defer } from '../Loop';
 
 const MS_LEASH_COOLDOWN = 3000;
 

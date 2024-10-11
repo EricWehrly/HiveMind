@@ -1,4 +1,4 @@
-import { RegisterLoopMethod } from '../loop.mjs';
+import { RegisterLoopMethod } from '../Loop';
 import Entity from './character/Entity';
 
 function characterLoop(elapsed: number) {

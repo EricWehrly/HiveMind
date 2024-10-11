@@ -1,4 +1,4 @@
-import { RegisterLoopMethod } from "../../engine/js/loop.mjs";
+import { RegisterLoopMethod } from "../../engine/js/Loop.ts";
 
 // TODO: Check whether debug is on
 function updateCharacterInfo() {

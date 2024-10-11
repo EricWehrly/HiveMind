@@ -1,7 +1,7 @@
 import Listed from "./baseTypes/listed";
 import Entity from "./entities/character/Entity";
 import { Living } from "./entities/character/mixins/Living";
-import { Defer } from "./loop.mjs";
+import { Defer } from "./Loop";
 
 export interface StatusEffectCallbackOptions {
     startTime: number;

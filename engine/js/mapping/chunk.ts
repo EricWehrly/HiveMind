@@ -3,7 +3,7 @@ import GameMap from './GameMap';
 import Seed from "../core/seed";
 import Biome from "./biome";
 import Point from "../coordinates/point";
-import { Defer } from "../loop.mjs";
+import { Defer } from "../Loop";
 
 Events.List.ChunkCreated = "ChunkCreated";
 Events.List.ChunkActiveChanged = "ChunkActiveChanged";
