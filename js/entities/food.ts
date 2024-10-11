@@ -1,25 +1,26 @@
-import CharacterType from './CharacterType';
+import CharacterType, { CharacterTypeOptions } from './CharacterType';
 import Events from '../../engine/js/events';
 import Chunk, { ChunkEvent } from '../../engine/js/mapping/chunk';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
 import { LivingOptions, MakeLiving } from '../../engine/js/entities/character/mixins/Living';
 import MakeCharacterType from './CharacterTypeFactory';
 import { EntityOptions } from '../../engine/js/entities/character/EntityOptions';
+import { HivemindCharacterOptions } from './character/HiveMindCharacter';
+import { SentientOptions } from '../../engine/js/entities/character/mixins/Sentient';
 
 // need a definition for character types
 // so the player can study the type and learn how to gain health from it
 
-MakeCharacterType({
+const foodCharacterType: HivemindCharacterOptions & LivingOptions & CharacterTypeOptions & SentientOptions = {
     name: 'Food',
     research: {
         cost: 10
     },
-    context: {
-        color: 'green',
-        health: 5,
-        ai: null
-    }
-});
+    color: 'green',
+    health: 5,
+    ai: null
+}
+MakeCharacterType(foodCharacterType);
 
 // we probably should be creating spawners.
 // spawners should be able to be generic

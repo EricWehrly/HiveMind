@@ -1,5 +1,5 @@
 import Resource from "../../engine/js/entities/resource";
-import CharacterType from "./CharacterType";
+import CharacterType, { CharacterTypeOptions } from "./CharacterType";
 import Events from "../../engine/js/events";
 import Rectangle from "../../engine/js/baseTypes/rectangle";
 import WorldCoordinate from "../../engine/js/coordinates/WorldCoordinate";
@@ -16,6 +16,12 @@ import { MakeSentient, SentientOptions } from "../../engine/js/entities/characte
 import Logger from "../../engine/js/core/Logger";
 
 Events.List.BuildingBuilt = "BuildingBuilt";
+
+export interface BuildingCharacterTypeOptions extends CharacterTypeOptions {
+    cost?: number;
+    overlapRange?: number;
+    range?: number;    
+}
 
 export interface BuildingCharacterType extends CharacterType {
     cost?: number;

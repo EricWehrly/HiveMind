@@ -13,6 +13,7 @@ import { EntityOptions } from '../../../engine/js/entities/character/EntityOptio
 
 export interface HivemindCharacterOptions extends EntityOptions {
     currentPurposeKey?: string;
+    spawnPurposeKey?: string;
 }
 
 export default class HiveMindCharacter extends Character {

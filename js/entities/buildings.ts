@@ -4,12 +4,16 @@ import { SCREEN_ZONE, UI_ELEMENT_TYPE } from '../../engine/js/ui/ui-element';
 import KeyboardController from '../controls/keyboard-controller.mjs';
 import Events from '../../engine/js/events';
 import NodeAI, { BuildingDesiredEvent } from '../ai/node';
-import Building from './building';
+import Building, { BuildingCharacterTypeOptions } from './building';
 import MenuItem from '../../engine/js/ui/MenuItem';
 import MakeCharacterType from './CharacterTypeFactory';
 import { Combative } from '../../engine/js/entities/character/mixins/Combative';
 import { CharacterUtils } from '../../engine/js/entities/character/CharacterUtils';
 import Entity from '../../engine/js/entities/character/Entity';
+import { LivingOptions } from '../../engine/js/entities/character/mixins/Living';
+import { HivemindCharacterOptions } from './character/HiveMindCharacter';
+import { SentientOptions } from '../../engine/js/entities/character/mixins/Sentient';
+import { GrowerConfig } from './character/mixins/Grower';
 
 const desireLabels: Map<string, MenuItem> = new Map();
 
@@ -87,80 +91,67 @@ KeyboardController.AddDefaultBinding("openMenu/build", "b");
 
 // TODO: import from json, or ... ?
 
-MakeCharacterType({
+const seederCharacterType: HivemindCharacterOptions & BuildingCharacterTypeOptions & LivingOptions & GrowerConfig & SentientOptions = {
     name: 'Seeder',
-    context: {
         health: 15,
         currentPurposeKey: 'grow',
-        growerConfig: {
-            subject: CharacterType.List['Food'],
-            max: 8, // once 8 are grown, don't start any more
-            batchSize: 4,   // grow 4 at a time
-            interval: 10000 // how long does it take to fully grow 1 food?
-        },
+        subject: CharacterType.List['Food'],
+        max: 8, // once 8 are grown, don't start any more
+        batchSize: 4,   // grow 4 at a time
+        interval: 10000, // how long does it take to fully grow 1 food?
         overlapRange: 3,
         ai: null
-    }
-});
+};
+MakeCharacterType(seederCharacterType as CharacterTypeOptions);
 
 // this probably needs to express a (max) distance
-const eaterCharacterType: CharacterTypeOptions = {
+const eaterCharacterType: HivemindCharacterOptions & LivingOptions & SentientOptions = {
     name: 'Eater',
-    context: {
         health: 40,
         currentPurposeKey: 'spawn',
-        _spawnPurposeKey: 'consume',
+        spawnPurposeKey: 'consume',
         ai: null
-    }
 }
-MakeCharacterType(eaterCharacterType);
-const nodeCharacterType: CharacterTypeOptions = {
+MakeCharacterType(eaterCharacterType as CharacterTypeOptions);
+const nodeCharacterType: HivemindCharacterOptions & LivingOptions & SentientOptions & BuildingCharacterTypeOptions = {
     name: 'Node',
-    context: {
-        health: 40,
-        ai: NodeAI,
-        range: 4
-    }
+    health: 40,
+    ai: NodeAI,
+    range: 4
 }
-MakeCharacterType(nodeCharacterType);
+MakeCharacterType(nodeCharacterType as CharacterTypeOptions);
 addBuildItem(CharacterType.List['Node']);
 
-const hunterCharacterType: CharacterTypeOptions = {
+const hunterCharacterType: HivemindCharacterOptions & LivingOptions & SentientOptions = {
     name: 'Hunter',
-    context: {
         health: 30,
         currentPurposeKey: 'spawn',
-        _spawnPurposeKey: 'hunt',
+        spawnPurposeKey: 'hunt',
         ai: null
-    }
 };
-MakeCharacterType(hunterCharacterType);
+MakeCharacterType(hunterCharacterType as CharacterTypeOptions);
 // TODO: TBH it doesn't feel "right" to put the 'desire' buildings with the actually 'available' ones
 const hunterMenuItem = addBuildItem(CharacterType.List['Hunter']);
 hunterMenuItem.setText(`Desire ${CharacterType.List['Hunter'].name}`);
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
-const reasearcherCharacterType: CharacterTypeOptions = {
+const reasearcherCharacterType: CharacterTypeOptions & LivingOptions & SentientOptions = {
     name: 'Researcher',
-    context: {
         health: 50,
         ai: null
-    }
 };
 MakeCharacterType(reasearcherCharacterType);
 const researcherMenuItem = addBuildItem(CharacterType.List['Researcher']);
 researcherMenuItem.setText(`Desire ${CharacterType.List['Researcher'].name}`);
 
-const healerCharacterType: CharacterTypeOptions = {
+const healerCharacterType: HivemindCharacterOptions & LivingOptions & SentientOptions = {
     name: 'Healer',
-    context: {
         health: 30,
         currentPurposeKey: 'heal',
         ai: null
-    }
 };
-MakeCharacterType(healerCharacterType);
+MakeCharacterType(healerCharacterType as CharacterTypeOptions);
 const healerMenuItem = addBuildItem(CharacterType.List['Healer']);
 healerMenuItem.setText(`Desire ${CharacterType.List['Healer'].name}`);
 

@@ -23,7 +23,7 @@ new CharacterPurpose({
             return;
         }
 
-        const purpose = character.characterType._spawnPurposeKey;
+        const purpose = character.characterType.spawnPurposeKey;
         let targetType;
         // both consume/hunt and Food/Animal should come from enums
         if (purpose == "consume") targetType = "Food";

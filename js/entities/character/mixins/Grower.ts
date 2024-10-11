@@ -5,13 +5,14 @@ import { IsSentient, Sentient } from "../../../../engine/js/entities/character/m
 import Resource from "../../../../engine/js/entities/resource";
 import Events from "../../../../engine/js/events";
 import PostConstruct from "../../../../engine/ts/decorators/PostConstruct";
+import CharacterType from "../../CharacterType";
 import HiveMindCharacter, { HivemindCharacterOptions } from "../HiveMindCharacter";
 import { HiveMindCharacterFactory, MakeHiveMindCharacter } from "../HivemindCharacterFactory";
 import { Growable, GrowableConfig } from "./Growable";
 
 export interface GrowerConfig extends GrowableConfig {
     batchSize?: number;
-    subject?: Entity & Growable;
+    subject?: CharacterType;
     max?: number;
     // interval?: number;
 }

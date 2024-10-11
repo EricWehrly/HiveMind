@@ -11,7 +11,9 @@ export default function MakeCharacterType(options: CharacterTypeOptions) : Chara
             ...options.research
         });
     }
-    Object.freeze(characterType);
+    // why is it all of a sudden a problem to freeze this?
+    // (hit an exception trying to set isStudied private value through setter)
+    // Object.freeze(characterType);
 
     return characterType;
 }
