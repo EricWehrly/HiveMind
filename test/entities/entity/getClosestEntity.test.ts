@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import mockEvents from '../../testHelpers/mockEvents';
 import mockMap from '../../testHelpers/mockMap';
 import Entity from '../../../js/entities/character/Entity';
-import CharacterType from '../../../../js/entities/CharacterType';
+import CharacterType, { CharacterTypeOptions } from '../../../../js/entities/CharacterType';
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -53,14 +53,12 @@ describe('Entity.getClosestEntity', () => {
     });
 
     it('should filter characterType', () => {
-        const food = CharacterType.Create({
-            name: 'Food',
-            context: { }
-        });
-        const other = CharacterType.Create({
-            name: 'Other',
-            context: { }
-        });
+        let characterTypeOptions: CharacterTypeOptions = {
+            name: 'Food'
+        };
+        const food = CharacterType.Create(characterTypeOptions);
+        characterTypeOptions.name = 'Other';
+        const other = CharacterType.Create(characterTypeOptions);
 
         const foodDist = 2;
         const otherDist = 1;
