@@ -41,6 +41,13 @@ export interface EntityEvent extends GameEvent {
     entity: Entity;
 }
 
+export type NearbyEntityOptions = { 
+        max?: number, 
+        distance?: number, 
+        characterType?: CharacterType,
+        faction?: Faction
+}
+
 export default class Entity extends WorldObject {
 
     static {
@@ -222,7 +229,7 @@ export default class Entity extends WorldObject {
         }
     }
 
-    getNearbyEntities(options: { max?: number, distance?: number, characterType?: CharacterType, faction?: Faction } = {}):
+    getNearbyEntities(options: NearbyEntityOptions & CharacterFilterOptions = {}):
     SortingEntity[] {
         
         options.max = options.max || 10;
