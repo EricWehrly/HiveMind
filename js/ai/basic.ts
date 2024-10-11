@@ -126,16 +126,27 @@ export default class AI {
         this._leashing = false;
     }
 
-    /* TODO: fix this
     leash(point: Readonly<WorldCoordinate>, distance: number) {
         var dist = this._character.position.distance(point);
         if (dist > distance) {
             console.debug(`Wandered too far (${dist}), with speed ${this._character.speed} leashing to ${point.x}, ${point.y}`);
-            this._targetPosition = new WorldCoordinate(point.x, point.y);
+            const desiredVector = this.getVectorFromPoint(point);
+            // this._targetPosition = new WorldCoordinate(point.x, point.y);
+            
+            this.character.SetDesiredMovementVector(
+                desiredVector.x,
+                desiredVector.y
+            );
 
             this._leashing = true;
             Defer(this.#unleash.bind(this), MS_LEASH_COOLDOWN);
         }
     }
-    */
+
+    getVectorFromPoint(point: Readonly<WorldCoordinate>) {
+        // get the vector from the character to the point
+        const xDiff = point.x - this._character.position.x;
+        const yDiff = point.y - this._character.position.y;
+        return new Vector(xDiff, yDiff);
+    }
 }
