@@ -1,5 +1,6 @@
 import { RunPostConstructMethods } from "../../../ts/decorators/PostConstruct";
-import Entity, { EntityOptions } from "./Entity";
+import Entity from "./Entity";
+import { EntityOptions } from "./EntityOptions";
 
 type Constructor<T = {}> = new (...args: any[]) => T;
 export type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any) => any;
@@ -7,7 +8,7 @@ export type EntityMixin = <T extends Constructor<Entity>>(Base: T, options: any)
 export function MakeCharacter<T extends Entity>(
     mixins: EntityMixin[], 
     options: EntityOptions, 
-    SuperClass: new (...args: any[]) => T = Entity as any
+    SuperClass: new (...args: EntityOptions[]) => T = Entity as any
 ): T {
     const classNames = [];
     classNames.push(SuperClass.name);

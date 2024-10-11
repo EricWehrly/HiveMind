@@ -2,12 +2,13 @@ import { eventCount, mockEvents, resetTrackedEvents } from "../../../testHelpers
 import mockMap from "../../../testHelpers/mockMap";
 import { IsLiving, Living, LivingOptions, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
-import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
+import Entity from "../../../../js/entities/character/Entity";
 import { IsSentient, MakeSentient, Sentient, SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
 import { Equipped, IsEquipped, MakeEquipped } from "../../../../js/entities/character/mixins/Equipped";
 import { Combative, IsCombative, MakeCombative } from "../../../../js/entities/character/mixins/Combative";
 import { Dummy, DummyMixin } from "../../../fakeClasses/DummyMixin";
 import { GetLocalPlayer, MakePlayable, Playable, PlayableOptions } from "../../../../js/entities/character/mixins/Playable";
+import { EntityOptions } from "../../../../js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {

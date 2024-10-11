@@ -39,7 +39,7 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T)
 
         static {
             // TODO: static only once, not with each Playable Mixin
-            PostConstruct(PlayableClass, PlayableClass.prototype.initialize);
+            PostConstruct(PlayableClass, [PlayableClass.prototype.initialize]);
         }
 
         isPlayer: boolean;

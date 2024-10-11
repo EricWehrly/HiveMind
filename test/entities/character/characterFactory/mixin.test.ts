@@ -2,7 +2,8 @@ import { mockEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
 import { Living, LivingOptions, MakeLiving } from "../../../../js/entities/character/mixins/Living";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
-import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
+import Entity from "../../../../js/entities/character/Entity";
+import { EntityOptions } from "../../../../js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/entities/resource.ts', () => {
