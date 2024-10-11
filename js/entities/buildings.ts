@@ -1,4 +1,4 @@
-import CharacterType from './CharacterType';
+import CharacterType, { CharacterTypeOptions } from './CharacterType';
 import Menu, { MenuAction } from '../../engine/js/ui/menu';
 import { SCREEN_ZONE, UI_ELEMENT_TYPE } from '../../engine/js/ui/ui-element';
 import KeyboardController from '../controls/keyboard-controller.mjs';
@@ -104,7 +104,7 @@ MakeCharacterType({
 });
 
 // this probably needs to express a (max) distance
-MakeCharacterType({
+const eaterCharacterType: CharacterTypeOptions = {
     name: 'Eater',
     context: {
         health: 40,
@@ -112,19 +112,20 @@ MakeCharacterType({
         _spawnPurposeKey: 'consume',
         ai: null
     }
-});
-
-MakeCharacterType({
+}
+MakeCharacterType(eaterCharacterType);
+const nodeCharacterType: CharacterTypeOptions = {
     name: 'Node',
     context: {
         health: 40,
         ai: NodeAI,
         range: 4
     }
-});
+}
+MakeCharacterType(nodeCharacterType);
 addBuildItem(CharacterType.List['Node']);
 
-MakeCharacterType({
+const hunterCharacterType: CharacterTypeOptions = {
     name: 'Hunter',
     context: {
         health: 30,
@@ -132,31 +133,34 @@ MakeCharacterType({
         _spawnPurposeKey: 'hunt',
         ai: null
     }
-});
+};
+MakeCharacterType(hunterCharacterType);
 // TODO: TBH it doesn't feel "right" to put the 'desire' buildings with the actually 'available' ones
 const hunterMenuItem = addBuildItem(CharacterType.List['Hunter']);
 hunterMenuItem.setText(`Desire ${CharacterType.List['Hunter'].name}`);
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
-MakeCharacterType({
+const reasearcherCharacterType: CharacterTypeOptions = {
     name: 'Researcher',
     context: {
         health: 50,
         ai: null
     }
-});
+};
+MakeCharacterType(reasearcherCharacterType);
 const researcherMenuItem = addBuildItem(CharacterType.List['Researcher']);
 researcherMenuItem.setText(`Desire ${CharacterType.List['Researcher'].name}`);
 
-MakeCharacterType({
+const healerCharacterType: CharacterTypeOptions = {
     name: 'Healer',
     context: {
         health: 30,
         currentPurposeKey: 'heal',
         ai: null
     }
-});
+};
+MakeCharacterType(healerCharacterType);
 const healerMenuItem = addBuildItem(CharacterType.List['Healer']);
 healerMenuItem.setText(`Desire ${CharacterType.List['Healer'].name}`);
 
