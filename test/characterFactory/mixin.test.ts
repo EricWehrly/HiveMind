@@ -3,8 +3,8 @@ import { MakeHiveMindCharacter } from "../../js/entities/character/HivemindChara
 import HiveMindCharacter from "../../js/entities/character/HiveMindCharacter";
 import { Growable, MakeGrowable } from "../../js/entities/character/mixins/Growable";
 import { MakeSlimey, Slimey } from "../../js/entities/character/mixins/Slimey";
-import { EntityOptions } from "../../engine/js/entities/character/Entity";
 import { SentientOptions } from "../../engine/js/entities/character/mixins/Sentient";
+import { EntityOptions } from "../../engine/js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => {
     return {

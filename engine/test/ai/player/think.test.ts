@@ -1,12 +1,13 @@
 import mockEvents from "../../testHelpers/mockEvents";
 import mockMap from "../../testHelpers/mockMap";
 import { createMock } from "../../testHelpers/helpers";
-import Entity, { EntityOptions } from "../../../js/entities/character/Entity";
+import Entity from "../../../js/entities/character/Entity";
 import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
 import PlayerAI from "../../../js/ai/Player";
 import { MakeEquipped } from "../../../js/entities/character/mixins/Equipped";
 import { MakeSentient, Sentient, SentientOptions } from "../../../js/entities/character/mixins/Sentient";
 import { Playable, PlayableOptions } from "../../../js/entities/character/mixins/Playable";
+import { EntityOptions } from "../../../js/entities/character/EntityOptions";
 
 // https://stackoverflow.com/a/54475733/5450892
 jest.mock('@/engine/js/events', () => mockEvents);

@@ -1,7 +1,7 @@
 import CharacterAttribute from '../../../engine/js/entities/character-attribute';
 import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
-import Entity, { EntityOptions } from '../../../engine/js/entities/character/Entity';
+import Entity from '../../../engine/js/entities/character/Entity';
 import { IsLiving, Living } from '../../../engine/js/entities/character/mixins/Living';
 import { Combative, IsCombative } from '../../../engine/js/entities/character/mixins/Combative';
 import { IsEquipped } from '../../../engine/js/entities/character/mixins/Equipped';
@@ -9,6 +9,7 @@ import { CharacterUtils } from '../../../engine/js/entities/character/CharacterU
 import { IsSentient } from '../../../engine/js/entities/character/mixins/Sentient';
 import { IsPlayable } from '../../../engine/js/entities/character/mixins/Playable';
 import CharacterPurpose from '../purposes/CharacterPurpose';
+import { EntityOptions } from '../../../engine/js/entities/character/EntityOptions';
 
 export interface HivemindCharacterOptions extends EntityOptions {
     currentPurposeKey?: string;

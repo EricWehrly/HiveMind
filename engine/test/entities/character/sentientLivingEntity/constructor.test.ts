@@ -3,7 +3,8 @@ import mockMap from '../../../testHelpers/mockMap';
 import AI from '../../../../js/ai/basic';
 import { MakeCharacter } from '../../../../js/entities/character/CharacterFactory';
 import { MakeSentient, Sentient, SentientOptions } from '../../../../js/entities/character/mixins/Sentient';
-import Entity, { EntityOptions } from '../../../../js/entities/character/Entity';
+import Entity from '../../../../js/entities/character/Entity';
+import { EntityOptions } from '../../../../js/entities/character/EntityOptions';
 
 jest.mock('@/engine/js/ai/basic', () => {
     return {

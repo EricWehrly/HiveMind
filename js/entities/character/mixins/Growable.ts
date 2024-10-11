@@ -1,4 +1,5 @@
-import { CharacterFilterOptions, EntityOptions } from "../../../../engine/js/entities/character/Entity";
+import { CharacterFilterOptions } from "../../../../engine/js/entities/character/Entity";
+import { EntityOptions } from "../../../../engine/js/entities/character/EntityOptions";
 import { Living } from "../../../../engine/js/entities/character/mixins/Living";
 import { IsSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../../../engine/js/entities/resource";
@@ -128,6 +129,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
 
                         // if(this.growConfig?.subject) console.log(this.growConfig.subject);
                     }
+                    console.log(` ${this.name} done growin`);
                 }
             }
         }

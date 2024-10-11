@@ -4,7 +4,7 @@ import Chunk, { ChunkEvent } from '../../engine/js/mapping/chunk';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
 import { LivingOptions, MakeLiving } from '../../engine/js/entities/character/mixins/Living';
 import MakeCharacterType from './CharacterTypeFactory';
-import { EntityOptions } from '../../engine/js/entities/character/Entity';
+import { EntityOptions } from '../../engine/js/entities/character/EntityOptions';
 
 // need a definition for character types
 // so the player can study the type and learn how to gain health from it

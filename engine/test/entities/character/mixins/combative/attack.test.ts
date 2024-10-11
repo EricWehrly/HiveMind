@@ -1,7 +1,7 @@
 import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import { EntityMixin, MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
+import Entity from "../../../../../js/entities/character/Entity";
 import { Combative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
 import { Equipped, EquippedOptions, MakeEquipped } from "../../../../../js/entities/character/mixins/Equipped";
 import Technology from "../../../../../js/technology";
@@ -9,6 +9,7 @@ import { TechnologyTypes } from "../../../../../js/TechnologyTypes";
 import { LivingOptions, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
 import { MakePlayable, PlayableOptions } from "../../../../../js/entities/character/mixins/Playable";
 import { SentientOptions } from "../../../../../js/entities/character/mixins/Sentient";
+import { EntityOptions } from "../../../../../js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);

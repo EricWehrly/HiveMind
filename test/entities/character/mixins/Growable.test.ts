@@ -1,12 +1,12 @@
 import mockEvents from "../../../../engine/test/testHelpers/mockEvents";
 import mockMap from "../../../../engine/test/testHelpers/mockMap";
-import { EntityOptions } from "../../../../engine/js/entities/character/Entity";
 import HiveMindCharacter from "../../../../js/entities/character/HiveMindCharacter";
 import { MakeHiveMindCharacter } from "../../../../js/entities/character/HivemindCharacterFactory";
 import { IsLiving, Living, MakeLiving } from "../../../../engine/js/entities/character/mixins/Living";
 import { Growable, GrowableConfig, IsGrowable, MakeGrowable } from "../../../../js/entities/character/mixins/Growable";
 import { MakeSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 import AI from "../../../../engine/js/ai/basic";
+import { EntityOptions } from "../../../../engine/js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);

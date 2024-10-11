@@ -1,6 +1,7 @@
 import CharacterType from "../../../../../js/entities/CharacterType";
 import Events, { GameEvent } from "../../../events";
-import Entity, { EntityOptions } from "../Entity";
+import Entity from "../Entity";
+import { EntityOptions } from "../EntityOptions";
 
 Events.List.CharacterDamaged = "CharacterDamaged";
 Events.List.CharacterDied = "CharacterDied";

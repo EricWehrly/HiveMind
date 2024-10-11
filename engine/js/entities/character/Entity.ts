@@ -9,6 +9,7 @@ import Vector from "../../baseTypes/Vector";
 import WorldObject, { WorldObjectOptions } from "../../baseTypes/WorldObject";
 import PostConstruct from "../../../ts/decorators/PostConstruct";
 import Point from "../../coordinates/point";
+import { EntityOptions } from "./EntityOptions";
 
 Events.List.EntityCreated = "CharacterCreated";
 
@@ -16,17 +17,6 @@ export interface CharacterFilterOptions {
     exclude?: Entity[];
     characterType?: CharacterType;
     characterProperties?: { [key: string]: any };
-}
-
-export interface EntityOptions extends WorldObjectOptions {
-    id?: string;
-    name?: string;
-    speed?: number;
-    characterType?: CharacterType;
-    entityRenderingSettings?: EntityRenderingSettings;
-    color?: string;
-    cost?: number;
-    flags?: string[];
 }
 
 interface SortingEntity {

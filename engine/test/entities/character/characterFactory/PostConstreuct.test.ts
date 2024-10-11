@@ -1,9 +1,10 @@
 import { mockEvents, resetTrackedEvents, raisedEvents } from "../../../testHelpers/mockEvents";
 import mockMap from "../../../testHelpers/mockMap";
 import { MakeCharacter } from "../../../../js/entities/character/CharacterFactory";
-import Entity, { EntityOptions } from "../../../../js/entities/character/Entity";
+import Entity from "../../../../js/entities/character/Entity";
 import { MakePlayable, Playable } from "../../../../js/entities/character/mixins/Playable";
 import { SentientOptions } from "../../../../js/entities/character/mixins/Sentient";
+import { EntityOptions } from "../../../../js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);

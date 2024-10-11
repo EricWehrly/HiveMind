@@ -1,11 +1,12 @@
 import mockEvents from "../../../../testHelpers/mockEvents";
 import mockMap from "../../../../testHelpers/mockMap";
 import { EntityMixin, MakeCharacter } from "../../../../../js/entities/character/CharacterFactory";
-import Entity, { EntityOptions } from "../../../../../js/entities/character/Entity";
+import Entity from "../../../../../js/entities/character/Entity";
 import { Combative, CombativeOptions, IsCombative, MakeCombative } from "../../../../../js/entities/character/mixins/Combative";
 import Faction from "../../../../../js/entities/faction";
 import { IsLiving, Living, MakeLiving } from "../../../../../js/entities/character/mixins/Living";
 import { PlayableOptions } from "../../../../../js/entities/character/mixins/Playable";
+import { EntityOptions } from "../../../../../js/entities/character/EntityOptions";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
