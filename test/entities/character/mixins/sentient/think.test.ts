@@ -4,7 +4,7 @@ import HiveMindCharacter from "../../../../../../js/entities/character/HiveMindC
 import { MakeHiveMindCharacter } from "../../../../../../js/entities/character/HivemindCharacterFactory";
 import AI from "../../../../../js/ai/basic";
 import { MakeSentient, Sentient, SentientOptions } from "../../../../../js/entities/character/mixins/Sentient";
-import { EntityOptions } from "../../../../../js/entities/character/Entity";
+import { EntityOptions } from "../../../../../js/entities/character/EntityOptions";
 
 let mockCalled = false;
 

@@ -1,6 +1,7 @@
 import AI from "../../../ai/basic";
 import { RegisterLoopMethod } from "../../../loop.mjs";
-import Entity, { EntityOptions } from "../Entity";
+import Entity from "../Entity";
+import { EntityOptions } from "../EntityOptions";
 
 export interface SentientOptions {
     ai?: typeof AI
