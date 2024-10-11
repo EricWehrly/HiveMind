@@ -5,6 +5,9 @@ export enum CARDINAL_DIRECTION {
     'North'
 }
 
+// should 'NormalizedVector' be a class
+// even if it only needs to imply, not itself necessarily constrain the normalization?
+
 export default class Vector {
     private _x: number;
     private _y: number;
