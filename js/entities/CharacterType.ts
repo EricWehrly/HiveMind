@@ -8,7 +8,7 @@ export interface CharacterTypeOptions extends EntityOptions {
     };
 }
 
-export default class CharacterType {
+export default class CharacterType implements EntityOptions {
 
     static List: { [key: string]: CharacterType } = {}
 
@@ -37,10 +37,13 @@ export default class CharacterType {
     private constructor(options: CharacterTypeOptions) {
         this._name = options.name;
 
-        // TODO: this is a hack
-        const optionsCopy = { ...options };
-        delete optionsCopy.name;
-        Object.assign(this, optionsCopy);
+        for (let key in options) {
+            if(key != "name" && key != "_name") {
+                // TODO: still hacky
+                // @ts-expect-error
+                this[key] = options[key];
+            }
+        }
 
         CharacterType.List[this.name] = this;
         // TODO: We probably don't need to do this
