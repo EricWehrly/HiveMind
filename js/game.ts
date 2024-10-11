@@ -36,7 +36,7 @@ import "./ui/goal";
 import { MakePlayable, PlayableOptions } from '../engine/js/entities/character/mixins/Playable';
 import PlayerAI from '../engine/js/ai/Player';
 import { MakeSentient, SentientOptions } from '../engine/js/entities/character/mixins/Sentient';
-import { EntityOptions } from '../engine/js/entities/character/Entity';
+import { EntityOptions } from '../engine/js/entities/character/EntityOptions';
 
 new MessageLog({
     name: "Combat",

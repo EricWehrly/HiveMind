@@ -1,22 +1,21 @@
 import Technology from '../../engine/js/technology';
 import Events from '../../engine/js/events';
-import CharacterType from './CharacterType';
+import CharacterType, { CharacterTypeOptions } from './CharacterType';
 import Chunk, { ChunkEvent } from '../../engine/js/mapping/chunk';
 import PredatorAI from '../../engine/js/ai/predator';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
-import { MakeLiving } from '../../engine/js/entities/character/mixins/Living';
+import { LivingOptions, MakeLiving } from '../../engine/js/entities/character/mixins/Living';
 import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative';
 import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped';
 import MakeCharacterType from './CharacterTypeFactory';
 import { MakeSentient } from '../../engine/js/entities/character/mixins/Sentient';
 
-MakeCharacterType({
+const animalCharacterType: CharacterTypeOptions & LivingOptions = {
     name: "Animal",
-    context: {
-        color: 'red',
-        health: 4,
-    }
-});
+    color: 'red',
+    health: 4
+}
+MakeCharacterType(animalCharacterType);
 
 // can't declare these at file level because it's too early in lifecycle
 // and this isn't really a class file, so :(

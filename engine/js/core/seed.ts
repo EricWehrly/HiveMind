@@ -20,7 +20,6 @@ export default class Seed {
     // also, screw it, this is just supposed to be a prototype
     Random(min?: number, max?: number): number {
 
-        // TODO: the 'if' should be 'isNumeric'?
         if(min != null && max != null) {
             
             return (this.Random() * max) + min;

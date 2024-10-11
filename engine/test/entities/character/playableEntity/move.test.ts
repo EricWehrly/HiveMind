@@ -3,7 +3,8 @@ import mockMap from '../../../testHelpers/mockMap';
 import Vector from '../../../../js/baseTypes/Vector';
 import { MakeCharacter } from '../../../../js/entities/character/CharacterFactory';
 import { MakePlayable, Playable, PlayableOptions } from '../../../../js/entities/character/mixins/Playable';
-import Entity, { EntityOptions } from '../../../../js/entities/character/Entity';
+import Entity from '../../../../js/entities/character/Entity';
+import { EntityOptions } from '../../../../js/entities/character/EntityOptions';
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -29,7 +30,7 @@ describe('Playable.move', () => {
             }
         }
         entity = MakeCharacter([MakePlayable], options) as Entity & Playable;
-        entity.desiredMovementVector = new Vector(1, 1);
+        entity.SetDesiredMovementVector(1, 1);
         entity.isPlayer = true;
 
         resetTrackedEvents();

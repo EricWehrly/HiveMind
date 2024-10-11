@@ -1,6 +1,7 @@
 import Character from "../../engine/js/entities/character";
 import { CharacterUtils } from "../../engine/js/entities/character/CharacterUtils";
-import Entity, { EntityOptions } from "../../engine/js/entities/character/Entity";
+import Entity from "../../engine/js/entities/character/Entity";
+import { EntityOptions } from "../../engine/js/entities/character/EntityOptions";
 import { Combative, CombativeOptions, MakeCombative } from "../../engine/js/entities/character/mixins/Combative";
 import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";

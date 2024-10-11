@@ -9,9 +9,10 @@ new CharacterPurpose({
     name: "Study",
     think(character: HiveMindCharacter & Sentient, elapsed: number) {
         if (character.ai.targetEntity) {
-            character.pointAtTarget(character.ai.targetPosition);
+            const targetPosition = character.ai.targetEntity.position;
+            character.pointAtTarget(targetPosition);
 
-            if (character.position.near(character.ai.targetPosition)) {
+            if (character.position.near(targetPosition)) {
                 if ((character.ai.targetEntity as Living).dead == true) {
                     // TODO: contemplate loving monica
                     // TODO: support > 1 technology

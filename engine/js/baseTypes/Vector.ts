@@ -5,6 +5,9 @@ export enum CARDINAL_DIRECTION {
     'North'
 }
 
+// should 'NormalizedVector' be a class
+// even if it only needs to imply, not itself necessarily constrain the normalization?
+
 export default class Vector {
     private _x: number;
     private _y: number;
@@ -24,6 +27,12 @@ export default class Vector {
         this._x = x;
         this._y = y;
         this.onChanged = () => {};
+    }
+
+    update(x: number, y: number) {
+        this._x = x;
+        this._y = y;
+        this.onChanged(this);
     }
 
     onChanged: (vector: Vector) => void;

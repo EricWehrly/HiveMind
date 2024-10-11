@@ -60,6 +60,7 @@ describe('Building', () => {
                 position: new WorldCoordinate(10, -11),
                 faction: dummyFaction,
                 cost: 2,
+                interval: 500,
                 ai: AI
             };
 

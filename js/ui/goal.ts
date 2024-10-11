@@ -10,10 +10,11 @@ import { GetDomForUIElement } from "../../engine/js/rendering/ui/ui-element-rend
 
 // TODO: separate game logic from ui logic
 let playerHasWon = false;
+const textPrefix = "Planetary Takeover";
 
 const UI_ELEMENT_PROGRESS = new UIElement({
     screenZone: SCREEN_ZONE.TOP_CENTER,
-    text: "Planetary Takeover Progress",
+    text: textPrefix,
     classes: ["planetary-takeover-progress"]
 });
 
@@ -27,7 +28,7 @@ Events.Subscribe(Events.List.BuildingBuilt, function onBuildingBuilt() {
     // do we want to do more than just 1 building = 1 point?
     const progress = (buildings.length / Game.GameMap.size) * 100;
     // communicate more concisely to the player
-    UI_ELEMENT_PROGRESS.setText(`Planetary Takeover Progress: ${progress.toFixed(2)}%`);
+    UI_ELEMENT_PROGRESS.setText(`${textPrefix}: ${progress.toFixed(0)}%`);
 
     // TODO: CSS var for player color    
     // this pulls in the ui layer that we need to separate out

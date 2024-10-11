@@ -1,7 +1,8 @@
 import AI from "../../../ai/basic";
 import { RegisterLoopMethod } from "../../../Loop";
 import { CharacterUtils } from "../CharacterUtils";
-import Entity, { EntityOptions } from "../Entity";
+import Entity from "../Entity";
+import { EntityOptions } from "../EntityOptions";
 
 export interface SentientOptions {
     ai?: typeof AI
@@ -28,6 +29,14 @@ function thinkOnSlowLoop(elapsed: number) {
 
         const character = ai.character;
 
+        // The following lines are essentially an 'efficiency' check
+        // in a crazy infinite supercomputer, it would be unnecessary to 
+        // process a potentially unlimited chunks worth of entities
+        // but this is a very (computationally) easy check 
+        // to drastically limit to only exactly where the player is.
+        // We could, in theory, write simple enough AI to support that,
+        // but Rain World has low creature counts to allow complex thinking,
+        // and also we are not making Rain World.
         if(character?.position?.chunk?.active == false
             // @ts-expect-error
             || character?.dead == true) {
@@ -47,7 +56,6 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
         private _ai: AI;
         get ai() { return this._ai; }
         set ai(newValue) { this._ai = newValue; }
-        private get targetPosition() { return this.ai.targetPosition; }
         get target() { return this.ai?.targetEntity; }
         set target(newValue) { 
             if(this.ai) {
@@ -65,58 +73,38 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
             this.setupAI(ai);
         }
     
-        private setupAI(ai: new (...args: any[]) => AI) {
+        private setupAI(aiType: new (...args: any[]) => AI) {
             // TODO: let's default to no AI at all unless prescribed ...
-            if (ai === undefined) this._ai = new AI(this);
+            // for now, deliberate null is treated as deliberate, but why?
+            if (aiType === undefined) this._ai = new AI(this);
     
-            // TODO: Would be better to type-validate aiType (but it's a class, not an instance)
-            else if (ai != null) {
-                this._ai = new ai(this);
+            else if (aiType != null) {
+                this._ai = new aiType(this);
             }
-    
-            CreaturesThatShouldThink[this.id] = this.ai;
-        }
-    
-        // TODO: this amount needs to be broken down by axis, rather than used for each
-            // (broken down, based on the desiredVector ratio)
-            // (or, if necessary, distance across axes)
-            // (so if we should move 7 of 10 amount on X, but our target is 3 away, the 4 gets 'transfered' to Y)
-        move(amount: number) {
-    
-            if (!CharacterUtils.IsLocalPlayer(this) && this.shouldMoveToTarget()) {
-                const desiredPosition = {
-                    x: this.position.x,
-                    y: this.position.y
-                }
-    
-                for (const axis of axes) {
-                    if (!this.atTarget(axis)) {
-                        const newAxisPos = desiredPosition[axis] + (this.desiredMovementVector[axis] * this.speed * amount);
-                        const targetPositionOnAxis = this.targetPosition[axis];
-                        if(Math.abs(targetPositionOnAxis - newAxisPos) >= Math.abs(targetPositionOnAxis - this.position[axis])) {
-                            desiredPosition[axis] = targetPositionOnAxis;
-                        } else {
-                            desiredPosition[axis] += this.desiredMovementVector[axis] * this.speed * amount;
-                        }
-                    }
-                    this.position = desiredPosition;
-                }
-            } else {
-                super.move(amount);
+
+            // despite the monologue below,
+            // we should try to track down what circumstances are causing
+            // this.ai to be null
+            // because ultimately, if you can't be sentient without ai,
+            // that's a very good limit for us to deliberately impose
+            // if(this.ai == null) debugger;
+
+            // this 'if' check effectively validates that 
+            // 'null' is a legitimate value for this.ai of a Sentient entity
+            // that doesn't seem right, though? what would be sentient without ai?
+            // is THIS the true base ai class?
+            // I think it's got parts of that
+            // and I think part 'common' space for ALL AIs ...
+            // but why wouldn't that be the base class?
+            if(this.ai) {
+                CreaturesThatShouldThink[this.id] = this.ai;
             }
         }
-    
-        shouldMoveToTarget() {
-            return this.ai != null && this.ai.targetEntity != null;
-        }
-    
-        shouldStopOnAxis(axis: Axis, amount: number) {
-            return Math.abs(this.position[axis] - this.targetPosition[axis]) < this.speed * amount;
-        }
-    
-        atTarget(axis: Axis) {
-            return this.targetPosition != null && this.targetPosition[axis] == this.position[axis];
-        }
+
+        // should this be where we set desiredMovementVector?
+        // where is it being set now? 
+        // (in ai itself, probably)
+        // NO! desiredMovementVector SHOULD be set in basic.ts...
     };
 };
 

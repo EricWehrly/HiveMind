@@ -116,7 +116,7 @@ export default class KeyboardController {
 
     loopMethod() {
 
-        this.character.desiredMovementVector = new Vector(0, 0);
+        this.character.SetDesiredMovementVector(0, 0);
 
         // TODO: (Performance) we can cache actions that should be fired
         // (rather than iterate the entire object.keys)

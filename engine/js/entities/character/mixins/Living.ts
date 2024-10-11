@@ -1,6 +1,7 @@
 import CharacterType from "../../../../../js/entities/CharacterType";
 import Events, { GameEvent } from "../../../events";
 import Entity from "../Entity";
+import { EntityOptions } from "../EntityOptions";
 
 Events.List.CharacterDamaged = "CharacterDamaged";
 Events.List.CharacterDied = "CharacterDied";
@@ -15,7 +16,7 @@ export interface Living {
 }
 
 export interface LivingOptions {
-    health: number;
+    health?: number;
     maxHealth?: number;
     characterType?: CharacterType;
 }
@@ -71,7 +72,7 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T) {
         constructor(...args: any) {
             super(...args);
 
-            const [ options ] = args;
+            const [options]: (EntityOptions & LivingOptions)[] = args;
 
             this._health = options?.health || options.characterType?.health || 0;
             this._initialHealth = this._health;
