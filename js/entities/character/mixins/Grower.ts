@@ -33,7 +33,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, op
     return class GrowerClass extends Base implements Grower {
 
         static {
-            PostConstruct(GrowerClass, [GrowerClass.prototype.postConstruct]);
+            PostConstruct(GrowerClass, [GrowerClass.prototype.postConstruct_Grower]);
         }
 
         growing: (HiveMindCharacter & Growable)[] = [];
@@ -49,7 +49,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, op
             Events.Subscribe(Events.List.CharacterDied, this.onEntityDied);
         }
 
-        postConstruct(): void {
+        postConstruct_Grower(): void {
             if(IsSentient(this)) {
                 const sentient = this as Sentient;
                 sentient.ai.RegisterThinkMethod(this.onThink_Grower.bind(this));

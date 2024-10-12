@@ -29,7 +29,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
     return class GrowableClass extends Base implements Growable {
 
         static {
-            PostConstruct(GrowableClass, [GrowableClass.prototype.postConstruct]);
+            PostConstruct(GrowableClass, [GrowableClass.prototype.postConstruct_Growable]);
         }
 
         growth: number = null;
@@ -66,7 +66,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
             };
         }
 
-        postConstruct(): void {
+        private postConstruct_Growable(): void {
             if(IsSentient(this)) {
                 const sentient = this as Sentient;
                 sentient.ai.RegisterThinkMethod(this.onThink_Growable.bind(this));
