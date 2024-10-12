@@ -14,11 +14,11 @@ export function DummyMixin<T extends Constructor<Entity>>(Base: T): T {
         postConstructCallCount = 0;
 
         static {
-            PostConstruct(DummyMixinClass, [DummyMixinClass.prototype.postConstruct]);
+            PostConstruct(DummyMixinClass, [DummyMixinClass.prototype.postConstruct_DummyMixin]);
             staticCallCount++;
         }
 
-        postConstruct(): void {
+        postConstruct_DummyMixin(): void {
             this.postConstructCallCount++;
         }
     }

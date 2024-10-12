@@ -141,8 +141,6 @@ export default class Entity extends WorldObject {
         this._desiredMovementVector.onChanged = this.onDirectionVectorChanged.bind(this);
 
         Entity._CHARACTER_LIST.push(this);
-
-        // Defer(this.postConstruct.bind(this));
     }
 
     private onDirectionVectorChanged(vector: Vector) {
@@ -151,7 +149,7 @@ export default class Entity extends WorldObject {
         }
     }
 
-    postConstruct() {
+    private postConstruct() {
         const entityEvent: EntityEvent = {
             id: null,
             entity: this

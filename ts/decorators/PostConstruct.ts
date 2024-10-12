@@ -4,10 +4,13 @@ import Entity from "../../js/entities/character/Entity";
 const PostConstructMethods = new Map<string, Function[]>();
 
 type Constructor<T = {}> = new (...args: any[]) => T;
-
+/**
+ * Defer isn't certain to be the immediate next thing after all constructors, 
+ * certain entity setup possibilities need to be run exactly once all constructors have
+ * but definitely before anything else runs
+ * this is the utility of leveraging this method in the CharacterFactory
+ */
 // currently, mixin static calls get repeated unintentionally
-// so we need to write this a little differently as an accommodation
-// export default function PostConstruct<T extends Constructor<Entity>>(target: T, methods: Function[]) {
 export default function PostConstruct<T extends Constructor<Entity>>(target: T, methods: Function[]) {
     if(target == undefined || !target.name) debugger;
     PostConstructMethods.set(target.name, methods);
