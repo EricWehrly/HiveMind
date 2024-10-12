@@ -51,7 +51,7 @@ export const addBuildItem = function(itemType: CharacterType) {
 
     return new MenuItem({
         menu: UI_MENU_BUILDINGS,
-        characterTypeName: itemType.characterType.name,
+        characterTypeName: itemType.name,
         section: 'available'
     });
 }

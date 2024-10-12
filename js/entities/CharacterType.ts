@@ -31,9 +31,6 @@ export default class CharacterType implements EntityOptions {
         this._isStudied = value;
     }
 
-    // TODO: delete when all mjs files are gone 
-    get characterType() { return this; }
-
     private constructor(options: CharacterTypeOptions) {
         this._name = options.name;
 
