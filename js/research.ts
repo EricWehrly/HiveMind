@@ -1,7 +1,7 @@
 import Listed from './baseTypes/listed';
 import Menu from './ui/menu';
 import { SCREEN_ZONE } from './ui/ui-element';
-import KeyboardController from '../../js/controls/keyboard-controller.mjs';
+import KeyboardController from '../../js/controls/KeyboardController';
 import Events from './events';
 import { Defer } from "./Loop";
 import Entity from './entities/character/Entity';
