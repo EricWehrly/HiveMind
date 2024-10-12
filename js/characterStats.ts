@@ -1,6 +1,6 @@
 import { SCREEN_ZONE } from "../engine/js/ui/ui-element";
 import Menu from "../engine/js/ui/menu";
-import KeyboardController from "./controls/keyboard-controller.mjs";
+import KeyboardController from "./controls/KeyboardController";
 import Events from "../engine/js/events";
 import MenuItem from "../engine/js/ui/MenuItem";
 import CharacterAttribute, { CharacterAttributeChangedEvent } from "../engine/js/entities/character-attribute";

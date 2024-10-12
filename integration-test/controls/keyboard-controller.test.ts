@@ -1,6 +1,6 @@
 import mockEvents from "../../engine/test/testHelpers/mockEvents";
 import Action from "../../engine/js/action";
-import KeyboardController from "../../js/controls/keyboard-controller.mjs";
+import KeyboardController from "../../js/controls/KeyboardController";
 
 jest.mock('@/engine/js/events', () => mockEvents);
 
@@ -19,17 +19,19 @@ describe('KeyboardController', () => {
             const testKey = "t";
             KeyboardController.AddDefaultBinding(testAction.name, testKey);
 
-            const keyboardController = new KeyboardController();
-            keyboardController.handleKeyDown({ key: testKey });
+            const keyboardController = new KeyboardController({});
+            const event = new KeyboardEvent('keydown', { key: testKey });
+            keyboardController.handleKeyDown(event);
             expect(testActionCallback).toHaveBeenCalled();
         });
 
         it('should add new default bindings after construction', () => {
             const testKey = "t";
 
-            const keyboardController = new KeyboardController();
+            const keyboardController = new KeyboardController({});
             KeyboardController.AddDefaultBinding(testAction.name, testKey);
-            keyboardController.handleKeyDown({ key: testKey });
+            const event = new KeyboardEvent('keydown', { key: testKey });
+            keyboardController.handleKeyDown(event);
 
             expect(testActionCallback).toHaveBeenCalled();
         });

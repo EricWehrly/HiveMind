@@ -6,7 +6,7 @@ import Events from '../engine/js/events';
 import './data/biomeTypes'
 
 // Functionality
-import KeyboardController from './controls/keyboard-controller.mjs';
+import KeyboardController from './controls/KeyboardController';
 import HiveMindCharacter from './entities/character/HiveMindCharacter';
 import { MakeSlimey } from './entities/character/mixins/Slimey';
 import { MakeHiveMindCharacter } from './entities/character/HivemindCharacterFactory';

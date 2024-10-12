@@ -1,6 +1,6 @@
-import { RegisterLoopMethod } from '../../engine/js/Loop.ts';
-import Vector from '../../engine/js/baseTypes/Vector.ts';
-import Action from '../../engine/js/action.ts';
+import { RegisterLoopMethod } from '../../engine/js/Loop';
+import Action from '../../engine/js/action';
+import Entity from '../../engine/js/entities/character/Entity';
 const Actions = Action.List;
 
 // we can use extends and a base class to share common methods
@@ -14,15 +14,22 @@ const Actions = Action.List;
 // I think instead of this, we should check in loop if key is down, and assign velocity accordingly
 // Key down/up events should change a state that is transmitted to the server ...
 
+// TODO: Move InputDeviceOptions to generic input device definition ... when we have it, I guess
+export interface InputDeviceOptions {
+    character?: Entity;
+}
+
+type ActionBinding = Record<string, string[]>;
+
 export default class KeyboardController {
 
-    static #instance;
+    static #instance: KeyboardController;
 
-    static #List = [];
+    // static #List = [];
 
     // TODO: Private?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
-    static Default_Bindings = {
+    static Default_Bindings: ActionBinding = {
         "move_up": ['w'],
         "move_down": ['s'],
         "move_left": ['a'],
@@ -44,7 +51,7 @@ export default class KeyboardController {
     // we can leave this open to accept strings (good for modding)
     // but add another overload that takes Action obj instead of name,
     // and use that wherever possible
-    static AddDefaultBinding(name, button) {
+    static AddDefaultBinding(name: string, button: string) {
 
         // TODO: warn button is already bound
 
@@ -66,11 +73,11 @@ export default class KeyboardController {
         }
     }
 
-    Bindings = {}
+    Bindings: ActionBinding = {}
+    _keys_down: Record<string, boolean> = {};
+    character?: Entity;
 
-    _keys_down = {};
-
-    constructor(options = {}) {
+    constructor(options: InputDeviceOptions) {
 
         KeyboardController.#instance = this;
 
@@ -88,15 +95,15 @@ export default class KeyboardController {
 
         RegisterLoopMethod(this.loopMethod.bind(this), true);
 
-        KeyboardController.#List.push(this);
+        // KeyboardController.#List.push(this);
     }
 
-    isKeyDown(binding) {
+    isKeyDown(binding: string) {
 
         return this._keys_down[binding] === true;
     }
 
-    handleKeyDown(event) {
+    handleKeyDown(event: KeyboardEvent) {
 
         // TODO: fire any actions immediately that don't require it to be held
         this.#performActions(event.key);
@@ -109,9 +116,10 @@ export default class KeyboardController {
         }
     }
 
-    handleKeyUp(event) {
+    handleKeyUp(event: KeyboardEvent): void {
 
-        this._keys_down[event.key] = false;
+        const key = event.key;
+        this._keys_down[key] = false;
     }
 
     loopMethod() {
@@ -133,13 +141,13 @@ export default class KeyboardController {
         }
     }
 
-    shouldFireAction(action) {
-        return Actions[action].enabled !== false
-            && this.Bindings[action]
-            && Actions[action].oncePerPress !== true;
+    shouldFireAction(actionName: string) {
+        return Actions[actionName].enabled !== false
+            && this.Bindings[actionName]
+            && Actions[actionName].oncePerPress !== true;
     }
 
-    #performActions(key) {
+    #performActions(key: string) {
 
         // TODO: loopMethod needs to be refactored now, right?
         for(var action of Object.keys(this.Bindings)) {

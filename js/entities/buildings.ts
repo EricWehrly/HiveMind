@@ -1,7 +1,7 @@
 import CharacterType, { CharacterTypeOptions } from './CharacterType';
 import Menu, { MenuAction } from '../../engine/js/ui/menu';
 import { SCREEN_ZONE, UI_ELEMENT_TYPE } from '../../engine/js/ui/ui-element';
-import KeyboardController from '../controls/keyboard-controller.mjs';
+import KeyboardController from '../controls/KeyboardController';
 import Events from '../../engine/js/events';
 import NodeAI, { BuildingDesiredEvent } from '../ai/node';
 import Building, { BuildingCharacterTypeOptions } from './building';

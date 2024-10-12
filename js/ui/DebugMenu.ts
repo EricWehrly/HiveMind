@@ -2,7 +2,7 @@ import Configuration from "../../engine/js/core/Configuration";
 import MenuItem from "../../engine/js/ui/MenuItem";
 import Menu from "../../engine/js/ui/menu";
 import { SCREEN_ZONE, UI_ELEMENT_TYPE } from "../../engine/js/ui/ui-element";
-import KeyboardController from "../controls/keyboard-controller.mjs";
+import KeyboardController from "../controls/KeyboardController";
 
 interface MenuContext {
     menu: Menu
