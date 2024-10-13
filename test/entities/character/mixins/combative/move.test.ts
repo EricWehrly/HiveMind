@@ -7,6 +7,7 @@ import Entity from '../../../../../js/entities/character/Entity';
 import { MakeCharacter } from '../../../../../js/entities/character/CharacterFactory';
 import { MakeSentient, Sentient, SentientOptions } from '../../../../../js/entities/character/mixins/Sentient';
 import { EntityOptions } from '../../../../../js/entities/character/EntityOptions';
+import { MakeCombative } from '../../../../../js/entities/character/mixins/Combative';
 
 jest.mock('@/engine/js/events', () => mockEvents);
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
@@ -28,7 +29,7 @@ describe('Combative.move', () => {
                 y: 0
             }
         }
-        sentientEntity_underTest = MakeCharacter([MakeSentient], options) as Entity & Sentient;
+        sentientEntity_underTest = MakeCharacter([MakeSentient, MakeCombative], options) as Entity & Sentient;
         secondEntity = MakeCharacter([], {
             position: {
                 x: 2,
@@ -52,7 +53,7 @@ describe('Combative.move', () => {
         const moveAmount = (secondEntity.position.x - sentientEntity_underTest.position.x) * 5
         expect(sentientEntity_underTest.position.x).toEqual(0);
         sentientEntity_underTest.ai.targetEntity = secondEntity;
-        sentientEntity_underTest.ai.think(0);
+        sentientEntity_underTest.ai.think(1);
         sentientEntity_underTest.move(5);
         expect(sentientEntity_underTest.position.x).toBeLessThan(secondEntity.position.x + 1);
         expect(sentientEntity_underTest.position.x).toBeGreaterThanOrEqual(secondEntity.position.x);

@@ -1,3 +1,4 @@
+import PostConstruct from "../../../../ts/decorators/PostConstruct";
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import GameSound from "../../../audio/GameSound";
 import WorldCoordinate from "../../../coordinates/WorldCoordinate";
@@ -11,6 +12,7 @@ import { CharacterUtils } from "../CharacterUtils";
 import Entity, { CharacterFilterOptions } from "../Entity";
 import { Equipped, IsEquipped } from "./Equipped";
 import { IsLiving, Living } from "./Living";
+import { IsSentient, Sentient } from "./Sentient";
 
 Events.List.CharacterAttacked = "CharacterAttacked";
 
@@ -43,6 +45,10 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeOptions: CombativeOptions) {
     return class CombativeClass extends Base implements Combative {
 
+        static {
+            PostConstruct(CombativeClass, [CombativeClass.prototype.postConstruct_Combative]);
+        }
+
         private _thornMultiplier: number;
         private _aggression: number = combativeOptions?.aggression || 0;
         private _faction: Faction = combativeOptions?.faction;
@@ -74,6 +80,20 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
                     name: this.name,
                     color: this.color
                 });
+            }
+        }
+
+        private postConstruct_Combative() {
+            if(IsSentient(this)) {
+                const sentient = this as Sentient;
+                sentient.ai.RegisterThinkMethod(this.followTarget.bind(this));
+            }
+        }
+
+        private followTarget(elapsed: number) {
+            const sentient = this as Entity & Sentient;
+            if (sentient.ai.targetEntity) {
+                sentient.pointAtTarget(sentient.ai.targetEntity.position);
             }
         }
         
