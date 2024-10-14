@@ -44,7 +44,9 @@ describe('ChacterFactory.MakeCharacter', () => {
         const mixins = [MakeLiving, MakeSentient, MakeEquipped, MakeCombative];
 
         const characterOptions: EntityOptions & LivingOptions = {
-            speed: 3,
+            attributes: {
+                speed: 3,
+            },
             health: 10
         };
         const character = MakeCharacter(mixins, characterOptions);
@@ -66,7 +68,7 @@ describe('ChacterFactory.MakeCharacter', () => {
     
         it('should apply parameters to base entity', () => {
             const Speed = typedCharacter.getAttribute('Speed')?.value;
-            expect(Speed).toBe(characterOptions.speed);
+            expect(Speed).toBe(characterOptions.attributes.speed);
         });
     
         it('should apply mixin parameters to mixed entity', () => {
