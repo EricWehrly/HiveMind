@@ -94,7 +94,8 @@ export default class Building extends HiveMindCharacter {
         const characterType = (options.characterType || CharacterType.List[options.name]) as BuildingCharacterType;
 
         // does this fix it moving?
-        options.speed = 0;
+        if(!options.attributes) options.attributes = {};
+        options.attributes.speed = 0;
 
         super(options);
         this.isBuilding = true;
