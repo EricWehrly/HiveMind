@@ -122,17 +122,29 @@ export default class Entity extends WorldObject {
 
         this._name = options.name || this.characterType?.name || "TODO";     // TODO :/
 
-        let speedVal = 1;
-        if(options.speed != undefined) {    // 0 is a valid speed, so we need to check more explicitly
-            speedVal = options.speed;
-        }
-
         if(options.entityRenderingSettings) this.entityRenderingSettings = options.entityRenderingSettings;
         this._color = options.color || options.characterType?.color || undefined;
+
+        let speedVal = 1;
+        if(options.attributes?.speed != undefined) {    // 0 is a valid speed, so we need to check more explicitly
+            speedVal = options.attributes?.speed;
+        }
         
         this.addAttribute(new CharacterAttribute({
             name: 'Speed',
             value: speedVal,
+            baseCost: 40,   // TODO: fix this magic #?
+            costFunction: this.logarithmicCost
+        }));
+
+        let vision = 1;
+        if(options.attributes?.vision != undefined) {    // 0 is validly blind
+            vision = options.attributes?.vision;
+        }
+        
+        this.addAttribute(new CharacterAttribute({
+            name: 'Vision',
+            value: vision,
             baseCost: 40,
             costFunction: this.logarithmicCost
         }));
@@ -168,6 +180,10 @@ export default class Entity extends WorldObject {
     addAttribute(characterAttribute: CharacterAttribute) {
 
         this._attributes[characterAttribute.name] = characterAttribute;
+    }
+
+    get attributes(): Readonly<string>[] {
+        return Object.keys(this._attributes);
     }
 
     // handle defaults?
