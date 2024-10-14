@@ -5,10 +5,13 @@ import EntityRenderingSettings from "./EntityRenderingSettings";
 export interface EntityOptions extends WorldObjectOptions {
     id?: string;
     name?: string;
-    speed?: number;
     characterType?: CharacterType;
     entityRenderingSettings?: EntityRenderingSettings;
     color?: string;
     cost?: number;
     flags?: string[];
+    attributes?: {
+        speed?: number;
+        vision?: number;
+    }
 }
