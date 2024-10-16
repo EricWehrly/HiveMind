@@ -57,14 +57,8 @@ export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
         }
 
         // this either needs an event or to be moved into equipment.mjs
-        AddTechnology(tech: Technology | String) {
+        AddTechnology(technology: Technology) {
             
-            let technology: Technology;
-            if(typeof tech === 'string') {
-                technology = Technology.Get(tech);
-            } else {
-                technology = tech as Technology;
-            }
             Logger.debug(`Adding technology ${technology.name} to character ${this.name}`);
             this._technologies.push(technology);
     
