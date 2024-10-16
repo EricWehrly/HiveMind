@@ -84,10 +84,12 @@ export default class AI {
     private updateRelationships() {
 
         const knownEntities = Array.from(this._relationships.keys());
+        // TODO: We should unit test that targets outside of vision are ignored
+        const vision = this.character.getAttribute('vision').value;
         // look for nearby entities that we don't already have a relationship with
         const options: NearbyEntityOptions & CharacterFilterOptions = {
             max: 3,     // don't want to "overstimulate" -- maybe smarter would think harder
-            distance: -1,    // what is this thing's perception distance?
+            distance: vision,
             exclude: knownEntities
         }
         const nearbyEntities = this.character.getNearbyEntities(options);
