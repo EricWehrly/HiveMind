@@ -76,11 +76,13 @@ const options: EntityOptions & SentientOptions & PlayableOptions & LivingOptions
     & { additionalClasses: string} = {
     name: "Local Player",
     color: "blue",
-    speed: 5,
     health: 40,
     additionalClasses: "player",
     ai: PlayerAI,
-    isPlayer: true
+    isPlayer: true,
+    attributes: {
+        speed: 5
+    }
 }
 const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower, MakeLiving, MakeEquipped, MakeCombative, MakeSentient], options) as HiveMindCharacter & Equipped;
 localPlayer.controller = new KeyboardController({ character: localPlayer });
