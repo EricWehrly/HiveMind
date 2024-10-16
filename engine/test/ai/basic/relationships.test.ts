@@ -1,9 +1,10 @@
 import mockMap from "../../testHelpers/mockMap";
-import AI, { EntityRelationshipType } from "../../../js/ai/basic";
+import AI from "../../../js/ai/basic";
 import { CharacterDamagedEvent } from "../../../js/entities/character/mixins/Living";
 import Entity from "../../../js/entities/character/Entity";
 import { MakeSentient } from "../../../js/entities/character/mixins/Sentient";
 import { MakeCharacter } from "../../../js/entities/character/CharacterFactory";
+import { EntityRelationshipType } from "../../../js/behavior/EntityRelationship";
 
 jest.mock('@/engine/js/mapping/GameMap.ts', () => mockMap);
 jest.mock('@/engine/js/events', () => {
@@ -47,7 +48,7 @@ describe('AI', () => {
                 const secondEntity = MakeCharacter([MakeSentient], { name: 'secondEntity' });
                 hitEm(testAI, secondEntity);
 
-                const relationship = testAI.relationship(secondEntity);
+                const relationship = testAI.getRelationship(secondEntity);
 
                 expect(relationship.type).toBe(EntityRelationshipType.Afraid);
             });

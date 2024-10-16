@@ -32,6 +32,7 @@ function hitEm(ai: AI, attacker: Entity) {
         amount: 1,
         character: ai.character
     };
+    // TODO: raise an actual fake event and let the subscription in the constructor catch it
     ai.onCharacterDamaged(damagedEvent);
 }
 
@@ -50,7 +51,7 @@ describe('AI', () => {
 
         describe('_desiredMovementVector', () => {
             it('should (actually fail this and do something different)', () => {
-                const vector = testAI._desiredMovementVector;
+                const vector = testAI.DesiredMovementVector;
                 expect(vector).not.toBeNull();
                 expect(vector.x).toBe(0);
                 expect(vector.y).toBe(0);
@@ -67,7 +68,7 @@ describe('AI', () => {
                 secondEntity.position = new WorldCoordinate(2, 0);
                 testCharacter.position = new WorldCoordinate(1, 0);
 
-                const vector = testAI._desiredMovementVector;
+                const vector = testAI.DesiredMovementVector;
                 expect(vector).not.toBeNull();
                 expect(vector.x).toBe(-1);
                 expect(vector.y).toBe(0);
@@ -85,7 +86,8 @@ describe('AI', () => {
                 hitEm(testAI, topEntity);
                 testCharacter.position = new WorldCoordinate(-4, 0);
 
-                const vector = testAI._desiredMovementVector;
+                testAI.think(1);
+                const vector = testAI.DesiredMovementVector;
                 expect(vector).not.toBeNull();
                 expect(vector.x).toBeCloseTo(0.707);
                 expect(vector.y).toBeCloseTo(0.707);

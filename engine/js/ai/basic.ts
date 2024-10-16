@@ -1,33 +1,23 @@
 // Most basic / default AI
 import Vector from "../baseTypes/Vector";
+import { EntityRelationship, EntityRelationshipType } from "../behavior/EntityRelationship";
 import WorldCoordinate from "../coordinates/WorldCoordinate";
-import Entity from "../entities/character/Entity";
+import Entity, { CharacterFilterOptions, NearbyEntityOptions } from "../entities/character/Entity";
 import { CharacterDamagedEvent } from "../entities/character/mixins/Living";
 import { Sentient } from "../entities/character/mixins/Sentient";
 import Events, { GameEvent } from "../events";
-import { Defer } from '../Loop';
+import { Defer, RegisterLoopMethod } from '../Loop';
 
 const MS_LEASH_COOLDOWN = 3000;
 
 Events.List.CharacterTargetChanged = "CharacterTargetChanged";
 
+// should extend EntityEvent, right?
 export interface CharacterTargetChangedEvent extends GameEvent {
     character: Entity;
     from: Entity | WorldCoordinate;
     to: Entity | WorldCoordinate;
 }
-
-export enum EntityRelationshipType {
-    Friendly,
-    Neutral,
-    Hostile,
-    Afraid
-};
-
-export interface EntityRelationship {
-    type: EntityRelationshipType,
-    amount: number
-};
 
 type ThinkFunction = (elapsed: number) => void;
 
@@ -38,6 +28,7 @@ export default class AI {
     private _relationships: Map<Entity, EntityRelationship> = new Map();
     private _targetEntity: Entity;
     private thinkFunctions: ThinkFunction[] = [];
+    private _desiredMovementVector?: Vector;
 
     get character() { return this._character; }
     get leashing() { return this._leashing; }
@@ -59,47 +50,12 @@ export default class AI {
         Events.RaiseEvent(Events.List.CharacterTargetChanged, options);
     }
 
-    constructor(character: Entity & Sentient) {
-        this._character = character;
+    get DesiredMovementVector() {
+        if(this._desiredMovementVector != null) return this._desiredMovementVector;
 
-        Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
-    }    
-
-    // TODO: faction
-
-    setRelationship(entity: Entity, relationship: EntityRelationship) {
-        this._relationships.set(entity, relationship);
-    }
-
-    relationship(entity: Entity) {
-        return this._relationships.get(entity);
-    }
-
-    RegisterThinkMethod(func: (elapsed: number) => void) {
-        this.thinkFunctions.push(func);
-    }
-
-    think(elapsed: number) {
-
-        this.wander();
-
-        this.thinkFunctions.forEach(func => func(elapsed));
-    }
-
-    wander() {
-        if(this.targetEntity) return;
-        
-        this.character.SetDesiredMovementVector(
-            this._desiredMovementVector.x,
-            this._desiredMovementVector.y
-        );
-    }
-
-    // TODO: mark private
-    // (and update the tests)
-    get _desiredMovementVector() {
         const vector = new Vector(0, 0);
 
+        // how expensive would this get?
         this._relationships.forEach((relationship, entity) => {
             // determine the normalized direction between this._character and entity
             const xDiff = entity.position.x - this._character.position.x;
@@ -113,16 +69,100 @@ export default class AI {
             vector.add(slope);
         });
 
-        return vector.normalized;
+        this._desiredMovementVector = vector.normalized;
+        return this._desiredMovementVector;
+    }
+
+    constructor(character: Entity & Sentient) {
+        this._character = character;
+
+        Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
+
+        RegisterLoopMethod(this.updateRelationships.bind(this));
+    }
+
+    private updateRelationships() {
+
+        const knownEntities = Array.from(this._relationships.keys());
+        // look for nearby entities that we don't already have a relationship with
+        const options: NearbyEntityOptions & CharacterFilterOptions = {
+            max: 3,     // don't want to "overstimulate" -- maybe smarter would think harder
+            distance: -1,    // what is this thing's perception distance?
+            exclude: knownEntities
+        }
+        const nearbyEntities = this.character.getNearbyEntities(options);
+        nearbyEntities.forEach(sortingEntity => {
+            const entity = sortingEntity.entity;
+            const relationship = this.determineRelationship(entity);
+            this.setRelationship(entity, relationship);
+        });
+    }
+
+    // ideally protected, so that extensions can overwrite, but other classes can't call
+    determineRelationship(entity: Entity) {
+
+        const relationship: EntityRelationship = {
+            type: EntityRelationshipType.Neutral,
+            amount: 0
+        }
+        return relationship;
+    }
+
+    setRelationship(entity: Entity, relationship: EntityRelationship) {
+        this._relationships.set(entity, relationship);
+    }
+
+    getRelationship(entity: Entity) {
+        return this._relationships.get(entity);
+    }
+
+    RegisterThinkMethod(func: (elapsed: number) => void) {
+        this.thinkFunctions.push(func);
+    }
+
+    think(elapsed: number) {
+
+        // predispose to keep existing desiredMovementVector
+        // (maybe even only update that in the case of something Eventful)
+
+        this.wander();
+
+        // TODO: find food sometimes (interval maybe)
+
+        this.thinkFunctions.forEach(func => func(elapsed));
+    }
+
+    wander() {
+        if(this.targetEntity) return;
+
+        // TODO: Leash
+        
+        this._desiredMovementVector = null; // clear so that it will regenerate when next requested
+        this.character.SetDesiredMovementVector(
+            this.DesiredMovementVector.x,
+            this.DesiredMovementVector.y
+        );
+        
+        // if the desired vector is null, wander randomly
+        // (but mark that we're wandering randomly?)
+
+        /*
+        // should seek food if idle
+        if(this.DesiredMovementVector.equals(Vector.Zero)) {
+            this.DesiredMovementVector.x = Game.Seed.Random(-1, 1);
+            this.DesiredMovementVector.y = Game.Seed.Random(-1, 1);
+        }
+        */
     }
 
     // ideally protected
     onCharacterDamaged(details: CharacterDamagedEvent) {
         if(details.character != this.character) return;
+        // TODO: unit test: 'should flee attacker'
         this.setRelationship(details.attacker, { type: EntityRelationshipType.Afraid, amount: 1 });
     }
 
-    #unleash() {
+    private _unleash() {
         this._leashing = false;
     }
 
@@ -139,7 +179,7 @@ export default class AI {
             );
 
             this._leashing = true;
-            Defer(this.#unleash.bind(this), MS_LEASH_COOLDOWN);
+            Defer(this._unleash.bind(this), MS_LEASH_COOLDOWN);
         }
     }
 
