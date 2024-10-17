@@ -1,8 +1,6 @@
 import Listed from "./baseTypes/listed";
-import WorldCoordinate from "./coordinates/WorldCoordinate";
 import Logger from "./core/Logger";
-import Entity from "./entities/character/Entity";
-import { CharacterAttackedEvent, Combative } from "./entities/character/mixins/Combative";
+import { CharacterAttackedEvent } from "./entities/character/mixins/Combative";
 import Events from "./events";
 import { Defer } from "./Loop";
 import Research from "./research";
@@ -120,22 +118,6 @@ export default class Technology extends Listed {
                 Technology.#getSound(sound);
             }
         }, 0);
-    }
-
-    checkRange(character: Entity & Combative) {
-
-        if (this._range) {
-            if (!character?.target || character.target == null) return false;
-
-            if(character.target instanceof Entity) {
-                return character.getDistance(character.target) <= this._range;
-            }
-            else if (character.target as any instanceof WorldCoordinate) {
-                return character.position.distance(character.target) <= this._range;
-            }
-        }
-
-        return true;
     }
 
     playSound(options: {
