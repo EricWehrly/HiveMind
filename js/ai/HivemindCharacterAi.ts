@@ -74,7 +74,8 @@ export class HiveMindCharacterAI extends AI {
     private getFriendAmount(entity: Entity & Combative) {
         // @ts-expect-error
         const thisCombative = this as Entity & Combative;
-        if(entity.faction.equals(thisCombative.faction)) {
+        if(entity.faction && thisCombative.faction &&
+            entity.faction.equals(thisCombative.faction)) {
             return 1;
         }
         return 0;
