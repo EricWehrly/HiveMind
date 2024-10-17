@@ -66,30 +66,20 @@ export class EquippedTechnology {
 
 export default class Equipment {
 
-    // should these somehow be generated from Technology.Type ...?
-    // (since we tie them together anyway on line 36)
-    _attack: any = null;
-    // attackModifier isn't actually used
-    _attackModifier: any = null;
-    #character;
-
-    #buff: any = null;
-    
+    private _character: Entity & Equipped;    
     private _equipment: EquipmentCollection = {};
 
     constructor(character: Entity & Equipped) {
-        this.#character = character;
+        this._character = character;
     }
 
     get attack() { return this._equipment[TechnologyTypes.ATTACK]; }
 
     get attackModifier() { return this._equipment[TechnologyTypes.ATTACK_MODIFIER]; }
 
-    // TODO: make this work like attack and attackModifier
-    get buff() { return this.#buff; }
-    set buff(newValue) { this.#buff = newValue; }
+    get buff() { return this._equipment[TechnologyTypes.BUFF]; }
 
-    get character() { return this.#character; }
+    get character() { return this._character; }
 
     equip(technology: Technology) {
         
@@ -100,7 +90,7 @@ export default class Equipment {
             type: technology.type,
             from: this.getEquipped(technology.type).technology,
             to: technology,
-            character: this.#character,
+            character: this._character,
             equipped: this.getEquipped(technology.type)
         };
 
