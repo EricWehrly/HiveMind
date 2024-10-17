@@ -87,7 +87,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T) {
                 const food = Resource.Get("food");
                 // Building.#FOOD_THRESHOLD ?
                 // const characterType = CharacterType.List[];
-                if(food.available < subject.characterType.health) {
+                if(food.available < subject.health) {
                     // console.debug(`${food.available} food < ${characterType.health}, can't build ${character.growerConfig.subject.name}`);
                     return;
                 }
@@ -98,7 +98,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T) {
                 // should we wait until we "have had" food for X "cycles"
                 // or implement some kind of priority queuing system? ("want to grow")
                 const options: HivemindCharacterOptions & GrowableConfig = {
-                    characterType: grower.growerConfig.subject.characterType,
+                    characterType: grower.growerConfig.subject,
                     position,
                     interval: grower.growerConfig.interval,
                     mixins: grower.growerConfig.mixins || HiveMindCharacterFactory.DefaultMixins,
@@ -106,7 +106,7 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T) {
                 };
                 // does this really need to be sentient tho?
                 const newGrow = MakeHiveMindCharacter(grower.growerConfig.mixins, options) as HiveMindCharacter & Growable;
-                if(!food.reserve(subject.characterType.health, newGrow)) {
+                if(!food.reserve(subject.health, newGrow)) {
                     console.warn(`The food was available but isn't now?`);
                     return;
                 }
