@@ -32,10 +32,17 @@ export interface SlimeyOptions {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
-export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T, options: SlimeyOptions) {
+export function MakeSlimey<T extends Constructor<HiveMindCharacter>>(Base: T) {
     return class SlimeyClass extends Base implements Slimey {
 
-        parent?: HiveMindCharacter & Living = options?.parent;
+        parent?: HiveMindCharacter & Living;
+
+        constructor(...args: any) {
+            super(...args);
+
+            const [options]: (SlimeyOptions)[] = args;
+            this.parent = options.parent;
+        }
         
         // TODO: set character current subdivision task/purpose
         Subdivide (options: SubdivideOptions = {}) {

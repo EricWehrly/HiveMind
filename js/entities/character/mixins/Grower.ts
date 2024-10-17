@@ -1,6 +1,7 @@
 import Point from "../../../../engine/js/coordinates/point";
 import WorldCoordinate from "../../../../engine/js/coordinates/WorldCoordinate";
 import Entity, { EntityEvent } from "../../../../engine/js/entities/character/Entity";
+import { EntityOptions } from "../../../../engine/js/entities/character/EntityOptions";
 import { IsSentient, Sentient } from "../../../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../../../engine/js/entities/resource";
 import Events from "../../../../engine/js/events";
@@ -29,7 +30,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 // ... but why?
 // we need to get rid of options
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
-export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
+export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T) {
     return class GrowerClass extends Base implements Grower {
 
         static {
@@ -38,13 +39,16 @@ export function MakeGrower<T extends Constructor<HiveMindCharacter>>(Base: T, op
 
         growing: (HiveMindCharacter & Growable)[] = [];
         lastSpawn: number;
-        growerConfig: GrowerConfig = options?.growerConfig || {};
+        growerConfig: GrowerConfig;
 
         constructor(...args: any) {
             super(...args);
+            const [options]: (EntityOptions & GrowerConfig)[] = args;
 
-            // if(!options.mixins, assign default)
-            this.growerConfig.mixins = options.mixins || HiveMindCharacterFactory.DefaultMixins;
+            this.growerConfig = options || null;
+            if(!this.growerConfig?.mixins) {
+                this.growerConfig.mixins = HiveMindCharacterFactory.DefaultMixins;
+            }
 
             Events.Subscribe(Events.List.CharacterDied, this.onEntityDied);
         }

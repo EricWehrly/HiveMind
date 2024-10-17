@@ -25,7 +25,7 @@ export interface Growable {
 type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: this options any is going to need to become aligned with HiveMindCharacter ctor when it has types
-export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, options: any) {
+export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T) {
     return class GrowableClass extends Base implements Growable {
 
         static {
@@ -33,7 +33,7 @@ export function MakeGrowable<T extends Constructor<HiveMindCharacter>>(Base: T, 
         }
 
         growth: number = null;
-        growConfig: GrowableConfig = options?.growConfig || {};
+        growConfig: GrowableConfig;
 
         get isGrown() {
 
