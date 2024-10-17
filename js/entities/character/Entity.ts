@@ -1,7 +1,7 @@
 import CharacterType from "../../../../js/entities/CharacterType";
 import Events, { GameEvent } from "../../events";
 import { generateId } from "../../util/javascript-extensions.mjs";
-import CharacterAttribute from "../character-attribute";
+import EntityAttribute from "../EntityAttribute";
 import WorldCoordinate from "../../coordinates/WorldCoordinate";
 import EntityRenderingSettings from './EntityRenderingSettings';
 import Faction from '../faction';
@@ -72,7 +72,7 @@ export default class Entity extends WorldObject {
     get name() { return this._name; }
     
     // 'attributed' mixin?
-    private _attributes: { [key: string]: CharacterAttribute } = {};
+    private _attributes: { [key: string]: EntityAttribute } = {};
     private _desiredMovementVector: Vector;
     private _maxPosition?: Readonly<Point>;
     private _color: string;
@@ -130,7 +130,7 @@ export default class Entity extends WorldObject {
             speedVal = options.attributes?.speed;
         }
         
-        this.addAttribute(new CharacterAttribute({
+        this.addAttribute(new EntityAttribute({
             name: 'Speed',
             value: speedVal,
             baseCost: 40,   // TODO: fix this magic #?
@@ -142,7 +142,7 @@ export default class Entity extends WorldObject {
             vision = options.attributes?.vision;
         }
         
-        this.addAttribute(new CharacterAttribute({
+        this.addAttribute(new EntityAttribute({
             name: 'Vision',
             value: vision,
             baseCost: 40,
@@ -171,13 +171,13 @@ export default class Entity extends WorldObject {
         });
     }
 
-    logarithmicCost(characterAttribute: CharacterAttribute) {
+    logarithmicCost(characterAttribute: EntityAttribute) {
         
         const baseCost = characterAttribute.baseCost || 1;
         return Math.round(baseCost + Math.log(characterAttribute.value * baseCost));
     }
 
-    addAttribute(characterAttribute: CharacterAttribute) {
+    addAttribute(characterAttribute: EntityAttribute) {
 
         this._attributes[characterAttribute.name.toLowerCase()] = characterAttribute;
     }
