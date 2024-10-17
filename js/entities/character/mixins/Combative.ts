@@ -198,8 +198,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
             const combatLog = MessageLog.Get("Combat");
     
             if(target.equipment) {
-                // TODO: Is this working right?
-                const buff = target.equipment.buff as Technology;
+                const buff = target.equipment.buff?.technology;
                 if(buff) {
                     const thornDamage = buff.thorns * target.thornMultiplier;
                     (this as Living).health -= thornDamage;
