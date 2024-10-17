@@ -1,11 +1,9 @@
 import PostConstruct from "../../../../ts/decorators/PostConstruct";
 import { TechnologyTypes } from "../../../TechnologyTypes";
 import GameSound from "../../../audio/GameSound";
-import WorldCoordinate from "../../../coordinates/WorldCoordinate";
 import Logger from "../../../core/Logger";
 import MessageLog from "../../../core/MessageLog";
 import Events, { GameEvent } from "../../../events";
-import Technology from "../../../technology";
 import { EquippedTechnology } from "../../equipment";
 import Faction from "../../faction";
 import { CharacterUtils } from "../CharacterUtils";
@@ -24,7 +22,6 @@ export interface CharacterAttackedEvent extends GameEvent {
 }
 
 export interface Combative {
-    target?: Entity | WorldCoordinate;
     aggression: number;
     aggressionRange: number;
     thornMultiplier: number;
@@ -63,6 +60,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
         get aggressionRange() {
             // not vision. the range of the equipped attack
             if(IsEquipped(this)) {
+                // tbh not sure what we were going for with this formula
                 return this._aggression * (this?.equipment?.attack?.range || 0);
             }
             return 0;
@@ -124,9 +122,10 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
             if(!IsCombative(target)) return "target is not combative";
 
             if(IsCombative(this)) {
+                const range = equipped.technology.range;
                 // maybe instead retrieve range difference? (how much closer would the target need to be?)
                 // there are probably other scenarios where we'll want either that info or something close
-                if (!equipped.technology.checkRange(this)) return "target is out of range";
+                if(this.getDistance(target) > range) return "target is out of range";
             }
 
             return null;

@@ -67,7 +67,6 @@ describe('Combative', () => {
                 const targetVolume = 0;
                 makeAttacker(distance);
                 makeTarget(distance);
-                attacker.target = target;
 
                 expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
@@ -80,7 +79,6 @@ describe('Combative', () => {
                 const targetVolume = 100;
                 makeAttacker(distance);
                 makeTarget(distance);
-                attacker.target = target;
 
                 expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
@@ -93,7 +91,6 @@ describe('Combative', () => {
                 const targetVolume = 70;
                 makeAttacker(distance);
                 makeTarget(distance);
-                attacker.target = target;
 
                 expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
@@ -106,7 +103,6 @@ describe('Combative', () => {
                 const targetVolume = 90;
                 makeAttacker(distance);
                 makeTarget(distance);
-                attacker.target = target;
 
                 expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
@@ -119,7 +115,6 @@ describe('Combative', () => {
                 const targetVolume = 0;
                 makeAttacker(distance);
                 makeTarget(distance);
-                attacker.target = target;
 
                 expect(attacker.whyNotAttack(target)).toBe(null);
                 attacker.attack(target);
