@@ -1,4 +1,4 @@
-import CharacterAttribute from '../../../engine/js/entities/character-attribute';
+import EntityAttribute from '../../../engine/js/entities/EntityAttribute';
 import Character from '../../../engine/js/entities/character';
 import Events from '../../../engine/js/events';
 import Entity from '../../../engine/js/entities/character/Entity';
@@ -57,7 +57,7 @@ export default class HiveMindCharacter extends Character {
 
         this.currentPurposeKey = options.currentPurposeKey;
 
-        this.addAttribute(new CharacterAttribute({
+        this.addAttribute(new EntityAttribute({
             name: 'Strength',
             value: 1,
             baseCost: 40,

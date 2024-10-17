@@ -1,20 +1,23 @@
-import Events, { GameEvent } from "../events";
+import Events from "../events";
+import { EntityEvent } from "./character/Entity";
 import Resource from './resource';
 
-Events.List.CharacterAttributeChanged = "CharacterAttributeChanged";
+Events.List.EntityAttributeChanged = "EntityAttributeChanged";
 
-export interface CharacterAttributeChangedEvent extends GameEvent {
-    attribute: CharacterAttribute;
+// this is an EntityEvent, isn't it?
+export interface EntityAttributeChangedEvent extends EntityEvent {
+    attribute: EntityAttribute;
  }
 
-export interface CharacterAttributeOptions {
+export interface EntityAttributeOptions {
     name: string;
     value?: number;
     baseCost?: number;
     costFunction?: (arg: { baseCost: number, value: number }) => number;
 }
 
-export default class CharacterAttribute {
+// maybe call this EntityAttribute and rename the file EntityAttribute.ts
+export default class EntityAttribute {
 
     // maybe later static list of possible character attributes?
     // should there be min and max values?
@@ -32,7 +35,7 @@ export default class CharacterAttribute {
         const oldVal = this._value;
         this._value = newValue;
 
-        Events.RaiseEvent(Events.List.CharacterAttributeChanged, {
+        Events.RaiseEvent(Events.List.EntityAttributeChanged, {
             from: oldVal,
             to: newValue,
             attribute: this
@@ -41,7 +44,7 @@ export default class CharacterAttribute {
 
     get cost() { return this._costFunction(this); }
 
-    constructor(options: CharacterAttributeOptions) {
+    constructor(options: EntityAttributeOptions) {
 
         if(!options.name) debugger;
         if(options.value == undefined) debugger;

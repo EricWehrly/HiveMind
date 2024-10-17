@@ -3,11 +3,11 @@ import Menu from "../engine/js/ui/menu";
 import KeyboardController from "./controls/KeyboardController";
 import Events from "../engine/js/events";
 import MenuItem from "../engine/js/ui/MenuItem";
-import CharacterAttribute, { CharacterAttributeChangedEvent } from "../engine/js/entities/character-attribute";
+import EntityAttribute, { EntityAttributeChangedEvent } from "../engine/js/entities/EntityAttribute";
 import { CharacterUtils } from "../engine/js/entities/character/CharacterUtils";
 
-let strength: CharacterAttribute = null,
-speed: CharacterAttribute = null;
+let strength: EntityAttribute = null,
+speed: EntityAttribute = null;
 
 function characterMenuAction() {
 
@@ -33,7 +33,7 @@ const speedLabel = new MenuItem({
     name: 'Speed'
 });
 
-const incrementAttribute = function(attribute: CharacterAttribute) {
+const incrementAttribute = function(attribute: EntityAttribute) {
 
     // TODO: It will "look" better if the cost visual is updated when ctrl is depressed
     const localPlayer = CharacterUtils.GetLocalPlayer();
@@ -74,7 +74,7 @@ const speedMenuItem = new MenuItem({
     }
 });
 
-function updateMenuItemText(event: CharacterAttributeChangedEvent) {
+function updateMenuItemText(event: EntityAttributeChangedEvent) {
 
     const { attribute } = event;
     if(attribute == strength) {
@@ -95,11 +95,17 @@ Events.Subscribe(Events.List.GameStart, function() {
     const localPlayer = CharacterUtils.GetLocalPlayer();
     
     strength = localPlayer.getAttribute("Strength");
-    updateMenuItemText( { attribute: strength, id: null } );
+    const eventDetails: EntityAttributeChangedEvent = {
+        entity: localPlayer,
+        attribute: strength,
+        id: null
+    }
+    updateMenuItemText(eventDetails);
     strengthLabel.setText(`Strength: ${strength.value}`);
     speed = localPlayer.getAttribute("Speed");
-    updateMenuItemText( { attribute: speed, id: null } );
+    eventDetails.attribute = speed;
+    updateMenuItemText(eventDetails);
     speedLabel.setText(`Speed: ${speed.value}`);
 
-    Events.Subscribe(Events.List.CharacterAttributeChanged, updateMenuItemText);
+    Events.Subscribe(Events.List.EntityAttributeChanged, updateMenuItemText);
 });
