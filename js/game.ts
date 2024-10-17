@@ -37,6 +37,7 @@ import { MakePlayable, PlayableOptions } from '../engine/js/entities/character/m
 import PlayerAI from '../engine/js/ai/Player';
 import { MakeSentient, SentientOptions } from '../engine/js/entities/character/mixins/Sentient';
 import { EntityOptions } from '../engine/js/entities/character/EntityOptions';
+import Technology from '../engine/js/technology';
 
 new MessageLog({
     name: "Combat",
@@ -88,7 +89,8 @@ const localPlayer = MakeHiveMindCharacter([MakePlayable, MakeSlimey, MakeGrower,
 localPlayer.controller = new KeyboardController({ character: localPlayer });
 window.LOCAL_PLAYER = localPlayer;
 
-localPlayer.AddTechnology("slap");
+const slap = Technology.Get("slap");
+localPlayer.AddTechnology(slap);
 
 localPlayer.toolTip = new ToolTip({
     entity: localPlayer

@@ -7,7 +7,7 @@ import Entity from "../Entity";
 export interface Equipped {
     technologies: Technology[];
     equipment: Equipment;
-    AddTechnology(technology: Technology | String): void;
+    AddTechnology(technology: Technology): void;
     getEquipped(technologyType: TechnologyTypes): EquippedTechnology;
     getAttackRange(): number;
 }

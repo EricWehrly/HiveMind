@@ -7,6 +7,7 @@ import { Equipped } from "../../engine/js/entities/character/mixins/Equipped";
 import { Living, MakeLiving } from "../../engine/js/entities/character/mixins/Living";
 import { MakeSentient, SentientOptions } from "../../engine/js/entities/character/mixins/Sentient";
 import Resource from "../../engine/js/entities/resource";
+import Technology from "../../engine/js/technology";
 import NodeAI from "../ai/node";
 import CharacterType from "../entities/CharacterType";
 import Building from "../entities/building";
@@ -43,9 +44,11 @@ export default class Cheat {
 
         const localPlayer: Entity & Equipped = CharacterUtils.GetLocalPlayer() as unknown as Entity & Equipped;
         
-        localPlayer.AddTechnology("thorns");
+        const thorns = Technology.Get("thorns");
+        const claws = Technology.Get("claws");
+        localPlayer.AddTechnology(thorns);
         
-        localPlayer.AddTechnology("claws");
+        localPlayer.AddTechnology(claws);
 
         addBuildItem(CharacterType.List['Seeder']);
         addBuildItem(CharacterType.List['Eater']);
