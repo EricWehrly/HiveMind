@@ -81,14 +81,11 @@ export default class Equipment {
         this.#character = character;
     }
 
-    get attack() { return this._attack; }
+    get attack() { return this._equipment[TechnologyTypes.ATTACK]; }
 
-    set attack(newValue) { this._attack = newValue; }
+    get attackModifier() { return this._equipment[TechnologyTypes.ATTACK_MODIFIER]; }
 
-    get attackModifier() { return this._attackModifier; }
-
-    set attackModifier(newValue) { this._attackModifier = newValue; }
-
+    // TODO: make this work like attack and attackModifier
     get buff() { return this.#buff; }
     set buff(newValue) { this.#buff = newValue; }
 
