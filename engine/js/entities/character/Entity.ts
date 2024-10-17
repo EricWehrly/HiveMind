@@ -179,7 +179,7 @@ export default class Entity extends WorldObject {
 
     addAttribute(characterAttribute: CharacterAttribute) {
 
-        this._attributes[characterAttribute.name] = characterAttribute;
+        this._attributes[characterAttribute.name.toLowerCase()] = characterAttribute;
     }
 
     get attributes(): Readonly<string>[] {
@@ -189,7 +189,7 @@ export default class Entity extends WorldObject {
     // handle defaults?
     getAttribute(name: string) {
 
-        return this._attributes[name];
+        return this._attributes[name.toLowerCase()];
     }
 
     getDistance(entity: Entity) {
