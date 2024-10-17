@@ -12,6 +12,7 @@ import { CharacterUtils } from "../CharacterUtils";
 import Entity, { CharacterFilterOptions } from "../Entity";
 import { Equipped, IsEquipped } from "./Equipped";
 import { IsLiving, Living } from "./Living";
+import { PlayableOptions } from "./Playable";
 import { IsSentient, Sentient } from "./Sentient";
 
 Events.List.CharacterAttacked = "CharacterAttacked";
@@ -27,7 +28,7 @@ export interface Combative {
     aggression: number;
     aggressionRange: number;
     thornMultiplier: number;
-    faction: Faction;
+    faction?: Faction;
     attack(target: Entity): number;
     canAttack(target: Entity): boolean;
     whyNotAttack(target: Entity): string;
@@ -42,7 +43,7 @@ type Constructor<T = {}> = new (...args: any[]) => T;
 
 // TODO: Maybe, ultimately, combative needs to extend equipped?
 
-export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeOptions: CombativeOptions) {
+export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
     return class CombativeClass extends Base implements Combative {
 
         static {
@@ -50,8 +51,8 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
         }
 
         private _thornMultiplier: number;
-        private _aggression: number = combativeOptions?.aggression || 0;
-        private _faction: Faction = combativeOptions?.faction;
+        private _aggression: number;
+        private _faction: Faction;
     
         get faction() { return this._faction; }
         set faction(value) { this._faction = value; }
@@ -70,12 +71,13 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T, combativeO
         constructor(...args: any) {
             super(...args);
 
-            const [deconstructed] = args;
+            const [options]: (PlayableOptions & CombativeOptions)[] = args;
             
-            if(deconstructed.faction) {
-                this.faction = deconstructed.faction;
+            this._aggression = options.aggression || 0;
+            if(options.faction) {
+                this.faction = options.faction;
             }
-            else if(deconstructed.isPlayer) {
+            else if(options.isPlayer) {
                 this.faction = new Faction({ 
                     name: this.name,
                     color: this.color

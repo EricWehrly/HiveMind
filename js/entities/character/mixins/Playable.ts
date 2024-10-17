@@ -48,8 +48,8 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T)
         constructor(...args: any) {
             super(...args);
 
-            const { isPlayer } = args[0] || undefined;
-            this.isPlayer = isPlayer || false;
+            const [options]: (PlayableOptions)[] = args;
+            this.isPlayer = options.isPlayer || false;
 
             if (this.position) this._lastPosition = new WorldCoordinate(this.position.x, this.position.y);
         }

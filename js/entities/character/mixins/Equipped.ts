@@ -30,9 +30,9 @@ export function MakeEquipped<T extends Constructor<Entity>>(Base: T) {
         constructor(...args: any) {
             super(...args);
     
-            const [deconstructed] = args;
-            if(deconstructed.technologies) {
-                for(var tech of deconstructed.technologies) {
+            const [options]: (EquippedOptions)[] = args;
+            if(options.technologies) {
+                for(var tech of options.technologies) {
                     this.AddTechnology(tech);
                 }
             }
