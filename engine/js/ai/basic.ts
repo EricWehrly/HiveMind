@@ -73,8 +73,8 @@ export default class AI {
         return this._desiredMovementVector;
     }
 
-    constructor(character: Entity & Sentient) {
-        this._character = character;
+    constructor(character: Entity) {
+        this._character = character as Entity & Sentient;
 
         Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
 
