@@ -40,7 +40,8 @@ Events.Subscribe(Events.List.GameStart, function() {
     const resourceList = Resource.List;
     for(var index of Object.keys(resourceList)) {
         const resource = resourceList[index];
-        createResourceUI(resource);
+        const event: ResourceEvent = { resource };
+        createResourceUI(event);
     }
 
     Events.Subscribe(Events.List.ResourceCreated, createResourceUI);    
