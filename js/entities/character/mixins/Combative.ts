@@ -91,9 +91,11 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
         }
 
         private followTarget(elapsed: number) {
-            const sentient = this as Entity & Sentient;
-            if (sentient.ai.targetEntity) {
-                sentient.pointAtTarget(sentient.ai.targetEntity.position);
+            if(IsSentient(this)) {
+                const sentient = this as Entity & Sentient;
+                if (sentient.ai.targetEntity) {
+                    sentient.pointAtTarget(sentient.ai.targetEntity.position);
+                }
             }
         }
         

@@ -10,7 +10,7 @@ export interface SentientOptions {
 }
 
 export interface Sentient {
-    ai?: AI
+    ai: AI
     target?: Entity;
 }
 
@@ -109,7 +109,7 @@ export function MakeSentient<T extends Constructor<Entity>>(Base: T)
 };
 
 export function IsSentient(obj: Entity): obj is Entity & Sentient {
-    const sentient = obj as Sentient;
+    const sentient = obj as Entity & Sentient;
     return sentient 
         && sentient.ai !== undefined
         && sentient.ai != null;
