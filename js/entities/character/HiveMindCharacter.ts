@@ -76,7 +76,6 @@ export default class HiveMindCharacter extends Character {
         if(IsLiving(this)
             && (this as Living).dead) return false;
         if(IsSentient(this)
-            // @ts-expect-error     // we probably want to try to make this work correctly ...
             && this.ai != null) return false;
         if(IsCombative(this) && IsCombative(byWhom)) {
             if(byWhom?.faction != null && this.faction == byWhom.faction) return false;

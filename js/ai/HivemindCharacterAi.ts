@@ -7,7 +7,8 @@ import HiveMindCharacter from "../entities/character/HiveMindCharacter";
 export class HiveMindCharacterAI extends AI {
 
     private get hiveMindCharacter() {
-        return this.character as HiveMindCharacter;
+        // there is nothing 'telling' it that it's a HiveMindCharacter
+        return this.character as unknown as HiveMindCharacter;
     }
 
     think(elapsed: number = 0) {
