@@ -1,5 +1,4 @@
 import Listed from './baseTypes/listed';
-import Requirements from './requirements.mjs';
 import Events from './events';
 import Entity from './entities/character/Entity';
 import Menu from './ui/menu';
@@ -95,8 +94,6 @@ export default class Action extends Listed {
             const baseCallback = options.callback;
 
             this._callback = function (options: any = {}) {
-
-                if (!Requirements.met(this, options.character)) return;
 
                 if (!this.#checkDelay(this)) return;
 
