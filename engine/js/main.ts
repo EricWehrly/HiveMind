@@ -22,7 +22,7 @@ import './audio/AudioSetup';
 // but that doesn't buy us much, besides grouping the following two imports in a parent
 // and that's not worth much
 import './ui/ui-equipment';
-import './ui/ui-resource.mjs';
+import './ui/ui-resource';
 
 // establish rendering contexts
 // (eventually, we want the game itself to do this)

@@ -1,8 +1,18 @@
 import Listed from "../baseTypes/listed";
-import Events from "../events";
+import Events, { GameEvent } from "../events";
+import UIElement from "../ui/ui-element";
 
 Events.List.ResourceCreated = "ResourceCreated";
 Events.List.ResourceValueChanged = "ResourceValueChanged";
+
+export interface ResourceEvent extends GameEvent {
+    resource: Resource;
+}
+
+export interface ResourceChangedEvent extends ResourceEvent {
+    from: number;
+    to: number;
+}
 
 export interface ResourceOptions {
     name: string;
@@ -11,7 +21,7 @@ export interface ResourceOptions {
 
 export default class Resource extends Listed {
 
-    UIElement: HTMLElement;  // for now, because it's not extensible ...
+    UIElement: UIElement;
 
     #value = 0;
     #reserved = 0;
@@ -26,11 +36,12 @@ export default class Resource extends Listed {
         const oldValue = this.#value;
         this.#value = newValue;
 
-        Events.RaiseEvent(Events.List.ResourceValueChanged, {
+        const details: ResourceChangedEvent = {
             resource: this,
             from: oldValue,
             to: this.#value
-        });
+        }
+        Events.RaiseEvent(Events.List.ResourceValueChanged, details);
     }
 
     get reserved() {
@@ -47,7 +58,10 @@ export default class Resource extends Listed {
 
         if(options.value) this.#value = options.value;
 
-        Events.RaiseEvent(Events.List.ResourceCreated, this);
+        const details: ResourceEvent = {
+            resource: this
+        };
+        Events.RaiseEvent(Events.List.ResourceCreated, details);
     }
 
     canAfford(amount: number, reservationBucket?: Object) {
