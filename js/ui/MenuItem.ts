@@ -1,7 +1,7 @@
 import Menu from "./menu";
 import UIElement, { UIElementOptions, UI_ELEMENT_TYPE } from "./ui-element";
 
-interface IMenuItem {
+export interface IMenuItem {
     menu: Menu;
     Element?: HTMLElement;
     context?: Record<string, any>;
@@ -26,10 +26,12 @@ export default class MenuItem extends UIElement implements IMenuItem {
     public set enabled(newValue) { this.enabled = newValue; }
 
     constructor(options: UIElementOptions & IMenuItem) {
-        if(options.section) {
-            options.parent = options.menu.getSection(options.section);
-        } else {
-            options.parent = options.menu;
+        if(!options.parent) {
+            if(options.section) {
+                options.parent = options.menu.getSection(options.section);
+            } else {
+                options.parent = options.menu;
+            }
         }
         super(options);
         this._menu = options.menu;
@@ -52,6 +54,18 @@ export default class MenuItem extends UIElement implements IMenuItem {
         }
 
         options.menu.addItem(this);
+    }
+
+    resolveChild(options: UIElementOptions & IMenuItem): MenuItem {
+        options.parent = this;
+        for(var child of this.children as MenuItem[]) {
+            // TODO: other options
+            if(child.name == options.text) {
+                return child;
+            }
+        }
+
+        return new MenuItem(options);
     }
 
     private menuInteract() {

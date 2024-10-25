@@ -1,3 +1,5 @@
+import Events, { GameEvent } from "../events";
+
 type TimingSegment = { 
     start?: number; 
     end?: number; 
@@ -19,17 +21,36 @@ class SegmentCollection {
     // use these vars to track 'state'
     // (should we have a boolean that chooses if this is on?)
     firstSegmentTimestamp: number;
-    segmentCount: number = 0;
+
+    get min() {
+        if(this.segments.length == 0) return null;
+        return this.segments.reduce((min, segment) => segment.time < min ? segment.time : min, this.segments[0].time);
+    }
+
+    get max() {
+        if(this.segments.length == 0) return null;
+        return this.segments.reduce((max, segment) => segment.time > max ? segment.time : max, this.segments[0].time);
+    }
+
+    get median() {
+        if(this.segments.length == 0) return null;
+        return this.segments.reduce((sum, segment) => sum + segment.time, 0) / this.segments.length;
+    }
 
     constructor(options: SegmentOptions) {
         this.options = options;
     }
 }
 
+export interface TimingEvent extends GameEvent {
+    segmentName: string;
+}
+
+Events.List.NewSegment = 'NewSegment';
+
 export default class Timing {
 
     static Segments: Record<string, SegmentCollection> = {};
-    static SegmentKeys: Record<string, string> = {};
     static Enabled: boolean = false;
 
     static TimeFunction<T extends (...args: any[]) => any>(func: T, options: SegmentOptions): T {
@@ -57,6 +78,8 @@ export default class Timing {
     private static _getSegmentCollection(name: string, options: SegmentOptions): SegmentCollection {
         if(!Timing.Segments.hasOwnProperty(name)) {
             Timing.Segments[name] = new SegmentCollection(options);
+            const newSegmentEvent: TimingEvent = { segmentName: name };
+            Events.RaiseEvent(Events.List.NewSegment, newSegmentEvent);
         }
 
         return Timing.Segments[name];
@@ -86,7 +109,6 @@ export default class Timing {
                 if(performance.now() - segmentCollection.firstSegmentTimestamp > keepTime) {
                     segmentCollection.segments = [];
                     segmentCollection.firstSegmentTimestamp = null;
-                    segmentCollection.segmentCount = 0;
                 }
             }
         }
