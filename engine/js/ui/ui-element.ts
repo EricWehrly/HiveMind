@@ -51,6 +51,8 @@ export default class UIElement {
     private _entity: Entity;
     private _text: string;
     private _parent: UIElement;
+    // ideally protected
+    private _children: UIElement[] = [];
     private _classes: string[] = [];
     private _elementType: UI_ELEMENT_TYPE = UI_ELEMENT_TYPE.Default;
     // later, we may want to instead track a map of interaction types to responding actions
@@ -63,6 +65,7 @@ export default class UIElement {
 
     // TODO: Ideally, we want only the renderer to read the parent
     get parent() { return this._parent; }
+    get children() { return this._children; }
 
     get visible() {
         return this._visible;
@@ -94,6 +97,9 @@ export default class UIElement {
         // we had a redundant 'options assign' method .. in entity
 
         this._parent = options.parent;
+        if(this._parent) {
+            this.parent.addChild(this);
+        }
 
         this.addClass("ui");
         // if it doesn't have a follow entity...
@@ -147,6 +153,11 @@ export default class UIElement {
         this._text = text;
         const uiEvent: UIElementEvent = { uiElement: this, id: null };
         this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
+    }
+
+    addChild(child: UIElement) {
+
+        this._children.push(child);
     }
 
     destroy() {

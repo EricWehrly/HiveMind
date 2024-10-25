@@ -201,7 +201,7 @@ export default class Menu extends UIElement {
         const section = new UIElement({
             classes: ["section", name],
             parent: this,
-            // title: name
+            title: name
         });
 
         return section;

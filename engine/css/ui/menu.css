@@ -6,7 +6,7 @@
     flex-flow: row wrap;
 }
 
-.ui.menu > h3 {
+.ui.menu h3 {
     margin: 0;
 }
 
