@@ -53,6 +53,26 @@ function toggleSegment(): void {
         };
         const child = menuItem.resolveChild(elementOptions);
         child.visible = true;
+        _toggleTimingFunctionValues(child);
+    }
+}
+
+function _toggleTimingFunctionValues(parent: MenuItem): void {
+
+    const segments = Timing.Segments[parent.name];
+
+    const elementOptions: UIElementOptions & IMenuItem = {
+        menu: debugMenu,
+    };
+    const parts: Array<keyof typeof segments> = ["min", "max", "median"];
+    for(const part of parts) {
+        elementOptions.name = part;
+        const child = parent.resolveChild(elementOptions);
+        // @ts-expect-error
+        const segmentPart: number = segments[part];
+        const amount = Math.round(segmentPart) || 'N/A';
+        child.setText(`${part}: ${amount}ms`);
+        child.visible = true;
     }
 }
 
