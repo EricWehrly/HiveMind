@@ -33,12 +33,6 @@ new MenuItem({
     customAction: toggleLevelMetaDrawing
 });
 
-// TODO: if timing enabled
-const segmentKeys = Timing.Segments;
-for(const segmentName in segmentKeys) {
-    debugTimingSegment(segmentName);
-}
-
 function toggleSegment(): void {
 
     // all of the segments with this type are the children
