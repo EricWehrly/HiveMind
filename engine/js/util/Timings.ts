@@ -7,6 +7,7 @@ type TimingSegment = {
 };
 
 export type SegmentOptions = {
+    name: string;
     type: string;
     keepTime?: number;
     keepCount?: number;
@@ -16,6 +17,8 @@ export type SegmentOptions = {
 class SegmentCollection {
     segments: TimingSegment[] = [];
     readonly options: SegmentOptions;
+    get name() { return this.options.name; }
+    get type() { return this.options.type; }
 
     // if options.keepCount
     // use these vars to track 'state'
@@ -43,25 +46,37 @@ class SegmentCollection {
 }
 
 export interface TimingEvent extends GameEvent {
-    segmentName: string;
+    segmentType: string;
 }
 
-Events.List.NewSegment = 'NewSegment';
+// Events.List.NewSegment = 'NewSegment';
+Events.List.NewSegmentType = 'NewSegmentType';
 
 export default class Timing {
 
     static Segments: Record<string, SegmentCollection> = {};
-    static Enabled: boolean = false;
+    static Enabled: boolean = true;
+
+    static get SegmentTypes() {
+        const types: string[] = [];
+
+        for(var segment of Object.values(Timing.Segments)) {
+            types.push(segment.options.type);
+        }
+
+        return types;
+    }
 
     static TimeFunction<T extends (...args: any[]) => any>(func: T, options: SegmentOptions): T {
 
         if(!Timing.Enabled) return func;
 
         if(!func.name) throw new Error('Timing: TimeFunction requires a named function');
+        options.name = func.name;
         return ((...args: Parameters<T>): ReturnType<T> => {
-            this.StartSegment(func.name, options);
+            this.StartSegment(options.name, options);
             const result = func(...args);
-            this.EndSegment(func.name);
+            this.EndSegment(options.name);
             return result;
         }) as T;
     }
@@ -75,11 +90,24 @@ export default class Timing {
         });
     }
 
+    static SegmentsByType(segmentType: string) {
+        return Object.values(Timing.Segments)
+            .filter(segment => segment.type == segmentType);
+    }
+
     private static _getSegmentCollection(name: string, options: SegmentOptions): SegmentCollection {
+
+        // every 'options.type' for Timing.segments:
+        // options.type
+        if(!Timing.SegmentTypes.includes(options.type)) {
+            const newSegmentEvent: TimingEvent = { segmentType: options.type };
+            Events.RaiseEvent(Events.List.NewSegmentType, newSegmentEvent);
+        }
+
         if(!Timing.Segments.hasOwnProperty(name)) {
             Timing.Segments[name] = new SegmentCollection(options);
-            const newSegmentEvent: TimingEvent = { segmentName: name };
-            Events.RaiseEvent(Events.List.NewSegment, newSegmentEvent);
+            // const newSegmentEvent: TimingEvent = { segmentType: name };
+            // Events.RaiseEvent(Events.List.NewSegmentType, newSegmentEvent);
         }
 
         return Timing.Segments[name];
@@ -125,10 +153,6 @@ export default class Timing {
 
     private static _formatTime(time: number) {
         return parseFloat(time.toFixed(2));
-    }
-
-    static GetSegments() {
-        console.log(Timing.Segments);
     }
 }
 
