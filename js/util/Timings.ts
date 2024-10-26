@@ -49,7 +49,6 @@ export interface TimingEvent extends GameEvent {
     segmentType: string;
 }
 
-// Events.List.NewSegment = 'NewSegment';
 Events.List.NewSegmentType = 'NewSegmentType';
 
 export default class Timing {
@@ -97,8 +96,6 @@ export default class Timing {
 
     private static _getSegmentCollection(name: string, options: SegmentOptions): SegmentCollection {
 
-        // every 'options.type' for Timing.segments:
-        // options.type
         if(!Timing.SegmentTypes.includes(options.type)) {
             const newSegmentEvent: TimingEvent = { segmentType: options.type };
             Events.RaiseEvent(Events.List.NewSegmentType, newSegmentEvent);
@@ -106,8 +103,6 @@ export default class Timing {
 
         if(!Timing.Segments.hasOwnProperty(name)) {
             Timing.Segments[name] = new SegmentCollection(options);
-            // const newSegmentEvent: TimingEvent = { segmentType: name };
-            // Events.RaiseEvent(Events.List.NewSegmentType, newSegmentEvent);
         }
 
         return Timing.Segments[name];
