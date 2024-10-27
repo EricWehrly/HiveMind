@@ -63,7 +63,7 @@ function _toggleTimingFunctionValues(parent: MenuItem): void {
     const max = Math.round(segments.max) || 'n/a';
     const median = Math.round(segments.median) || 'n/a';
     if(min != 'n/a' || max != 'n/a' || median != 'n/a') {
-        child.setText(`min: ${min}ms &nbsp; &nbsp; max: ${max}ms &nbsp; &nbsp; med: ${median}ms`);
+        child.text = `min: ${min}ms &nbsp; &nbsp; max: ${max}ms &nbsp; &nbsp; med: ${median}ms`;
         child.visible = true;
     }
 }
@@ -78,7 +78,7 @@ function debugTimingSegment(segmentType: string): void {
             callback: toggleSegment
         }
     });
-    menuItem.setText(null);
+    menuItem.text = null;
 
     const labelOptions: UIElementOptions & IMenuItem = {
         elementType: UI_ELEMENT_TYPE.Label,
@@ -86,7 +86,7 @@ function debugTimingSegment(segmentType: string): void {
     }
     // TODO: because this is a label, it shouldn't be navigable as a menu item
     const label = menuItem.resolveChild(labelOptions);
-    label.setText(segmentType);
+    label.text = segmentType;
 }
 
 function OnNewSegmentType(event: TimingEvent): void {

@@ -89,6 +89,12 @@ export default class UIElement {
     set entity(value) { this._entity = value; }
     get title() { return this._title; }
 
+    set text(value) {
+        this._text = value;
+        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
+    }
+
     constructor(options: UIElementOptions = {}) {
 
         this._id = generateId();
@@ -109,7 +115,7 @@ export default class UIElement {
         }
         if('visible' in options) this.visible = options.visible;
 
-        if(options.text) this.setText(options.text);
+        if(options.text) this.text = options.text;
         if(options.title) this._title = options.title;
 
         if(options.elementType) this._elementType = options.elementType;
@@ -147,12 +153,6 @@ export default class UIElement {
         } else {
             this.addClass(className);
         }
-    }
-
-    setText(text: string) {
-        this._text = text;
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
-        this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
     addChild(child: UIElement) {

@@ -46,7 +46,7 @@ export default class MenuItem extends UIElement implements IMenuItem {
         if(options.context?.callback) this.context.callback = options.context.callback.bind(this);
 
         if(!options.text) {
-            this.setText(options.name || options.characterTypeName);
+            this.text = options.name || options.characterTypeName;
         }
 
         if(!options.customAction && this.elementType == UI_ELEMENT_TYPE.Button) {

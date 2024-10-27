@@ -22,7 +22,7 @@ function Track(obj: any, stringFormat: string) {
 }
 
 function Write(str: string) {
-    DEBUG_PANEL.setText(str);
+    DEBUG_PANEL.text = str;
 }
 
 const Debug = {

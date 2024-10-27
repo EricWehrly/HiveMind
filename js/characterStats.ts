@@ -78,13 +78,13 @@ function updateMenuItemText(event: EntityAttributeChangedEvent) {
 
     const { attribute } = event;
     if(attribute == strength) {
-        strengthMenuItem.setText(strengthMenuItem.name 
+        strengthMenuItem.text = (strengthMenuItem.name 
             + `<br />Cost: ${attribute.cost}`);
-        strengthLabel.setText(`Strength: ${strength.value}`);
+        strengthLabel.text = `Strength: ${strength.value}`;
     } else if(attribute == speed) {
-        speedMenuItem.setText(speedMenuItem.name 
+        speedMenuItem.text = (speedMenuItem.name 
             + `<br />Cost: ${attribute.cost}`);
-        speedLabel.setText( `Speed: ${speed.value}`);
+        speedLabel.text =  `Speed: ${speed.value}`;
     }
 }
 
@@ -101,11 +101,11 @@ Events.Subscribe(Events.List.GameStart, function() {
         id: null
     }
     updateMenuItemText(eventDetails);
-    strengthLabel.setText(`Strength: ${strength.value}`);
+    strengthLabel.text = `Strength: ${strength.value}`;
     speed = localPlayer.getAttribute("Speed");
     eventDetails.attribute = speed;
     updateMenuItemText(eventDetails);
-    speedLabel.setText(`Speed: ${speed.value}`);
+    speedLabel.text = `Speed: ${speed.value}`;
 
     Events.Subscribe(Events.List.EntityAttributeChanged, updateMenuItemText);
 });

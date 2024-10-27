@@ -80,9 +80,9 @@ Events.Subscribe(`${Events.List.ResearchFinished}-Food`, function () {
 
     const seeder = addBuildItem(CharacterType.List['Seeder']);
     // TODO: see if we can figure this out inside addBuildItem
-    seeder.setText(`Desire ${CharacterType.List['Seeder'].name}`);
+    seeder.text = `Desire ${CharacterType.List['Seeder'].name}`;
     const eater = addBuildItem(CharacterType.List['Eater']);
-    eater.setText(`Desire ${CharacterType.List['Eater'].name}`);
+    eater.text = `Desire ${CharacterType.List['Eater'].name}`;
 });
 
 KeyboardController.AddDefaultBinding("openMenu/build", "b");
@@ -132,7 +132,7 @@ const hunterCharacterType: HivemindCharacterOptions & LivingOptions & SentientOp
 MakeCharacterType(hunterCharacterType as CharacterTypeOptions);
 // TODO: TBH it doesn't feel "right" to put the 'desire' buildings with the actually 'available' ones
 const hunterMenuItem = addBuildItem(CharacterType.List['Hunter']);
-hunterMenuItem.setText(`Desire ${CharacterType.List['Hunter'].name}`);
+hunterMenuItem.text = `Desire ${CharacterType.List['Hunter'].name}`;
 
 // TODO: Make these actually contribute to a research speed multiplier
 // ideally render that somewhere
@@ -143,7 +143,7 @@ const reasearcherCharacterType: CharacterTypeOptions & LivingOptions & SentientO
 };
 MakeCharacterType(reasearcherCharacterType);
 const researcherMenuItem = addBuildItem(CharacterType.List['Researcher']);
-researcherMenuItem.setText(`Desire ${CharacterType.List['Researcher'].name}`);
+researcherMenuItem.text = `Desire ${CharacterType.List['Researcher'].name}`;
 
 const healerCharacterType: HivemindCharacterOptions & LivingOptions & SentientOptions = {
     name: 'Healer',
@@ -153,7 +153,7 @@ const healerCharacterType: HivemindCharacterOptions & LivingOptions & SentientOp
 };
 MakeCharacterType(healerCharacterType as CharacterTypeOptions);
 const healerMenuItem = addBuildItem(CharacterType.List['Healer']);
-healerMenuItem.setText(`Desire ${CharacterType.List['Healer'].name}`);
+healerMenuItem.text = `Desire ${CharacterType.List['Healer'].name}`;
 
 // rock driller
 
