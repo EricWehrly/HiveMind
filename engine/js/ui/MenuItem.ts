@@ -18,7 +18,7 @@ export default class MenuItem extends UIElement implements IMenuItem {
     public get menu() { return this._menu; }
 
     context: Record<string, any>;
-    name: string;
+    readonly name: string;
     cost: number;
     characterTypeName: string;
 
@@ -60,9 +60,17 @@ export default class MenuItem extends UIElement implements IMenuItem {
         options.parent = this;
         for(var child of this.children as MenuItem[]) {
             // TODO: other options
-            if(child.name == options.text) {
-                return child;
+            if(options.name && child.name != options.name) {
+                continue;
             }
+            if(options.text && child.text != options.text) {
+                continue;
+            }
+            if(options.elementType && options.elementType != child.elementType) {
+                continue;
+            }
+
+            return child;
         }
 
         return new MenuItem(options);

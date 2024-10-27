@@ -36,7 +36,6 @@ new MenuItem({
 function toggleSegment(): void {
 
     // all of the segments with this type are the children
-
     const menuItem: MenuItem = this;
     const segments = Timing.SegmentsByType(menuItem.name);
 
@@ -60,16 +59,18 @@ function _toggleTimingFunctionValues(parent: MenuItem): void {
         menu: debugMenu,
     };
     const child = parent.resolveChild(elementOptions);
-    const min = Math.round(segments.min) || 'N/A';
-    const max = Math.round(segments.max) || 'N/A';
-    const median = Math.round(segments.median) || 'N/A';
-    child.setText(`min: ${min}ms - - max: ${max}ms - - med: ${median}ms`);
-    child.visible = true;
+    const min = Math.round(segments.min) || 'n/a';
+    const max = Math.round(segments.max) || 'n/a';
+    const median = Math.round(segments.median) || 'n/a';
+    if(min != 'n/a' || max != 'n/a' || median != 'n/a') {
+        child.setText(`min: ${min}ms &nbsp; &nbsp; max: ${max}ms &nbsp; &nbsp; med: ${median}ms`);
+        child.visible = true;
+    }
 }
 
 function debugTimingSegment(segmentType: string): void {
     
-    new MenuItem({
+    const menuItem = new MenuItem({
         menu: debugMenu,
         name: segmentType,
         section: "Timing",
@@ -77,6 +78,15 @@ function debugTimingSegment(segmentType: string): void {
             callback: toggleSegment
         }
     });
+    menuItem.setText(null);
+
+    const labelOptions: UIElementOptions & IMenuItem = {
+        elementType: UI_ELEMENT_TYPE.Label,
+        menu: debugMenu,
+    }
+    // TODO: because this is a label, it shouldn't be navigable as a menu item
+    const label = menuItem.resolveChild(labelOptions);
+    label.setText(segmentType);
 }
 
 function OnNewSegmentType(event: TimingEvent): void {
