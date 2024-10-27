@@ -1,7 +1,7 @@
 import Events from "./events";
 import Timing, { SegmentOptions } from "./util/Timings";
 
-type LoopMethod = { 
+type LoopMethod = {
     (elapsed?: number, lastLoop?: number): void; // Method that can accept two optional parameters
     // (elapsed: number, lastLoop: number): void; // Method that accepts two parameters
     // (): void; // Method that accepts no parameters
@@ -26,7 +26,7 @@ export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
         timingOptions.type = "loop fast";
         const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
         LOOP_METHODS_FAST.push(timedFunction);
-    } else if(!LOOP_METHODS_SLOW.includes(callback)) {
+    } else if(needsFast == false && !LOOP_METHODS_SLOW.includes(callback)) {
         timingOptions.type = "loop slow";
         const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
         LOOP_METHODS_SLOW.push(timedFunction);
