@@ -27,10 +27,10 @@ function resourceChanged(details: ResourceChangedEvent) {
 
     if(RENDER_RESERVED) {
         const text = `${details.resource.name}: ${Math.round(details.to)} (${Math.round(details.resource.reserved)})`;
-        details.resource.UIElement.setText(text);
+        details.resource.UIElement.text = text;
     } else {
         const text = `${details.resource.name}: ${Math.round(details.to)}`;
-        details.resource.UIElement.setText(text);
+        details.resource.UIElement.text = text;
     }
 }
 

@@ -19,7 +19,7 @@ Events.Subscribe(Events.List.EquipmentChanged, function(details: EquipmentChange
     const playerCharacter = details.character as Equipped & Playable;
     if(details.type == TechnologyTypes.ATTACK && playerCharacter.isPlayer == true) {
         // TODO: get the bound key rather than using "magic strings"
-        UI_ELEMENT_ATTACK.setText(`[ space ] - ${details.to.name}`);
+        UI_ELEMENT_ATTACK.text = `[ space ] - ${details.to.name}`;
         playerAttack = details.equipped;
     }
 });
