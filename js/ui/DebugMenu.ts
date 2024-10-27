@@ -1,3 +1,4 @@
+import { RegisterLoopMethod } from "../../engine/js/Loop";
 import Configuration from "../../engine/js/core/Configuration";
 import Events from "../../engine/js/events";
 import MenuItem, { IMenuItem } from "../../engine/js/ui/MenuItem";
@@ -33,20 +34,34 @@ new MenuItem({
     customAction: toggleLevelMetaDrawing
 });
 
+const menuItemsToUpdate: MenuItem[] = [];
+
+function loopUpdateDebugTimings() {
+
+    menuItemsToUpdate.forEach((menuItem) => {    
+
+        const segments = Timing.SegmentsByType(menuItem.name);
+    
+        for(var segment of segments) {
+            const elementOptions: UIElementOptions & IMenuItem = {
+                name: segment.name,
+                menu: debugMenu,
+            };
+            const child = menuItem.resolveChild(elementOptions);
+            child.visible = true;
+            _toggleTimingFunctionValues(child);
+        }
+    });
+}
+
+RegisterLoopMethod(loopUpdateDebugTimings);
+
 function toggleSegment(): void {
 
-    // all of the segments with this type are the children
-    const menuItem: MenuItem = this;
-    const segments = Timing.SegmentsByType(menuItem.name);
-
-    for(var segment of segments) {
-        const elementOptions: UIElementOptions & IMenuItem = {
-            name: segment.name,
-            menu: debugMenu,
-        };
-        const child = menuItem.resolveChild(elementOptions);
-        child.visible = true;
-        _toggleTimingFunctionValues(child);
+    if(menuItemsToUpdate.includes(this)) {
+        menuItemsToUpdate.splice(menuItemsToUpdate.indexOf(this), 1);
+    } else {
+        menuItemsToUpdate.push(this);
     }
 }
 

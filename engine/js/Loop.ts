@@ -2,8 +2,7 @@ import Events from "./events";
 import Timing, { SegmentOptions } from "./util/Timings";
 
 type LoopMethod = {
-    (elapsed?: number, lastLoop?: number): void; // Method that can accept two optional parameters
-    // (elapsed: number, lastLoop: number): void; // Method that accepts two parameters
+    (elapsed?: number, lastLoop?: number): void;
     // (): void; // Method that accepts no parameters
 };
 type Deferral = { remainingMs: number; callback: LoopMethod; };
@@ -47,11 +46,11 @@ function _slowLoop() {
     var elapsed = performance.now() - LAST_SLOW_LOOP;
     LAST_SLOW_LOOP = performance.now();
 
+    Timing.ClearSegments(`loop slow`);
+
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
         try {
-            // Timing.StartSegment(`slow${index}`, timingOptions);
             LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
-            // Timing.EndSegment(`slow${index}`);
         } catch (ex) {
             console.error(ex);
             debugger;
@@ -81,6 +80,8 @@ function _fastLoop() {
 
     var elapsed = performance.now() - LAST_FAST_LOOP;
     LAST_FAST_LOOP = performance.now();
+
+    Timing.ClearSegments(`loop fast`);
 
     for(var index = 0; index < LOOP_METHODS_FAST.length; index++) {
         try {

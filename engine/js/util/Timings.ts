@@ -40,6 +40,10 @@ class SegmentCollection {
         return this.segments.reduce((sum, segment) => sum + segment.time, 0) / this.segments.length;
     }
 
+    get sum() {
+        return this.segments.reduce((sum, segment) => sum + segment.time, 0);
+    }
+
     constructor(options: SegmentOptions) {
         this.options = options;
     }
@@ -139,6 +143,12 @@ export default class Timing {
         if(slowThreshold && segment.time < slowThreshold) {
             segments.splice(index, 1);
         }
+    }
+
+    static ClearSegments(segmentType: string) {
+        Timing.SegmentsByType(segmentType).forEach(segmentCollection => {
+            segmentCollection.segments = [];
+        });
     }
 
     private static _getCurrentTime() {
