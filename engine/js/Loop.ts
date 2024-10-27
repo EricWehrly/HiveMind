@@ -46,8 +46,6 @@ function _slowLoop() {
     var elapsed = performance.now() - LAST_SLOW_LOOP;
     LAST_SLOW_LOOP = performance.now();
 
-    Timing.ClearSegments(`loop slow`);
-
     for(var index = 0; index < LOOP_METHODS_SLOW.length; index++) {
         try {
             LOOP_METHODS_SLOW[index](elapsed, LAST_SLOW_LOOP);
@@ -80,8 +78,6 @@ function _fastLoop() {
 
     var elapsed = performance.now() - LAST_FAST_LOOP;
     LAST_FAST_LOOP = performance.now();
-
-    Timing.ClearSegments(`loop fast`);
 
     for(var index = 0; index < LOOP_METHODS_FAST.length; index++) {
         try {

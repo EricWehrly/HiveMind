@@ -49,11 +49,17 @@ function _toggleTimingFunctionValues(parent: MenuItem): void {
         menu: debugMenu,
     };
     const child = parent.resolveChild(elementOptions);
-    const min = Math.round(segments.min) || 'n/a';
-    const max = Math.round(segments.max) || 'n/a';
-    const median = Math.round(segments.median) || 'n/a';
-    if(min != 'n/a' || max != 'n/a' || median != 'n/a') {
-        child.text = `min: ${min}ms &nbsp; &nbsp; max: ${max}ms &nbsp; &nbsp; med: ${median}ms`;
+    const min = Math.round(segments.min) || '--';
+    const max = Math.round(segments.max) || '--';
+    const median = Math.round(segments.median) || '--';
+    // const sum = Math.round(segments.sum) || '--';
+    // const count = Math.round(segments.count) || '--';
+    if(min != '--' || max != '--' || median != '--') {
+        child.text     = `min: ${min}ms`
+        + ` &nbsp; &nbsp; max: ${max}ms`
+        + ` &nbsp; &nbsp; med: ${median}ms`
+        // + ` &nbsp; &nbsp; sum: ${sum}ms`
+        // + ` &nbsp; &nbsp; count: ${count}`
         child.visible = true;
     }
 }
