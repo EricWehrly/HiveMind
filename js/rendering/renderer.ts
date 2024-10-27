@@ -1,5 +1,6 @@
 import Rectangle from "../baseTypes/rectangle";
 import Events from "../events";
+import Timing, { SegmentOptions } from "../util/Timings";
 import { generateId } from "../util/javascript-extensions.mjs";
 import { RenderContextInterface } from "./RenderContext";
 
@@ -80,13 +81,19 @@ export default class Renderer {
 
         const methodPriorityOptions = Renderer.#registerRenderMethod_defaultOptions(options);
         methodPriorityOptions.priority = priority;
+        const timingOptions: SegmentOptions = {
+            name: method.name,
+            type: 'render'
+        };
     
         /*
         while(priority in Renderer._renderMethodPriorities) {
             priority = priority + 1;
         }
         */
-        methodPriorityOptions.method = method;
+        methodPriorityOptions.method = Timing.TimeFunction(
+            method as (...args: any[]) => any,
+            timingOptions);
         Renderer._renderMethods.push(methodPriorityOptions);
 
         if(Renderer._renderContexts.size > 0) { // only do this if we have contexts
