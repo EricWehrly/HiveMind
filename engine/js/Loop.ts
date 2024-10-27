@@ -15,19 +15,20 @@ let LAST_SLOW_LOOP = performance.now();
 let LAST_FAST_LOOP = performance.now();
 
 export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
-    const timingOptions: Partial<SegmentOptions> = {
+    const timingOptions: SegmentOptions = {
+        name: callback.name,
         keepCount: 1000,
-        slowThreshold: 1
+        slowThreshold: 1,
+        type: "loop fast"
     }
 
     if(needsFast == true
         && !LOOP_METHODS_FAST.includes(callback)) {
-        timingOptions.type = "loop fast";
-        const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
+        const timedFunction = Timing.TimeFunction(callback, timingOptions);
         LOOP_METHODS_FAST.push(timedFunction);
     } else if(needsFast == false && !LOOP_METHODS_SLOW.includes(callback)) {
         timingOptions.type = "loop slow";
-        const timedFunction = Timing.TimeFunction(callback, timingOptions as SegmentOptions);
+        const timedFunction = Timing.TimeFunction(callback, timingOptions);
         LOOP_METHODS_SLOW.push(timedFunction);
     }
 }

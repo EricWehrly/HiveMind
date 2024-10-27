@@ -44,6 +44,10 @@ class SegmentCollection {
         return this.segments.reduce((sum, segment) => sum + segment.time, 0);
     }
 
+    get count() {
+        return this.segments.length;
+    }
+
     constructor(options: SegmentOptions) {
         this.options = options;
     }
