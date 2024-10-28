@@ -88,7 +88,11 @@ export default class Action extends Listed {
         if(options.oncePerPress != null) this.#oncePerPress = options.oncePerPress;
         if(options.delay != null) this.#delay = options.delay;
         if(options.isCharacterControl != null) this.#isCharacterControl = options.isCharacterControl;
-        if(options.isMenuAction != null) this.#isMenuAction = options.isMenuAction;
+        if(options.isMenuAction != null) {
+            this.#isMenuAction = options.isMenuAction;
+            // menu actions are 'once per press' by default
+            if(options.oncePerPress == null) this.#oncePerPress = true;
+        }
 
         if (options.callback != null) {
             const baseCallback = options.callback;
@@ -157,22 +161,48 @@ new Action({
     }
 });
 
+function menuPrevious() {
+    Menu.Current.selectPrevious();
+}
+
+function menuNext() {
+    Menu.Current.selectNext();
+}
+
+new Action({
+    name: 'menu_up',
+    isMenuAction: true,
+    callback: menuPrevious
+});
+
+new Action({
+    name: 'menu_down',
+    isMenuAction: true,
+    callback: menuNext
+});
+
+new Action({
+    name: 'menu_left',
+    isMenuAction: true,
+    callback: menuPrevious
+});
+
+new Action({
+    name: 'menu_right',
+    isMenuAction: true,
+    callback: menuNext
+});
+
 new Action({
     name: 'menu_previous',
     isMenuAction: true,
-    oncePerPress: true,
-    callback: function (options: any) {
-        Menu.Current.selectPrevious();
-    }
+    callback: menuPrevious
 });
 
 new Action({
     name: 'menu_next',
     isMenuAction: true,
-    oncePerPress: true,
-    callback: function (options: any) {
-        Menu.Current.selectNext();
-    }
+    callback: menuNext
 });
 
 new Action({
