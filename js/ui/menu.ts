@@ -47,7 +47,7 @@ export default class Menu extends UIElement {
 
     private static _computeAnyMenuOpen() {
 
-        let visibleMenus = Object.values(Menu._MENU_LIST);
+        let visibleMenus = Array.from(Menu._MENU_LIST.values());
         visibleMenus = visibleMenus.filter(x => x.visible && x.collapsed != true);
         Menu._isAnyMenuOpen = visibleMenus.length > 0;
     }
@@ -60,7 +60,7 @@ export default class Menu extends UIElement {
     private _collapsible: boolean;
     private _icon: UIElement;
     private _sections = new Map<string, UIElement>();
-    
+
     get name() { return this._name; }
     get selected() { return this._selected; }
     get menuAction() { return this._menuAction; }
