@@ -1,3 +1,5 @@
+food found a way to go negative
+
 - When a creature dies, clear its tooltip / refresh player tooltip
 
 - I think starting a 2nd research screws up one already researching?

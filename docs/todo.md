@@ -1,3 +1,5 @@
+Projectile animations (especially for enemies shooting player)
+
 Takes way too long to find a new 'wander target' right now
 (entities stop where they wandered to very abruptly)
 entities still jiggling uncomfortably as they walk :/
@@ -37,8 +39,6 @@ we're in the middle of reworking the way things get built
 grown could use some love
 then we also started on character movement -_-
     we should add a unit test that characters will stop moving when they arrive at their destination with extra time elapsed
-
-allow 'down' and 'up' on menu (but don't need to enable by default)
 
 - (fix) node position selection for stuff to build
     buildings shouldn't be able to build close together. Need a way to visualize this and some tests for it

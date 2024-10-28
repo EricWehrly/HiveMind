@@ -35,8 +35,10 @@ export default class KeyboardController {
         "move_left": ['a'],
         "move_right": ['d'],
         "attack": [' '],
-        "menu_previous": ['a'],
-        "menu_next": ['d'],
+        "menu_up": ['w'],
+        "menu_down": ['s'],
+        "menu_left": ['a'],
+        "menu_right": ['d'],
 
         // I can't figure out why we're not seeing "f".
         // we bind it in game.js:30 : KeyboardController.AddDefaultBinding("subdivide", "q");
