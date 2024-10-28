@@ -1,3 +1,4 @@
+import Action, { ActionOptions } from "../../engine/js/action";
 import Events from "../../engine/js/events";
 import MenuItem from "../../engine/js/ui/MenuItem";
 import Menu from "../../engine/js/ui/menu";
@@ -26,7 +27,29 @@ const pauseMenu = new Menu({
     }
 });
 
-KeyboardController.AddDefaultBinding("openMenu/Pause", "Escape");
+/** Escape Button begin */
+function handleEscape() {
+    if(Menu.anyOpen) {
+        Menu.Current.close();
+        return;
+    }
+    if(pauseMenu.visible) {
+        pauseMenu.close();
+    } else {
+        pauseMenu.open();
+    }
+}
+
+const escapeActionOptions: ActionOptions = {
+    name: "handleEscape",
+    oncePerPress: true,
+    callback: handleEscape
+}
+new Action(escapeActionOptions)
+    .enabled = true;
+
+KeyboardController.AddDefaultBinding(escapeActionOptions.name, "Escape");
+/** Escape Button end */
 
 Events.Subscribe(Events.List.DataLoaded, function() {
     const pauseMenuItems = [
