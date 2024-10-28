@@ -22,49 +22,50 @@ export interface MenuAction {
 
 export default class Menu extends UIElement {
     
-    static #isAnyMenuOpen = false;
+    private static _isAnyMenuOpen = false;
     // Menu class should "be" (extend) Listed, but can't extend 2, so...
-    static #MENU_LIST: Map<String, Menu> = new Map();
+    private static _MENU_LIST: Map<String, Menu> = new Map();
     canBeClosed: any;
-    static get MENU_LIST() { return Menu.#MENU_LIST; }
+    static get MENU_LIST() { return Menu._MENU_LIST; }
 
-    static #current: Menu = null;
-    static get Current() { return Menu.#current; }
+    private static _current: Menu = null;
+    static get Current() { return Menu._current; }
 
     static Get(name: string) {
-        return Menu.#MENU_LIST.get(name.toLowerCase());
+        return Menu._MENU_LIST.get(name.toLowerCase());
     }
 
-    static #addMenu(menu: Menu) {
+    private static addMenu(menu: Menu) {
         
-        Menu.#MENU_LIST.set(menu.name.toLowerCase(), menu);
+        Menu._MENU_LIST.set(menu.name.toLowerCase(), menu);
     }
 
     static get anyOpen() {
 
-        return Menu.#isAnyMenuOpen;
+        return Menu._isAnyMenuOpen;
     }
 
-    static #computeAnyMenuOpen() {
+    private static _computeAnyMenuOpen() {
 
-        let visibleMenus = Object.values(Menu.#MENU_LIST);
+        let visibleMenus = Object.values(Menu._MENU_LIST);
         visibleMenus = visibleMenus.filter(x => x.visible && x.collapsed != true);
-        Menu.#isAnyMenuOpen = visibleMenus.length > 0;
+        Menu._isAnyMenuOpen = visibleMenus.length > 0;
     }
 
-    #name;
-    #items: MenuItem[] = [];
-    _selected: MenuItem;
-    #menuAction;
-    _collapsed: boolean;
-    _collapsible: boolean;
+    private _name;
+    private _items: MenuItem[] = [];
+    private _selected: MenuItem;
+    private _menuAction;
+    private _collapsed: boolean;
+    private _collapsible: boolean;
     private _icon: UIElement;
     private _sections = new Map<string, UIElement>();
-    get name() { return this.#name; }
+    
+    get name() { return this._name; }
     get selected() { return this._selected; }
-    get menuAction() { return this.#menuAction; }
+    get menuAction() { return this._menuAction; }
     get visible() { return super.visible; }
-    get items() { return this.#items; }
+    get items() { return this._items; }
     get collapsed() { return this._collapsed; }
     get collapsible() { return this._collapsible; }
     get sections() { return this._sections; }
@@ -74,14 +75,14 @@ export default class Menu extends UIElement {
         super.visible = value;
         Action.List["menu_interact"].enabled = super.visible;
 
-        Menu.#computeAnyMenuOpen();
+        Menu._computeAnyMenuOpen();
 
         if(this.visible) {
-            Menu.#current = this;
+            Menu._current = this;
             Events.RaiseEvent(Events.List.MenuOpened, this);
         }
         else {
-            if(Menu.#current == this) Menu.#current = null;
+            if(Menu._current == this) Menu._current = null;
             Events.RaiseEvent(Events.List.MenuClosed, this);
         }
     }
@@ -108,25 +109,25 @@ export default class Menu extends UIElement {
 
     selectNext() {
 
-        if(this.#items.length < 2) return;
+        if(this._items.length < 2) return;
 
-        const selectedIndex = this.#items.findIndex(item => item === this.selected);
-        if(this.#items.length - 1 > selectedIndex) {
-            this.select(this.#items[selectedIndex + 1]);
+        const selectedIndex = this._items.findIndex(item => item === this.selected);
+        if(this._items.length - 1 > selectedIndex) {
+            this.select(this._items[selectedIndex + 1]);
         } else {
-            this.select(this.#items[0]);
+            this.select(this._items[0]);
         }
     }
 
     selectPrevious() {
 
-        if(this.#items.length < 2) return;
+        if(this._items.length < 2) return;
 
-        const selectedIndex = this.#items.indexOf(this.selected);
+        const selectedIndex = this._items.indexOf(this.selected);
         if(selectedIndex - 1 > -1) {
-            this.select(this.#items[selectedIndex - 1]);
+            this.select(this._items[selectedIndex - 1]);
         } else {
-            this.select(this.#items[this.#items.length - 1]);
+            this.select(this._items[this._items.length - 1]);
         }
     }
 
@@ -142,11 +143,11 @@ export default class Menu extends UIElement {
         if(options.vertical) this.addClass("vertical");
 
         if(options.name) {
-            this.#name = options.name;
+            this._name = options.name;
             this.addClass(options.name);
         }
 
-        if(options.menuAction) this.#menuAction = options.menuAction;
+        if(options.menuAction) this._menuAction = options.menuAction;
 
         this.collapsed = options.collapsed;
         this._collapsible = options.collapsed || options.collapsible;
@@ -160,13 +161,13 @@ export default class Menu extends UIElement {
 
         if(options.canBeClosed == true || options.canBeClosed == undefined) this.canBeClosed = true;
 
-        Menu.#addMenu(this);
+        Menu.addMenu(this);
     }
 
     toggleCollapsed() {
 
         this.collapsed = !this.collapsed;
-        Menu.#computeAnyMenuOpen();
+        Menu._computeAnyMenuOpen();
     }
 
     addItem(menuItem: MenuItem) {
@@ -175,15 +176,15 @@ export default class Menu extends UIElement {
             this.select(menuItem);
         }
 
-        this.#items.push(menuItem);
+        this._items.push(menuItem);
     }
 
     removeItem(item: MenuItem) {
 
         item.destroy();
-        const index = this.#items.indexOf(item);
+        const index = this._items.indexOf(item);
         if(index > -1) {
-            this.#items.splice(index, 1);
+            this._items.splice(index, 1);
         }
     }
 
