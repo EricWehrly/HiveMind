@@ -79,11 +79,11 @@ export default class Timing {
         if(!Timing.Enabled) return func;
 
         if(!func.name) throw new Error('Timing: TimeFunction requires a named function');
-        options.name = func.name;
+        if(!options.name) options.name = func.name;
         return ((...args: Parameters<T>): ReturnType<T> => {
-            this.StartSegment(options.name, options);
+            Timing.StartSegment(options.name, options);
             const result = func(...args);
-            this.EndSegment(options.name);
+            Timing.EndSegment(options.name);
             return result;
         }) as T;
     }
