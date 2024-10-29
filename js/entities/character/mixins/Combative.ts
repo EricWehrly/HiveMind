@@ -134,10 +134,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
         }
         
         attack(target: Entity): number {
-            // we need a better way to "unwrap" from action.ts
-            // @ts-expect-error
-            if(target.character) target = target.character;
-
+            
             if(!this.canAttack(target)) {
                 if(CharacterUtils.IsLocalPlayer(this)) {
                     const wrongSound = GameSound.Get('wrong');
@@ -146,39 +143,53 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
                 return 0;
             }
             if(!IsEquipped(this)) return 0;
+            if(!IsLiving(target)) return;
     
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
             const strAttr = this.getAttribute("Strength");
-
-            // TODO: magic numbers
-            let volume = 100;   // default ... maybe pull audio master instead?
-            // TODO: When we implement Playable as separate, we should have a "IsLocalPlayer" method that will also take an array
-            if(CharacterUtils.IsLocalPlayer(target)
-                || CharacterUtils.IsLocalPlayer(this)) {
-                    const NOT_PLAYER_ATTENUATOR = 0.5;
-                    volume *= NOT_PLAYER_ATTENUATOR;
-                }
     
             // TODO: visuals for attacks (ideally trigger here & subscribe in renderer)
-    
-            const localPlayer = CharacterUtils.GetLocalPlayer();
-            const distance = 100 - this.position.distance(localPlayer.position);
-            equipped.technology.playSound({
-                volume: distance
-            });
+
+            this.playSound(target, equipped);
     
             equipped.lastFired = performance.now();
     
-            if(!IsLiving(target)) return;
-    
             const strengthMultiplier = 1.0 + (((strAttr?.value || 1) -1) / 10);
             const damage = (equipped.damage * strengthMultiplier);
+            this._writeCombatLog(target, equipped, strengthMultiplier, damage);
             target.damage(damage, this);
+    
+            if(IsCombative(target) && IsEquipped(target)) {
+                this._attackCharacter(target, equipped, damage);
+            }
+    
+            return damage;
+        }
+
+        private playSound(target: Entity, equipped: EquippedTechnology) {
+            // TODO: magic numbers
+            let volume = 100; // default ... maybe pull audio master instead?
+            if (CharacterUtils.IsLocalPlayer(target)
+                || CharacterUtils.IsLocalPlayer(this)) {
+                const NOT_PLAYER_ATTENUATOR = 0.5;
+                volume *= NOT_PLAYER_ATTENUATOR;
+            }
+
+            const localPlayer = CharacterUtils.GetLocalPlayer();
+            const distance = volume - this.position.distance(localPlayer.position);
+            equipped.technology.playSound({
+                volume: distance
+            });
+        }
+
+        private _writeCombatLog(target: Entity, equipped: EquippedTechnology,
+            strengthMultiplier: number, damage: number
+        ) {
             
             // TODO: Can we have the combatLog subscribe instead?
             try {
                 const combatLog = MessageLog.Get("Combat");    
-                const message = `${this.name} attacked ${target.name}`
+                const message = `${this.name} ${equipped.name} ${target.name}`
                     + ` for ${equipped.damage} * ${strengthMultiplier}.`;
                 combatLog.log(message, {
                     attacker: this.id,
@@ -188,18 +199,13 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
             } catch(ex) {
                 Logger.warn(`Couldn't write to combat log: ${ex}`);
             }
-    
-            if(IsCombative(target) && IsEquipped(target)) {
-                this._attackCharacter(target, equipped, damage);
-            }
-    
-            return damage;
         }
     
         private _attackCharacter(target: Entity & Equipped & Combative, equipped: EquippedTechnology, damage: number) {
     
             const combatLog = MessageLog.Get("Combat");
     
+            // TODO: Is there no better way to manage this custom code?
             if(target.equipment) {
                 const buff = target.equipment.buff?.technology;
                 if(buff) {
