@@ -1,5 +1,6 @@
 import Listed from "./baseTypes/listed";
 import Logger from "./core/Logger";
+import { CharacterUtils } from "./entities/character/CharacterUtils";
 import { CharacterAttackEvent } from "./entities/character/mixins/Combative";
 import Events from "./events";
 import { Defer } from "./Loop";
@@ -103,12 +104,36 @@ export default class Technology extends Listed {
         this.#deferLoadingSounds();
 
         Events.Subscribe(Events.List.CharacterAttacked, this.onCharacterAttacked.bind(this));
+        Events.Subscribe(Events.List.CharacterAttacking, this.onCharacterAttacking.bind(this));
     }
 
     private onCharacterAttacked(details: CharacterAttackEvent) {
         if(this.statusEffect && details.equipped?.technology == this) {
             this.statusEffect.apply(details.attacked, this.statusEffectDuration);
         }
+    }
+
+    private onCharacterAttacking(details: CharacterAttackEvent) {
+
+        if(details.equipped.technology != this) return;
+        
+        const equipped = details.equipped;
+        const attacker = details.attacker;
+        const target = details.attacked;
+
+        // TODO: magic numbers
+        let volume = 100; // default ... maybe pull audio master instead?
+        if (CharacterUtils.IsLocalPlayer(target)
+            || CharacterUtils.IsLocalPlayer(attacker)) {
+            const NOT_PLAYER_ATTENUATOR = 0.5;
+            volume *= NOT_PLAYER_ATTENUATOR;
+        }
+
+        const localPlayer = CharacterUtils.GetLocalPlayer();
+        const distance = volume - attacker.position.distance(localPlayer.position);
+        equipped.technology.playSound({
+            volume: distance
+        });
     }
 
     #deferLoadingSounds() {

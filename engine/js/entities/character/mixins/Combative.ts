@@ -13,6 +13,7 @@ import { IsLiving, Living } from "./Living";
 import { PlayableOptions } from "./Playable";
 import { IsSentient, Sentient } from "./Sentient";
 
+Events.List.CharacterAttacking = "CharacterAttackings";
 Events.List.CharacterAttacked = "CharacterAttacked";
 
 export interface CharacterAttackEvent extends GameEvent {
@@ -147,10 +148,15 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
     
             const equipped = this.getEquipped(TechnologyTypes.ATTACK);
             const strAttr = this.getAttribute("Strength");
-    
-            // TODO: visuals for attacks (ideally trigger here & subscribe in renderer)
 
-            this.playSound(target, equipped);
+            const attackingEvent: CharacterAttackEvent = {
+                id: null,
+                attacker: this,
+                attacked: target,
+                equipped
+            };
+            // TODO: visuals for attacks (subscribe in renderer)
+            Events.RaiseEvent(Events.List.CharacterAttacking, attackingEvent);
     
             equipped.lastFired = performance.now();
     
@@ -164,22 +170,6 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
             }
     
             return damage;
-        }
-
-        private playSound(target: Entity, equipped: EquippedTechnology) {
-            // TODO: magic numbers
-            let volume = 100; // default ... maybe pull audio master instead?
-            if (CharacterUtils.IsLocalPlayer(target)
-                || CharacterUtils.IsLocalPlayer(this)) {
-                const NOT_PLAYER_ATTENUATOR = 0.5;
-                volume *= NOT_PLAYER_ATTENUATOR;
-            }
-
-            const localPlayer = CharacterUtils.GetLocalPlayer();
-            const distance = volume - this.position.distance(localPlayer.position);
-            equipped.technology.playSound({
-                volume: distance
-            });
         }
 
         private _writeCombatLog(target: Entity, equipped: EquippedTechnology,
