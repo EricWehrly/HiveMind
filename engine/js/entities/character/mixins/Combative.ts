@@ -15,7 +15,7 @@ import { IsSentient, Sentient } from "./Sentient";
 
 Events.List.CharacterAttacked = "CharacterAttacked";
 
-export interface CharacterAttackedEvent extends GameEvent {
+export interface CharacterAttackEvent extends GameEvent {
     attacker: Entity;
     attacked: Entity;
     equipped?: EquippedTechnology;
@@ -134,7 +134,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
         }
         
         attack(target: Entity): number {
-            
+
             if(!this.canAttack(target)) {
                 if(CharacterUtils.IsLocalPlayer(this)) {
                     const wrongSound = GameSound.Get('wrong');
@@ -222,7 +222,7 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
                 }
             }
     
-            const event: CharacterAttackedEvent = {
+            const event: CharacterAttackEvent = {
                 id: null,
                 attacker: this,
                 attacked: target,

@@ -2,7 +2,7 @@ import UIElement, { SCREEN_ZONE } from "./ui-element";
 import Events from '../events';
 import { TechnologyTypes } from "../TechnologyTypes";
 import { CooldownCompleteEvent, EquipmentChangedEvent, EquippedTechnology } from "../entities/equipment";
-import { CharacterAttackedEvent } from "../entities/character/mixins/Combative";
+import { CharacterAttackEvent } from "../entities/character/mixins/Combative";
 import { Equipped } from "../entities/character/mixins/Equipped";
 import { Playable } from "../entities/character/mixins/Playable";
 import { CharacterUtils } from "../entities/character/CharacterUtils";
@@ -33,7 +33,7 @@ function onCooldownComplete(details: CooldownCompleteEvent) {
     }
 }
 
-function onCharacterAttacked(details: CharacterAttackedEvent) {
+function onCharacterAttacked(details: CharacterAttackEvent) {
 
     if(details.equipped == playerAttack) {
         UI_ELEMENT_ATTACK.addClass('cooldown');
