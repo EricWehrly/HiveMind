@@ -95,7 +95,7 @@ export default class KeyboardController {
         window.addEventListener('keydown', this.handleKeyDown.bind(this));
         window.addEventListener('keyup', this.handleKeyUp.bind(this));
 
-        RegisterLoopMethod(this.loopMethod.bind(this), true);
+        RegisterLoopMethod(this.keyboardLoop.bind(this), true);
 
         // KeyboardController.#List.push(this);
     }
@@ -124,7 +124,7 @@ export default class KeyboardController {
         this._keys_down[key] = false;
     }
 
-    loopMethod() {
+    keyboardLoop() {
 
         this.character.SetDesiredMovementVector(0, 0);
 

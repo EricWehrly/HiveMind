@@ -16,7 +16,7 @@ let LAST_FAST_LOOP = performance.now();
 
 export function RegisterLoopMethod (callback: LoopMethod, needsFast = false) {
     const timingOptions: SegmentOptions = {
-        name: callback.name,
+        name: callback.name.replace("bound ", ""),
         keepCount: 1000,
         slowThreshold: 1,
         type: "loop fast"
