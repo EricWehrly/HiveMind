@@ -1,6 +1,6 @@
 import Listed from "./baseTypes/listed";
 import Logger from "./core/Logger";
-import { CharacterAttackedEvent } from "./entities/character/mixins/Combative";
+import { CharacterAttackEvent } from "./entities/character/mixins/Combative";
 import Events from "./events";
 import { Defer } from "./Loop";
 import Research from "./research";
@@ -105,7 +105,7 @@ export default class Technology extends Listed {
         Events.Subscribe(Events.List.CharacterAttacked, this.onCharacterAttacked.bind(this));
     }
 
-    private onCharacterAttacked(details: CharacterAttackedEvent) {
+    private onCharacterAttacked(details: CharacterAttackEvent) {
         if(this.statusEffect && details.equipped?.technology == this) {
             this.statusEffect.apply(details.attacked, this.statusEffectDuration);
         }
