@@ -78,7 +78,7 @@ export default class AI {
 
         Events.Subscribe(Events.List.CharacterDamaged, this.onCharacterDamaged.bind(this));
 
-        RegisterLoopMethod(this.updateRelationships.bind(this));
+        this.RegisterThinkMethod(this.updateRelationships.bind(this));
     }
 
     private updateRelationships() {
