@@ -82,7 +82,6 @@ export function MakeLiving<T extends Constructor<Entity>>(Base: T) {
             this.health -= amount;
 
             const event : CharacterDamagedEvent = {
-                id: null,
                 character: this,
                 amount,
                 attacker: attacker

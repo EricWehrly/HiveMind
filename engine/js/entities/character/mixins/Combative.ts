@@ -150,7 +150,6 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
             const strAttr = this.getAttribute("Strength");
 
             const attackingEvent: CharacterAttackEvent = {
-                id: null,
                 attacker: this,
                 attacked: target,
                 equipped
@@ -213,7 +212,6 @@ export function MakeCombative<T extends Constructor<Entity>>(Base: T) {
             }
     
             const event: CharacterAttackEvent = {
-                id: null,
                 attacker: this,
                 attacked: target,
                 equipped

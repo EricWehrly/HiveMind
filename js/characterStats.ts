@@ -97,8 +97,7 @@ Events.Subscribe(Events.List.GameStart, function() {
     strength = localPlayer.getAttribute("Strength");
     const eventDetails: EntityAttributeChangedEvent = {
         entity: localPlayer,
-        attribute: strength,
-        id: null
+        attribute: strength
     }
     updateMenuItemText(eventDetails);
     strengthLabel.text = `Strength: ${strength.value}`;

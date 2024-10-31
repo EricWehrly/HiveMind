@@ -62,7 +62,7 @@ function initialRender(uiElement: UIElement): HTMLElement {
         labelElement.appendChild(element);
     }
 
-    uiElementUpdated({ uiElement, id: null });
+    uiElementUpdated({ uiElement });
     CUSTOM_INITIALIZERS.get(uiElement.constructor.name)?.(uiElement);
 
     return element;

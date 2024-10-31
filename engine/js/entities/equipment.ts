@@ -42,7 +42,6 @@ export class EquippedTechnology {
 
         Defer(() => {
             let details: CooldownCompleteEvent = {
-                id: null,
                 equippedTechnology: this,
                 character: this._equipment.character
             };
@@ -86,7 +85,6 @@ export default class Equipment {
         this._equipment[technology.type as TechnologyTypes] = new EquippedTechnology(technology, this);
 
         const details: EquipmentChangedEvent = {
-            id: null,
             type: technology.type,
             from: this.getEquipped(technology.type).technology,
             to: technology,
