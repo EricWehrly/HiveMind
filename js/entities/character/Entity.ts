@@ -163,7 +163,6 @@ export default class Entity extends WorldObject {
 
     private postConstruct() {
         const entityEvent: EntityEvent = {
-            id: null,
             entity: this
         };
         Events.RaiseEvent(Events.List.EntityCreated, entityEvent, {

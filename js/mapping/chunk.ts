@@ -122,7 +122,6 @@ export default class Chunk {
         this.#active = value;
 
         const chunkEvent: ChunkEvent = {
-            id: null,
             chunk: this
         };
         Events.RaiseEvent(Events.List.ChunkActiveChanged, chunkEvent);
@@ -152,7 +151,6 @@ export default class Chunk {
         this.map.addChunk(this);
 
         const createdEvent: ChunkEvent = {
-            id: null,
             chunk: this
         };
         const eventOptions = {

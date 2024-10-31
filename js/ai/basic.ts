@@ -41,7 +41,6 @@ export default class AI {
         const oldValue = this._targetEntity;
         this._targetEntity = newValue;
         const options: CharacterTargetChangedEvent = {
-            id: null,
             character: this.character,
             from: oldValue,
             to: this._targetEntity

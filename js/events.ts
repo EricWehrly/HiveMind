@@ -24,8 +24,8 @@ interface Subscription extends SubscribeOptions {
 }
 
 export interface GameEvent {
-    // id is created in the generation -- garunteed when it's raised, but not needed when raising
-    id?: string;
+    // eventId is created in the generation -- present for the 'output' GameEvent, not its input
+    eventId?: string;
     // by marking this definitively distinct property as non-nullable, we can browse errors
     // to try to find anywhere raising a GameEvent with an entity or other object that legitimately has an id property
     gameEventSpecificPropertyToForceInheritance?: boolean;

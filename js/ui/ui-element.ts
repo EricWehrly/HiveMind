@@ -75,7 +75,7 @@ export default class UIElement {
         if(this._visible == value) return;
         
         this._visible = value;
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        const uiEvent: UIElementEvent = { uiElement: this };
         this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
     get customAction() { return this._customAction; } 
@@ -91,7 +91,7 @@ export default class UIElement {
 
     set text(value) {
         this._text = value;
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        const uiEvent: UIElementEvent = { uiElement: this };
         this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
@@ -128,7 +128,7 @@ export default class UIElement {
         if(!this._classes.includes(className)) {
             this._classes.push(className);
         }
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        const uiEvent: UIElementEvent = { uiElement: this };
         this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
@@ -136,13 +136,13 @@ export default class UIElement {
         for(var className of classNames) {
             this.addClass(className);
         }
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        const uiEvent: UIElementEvent = { uiElement: this };
         this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
     
     removeClass(className: string) {
         this._classes = this._classes.filter(clazz => clazz != className);
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        const uiEvent: UIElementEvent = { uiElement: this };
         this.RaiseUIElementEvent(Events.List.UIElementUpdated, uiEvent);
     }
 
@@ -161,7 +161,7 @@ export default class UIElement {
     }
 
     destroy() {
-        const uiEvent: UIElementEvent = { uiElement: this, id: null };
+        const uiEvent: UIElementEvent = { uiElement: this };
         this.RaiseUIElementEvent(Events.List.UIElementDestroyed, uiEvent);
         UIElement._UI_ELEMENTS.splice(UIElement._UI_ELEMENTS.indexOf(this), 1);
     }
