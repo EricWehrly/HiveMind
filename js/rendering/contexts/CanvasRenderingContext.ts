@@ -41,6 +41,9 @@ export default class CanvasRenderingContext extends RenderContext {
     }
 
     Render(screenRect: Rectangle, renderMethods: RenderMethod[]): void {
+
+        this._context.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
+        
         for(var index in renderMethods) {
             var renderMethod = renderMethods[index];
             try {
