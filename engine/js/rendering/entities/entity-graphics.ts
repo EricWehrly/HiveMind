@@ -8,6 +8,7 @@ import DomRenderingContext from '../contexts/DomRenderingContext';
 import { CARDINAL_DIRECTION } from '../../baseTypes/Vector';
 import { CharacterUtils } from '../../entities/character/CharacterUtils';
 import { CharacterTargetChangedEvent } from '../../ai/basic';
+import Camera from '../../camera';
 
 const entityGraphics = new Map<Entity, HTMLElement>();
 
@@ -102,8 +103,7 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
     if(!entityGraphics.has(entity)) createGraphic(entity, domRoot);
     const graphic = entityGraphics.get(entity);
     
-    // @ts-expect-error
-    if(entity.isPlayer) {
+    if(CharacterUtils.IsLocalPlayer(entity)) {
         dom_handle_facing(entity);
     }
 
@@ -112,17 +112,13 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
 
     // TODO: get grid size constant
     const gridSize = 32;
-
     // TODO: Not this
     const MINIMUM_SIZE = gridSize / 2;
 
-    const offsetPosition = {
-        x: entity.position.x - screenRect.x,
-        y: entity.position.y - screenRect.y
-    };
+    const entityScreenPosition = Camera.get().GameToScreenCoords(entity.position);
 
-    graphic.style.left = (gridSize * offsetPosition.x) + "px";
-    graphic.style.top = (gridSize * offsetPosition.y) + "px";
+    graphic.style.left = (entityScreenPosition.x) + "px";
+    graphic.style.top = (entityScreenPosition.y) + "px";
 
     if(IsLiving(entity)) {
         // Find a different way to determine sizes ... or health proportions
@@ -188,5 +184,4 @@ Events.Subscribe(Events.List.GameStart, function() {
     Events.Subscribe(Events.List.CharacterDied, characterDied);
 });
 
-// Renderer.RegisterRenderMethod(10, redraw_loop);
 DomRenderingContext.RegisterRenderMethod(10, redraw_loop);

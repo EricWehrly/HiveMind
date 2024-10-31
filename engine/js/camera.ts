@@ -3,6 +3,8 @@ import Events from "./events";
 import Entity from "./entities/character/Entity";
 import Rectangle from "./baseTypes/rectangle";
 import { CARDINAL_DIRECTION } from "./baseTypes/Vector";
+import WorldCoordinate from "./coordinates/WorldCoordinate";
+import Point from "./coordinates/point";
 
 // TODO: Global reference somewhere somehow
 const GRID_SIZE = 32;
@@ -53,6 +55,14 @@ export default class Camera {
     // game units
     get screenRect() {
         return this._screenRect;
+    }
+
+    GameToScreenCoords(gameCoordinate: Readonly<WorldCoordinate>): Point {
+
+        return new Point(
+            ((gameCoordinate.x - this.screenRect.x) * GRID_SIZE),
+            ((gameCoordinate.y - this.screenRect.y) * GRID_SIZE)
+        );
     }
 
     private refreshScreenRect() {
