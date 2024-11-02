@@ -31,6 +31,12 @@ export default class WorldCoordinate extends Point {
         this._chunk = GameMap.Instance.getChunk(this);
     }
 
+    set(x: number, y: number) {
+        super.x = x;
+        super.y = y;
+        this._chunk = GameMap.Instance.getChunk(this);
+    }
+
     update(point: Readonly<WorldCoordinate>) {
         super.update(point);
         this._chunk = point.chunk;

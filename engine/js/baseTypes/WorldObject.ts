@@ -28,11 +28,13 @@ export default class WorldObject {
     }
 
     set position(options: { x?: number, y?: number }) {
-        if (options.x) this._position.x = options.x;
-        if (options.y) this._position.y = options.y;
-        if(options.x || options.y) {
-            this._area.position = this._position;
-        }
+        if(options.x == null && options.y == null) return;
+
+        this._position.set(
+            options.x || this._position.x,
+            options.y || this._position.y);
+
+        this._area.position = this._position;
     }
 
     get rotation() { return this._rotation; }
