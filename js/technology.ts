@@ -122,17 +122,18 @@ export default class Technology extends Listed {
         const target = details.attacked;
 
         // TODO: magic numbers
-        let volume = 100; // default ... maybe pull audio master instead?
+        let initialVolume = 100; // default ... maybe pull audio master instead?
         if (CharacterUtils.IsLocalPlayer(target)
             || CharacterUtils.IsLocalPlayer(attacker)) {
             const NOT_PLAYER_ATTENUATOR = 0.5;
-            volume *= NOT_PLAYER_ATTENUATOR;
+            initialVolume *= NOT_PLAYER_ATTENUATOR;
         }
 
         const localPlayer = CharacterUtils.GetLocalPlayer();
-        const distance = volume - attacker.position.distance(localPlayer.position);
+        const distance = attacker.position.distance(localPlayer.position);
+        const volume = Math.max(0, initialVolume - distance);
         equipped.technology.playSound({
-            volume: distance
+            volume
         });
     }
 
