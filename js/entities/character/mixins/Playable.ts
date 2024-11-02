@@ -68,7 +68,7 @@ export function MakePlayable<T extends Constructor<Entity>>(Base: T)
             this.afterMove();
         }
 
-        afterMove() {
+        private afterMove() {
             // TODO: We can probly extract to a callback (#positionUpdated)
             // and call from within the position setter (in Entity)
             if (!this.position.equals(this._lastPosition)) {
