@@ -108,6 +108,9 @@ function startGame() {
     };
     Events.RaiseEvent(Events.List.GameStart, null, gameStartOptions);
     Cheat.Beefcake;
+    // hack to force Playable.afterMove to fire Events.List.PlayerChunkChanged
+    localPlayer.SetDesiredMovementVector(0, -.0000001);
+    localPlayer.move(.0001);
 }
 Events.Subscribe(Events.List.DataLoaded, startGame);
 
