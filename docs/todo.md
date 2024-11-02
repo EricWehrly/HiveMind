@@ -1,5 +1,3 @@
-Projectile animations (especially for enemies shooting player)
-
 Takes way too long to find a new 'wander target' right now
 (entities stop where they wandered to very abruptly)
 entities still jiggling uncomfortably as they walk :/
