@@ -12,14 +12,14 @@ let shaderProgram: WebGLProgram;
 
 function redraw_loop(context: WebGL2RenderingContext) {
     if(!context) {
-        return;
+      console.warn("why no context tho");
+      return;
     }
 
     if(!localPlayer) {
         onGameStart(context);
         return;
     };
-
 
     const cubeVertices = [
         // Front face
@@ -40,7 +40,6 @@ function redraw_loop(context: WebGL2RenderingContext) {
 
     context.useProgram(shaderProgram);
     context.drawArrays(context.TRIANGLES, 0, cubeVertices.length / 3);
-
 }
 
 function onGameStart(context: WebGL2RenderingContext) {
