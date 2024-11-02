@@ -37,7 +37,7 @@ export default class PredatorAI extends AI {
                 const localPlayer = CharacterUtils.GetLocalPlayer() as Entity & Sentient & Combative;
                 const targetFaction = localPlayer.faction;
                 const closest = this.character.getClosestEntity({
-                    distance: this.character.aggressionRange,
+                    distance: this.character.vision,
                     faction: targetFaction
                 });
                 if(closest != null) this.targetEntity = closest;
