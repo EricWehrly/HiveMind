@@ -9,7 +9,6 @@ import Chunk from "./chunk";
 // TODO: test this at very low numbers so that we can know what happens when we approach it (and deal with that)
 const CHUNK_SOFT_LIMIT = 5000;
 
-// TODO: export the instance, not the class
 export default class GameMap {
 
     private static _instance: GameMap;
@@ -18,11 +17,10 @@ export default class GameMap {
     };
 
     static {
-
-        Events.Subscribe(Events.List.ChunkCreated, this._chunkCreated.bind(this));
+        Events.Subscribe(Events.List.ChunkCreated, this.onChunkCreated.bind(this));
     }
 
-    private static _chunkCreated(chunk: Chunk, eventOptions: any) {
+    private static onChunkCreated(chunk: Chunk, eventOptions: any) {
 
         // TODO: This needs to be tested (console log fires when in 2p)
         if(eventOptions.isNetworkOriginEvent == false) return;
@@ -60,13 +58,13 @@ export default class GameMap {
 
         this._seed = new Seed(seed.Random());
         
-        Events.Subscribe(Events.List.EntityCreated, this._characterCreated.bind(this));
-        Events.Subscribe(Events.List.PlayerChunkChanged, this._playerChunkChanged.bind(this));
+        Events.Subscribe(Events.List.EntityCreated, this.onCharacterCreated.bind(this));
+        Events.Subscribe(Events.List.PlayerChunkChanged, this.onPlayerChunkChanged.bind(this));
     }
 
     // TODO: Allow differint starting points to be passed in
     // should we have an option about whether to include the originating chunk?
-    getNearbyChunks(
+    GetNearbyChunks(
         startingChunk: Chunk,
         distance: number = 2)
         : Chunk[] {
@@ -93,22 +91,22 @@ export default class GameMap {
         return nearbyChunks;
     }
 
-    private _characterCreated(event: EntityEvent) {
+    private onCharacterCreated(event: EntityEvent) {
 
         if(event?.entity 
             && event?.entity.equals(CharacterUtils.GetLocalPlayer())) {
             const toChunk = event.entity.position.chunk;
-            this._playerChunkChanged({
+            this.onPlayerChunkChanged({
                 from: toChunk,
                 to: toChunk
             })
         }
     }
 
-    private _playerChunkChanged(event: { from: Chunk, to: Chunk }) {
+    private onPlayerChunkChanged(event: { from: Chunk, to: Chunk }) {
 
-        const chunksNearFrom = this.getNearbyChunks(event.from);
-        const chunksNearTo = this.getNearbyChunks(event.to);
+        const chunksNearFrom = this.GetNearbyChunks(event.from);
+        const chunksNearTo = this.GetNearbyChunks(event.to);
         chunksNearFrom.forEach(chunk => {
 
             // console.log(`Chunk at ${chunk.coordinate} active: ${chunk.active}`);
@@ -123,11 +121,12 @@ export default class GameMap {
         event.to.active = true;
     }
 
-    addBiome(biome: Biome) {
+    AddBiome(biome: Biome) {
         this._biomes.push(biome);
     }
 
-    getBiome(point: Point) {
+    // this is not currently used
+    GetBiome(point: Point) {
 
         for(var biome of this._biomes) {
             if(biome.contains(point)) {
@@ -148,7 +147,7 @@ export default class GameMap {
         });
     }
     
-    getChunk(point: Point): Chunk {
+    GetChunk(point: Point): Chunk {
         const chunkCoordinate = Chunk.getChunkCoordinate(point);
         return this.getChunkFromCoordinate(chunkCoordinate);
     }
@@ -159,7 +158,7 @@ export default class GameMap {
         const coordinate = point.toString();
         if(this.shouldMakeNewChunk(coordinate)) {
             const active = Object.keys(this._chunks).length == 0;
-            const biome = this.getBiome(point);
+            const biome = this.GetBiome(point);
             // if(Events.Context?.character?.isPlayer) ...
             new Chunk({
                 biome,
@@ -184,7 +183,7 @@ export default class GameMap {
             // && (Events.Context?.character?.isPlayer || coordinate == "0,0");
     }
 
-    addChunk(chunk: Chunk) {
+    AddChunk(chunk: Chunk) {
 
         this._chunks[chunk.coordinate] = chunk;
     }

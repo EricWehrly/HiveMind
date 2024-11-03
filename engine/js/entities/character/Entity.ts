@@ -90,7 +90,6 @@ export default class Entity extends WorldObject {
 
     entityRenderingSettings: EntityRenderingSettings;
 
-    // TODO: implement variable character attributes
     get vision() {
         return this.getAttribute("Vision").value;
     }

@@ -148,7 +148,7 @@ export default class Chunk {
         this._flora = seed.Random(1, 10);
 
         this._map = options.gameMap;
-        this.map.addChunk(this);
+        this.map.AddChunk(this);
 
         const createdEvent: ChunkEvent = {
             chunk: this
