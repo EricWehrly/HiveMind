@@ -1,12 +1,12 @@
 interface MockMap extends jest.Mock {
     Instance: {
-        getChunk: jest.Mock;
+        GetChunk: jest.Mock;
     };
 }
 
 const mockMap: MockMap = jest.fn().mockImplementation(() => {
     return {
-        getChunk: jest.fn().mockImplementation(() => {
+        GetChunk: jest.fn().mockImplementation(() => {
             return {
                 equals: () => { return false; }
             };
@@ -15,7 +15,7 @@ const mockMap: MockMap = jest.fn().mockImplementation(() => {
 }) as MockMap;
 
 mockMap.Instance = {
-    getChunk: jest.fn().mockImplementation(() => {
+    GetChunk: jest.fn().mockImplementation(() => {
         return {
             equals: () => { return false; }
         };
