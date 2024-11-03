@@ -6,9 +6,10 @@ import PredatorAI from '../../engine/js/ai/predator';
 import { MakeHiveMindCharacter } from './character/HivemindCharacterFactory';
 import { LivingOptions, MakeLiving } from '../../engine/js/entities/character/mixins/Living';
 import { MakeCombative } from '../../engine/js/entities/character/mixins/Combative';
-import { MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped';
+import { EquippedOptions, MakeEquipped } from '../../engine/js/entities/character/mixins/Equipped';
 import MakeCharacterType from './CharacterTypeFactory';
-import { MakeSentient } from '../../engine/js/entities/character/mixins/Sentient';
+import { MakeSentient, SentientOptions } from '../../engine/js/entities/character/mixins/Sentient';
+import { HivemindCharacterOptions } from './character/HiveMindCharacter';
 
 const animalCharacterType: CharacterTypeOptions & LivingOptions = {
     name: "Animal",
@@ -71,14 +72,17 @@ function spawnFauna(event: ChunkEvent) {
         const chunkY = chunk.y * Chunk.CHUNK_SIZE;
         const randomX = seed.Random(padding, (Chunk.CHUNK_SIZE / 2) - (padding + 1));
         const randomY = seed.Random(padding, (Chunk.CHUNK_SIZE / 2) - (padding + 1));
-        const spawnOpts = {
+        const spawnOpts: HivemindCharacterOptions & EquippedOptions & SentientOptions = {
             characterType: CharacterType.List['Animal'],
             position: {
                 x: chunkX + (Chunk.CHUNK_SIZE / 2) + randomX,
                 y: chunkY + (Chunk.CHUNK_SIZE / 2) + randomY
             },
             technologies: [ techs[techIndex] ],
-            ai: PredatorAI
+            ai: PredatorAI,
+            attributes: {
+                vision: chunk.hostility * 1.3   // TODO: move this magic number to a scaler. Maybe something in difficulty...
+            }
         };
         Object.assign(spawnOpts, characterOpts);
         MakeHiveMindCharacter([MakeLiving, MakeCombative, MakeEquipped, MakeSentient], spawnOpts);
