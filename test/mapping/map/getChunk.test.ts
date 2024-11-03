@@ -41,7 +41,7 @@ describe('map', () => {
             x: 0,
             y: 0
         });
-        jest.spyOn(map, 'getBiome').mockReturnValue(mockBiome);
+        jest.spyOn(map, 'GetBiome').mockReturnValue(mockBiome);
         mockCharacter = MakeCharacter([], {}); // replace with the actual constructor if it requires parameters
         mockCharacter.isPlayer = true;
     });

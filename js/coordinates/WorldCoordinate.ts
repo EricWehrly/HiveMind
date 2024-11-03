@@ -8,7 +8,7 @@ export default class WorldCoordinate extends Point {
 
     get chunk() {
         if(this._chunk == null) {
-            this._chunk = GameMap.Instance.getChunk(this);
+            this._chunk = GameMap.Instance.GetChunk(this);
         }
         return this._chunk;
     }
@@ -18,23 +18,23 @@ export default class WorldCoordinate extends Point {
 
     set x(value: number) {
         super.x = value;
-        this._chunk = GameMap.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.GetChunk(this);
     }
 
     set y(value: number) {
         super.y = value;
-        this._chunk = GameMap.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.GetChunk(this);
     }
 
     constructor(x: number, y: number) {
         super(x, y);
-        this._chunk = GameMap.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.GetChunk(this);
     }
 
     set(x: number, y: number) {
         super.x = x;
         super.y = y;
-        this._chunk = GameMap.Instance.getChunk(this);
+        this._chunk = GameMap.Instance.GetChunk(this);
     }
 
     update(point: Readonly<WorldCoordinate>) {

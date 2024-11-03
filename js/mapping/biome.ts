@@ -49,25 +49,14 @@ export default class Biome {
         return this.#x + "," + this.#y;
     }
 
-    /**
-     * 
-     * @param {BiomeType} options.biomeType
-     * @param {Integer} options.width
-     * @param {Integer} options.height
-     */
     constructor(options: BiomeOptions) {
-
-        if(!options.biomeType) throw "Expected biomeType to create biome.";
-        // console.assert(typeof options.biomeType == BiomeType);
-        if(!options.width) throw "Expected width to create biome.";
-        if(!options.height) throw "Expected height to create biome.";
 
         this.#x = options.x;
         this.#y = options.y;
         this.#width = options.width;
         this.#height = options.height;
         
-        GameMap.Instance.addBiome(this);
+        GameMap.Instance.AddBiome(this);
     }
 
     contains(coordinates: Point) {
