@@ -92,7 +92,7 @@ export default class Entity extends WorldObject {
 
     // TODO: implement variable character attributes
     get vision() {
-        return 1;
+        return this.getAttribute("Vision").value;
     }
 
     // TODO: use this variable for ... things
