@@ -39,8 +39,8 @@ export default class NodeAI extends HiveMindCharacterAI {
 
         NodeAI.#desiredBuildingsQueue.push(desire);
 
-        const details = {
-            name: desire.name
+        const details: BuildingDesiredEvent = {
+            desire
         };
         
         Events.RaiseEvent(Events.List.BuildingDesired, details);
