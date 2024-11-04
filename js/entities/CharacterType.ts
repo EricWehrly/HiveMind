@@ -18,6 +18,11 @@ export default class CharacterType implements EntityOptions {
 
     // hack to allow for dynamic properties
     [key: string]: any;
+    // and a fix for when we've abused that hack <_<
+    get characterType() { 
+        console.warn(`Unintended characterType access on ${this.name}`);
+        return this;
+    }
 
     private _name: string;
     get name() { return this._name; }
