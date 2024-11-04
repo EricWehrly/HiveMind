@@ -38,6 +38,8 @@ describe('chunk', function() {
             expect(coordinate.y).toBe(expected.y);
         });
 
+        // by 'multiple' we mean 'chunks past 0,0 or 1,1'
+        // ... need better words for that
         it('should calculate multiple chunk distance', function() {
             const input = new Point(60, 76);
             const expected = new Point(2, 3);
