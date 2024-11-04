@@ -33,14 +33,38 @@ export default class Renderer {
     private static _renderMethods: RenderMethodOptions[] = [];
     private static _contextPrioritizedMethods = new Map<string, Function[]>();
     // private static _renderMethodPriorities: { [key: number]: RenderMethodOptions } = {};
+        
+    private static _currentFrameCount = 0;
+    private static _startTime: number;
+    private static _lastFPS = 0;
 
-    static Render(screenRect: Rectangle) { 
+    static get FramesPerSecond() { return Renderer._lastFPS; }
+    static GetFramesPerSecond() { return Renderer._lastFPS; }
+
+    static Render(screenRect: Rectangle) {
+
+        Renderer.trackFrameRate();
 
         for(const [key, context] of Renderer._renderContexts.entries()) {
             // get the prioritized render methods for that context
             const prioritizedMethods = Renderer._contextPrioritizedMethods.get(key);
             // render the context
             context.Render(screenRect, prioritizedMethods);
+        }
+    }
+
+    private static trackFrameRate() {
+        if (!Renderer._startTime) Renderer._startTime = performance.now();
+
+        Renderer._currentFrameCount++;
+        const currentTime = performance.now();
+        const elapsedTime = currentTime - Renderer._startTime;
+
+        // If one second has passed, calculate FPS
+        if (elapsedTime >= 1000) {
+            Renderer._lastFPS = Renderer._currentFrameCount;
+            Renderer._currentFrameCount = 0;
+            Renderer._startTime = currentTime;
         }
     }
 
