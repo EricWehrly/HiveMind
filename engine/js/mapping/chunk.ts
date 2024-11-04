@@ -34,13 +34,12 @@ export default class Chunk {
 
         let chunkX = 0;
         let chunkY = 0;
-        // if x (or y) less than 0
         if(x < 0) {
-            chunkX = -1;
             while(x <= -1 * this.CHUNK_SIZE) {
                 chunkX--;
                 x += this.CHUNK_SIZE;
             }
+            if(x < 0) chunkX--;
         } else {
             while(x >= this.CHUNK_SIZE) {
                 chunkX++;
@@ -49,12 +48,12 @@ export default class Chunk {
         }
 
         if(y < 0) {
-            chunkY = -1;
             while(y <= -1 * this.CHUNK_SIZE) {
     
                 chunkY--;
                 y += this.CHUNK_SIZE;
             }
+            if(y < 0) chunkY--;
         } else {
             while(y >= this.CHUNK_SIZE) {
     
@@ -67,6 +66,11 @@ export default class Chunk {
             chunkX,
             chunkY
         );
+    }
+
+    static getWorldCoordinate(chunkCoordinate: Point): Point {
+        let { x, y } = chunkCoordinate;
+        return new Point(x * this.CHUNK_SIZE, y * this.CHUNK_SIZE);
     }
 
     get coordinate() {
@@ -100,6 +104,7 @@ export default class Chunk {
         return this._seed;
     }
 
+    // chunk coords
     #x = 0
     #y = 0
     get x() {
@@ -141,6 +146,7 @@ export default class Chunk {
         this._seed = new Seed(options.gameMap.Seed.Random());
         const seed = this._seed;
 
+        // values for world generation
         this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
         this._danger = seed.Random(Math.max(this.#distance - 1, 0), this.#distance + 1) + 1;
         this._hostility = seed.Random(1, this._danger);
