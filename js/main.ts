@@ -36,6 +36,7 @@ import './rendering/ui/ui-menu-renderer';
 import './rendering/ui/equipment-renderer';
 import './rendering/mapping/chunk-graphic';
 import './rendering/LaserProjectile.renderer';
+import './rendering/mapping/Chunk.renderer';
 
 const Game = {
     Camera: new Camera(),
