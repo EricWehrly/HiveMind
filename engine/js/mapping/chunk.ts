@@ -4,6 +4,8 @@ import Seed from "../core/seed";
 import Biome from "./biome";
 import Point from "../coordinates/point";
 import { Defer } from "../Loop";
+import Rectangle from "../baseTypes/rectangle";
+import WorldCoordinate from "../coordinates/WorldCoordinate";
 
 Events.List.ChunkCreated = "ChunkCreated";
 Events.List.ChunkActiveChanged = "ChunkActiveChanged";
@@ -114,6 +116,12 @@ export default class Chunk {
         return this.#y;
     }
 
+    // game units...
+    private _position: Readonly<WorldCoordinate>;
+    private _area: Rectangle;
+    get position() { return this._position; }
+    get area() { return this._area; }
+
     #active = false;
     get active() {
         return this.#active;
@@ -155,6 +163,15 @@ export default class Chunk {
 
         this._map = options.gameMap;
         this.map.AddChunk(this);
+        // game units
+        const thisWorldPos = Chunk.getWorldCoordinate(new Point(this.#x, this.#y));
+        this._position = new WorldCoordinate(thisWorldPos.x, thisWorldPos.y);
+        // this._position = new WorldCoordinate(this.#x * Chunk.CHUNK_SIZE, this.#y * Chunk.CHUNK_SIZE);
+        if(!this._position.chunk.equals(this)) {
+            console.warn(`Chunk position ${this._position.chunk} does not match chunk ${this}`);
+            debugger;
+        }
+        this._area = new Rectangle(this.#x, this.#y, Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE);
 
         const createdEvent: ChunkEvent = {
             chunk: this
