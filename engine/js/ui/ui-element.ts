@@ -97,7 +97,6 @@ export default class UIElement {
 
     set collapsed(newValue: boolean) {
         this._collapsed = newValue;
-        console.log('toggle class')
         if(this._collapsed) this.addClass("collapse");
         else this.removeClass("collapse");
     }
@@ -177,7 +176,7 @@ export default class UIElement {
     }
 
     toggleCollapsed() {
-        this.collapsed = !this._collapsed;
+        this.collapsed = !this.collapsed;
     }
 
     destroy() {
