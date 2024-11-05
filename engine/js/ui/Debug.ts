@@ -5,17 +5,6 @@ const trackedFunctions: StringFunction[] = [];
 
 export type StringFunction = () => string | number;
 
-/*
-    text?: string;
-    parent?: UIElement;
-    screenZone?: SCREEN_ZONE;
-    visible?: boolean;
-    classes?: string[];
-    elementType?: UI_ELEMENT_TYPE;
-    customAction?: (event: Event) => void;
-    title?: string;
-    */
-
 const DEBUG_PANEL = new UIElement({
     classes: ["debug"],
     screenZone: SCREEN_ZONE.MIDDLE_LEFT,

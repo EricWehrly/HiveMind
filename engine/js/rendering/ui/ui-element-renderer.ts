@@ -62,6 +62,14 @@ function initialRender(uiElement: UIElement): HTMLElement {
         labelElement.appendChild(element);
     }
 
+    if(uiElement.collapsible) {
+        // TODO: Handle input situations without mouse
+        const collapseHandle = document.createElement("span");
+        collapseHandle.className = "collapse-handler";
+        element.appendChild(collapseHandle);
+        element.addEventListener("click", uiElement.toggleCollapsed.bind(uiElement), false);
+    }
+
     uiElementUpdated({ uiElement });
     CUSTOM_INITIALIZERS.get(uiElement.constructor.name)?.(uiElement);
 

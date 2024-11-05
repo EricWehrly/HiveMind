@@ -9,8 +9,6 @@ Events.List.MenuClosed = "MenuClosed";
 export interface MenuOptions {
     name?: string;
     vertical?: boolean;
-    collapsible?: boolean;
-    collapsed?: boolean;
     menuAction?: (arg: MenuAction) => void;
     canBeClosed?: boolean;
     icon?: UIElementOptions;
@@ -56,8 +54,6 @@ export default class Menu extends UIElement {
     private _items: MenuItem[] = [];
     private _selected: MenuItem;
     private _menuAction;
-    private _collapsed: boolean;
-    private _collapsible: boolean;
     private _icon: UIElement;
     private _sections = new Map<string, UIElement>();
 
@@ -66,8 +62,6 @@ export default class Menu extends UIElement {
     get menuAction() { return this._menuAction; }
     get visible() { return super.visible; }
     get items() { return this._items; }
-    get collapsed() { return this._collapsed; }
-    get collapsible() { return this._collapsible; }
     get sections() { return this._sections; }
 
     // when I become visibile, I want to enable "menu_interact" from Action
@@ -85,12 +79,6 @@ export default class Menu extends UIElement {
             if(Menu._current == this) Menu._current = null;
             Events.RaiseEvent(Events.List.MenuClosed, this);
         }
-    }
-
-    set collapsed(newValue) {
-        this._collapsed = newValue;
-        if(this._collapsed) this.addClass("collapse");
-        else this.removeClass("collapse");
     }
 
     // TODO: when the menu is open / visible, need to enable
@@ -149,10 +137,6 @@ export default class Menu extends UIElement {
 
         if(options.menuAction) this._menuAction = options.menuAction;
 
-        this.collapsed = options.collapsed;
-        this._collapsible = options.collapsed || options.collapsible;
-        if (this._collapsible) this.addClass("collapsible");
-
         if(options.icon) {
             this._icon = new UIElement(options.icon);
             this._icon.addClasses(["icon", this.name]);
@@ -166,7 +150,7 @@ export default class Menu extends UIElement {
 
     toggleCollapsed() {
 
-        this.collapsed = !this.collapsed;
+        super.toggleCollapsed();
         Menu._computeAnyMenuOpen();
     }
 
