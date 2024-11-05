@@ -30,7 +30,9 @@ export interface UIElementOptions {
     classes?: string[];
     elementType?: UI_ELEMENT_TYPE;
     customAction?: (event: Event) => void;
-    title?: string;
+    title?: string;    
+    collapsible?: boolean;
+    collapsed?: boolean;
 }
 
 Events.List.UIElementUpdated = "UIElementUpdated";
@@ -59,6 +61,8 @@ export default class UIElement {
     // so rather than just click, we can custom double-click, hovver, etc.
     private _customAction: (event: Event) => void;
     private _title: string;
+    private _collapsible: boolean;
+    private _collapsed: boolean;
 
     // there's no need for anyone except the renderer to know this, so far
     get classes() { return this._classes; }
@@ -88,6 +92,15 @@ export default class UIElement {
     get entity() { return this._entity; }
     set entity(value) { this._entity = value; }
     get title() { return this._title; }
+    get collapsible() { return this._collapsible; }
+    get collapsed() { return this._collapsed; }
+
+    set collapsed(newValue: boolean) {
+        this._collapsed = newValue;
+        console.log('toggle class')
+        if(this._collapsed) this.addClass("collapse");
+        else this.removeClass("collapse");
+    }
 
     set text(value) {
         this._text = value;
@@ -117,6 +130,9 @@ export default class UIElement {
 
         if(options.text) this.text = options.text;
         if(options.title) this._title = options.title;
+        this._collapsible = options.collapsed || options.collapsible || false;
+        this._collapsed = options.collapsed || false;
+        if (this._collapsible) this.addClass("collapsible");
 
         if(options.elementType) this._elementType = options.elementType;
         if(options.customAction) this._customAction = options.customAction;
@@ -158,6 +174,10 @@ export default class UIElement {
     addChild(child: UIElement) {
 
         this._children.push(child);
+    }
+
+    toggleCollapsed() {
+        this.collapsed = !this._collapsed;
     }
 
     destroy() {

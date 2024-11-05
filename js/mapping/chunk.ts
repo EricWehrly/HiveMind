@@ -166,11 +166,6 @@ export default class Chunk {
         // game units
         const thisWorldPos = Chunk.getWorldCoordinate(new Point(this.#x, this.#y));
         this._position = new WorldCoordinate(thisWorldPos.x, thisWorldPos.y);
-        // this._position = new WorldCoordinate(this.#x * Chunk.CHUNK_SIZE, this.#y * Chunk.CHUNK_SIZE);
-        if(!this._position.chunk.equals(this)) {
-            console.warn(`Chunk position ${this._position.chunk} does not match chunk ${this}`);
-            debugger;
-        }
         this._area = new Rectangle(this.#x, this.#y, Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE);
 
         const createdEvent: ChunkEvent = {

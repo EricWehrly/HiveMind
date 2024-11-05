@@ -83,12 +83,17 @@
     right: 2px;
     top: 2px;
 
-    padding-left: 0;
-    padding-right: 0;
+    cursor: pointer;
+    padding: 0px 6px;
+    font-weight: bold;
 }
 
 .collapse-handler:after {
-    content: '-';
+    content: 'v';
+}
+
+.collapse .collapse-handler:after {
+    content: '^';
 }
 
 .collapse > div {
