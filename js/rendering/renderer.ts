@@ -34,7 +34,6 @@ export default class Renderer {
     private static _contextPrioritizedMethods = new Map<string, Function[]>();
     // private static _renderMethodPriorities: { [key: number]: RenderMethodOptions } = {};
         
-    private static _currentFrameCount = 0;
     private static _startTime: number;
     private static _lastFPS = 0;
     private static _currentFrameTimes: number[] = [];
@@ -87,14 +86,12 @@ export default class Renderer {
     private static trackFrameRate() {
         if (!Renderer._startTime) Renderer._startTime = performance.now();
 
-        Renderer._currentFrameCount++;
         const currentTime = performance.now();
         const elapsedTime = currentTime - Renderer._startTime;
 
         // If one second has passed, calculate FPS
         if (elapsedTime >= 1000) {
-            Renderer._lastFPS = Renderer._currentFrameCount;
-            Renderer._currentFrameCount = 0;
+            Renderer._lastFPS = Renderer._currentFrameTimes.length;
             Renderer._startTime = currentTime;
             Renderer._lastFrameTimes = [];
             Renderer._lastFrameTimes.push(...Renderer._currentFrameTimes);
