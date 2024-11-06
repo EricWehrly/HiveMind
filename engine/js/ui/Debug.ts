@@ -27,7 +27,7 @@ const Debug = {
 function updateTrackedObjects() {
     let str = '';
     for(const func of trackedFunctions) {
-        str += func() + '\n';
+        str += func() + '<br/>';
     }
     if(str != '') DEBUG_PANEL.text = str;
 }

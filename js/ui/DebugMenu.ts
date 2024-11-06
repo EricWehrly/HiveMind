@@ -35,6 +35,7 @@ new MenuItem({
 
 // TODO: find a better home for this ...
 Debug.Track(Renderer.GetFramesPerSecond);
+Debug.Track(Renderer.GetMedianFrameTime);
 
 KeyboardController.AddDefaultBinding("openMenu/Debug", "`");
 
