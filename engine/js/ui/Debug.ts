@@ -1,7 +1,7 @@
 import { RegisterLoopMethod } from "../Loop";
 import UIElement, { SCREEN_ZONE } from "./ui-element";
 
-const trackedFunctions: StringFunction[] = [];
+const trackedFunctions: Record<string, { func: StringFunction, formatTemplate: string }> = {};
 
 export type StringFunction = () => string | number;
 
@@ -10,9 +10,19 @@ const DEBUG_PANEL = new UIElement({
     screenZone: SCREEN_ZONE.MIDDLE_LEFT,
 });
 
-function Track(func: StringFunction, stringFormat?: string) {
-    trackedFunctions.push(func);
-    // TODO: create watch method for object parameter
+/**
+ * 
+ * @param func the result of this function will be rendered
+ * @param formatTemplate (optional) use '(0)' where you would like to insert the result of the function into the string template
+ */
+function Track(func: StringFunction, formatTemplate?: string) {
+    if(func?.name?.length === 0 || !func) {
+        console.warn('Cannot track function without a name');
+    } else if(trackedFunctions[func.name]) {
+        console.warn(`Function ${func.name} is already being tracked`);
+    } else {
+        trackedFunctions[func.name] = { func, formatTemplate };
+    }
 }
 
 function Write(str: string) {
@@ -23,13 +33,29 @@ const Debug = {
     Write,
     Track
 }
-
 function updateTrackedObjects() {
     let str = '';
-    for(const func of trackedFunctions) {
-        str += func() + '<br/>';
+    for (const key in trackedFunctions) {
+        if (trackedFunctions.hasOwnProperty(key)) {
+            const { func, formatTemplate } = trackedFunctions[key];
+            // TODO: Each time that we retrieve the value, 
+            // we can hold onto it to be able to render charts
+            const result = func();
+            if(formatTemplate) {
+                const formattedString = stringFormat(formatTemplate, result);
+                str += formattedString + '<br/>';
+            } else {
+                str += result + '<br/>';
+            }
+        }
     }
-    if(str != '') DEBUG_PANEL.text = str;
+    if (str !== '') DEBUG_PANEL.text = str;
+}
+
+function stringFormat(template: string, ...args: any[]): string {
+    return template.replace(/{(\d+)}/g, (match, number) => {
+        return typeof args[number] !== 'undefined' ? args[number] : match;
+    });
 }
 
 RegisterLoopMethod(updateTrackedObjects);
