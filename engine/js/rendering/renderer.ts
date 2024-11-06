@@ -37,7 +37,8 @@ export default class Renderer {
     private static _currentFrameCount = 0;
     private static _startTime: number;
     private static _lastFPS = 0;
-    private static _frameTimes: number[] = [];
+    private static _currentFrameTimes: number[] = [];
+    private static _lastFrameTimes: number[] = [];
 
     static get FramesPerSecond() { return Renderer._lastFPS; }
     static GetFramesPerSecond() { return Renderer._lastFPS; }
@@ -60,17 +61,20 @@ export default class Renderer {
 
         // this could be accomplished using fewer calls to 'performance.now' by referencing lastFrameCompleteTime and elapsed
         const endFrameTime = performance.now();
-        Renderer._frameTimes.push(endFrameTime - startFrameTime);
+        Renderer._currentFrameTimes.push(endFrameTime - startFrameTime);
     }
 
     private static get _maxFrameTime(): number {
-        return Math.max(...Renderer._frameTimes);
+        return Math.max(...Renderer._lastFrameTimes);
     }
 
+    // it would actually probably be best to hold and update these values, 
+    // rather than dynamically compute at 'get' time
+    // this will result in fewer eventual computations
     private static get _medianFrameTime(): number {
-        if (Renderer._frameTimes.length === 0) return 0;
+        if (Renderer._lastFrameTimes.length === 0) return 0;
 
-        const sortedTimes = [...Renderer._frameTimes].sort((a, b) => a - b);
+        const sortedTimes = [...Renderer._lastFrameTimes].sort((a, b) => a - b);
         const middleIndex = Math.floor(sortedTimes.length / 2);
 
         if (sortedTimes.length % 2 === 0) {
@@ -92,7 +96,9 @@ export default class Renderer {
             Renderer._lastFPS = Renderer._currentFrameCount;
             Renderer._currentFrameCount = 0;
             Renderer._startTime = currentTime;
-            Renderer._frameTimes = [];
+            Renderer._lastFrameTimes = [];
+            Renderer._lastFrameTimes.push(...Renderer._currentFrameTimes);
+            Renderer._currentFrameTimes = [];
         }
     }
 

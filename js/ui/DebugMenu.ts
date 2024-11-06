@@ -35,8 +35,8 @@ new MenuItem({
 
 // TODO: find a better home for this ...
 Debug.Track(Renderer.GetFramesPerSecond, 'FPS: {0}');
-Debug.Track(Renderer.GetMedianFrameTime, 'Median frame time: {0}ms');
-Debug.Track(Renderer.GetMaxFrameTime, 'Max frame time: {0}ms');
+Debug.Track(Renderer.GetMedianFrameTime, 'Median: {0}ms');
+Debug.Track(Renderer.GetMaxFrameTime, 'Max: {0}ms');
 
 KeyboardController.AddDefaultBinding("openMenu/Debug", "`");
 
