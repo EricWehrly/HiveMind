@@ -1,9 +1,9 @@
 import { RegisterLoopMethod } from "../Loop";
 import UIElement, { SCREEN_ZONE } from "./ui-element";
 
-const trackedFunctions: Record<string, { func: StringFunction, formatTemplate: string }> = {};
-
 export type StringFunction = () => string | number;
+
+const trackedFunctions: Record<string, { func: StringFunction, formatTemplate: string }> = {};
 
 const DEBUG_PANEL = new UIElement({
     classes: ["debug"],
