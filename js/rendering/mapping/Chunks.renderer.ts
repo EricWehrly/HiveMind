@@ -23,6 +23,7 @@ function draw(context: CanvasRenderingContext2D, chunk: Chunk, screenRect: Recta
         startCoords.y,
         Chunk.CHUNK_SIZE * 32,  // TODO: pull the '32' from grid_size ... wherever it went
         Chunk.CHUNK_SIZE * 32);  // TODO: pull the '32' from grid_size ... wherever it went
+    // context.fillText(`${chunk.x}, ${chunk.y}`, startCoords.x + 10, startCoords.y + 20);
 }
 
 function redraw_loop(context: CanvasRenderingContext2D): void {
@@ -34,8 +35,6 @@ function redraw_loop(context: CanvasRenderingContext2D): void {
         // (for performance reasons)
         /// it WILL be fewer computes to just track when the screenRect changes and calculate this then
 
-
-        // these seem to stop rendering as the player crosses certain world areas...
         if(screenRect.contains(chunk.area)) {
             draw(context, chunk, screenRect);
         }
