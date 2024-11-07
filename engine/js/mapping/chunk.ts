@@ -48,25 +48,22 @@ export default class Chunk {
         return this.x + ", " + this.y;
     }
 
-    _biome: Biome;
+    private _biome: Biome;
     get biome() { return this._biome; }
-    private _seed
+    private _seed;
     get seed() { return this._seed; }
-    private _danger
+    private _danger;
     get danger() { return this._danger; }
-    private _hostility
+    private _hostility;
     get hostility() { return this._hostility; }
-    private _flora
+    private _flora;
     get flora() { return this._flora; }
     private _map;
     get map() { return this._map; }
 
-    // TODO: remove reundant
-    get Seed() { return this._seed; }
-
     // chunk coords
-    private chunkX = 0
-    private chunkY = 0
+    private chunkX = 0;
+    private chunkY = 0;
     get x() { return this.chunkX; }
     get y() { return this.chunkY; }
 
@@ -101,14 +98,13 @@ export default class Chunk {
         if(options.y) this.chunkY = options.y;
         if(options.active) this.active = options.active;
         this._seed = new Seed(options.gameMap.Seed.Random());
-        const seed = this._seed;
 
         // values for world generation
         this._distance = Math.abs(this.chunkX) + Math.abs(this.chunkY);
-        this._danger = seed.Random(Math.max(this._distance - 1, 0), this._distance + 1) + 1;
-        this._hostility = seed.Random(1, this._danger);
+        this._danger = this._seed.Random(Math.max(this._distance - 1, 0), this._distance + 1) + 1;
+        this._hostility = this._seed.Random(1, this._danger);
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
-        this._flora = seed.Random(1, 10);
+        this._flora = this._seed.Random(1, 10);
 
         this._map = options.gameMap;
         this.map.AddChunk(this);
