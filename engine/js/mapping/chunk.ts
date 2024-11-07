@@ -31,43 +31,11 @@ export default class Chunk {
     static get MAX_DANGER() { return 100; }
 
     static getChunkCoordinate(worldCoordinate: Point): Point {
-
-        let { x, y } = worldCoordinate;
-
-        let chunkX = 0;
-        let chunkY = 0;
-        if(x < 0) {
-            while(x <= -1 * this.CHUNK_SIZE) {
-                chunkX--;
-                x += this.CHUNK_SIZE;
-            }
-            if(x < 0) chunkX--;
-        } else {
-            while(x >= this.CHUNK_SIZE) {
-                chunkX++;
-                x -= this.CHUNK_SIZE;
-            }
-        }
-
-        if(y < 0) {
-            while(y <= -1 * this.CHUNK_SIZE) {
     
-                chunkY--;
-                y += this.CHUNK_SIZE;
-            }
-            if(y < 0) chunkY--;
-        } else {
-            while(y >= this.CHUNK_SIZE) {
+        let chunkX = Math.floor(worldCoordinate.x / this.CHUNK_SIZE);
+        let chunkY = Math.floor(worldCoordinate.y / this.CHUNK_SIZE);
     
-                chunkY++;
-                y -= this.CHUNK_SIZE;
-            }
-        }
-
-        return new Point(
-            chunkX,
-            chunkY
-        );
+        return new Point(chunkX, chunkY);
     }
 
     static getWorldCoordinate(chunkCoordinate: Point): Point {
