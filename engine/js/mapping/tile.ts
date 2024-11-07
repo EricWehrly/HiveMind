@@ -1,9 +1,12 @@
 export default class Tile {
 
-    constructor() {
-        console.log("I'm a new tile!");
-    }
+    x: Readonly<number> = 0;
+    y: Readonly<number> = 0;
+    z: Readonly<number> = 0;
 
-    x = 0;
-    y = 0;
+    constructor(x: number, y: number, z: number) {
+        this.x = x;
+        this.y = y;
+        this.z = z;        
+    }
 }

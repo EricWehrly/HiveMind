@@ -3,8 +3,9 @@ import Seed from "../core/seed";
 import { CharacterUtils } from "../entities/character/CharacterUtils";
 import { EntityEvent } from "../entities/character/Entity";
 import Events from "../events";
+import TerrainGenerator, { TerrainGenerationOptions } from "./TerrainGenerator";
 import Biome, { BiomeType } from "./biome";
-import Chunk from "./chunk";
+import Chunk, { ChunkOptions } from "./chunk";
 
 // TODO: test this at very low numbers so that we can know what happens when we approach it (and deal with that)
 const CHUNK_SOFT_LIMIT = 5000;
@@ -159,14 +160,19 @@ export default class GameMap {
         if(this.shouldMakeNewChunk(coordinate)) {
             const active = Object.keys(this._chunks).length == 0;
             const biome = this.GetBiome(point);
-            // if(Events.Context?.character?.isPlayer) ...
-            new Chunk({
+            const terrainGenerationOptions: TerrainGenerationOptions = {
+                seed: this.Seed,
+            }
+            const tiles = TerrainGenerator.Generate(terrainGenerationOptions);
+            const chunkOptions: ChunkOptions = {
                 biome,
                 active,
                 gameMap: this,
                 x: point.x,
-                y: point.y
-            });
+                y: point.y,
+                tiles
+            }
+            new Chunk(chunkOptions);
         }
         return this._chunks[coordinate];
     }
@@ -177,6 +183,7 @@ export default class GameMap {
             console.warn(`Chunk limit reached (${Object.keys(this._chunks).length})`);
         };
         
+        // if(Events.Context?.character?.isPlayer) ...
         return (!(coordinate in this._chunks))
             && CHUNK_SOFT_LIMIT > Object.keys(this._chunks).length;
             // && (character?.isPlayer || coordinate == "0,0");

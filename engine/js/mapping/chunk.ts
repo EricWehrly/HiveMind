@@ -6,6 +6,7 @@ import Point from "../coordinates/point";
 import { Defer } from "../Loop";
 import Rectangle from "../baseTypes/rectangle";
 import WorldCoordinate from "../coordinates/WorldCoordinate";
+import Tile from "./tile";
 
 Events.List.ChunkCreated = "ChunkCreated";
 Events.List.ChunkActiveChanged = "ChunkActiveChanged";
@@ -20,6 +21,7 @@ export interface ChunkOptions {
     y: number;
     active: boolean;
     gameMap: GameMap;
+    tiles: Tile[];
 }
 
 export default class Chunk {
@@ -60,6 +62,8 @@ export default class Chunk {
     get flora() { return this._flora; }
     private _map;
     get map() { return this._map; }
+    private _tiles: Tile[] = [];
+    get tiles(): Readonly<Tile[]> { return this._tiles; }
 
     // chunk coords
     private chunkX = 0;
@@ -94,9 +98,10 @@ export default class Chunk {
     constructor(options: ChunkOptions) {
 
         this._biome = options.biome;
-        if(options.x) this.chunkX = options.x;
-        if(options.y) this.chunkY = options.y;
-        if(options.active) this.active = options.active;
+        this.chunkX = options.x;
+        this.chunkY = options.y;
+        this.active = options.active;
+        this._tiles = options.tiles;
         this._seed = new Seed(options.gameMap.Seed.Random());
 
         // values for world generation
