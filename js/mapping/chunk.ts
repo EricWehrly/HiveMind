@@ -83,56 +83,42 @@ export default class Chunk {
     _biome: Biome;
     get biome() { return this._biome; }
     private _seed
-    get seed() {
-        return this._seed;
-    }
+    get seed() { return this._seed; }
     private _danger
-    get danger() {
-        return this._danger;
-    }
+    get danger() { return this._danger; }
     private _hostility
-    get hostility() {
-        return this._hostility;
-    }
+    get hostility() { return this._hostility; }
     private _flora
-    get flora() {
-        return this._flora;
-    }
+    get flora() { return this._flora; }
     private _map;
     get map() { return this._map; }
 
     // TODO: remove reundant
-    get Seed() {
-        return this._seed;
-    }
+    get Seed() { return this._seed; }
 
     // chunk coords
-    #x = 0
-    #y = 0
-    get x() {
-        return this.#x;
-    }
-    get y() {
-        return this.#y;
-    }
+    private chunkX = 0
+    private chunkY = 0
+    get x() { return this.chunkX; }
+    get y() { return this.chunkY; }
 
     // game units...
     private _position: Readonly<WorldCoordinate>;
     private _area: Rectangle;
     get position() { return this._position; }
     get area() { return this._area; }
+    private _distance;
+    get distance() { return this._distance; }
 
-    #active = false;
-    get active() {
-        return this.#active;
-    }
+    private _active = false;
+    get active() { return this._active; }
     set active(value) {
-        if(value == this.#active) return;
+        if(value == this._active) return;
         // console.log(`setting chunk to ${value == true ? "active" : "inactive" }`, this);
         // TODO: one last check to prevent deactivating a chunk that a player is in
         // if(value == false) console.log(`Deactivating chunk at ${this.coordinate}`);
         // else console.log(`Activating chunk at ${this.coordinate}`);
-        this.#active = value;
+        this._active = value;
 
         const chunkEvent: ChunkEvent = {
             chunk: this
@@ -140,23 +126,18 @@ export default class Chunk {
         Events.RaiseEvent(Events.List.ChunkActiveChanged, chunkEvent);
     }
 
-    #distance;
-    get distance() { return this.#distance; }
-
     constructor(options: ChunkOptions) {
 
-        if(!options.biome) debugger;
-
         this._biome = options.biome;
-        if(options.x) this.#x = options.x;
-        if(options.y) this.#y = options.y;
+        if(options.x) this.chunkX = options.x;
+        if(options.y) this.chunkY = options.y;
         if(options.active) this.active = options.active;
         this._seed = new Seed(options.gameMap.Seed.Random());
         const seed = this._seed;
 
         // values for world generation
-        this.#distance = Math.abs(this.#x) + Math.abs(this.#y);
-        this._danger = seed.Random(Math.max(this.#distance - 1, 0), this.#distance + 1) + 1;
+        this._distance = Math.abs(this.chunkX) + Math.abs(this.chunkY);
+        this._danger = seed.Random(Math.max(this._distance - 1, 0), this._distance + 1) + 1;
         this._hostility = seed.Random(1, this._danger);
         // TODO: base this off adjacent flora value (like be +- that value), not totally random
         this._flora = seed.Random(1, 10);
@@ -164,7 +145,7 @@ export default class Chunk {
         this._map = options.gameMap;
         this.map.AddChunk(this);
         // game units
-        const thisWorldPos = Chunk.getWorldCoordinate(new Point(this.#x, this.#y));
+        const thisWorldPos = Chunk.getWorldCoordinate(new Point(this.chunkX, this.chunkY));
         this._position = new WorldCoordinate(thisWorldPos.x, thisWorldPos.y);
         this._area = new Rectangle(this._position.x, this._position.y, Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE);
 
