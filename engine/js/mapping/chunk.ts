@@ -166,7 +166,7 @@ export default class Chunk {
         // game units
         const thisWorldPos = Chunk.getWorldCoordinate(new Point(this.#x, this.#y));
         this._position = new WorldCoordinate(thisWorldPos.x, thisWorldPos.y);
-        this._area = new Rectangle(this.#x, this.#y, Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE);
+        this._area = new Rectangle(this._position.x, this._position.y, Chunk.CHUNK_SIZE, Chunk.CHUNK_SIZE);
 
         const createdEvent: ChunkEvent = {
             chunk: this
