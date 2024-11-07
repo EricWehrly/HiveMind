@@ -1,10 +1,10 @@
+Predator.ts needs to:
+    - regularly re-evaluate target
+    - leash
+
 Takes way too long to find a new 'wander target' right now
 (entities stop where they wandered to very abruptly)
 entities still jiggling uncomfortably as they walk :/
-
-we should trigger chunk loads for local chunks prior to game start 
-(shortcut to just 'at start' if that gives you trouble, but mark it to be fixed)
-I thought we were doing that. Should we investigate why it may have broken?
 
 spawned by player seems to be unable to consume
 spawned by eater seems to consume immediately
