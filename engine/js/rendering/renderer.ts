@@ -1,5 +1,7 @@
 import Rectangle from "../baseTypes/rectangle";
+import Point from "../coordinates/point";
 import Events from "../events";
+import Debug from "../ui/Debug";
 import Timing, { SegmentOptions } from "../util/Timings";
 import { generateId } from "../util/javascript-extensions.mjs";
 import { RenderContextInterface } from "./RenderContext";
@@ -32,14 +34,23 @@ export default class Renderer {
     private static _renderContexts = new Map<string, RenderContextInterface>();
     private static _renderMethods: RenderMethodOptions[] = [];
     private static _contextPrioritizedMethods = new Map<string, Function[]>();
+    private static _mouseScreenPosition: Point;
     // private static _renderMethodPriorities: { [key: number]: RenderMethodOptions } = {};
+    static get MouseScreenPos(): Readonly<Point> { return Renderer._mouseScreenPosition; }
+    static SetMouseScreenPos(x: number, y: number) {
+        if(!Renderer._mouseScreenPosition) {
+            Renderer._mouseScreenPosition = new Point(x, y);
+        } else {
+            this._mouseScreenPosition.x = x;
+            this._mouseScreenPosition.y = y;
+        }
+    }
         
     private static _startTime: number;
     private static _lastFPS = 0;
     private static _currentFrameTimes: number[] = [];
     private static _lastFrameTimes: number[] = [];
 
-    static get FramesPerSecond() { return Renderer._lastFPS; }
     static GetFramesPerSecond() { return Renderer._lastFPS; }
     static GetMedianFrameTime() { return Renderer._medianFrameTime; }
     static GetMaxFrameTime() { return Renderer._maxFrameTime; }
@@ -203,6 +214,18 @@ export default class Renderer {
     }
     */
 }
+
+function mouseScreenPos() {
+    return Renderer.MouseScreenPos?.toString() || "";
+}
+
+Debug.Track(mouseScreenPos, "Mouse: {0}");
+
+function onMouseMove(event: MouseEvent) {
+    Renderer.SetMouseScreenPos(event.clientX, event.clientY);
+}
+
+document.addEventListener('mousemove', onMouseMove);
 
 // TODO: if gamestart is called and no contexts have been created, 
 // create default ones
