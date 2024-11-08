@@ -18,6 +18,8 @@ export default class CanvasRenderingContext extends RenderContext {
         this.styleCanvasElement();
         document.body.appendChild(this._canvasElement);
         this._context = this._canvasElement.getContext('2d');
+
+        window.addEventListener('resize', this.onWindowResize.bind(this));
     }
 
     private styleCanvasElement() {
@@ -26,11 +28,12 @@ export default class CanvasRenderingContext extends RenderContext {
         this._canvasElement.style.left = '0';
         this._canvasElement.style.margin = '0';
         this._canvasElement.style.padding = '0';
-        // TODO: hook resize
+        this.onWindowResize();
+    }
+
+    onWindowResize() {
         this._canvasElement.width = window.innerWidth;
         this._canvasElement.height = window.innerHeight;
-        // this._canvasElement.style.width = '100%';
-        // this._canvasElement.style.height = '100%';
     }
 
     static RegisterRenderMethod(priority: number, method: RenderMethod, options?: RenderMethodConstructorOptions): void {
