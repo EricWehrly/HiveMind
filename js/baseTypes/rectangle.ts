@@ -39,8 +39,8 @@ export default class Rectangle {
 
     containsPoint(x: number, y: number) {
 
-        return (x > this.x || x < this.right)
-            && (y > this.y || y < this.bottom);
+        return (x > this.x && x < this.right)
+            && (y > this.y && y < this.bottom);
     }
 
     containsRect(rectangle: Rectangle) {
