@@ -3,9 +3,6 @@ import Seed from './core/seed';
 import Events from './events';
 import GameMap from './mapping/GameMap';
 
-// functionality
-import './mapping/tile-manager';
-
 // entities
 import './entities/characters';
 

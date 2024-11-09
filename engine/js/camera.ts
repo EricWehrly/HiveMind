@@ -7,7 +7,6 @@ import WorldCoordinate from "./coordinates/WorldCoordinate";
 import Point from "./coordinates/point";
 
 // TODO: Global reference somewhere somehow
-const GRID_SIZE = 32;
 const SCREEN_BORDER_PADDING = 4;
 
 /*
@@ -60,8 +59,8 @@ export default class Camera {
     GameToScreenCoords(gameCoordinate: Readonly<WorldCoordinate>): Point {
 
         return new Point(
-            ((gameCoordinate.x - this.screenRect.x) * GRID_SIZE),
-            ((gameCoordinate.y - this.screenRect.y) * GRID_SIZE)
+            ((gameCoordinate.x - this.screenRect.x) * Renderer.GRID_SIZE),
+            ((gameCoordinate.y - this.screenRect.y) * Renderer.GRID_SIZE)
         );
     }
 
@@ -73,8 +72,8 @@ export default class Camera {
     
         else {
             const viewport = this.getViewPortSize();
-            const gridHalfWidth = (viewport.width / 2) / GRID_SIZE;
-            const gridHalfHeight = (viewport.height / 2) / GRID_SIZE;
+            const gridHalfWidth = (viewport.width / 2) / Renderer.GRID_SIZE;
+            const gridHalfHeight = (viewport.height / 2) / Renderer.GRID_SIZE;
     
             // offset screenRect based on camera._target.facing
             const facing = camera._target.facing.cardinalDirection;
