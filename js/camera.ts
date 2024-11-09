@@ -59,8 +59,8 @@ export default class Camera {
     GameToScreenCoords(gameCoordinate: Readonly<WorldCoordinate>): Point {
 
         return new Point(
-            ((gameCoordinate.x - this.screenRect.x) * Renderer.GRID_SIZE),
-            ((gameCoordinate.y - this.screenRect.y) * Renderer.GRID_SIZE)
+            Math.floor((gameCoordinate.x - this.screenRect.x) * Renderer.GRID_SIZE),
+            Math.floor((gameCoordinate.y - this.screenRect.y) * Renderer.GRID_SIZE)
         );
     }
 
