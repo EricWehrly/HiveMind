@@ -3,9 +3,7 @@ import Events from '../../events';
 import Chunk, { ChunkEvent } from '../../mapping/chunk';
 import GameMap from '../../mapping/GameMap';
 import DomRenderingContext from '../contexts/DomRenderingContext';
-
-// TODO: make this a global enum
-const gridSize = 32;
+import Renderer from '../renderer';
 
 const chunkGraphics: WeakMap<Chunk, HTMLElement> = new WeakMap();
 
@@ -19,7 +17,7 @@ function createGraphic(chunk: Chunk, domRoot: HTMLElement) {
 
     domRoot.appendChild(graphic);
 
-    const chunkPixels = Chunk.CHUNK_SIZE * gridSize;
+    const chunkPixels = Chunk.CHUNK_SIZE * Renderer.GRID_SIZE;
     graphic.style.width = chunkPixels + "px";
     graphic.style.height = chunkPixels + "px";
 
@@ -34,8 +32,7 @@ function redraw(chunk: Chunk, screenRect: Rectangle, domRoot: HTMLElement) {
     // but even static characters need to be redrawn when screenRect moves
 
     const graphic = chunkGraphics.get(chunk);
-    // TODO: get grid size constant
-    const gridSize = 32;
+    const gridSize = Renderer.GRID_SIZE;
 
     const offsetPosition = {
         x: (chunk.x * gridSize) - screenRect.x,

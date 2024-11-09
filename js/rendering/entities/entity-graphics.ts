@@ -9,6 +9,7 @@ import { CARDINAL_DIRECTION } from '../../baseTypes/Vector';
 import { CharacterUtils } from '../../entities/character/CharacterUtils';
 import { CharacterTargetChangedEvent } from '../../ai/basic';
 import Camera from '../../camera';
+import Renderer from '../renderer';
 
 const entityGraphics = new Map<Entity, HTMLElement>();
 
@@ -110,10 +111,8 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
     // TODO: We could implement some "dirtying" to skip the whole method if not needed
     // but even static characters need to be redrawn when screenRect moves
 
-    // TODO: get grid size constant
-    const gridSize = 32;
     // TODO: Not this
-    const MINIMUM_SIZE = gridSize / 2;
+    const MINIMUM_SIZE = Renderer.GRID_SIZE / 2;
 
     const entityScreenPosition = Camera.get().GameToScreenCoords(entity.position);
 
@@ -122,7 +121,7 @@ function redraw(entity: Entity, screenRect: Rectangle, domRoot: HTMLElement) {
 
     if(IsLiving(entity)) {
         // Find a different way to determine sizes ... or health proportions
-        let targetSize = (entity.health / 40) * gridSize;
+        let targetSize = (entity.health / 40) * Renderer.GRID_SIZE;
         if (targetSize < MINIMUM_SIZE) targetSize = MINIMUM_SIZE;
         graphic.style.width = targetSize + "px";
         graphic.style.height = targetSize + "px";

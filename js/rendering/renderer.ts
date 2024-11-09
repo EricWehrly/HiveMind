@@ -3,6 +3,7 @@ import Point from "../coordinates/point";
 import Events from "../events";
 import Debug from "../ui/Debug";
 import Timing, { SegmentOptions } from "../util/Timings";
+import addCustomStyle from "../util/custom-style";
 import { generateId } from "../util/javascript-extensions.mjs";
 import { RenderContextInterface } from "./RenderContext";
 
@@ -30,6 +31,8 @@ let DEFAULT_RENDERER_NAME = "default";
 const INITIAL_DEFAULT_RENDERER = DEFAULT_RENDERER_NAME;
 
 export default class Renderer {
+
+    static GRID_SIZE: Readonly<number> = 32;
 
     private static _renderContexts = new Map<string, RenderContextInterface>();
     private static _renderMethods: RenderMethodOptions[] = [];
@@ -214,6 +217,10 @@ export default class Renderer {
     }
     */
 }
+
+addCustomStyle(`:root {
+    --gridSize: ${Renderer.GRID_SIZE};
+}`);
 
 function mouseScreenPos() {
     return Renderer.MouseScreenPos?.toString() || "";

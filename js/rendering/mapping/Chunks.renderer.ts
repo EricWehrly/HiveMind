@@ -4,6 +4,7 @@ import Events from "../../events";
 import Chunk, { ChunkEvent } from "../../mapping/chunk";
 import GameMap from "../../mapping/GameMap";
 import CanvasRenderingContext from "../contexts/CanvasRenderingContext";
+import Renderer from "../renderer";
 import { RenderChunkTiles } from "./Tiles.renderer";
 
 function onChunkActiveChanged(event: ChunkEvent) {
@@ -22,8 +23,8 @@ function draw(context: CanvasRenderingContext2D, chunk: Chunk, screenRect: Recta
     context.strokeRect(
         startCoords.x,
         startCoords.y,
-        Chunk.CHUNK_SIZE * 32,  // TODO: pull the '32' from grid_size ... wherever it went
-        Chunk.CHUNK_SIZE * 32);  // TODO: pull the '32' from grid_size ... wherever it went
+        Chunk.CHUNK_SIZE * Renderer.GRID_SIZE,
+        Chunk.CHUNK_SIZE * Renderer.GRID_SIZE);
     // context.fillText(`${chunk.x}, ${chunk.y}`, startCoords.x + 10, startCoords.y + 20);
     RenderChunkTiles(context, chunk);
 }
