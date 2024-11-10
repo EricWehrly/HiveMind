@@ -2,8 +2,8 @@ import Rectangle from "../../baseTypes/rectangle";
 import Events from "../../events";
 import UI from "../../ui/ui";
 import UIElement, { UIElementEvent, UI_ELEMENT_TYPE } from "../../ui/ui-element";
+import DomRenderingContext from "../contexts/DomRenderingContext";
 import { GetEntityGraphic } from "../entities/entity-graphics";
-import Renderer from "../renderer";
 
 const INITIAL_DISPLAY_VALUES = new WeakMap<UIElement, string>();
 const UI_ELEMENTS = new Map<UIElement, HTMLElement>();
@@ -105,7 +105,7 @@ function redraw(uiElement: UIElement, screenRect: Rectangle) {
     }
 }
 
-Renderer.RegisterRenderMethod(10, ui_loop);
+DomRenderingContext.RegisterRenderMethod(10, ui_loop);
 
 function uiElementUpdated(event: UIElementEvent) {
     const uiElement = event.uiElement;

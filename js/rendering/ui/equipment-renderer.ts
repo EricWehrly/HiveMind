@@ -2,7 +2,7 @@
 import Rectangle from "../../baseTypes/rectangle";
 import { CharacterUtils } from "../../entities/character/CharacterUtils";
 import { UI_ELEMENT_ATTACK } from "../../ui/ui-equipment";
-import Renderer from "../renderer";
+import DomRenderingContext from "../contexts/DomRenderingContext";
 import { GetDomForUIElement } from "./ui-element-renderer";
 
 let backgroundDirty = false;
@@ -25,4 +25,4 @@ function redraw(screenRect: Rectangle) {
     }
 };
 
-Renderer.RegisterRenderMethod(10, redraw);
+DomRenderingContext.RegisterRenderMethod(10, redraw);
