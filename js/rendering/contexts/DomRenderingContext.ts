@@ -15,6 +15,10 @@ export default class DomRenderingContext extends RenderContext {
     }
 
     static RegisterRenderMethod(priority: number, method: RenderMethod, options?: RenderMethodConstructorOptions): void {
+        if(!options) options = {
+            context: 'DomRenderingContext'
+        };
+        else options.context = options?.context || 'DomRenderingContext';
         Renderer.RegisterRenderMethod(priority, method, options);
     }
 
@@ -23,6 +27,9 @@ export default class DomRenderingContext extends RenderContext {
     }
 
     Render(screenRect: Rectangle, renderMethods: RenderMethod[]): void {
+
+        if(!DomRenderingContext._domRoot) debugger;
+
         for(var index in renderMethods) {
             var renderMethod = renderMethods[index];
             try {
