@@ -15,19 +15,11 @@ export default class CanvasRenderingContext extends RenderContext {
         super();
 
         this._canvasElement = document.createElement('canvas');
-        this.styleCanvasElement();
+        this._canvasElement.id = 'CanvasRenderingContext';
         document.body.appendChild(this._canvasElement);
         this._context = this._canvasElement.getContext('2d');
 
         window.addEventListener('resize', this.onWindowResize.bind(this));
-    }
-
-    private styleCanvasElement() {
-        this._canvasElement.style.position = 'absolute';
-        this._canvasElement.style.top = '0';
-        this._canvasElement.style.left = '0';
-        this._canvasElement.style.margin = '0';
-        this._canvasElement.style.padding = '0';
         this.onWindowResize();
     }
 
