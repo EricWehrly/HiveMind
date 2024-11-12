@@ -70,16 +70,6 @@ export default class ThreeJSRenderContext extends RenderContext {
         this._controls.listenToKeyEvents( window ); // optional
 
         this.showGuides();
-        Debug.Track(this.cameraRotation.bind(this), 'rotation: {0}');
-        Debug.Track(this.cameraPosition.bind(this), 'position: {0}');
-    }
-
-    private cameraRotation() {
-        return this._camera.rotation.toString();
-    }
-
-    private cameraPosition() {
-        return this._camera.position.toString();;
     }
 
     private showGuides() {
