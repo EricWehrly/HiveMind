@@ -3,13 +3,48 @@ import Camera from "../../camera";
 import Events from "../../events";
 import Chunk, { ChunkEvent } from "../../mapping/chunk";
 import GameMap from "../../mapping/GameMap";
-import CanvasRenderingContext from "../contexts/CanvasRenderingContext";
+import ThreeJSRenderContext from "../contexts/ThreeJS.RenderContext";
 import Renderer from "../renderer";
-import { RenderChunkTiles } from "./Tiles.renderer";
+import * as THREE from 'three';
 
-function onChunkActiveChanged(event: ChunkEvent) {
-    
-    if(event.chunk.active == false)  {
+function onChunkCreated(event: ChunkEvent) {
+    const chunk = event.chunk;
+    const chunkSize = Chunk.CHUNK_SIZE;
+    const tileSize = Renderer.GRID_SIZE;
+
+    let colorNumber = 100;
+    for (let x = 0; x < chunkSize; x++) {
+        for (let y = 0; y < chunkSize; y++) {
+            const color = '#ffa' + (colorNumber++).toString();
+            const tile = chunk.getTile(x, y);
+            
+            const geometry = new THREE.PlaneGeometry(tileSize, tileSize, 1, 1);
+            const material = new THREE.MeshBasicMaterial({ color });
+            const mesh = new THREE.Mesh(geometry, material);
+
+            // Adjust the z-values of the vertices
+            const vertices = geometry.attributes.position.array;
+            const zValue = tile.z;
+            const adjacentZValues = [
+                chunk.getTile(x - 1, y)?.z || zValue,
+                chunk.getTile(x + 1, y)?.z || zValue,
+                chunk.getTile(x, y - 1)?.z || zValue,
+                chunk.getTile(x, y + 1)?.z || zValue
+            ];
+            const averageZ = (zValue + adjacentZValues.reduce((a, b) => a + b, 0)) / (adjacentZValues.length + 1);
+
+            vertices[2] = averageZ; // top-left vertex
+            vertices[5] = averageZ; // top-right vertex
+            vertices[8] = averageZ; // bottom-left vertex
+            vertices[11] = averageZ; // bottom-right vertex
+
+            geometry.attributes.position.needsUpdate = true;
+
+            mesh.position.set(x * tileSize, y * tileSize, 0);
+            ThreeJSRenderContext.Instance.scene.add(mesh);
+
+            // ThreeJSRenderContext.Instance.camera.lookAt(mesh.position);
+        }
     }
 }
 
@@ -26,7 +61,7 @@ function draw(context: CanvasRenderingContext2D, chunk: Chunk, screenRect: Recta
         Chunk.CHUNK_SIZE * Renderer.GRID_SIZE,
         Chunk.CHUNK_SIZE * Renderer.GRID_SIZE);
     // context.fillText(`${chunk.x}, ${chunk.y}`, startCoords.x + 10, startCoords.y + 20);
-    RenderChunkTiles(context, chunk);
+    // RenderChunkTiles(context, chunk);
 }
 
 function redraw_loop(context: CanvasRenderingContext2D): void {
@@ -44,6 +79,4 @@ function redraw_loop(context: CanvasRenderingContext2D): void {
     }
 }
 
-CanvasRenderingContext.RegisterRenderMethod(10, redraw_loop);
-
-Events.Subscribe(Events.List.ChunkActiveChanged, onChunkActiveChanged);
+Events.Subscribe(Events.List.ChunkCreated, onChunkCreated);
