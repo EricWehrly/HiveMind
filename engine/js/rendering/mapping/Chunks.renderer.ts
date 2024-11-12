@@ -13,6 +13,9 @@ function onChunkCreated(event: ChunkEvent) {
     const indices = [];
     const colors = [];
 
+    const xOffset = chunk.x * chunkSize * tileSize;
+    const yOffset = chunk.y * chunkSize * tileSize;
+
     let colorNumber = 100;
     for (let x = 0; x < chunkSize; x++) {
         for (let y = 0; y < chunkSize; y++) {
@@ -26,8 +29,7 @@ function onChunkCreated(event: ChunkEvent) {
                 chunk.getTile(x, y - 1)?.z || zValue,
                 chunk.getTile(x, y + 1)?.z || zValue
             ];
-            let averageZ = (zValue + adjacentZValues.reduce((a, b) => a + b, 0)) / (adjacentZValues.length + 1);
-            averageZ = averageZ * 10;
+            const averageZ = (zValue + adjacentZValues.reduce((a, b) => a + b, 0)) / (adjacentZValues.length + 1);
 
             const baseIndex = vertices.length / 3;
 
@@ -54,6 +56,7 @@ function onChunkCreated(event: ChunkEvent) {
     geometry.setIndex(indices);
     const material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
     const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(xOffset, yOffset, 0);
 
     ThreeJSRenderContext.Instance.scene.add(mesh);
 }
