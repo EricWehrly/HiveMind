@@ -1,16 +1,28 @@
 import * as THREE from 'three';
 
-let camera: THREE.Camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-// camera.position.set(20, 20, 20);
-// camera.lookAt(_scene.position);
+const aspect = window.innerWidth / window.innerHeight;
+const frustumSize = 1000;
+
+let camera: THREE.OrthographicCamera = new THREE.OrthographicCamera(
+    frustumSize * aspect / -2,
+    frustumSize * aspect / 2,
+    frustumSize / 2,
+    frustumSize / -2,
+    -1000,
+    1000
+);
+
+// Set the camera position to an isometric angle
+camera.position.set(20, 20, 20);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 function windowCameraReize() {
-    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 500;
-    const perspectiveCam = camera as THREE.PerspectiveCamera;
-    perspectiveCam.aspect = window.innerWidth / window.innerHeight;
-    perspectiveCam.updateProjectionMatrix();
+    const aspect = window.innerWidth / window.innerHeight;
+    camera.left = frustumSize * aspect / -2;
+    camera.right = frustumSize * aspect / 2;
+    camera.top = frustumSize / 2;
+    camera.bottom = frustumSize / -2;
+    camera.updateProjectionMatrix();
 }
 
 window.addEventListener('resize', windowCameraReize);
