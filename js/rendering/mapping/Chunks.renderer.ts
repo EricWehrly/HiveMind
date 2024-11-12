@@ -34,10 +34,10 @@ function onChunkCreated(event: ChunkEvent) {
             const baseIndex = vertices.length / 3;
 
             // Define the four vertices of the tile
-            vertices.push(x * tileSize, y * tileSize, averageZ); // top-left
-            vertices.push((x + 1) * tileSize, y * tileSize, averageZ); // top-right
-            vertices.push(x * tileSize, (y + 1) * tileSize, averageZ); // bottom-left
-            vertices.push((x + 1) * tileSize, (y + 1) * tileSize, averageZ); // bottom-right
+            vertices.push(x * tileSize, averageZ, y * tileSize); // top-left
+            vertices.push((x + 1) * tileSize, averageZ, y * tileSize); // top-right
+            vertices.push(x * tileSize, averageZ, (y + 1) * tileSize); // bottom-left
+            vertices.push((x + 1) * tileSize, averageZ, (y + 1) * tileSize); // bottom-right
 
             // Define the two faces of the tile (two triangles)
             indices.push(baseIndex, baseIndex + 1, baseIndex + 2);
@@ -56,7 +56,7 @@ function onChunkCreated(event: ChunkEvent) {
     geometry.setIndex(indices);
     const material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(xOffset, yOffset, 0);
+    mesh.position.set(xOffset, 0, yOffset);
 
     ThreeJSRenderContext.Instance.scene.add(mesh);
 }
