@@ -17,6 +17,8 @@ export default class TerrainGenerator {
 
     static Generate(options: TerrainGenerationOptions): Tile[] {
 
+        const { seed } = options;
+
         const tiles: Tile[] = [];
         
         // for now
@@ -33,6 +35,7 @@ export default class TerrainGenerator {
                 const tile = new Tile(x, y, 0);
                 tile.x = x;
                 tile.y = y;
+                tile.z = seed.Random(0, 10);
                 tiles.push(tile);
             }
         }

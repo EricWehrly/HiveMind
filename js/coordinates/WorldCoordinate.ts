@@ -5,6 +5,7 @@ import GameMap from '../mapping/GameMap';
 export default class WorldCoordinate extends Point {
 
     private _chunk: Chunk = null;
+    private _z: number = 0;
 
     get chunk() {
         if(this._chunk == null) {
@@ -15,6 +16,8 @@ export default class WorldCoordinate extends Point {
 
     get x() { return super.x; }
     get y() { return super.y; }
+    get z() { return this._z; }
+    get elevation() { return this._z; }
 
     set x(value: number) {
         super.x = value;
@@ -26,8 +29,9 @@ export default class WorldCoordinate extends Point {
         this._chunk = GameMap.Instance.GetChunk(this);
     }
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, z?: number) {
         super(x, y);
+        this._z = z || 0;
         this._chunk = GameMap.Instance.GetChunk(this);
     }
 
