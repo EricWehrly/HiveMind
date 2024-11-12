@@ -130,6 +130,13 @@ export default class Chunk {
         // console.log(`New chunk at ${options.x}, ${options.y}`);
     }
 
+    getTile(x: number, y: number) {
+        for(let tile of this._tiles) {
+            if(tile.x == x && tile.y == y) return tile;
+        }
+        return null;
+    }
+
     equals(chunk: Chunk) {
 
         if(!(chunk instanceof Chunk)) return false;
