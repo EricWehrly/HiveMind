@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "three": "^0.170.0",
     "typescript": "^5.4.5"
   },
   "main": "dist/bundle.js",
@@ -29,6 +30,7 @@
     "@types/body-parser": "^1.19.5",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
+    "@types/three": "^0.169.0",
     "babel-jest": "^29.7.0",
     "copy-webpack-plugin": "^12.0.2",
     "html-webpack-plugin": "^5.6.0",
