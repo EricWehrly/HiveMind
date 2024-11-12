@@ -40,7 +40,10 @@ function updateTrackedObjects() {
             const { func, formatTemplate } = trackedFunctions[key];
             // TODO: Each time that we retrieve the value, 
             // we can hold onto it to be able to render charts
-            const result = func();
+            let result = func();
+            if(typeof result === 'number') {
+                result = result.toFixed(2);
+            }
             if(formatTemplate) {
                 const formattedString = stringFormat(formatTemplate, result);
                 str += formattedString + '<br/>';
