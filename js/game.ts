@@ -39,6 +39,9 @@ import { MakeSentient, SentientOptions } from '../engine/js/entities/character/m
 import { EntityOptions } from '../engine/js/entities/character/EntityOptions';
 import Technology from '../engine/js/technology';
 
+// audio
+import './audio/AudioSetup';
+
 new MessageLog({
     name: "Combat",
     retentionStrategy: RETENTION_STRATEGY.MESSAGE_COUNT,
